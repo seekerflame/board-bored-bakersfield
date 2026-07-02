@@ -62,7 +62,7 @@
   <div class="card" id="settings">
     <h2>⚙️ Publish settings (one-time, at home)</h2>
     <label>GitHub repo (owner/name)</label>
-    <input id="repo" placeholder="seekerflame/board-bored">
+    <input id="repo" placeholder="seekerflame/board-bored-bakersfield">
     <label>Fine-grained token (Contents: read+write on that repo)</label>
     <input id="token" type="password" placeholder="github_pat_…">
     <div class="hint">Make one at github.com → Settings → Developer settings → Fine-grained tokens → only select the board repo → Repository permissions → Contents: Read and write. Paste it here once — it stays in this phone's browser only.</div>
@@ -141,7 +141,7 @@
 
   // ---------- settings ----------
   var settings=JSON.parse(localStorage.getItem(SET_KEY)||"{}");
-  $("repo").value=settings.repo||"seekerflame/board-bored";
+  $("repo").value=settings.repo||"seekerflame/board-bored-bakersfield";
   $("token").value=settings.token||"";
   $("gear").onclick=function(){$("settings").classList.toggle("open");};
   if(!settings.token)$("settings").classList.add("open");
