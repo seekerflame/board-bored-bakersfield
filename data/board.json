@@ -1,0 +1,86 @@
+{
+  "board": {
+    "city": "Bakersfield",
+    "name": "Board Bored",
+    "tagline": "The free local board. Events, open shops, and the people behind them. No apps, no ads, no cuts.",
+    "contact": "boardquestionmark@gmail.com"
+  },
+  "featured": "first-friday",
+  "events": [
+    {
+      "slug": "first-friday",
+      "name": "First Friday Art Walk",
+      "date": "2026-07-03",
+      "hours": "6:00 PM – 10:00 PM",
+      "area": "Downtown Bakersfield Arts District",
+      "blurb": "Art, coffee, vintage, music — the downtown shops stay open late. Walk in, say hi, keep it local.",
+      "vendors": [
+        {
+          "id": "biz_001",
+          "name": "Dagny's Coffee Co.",
+          "emoji": "☕",
+          "category": "Cafe",
+          "lat": 35.3757,
+          "lng": -119.0205,
+          "address": "1600 20th St, Bakersfield, CA 93301",
+          "hours": "6a–10p",
+          "note": "Open late for the art walk — coffee + espresso.",
+          "instagram": "",
+          "website": ""
+        },
+        {
+          "id": "biz_002",
+          "name": "Bakersfield Art Association — Art Center",
+          "emoji": "🎨",
+          "category": "Gallery",
+          "lat": 35.3748,
+          "lng": -119.0223,
+          "address": "1817 Eye St, Bakersfield, CA 93301",
+          "hours": "5p–9p (event)",
+          "note": "Member gallery show + live demos.",
+          "instagram": "",
+          "website": ""
+        },
+        {
+          "id": "biz_003",
+          "name": "Arts Council of Kern (ACK)",
+          "emoji": "🏛️",
+          "category": "Arts Org",
+          "lat": 35.3736,
+          "lng": -119.0195,
+          "address": "Downtown Bakersfield (verify exact address)",
+          "hours": "5p–9p (event)",
+          "note": "Info table — say hi and grab the walk lineup.",
+          "instagram": "",
+          "website": ""
+        },
+        {
+          "id": "biz_004",
+          "name": "Bakersfield Vintage",
+          "emoji": "📻",
+          "category": "Retail / Vintage",
+          "lat": 35.3751,
+          "lng": -119.0188,
+          "address": "Downtown Bakersfield (verify exact address)",
+          "hours": "5p–9p (event)",
+          "note": "Late-night browse — records, retro finds, First Friday-only deals.",
+          "instagram": "",
+          "website": ""
+        },
+        {
+          "id": "biz_005",
+          "name": "Encore Boutique",
+          "emoji": "👗",
+          "category": "Retail / Boutique",
+          "lat": 35.3744,
+          "lng": -119.0179,
+          "address": "Downtown Bakersfield (verify exact address)",
+          "hours": "5p–9p (event)",
+          "note": "Open for the walk with a curated First Friday rack.",
+          "instagram": "",
+          "website": ""
+        }
+      ]
+    }
+  ]
+}

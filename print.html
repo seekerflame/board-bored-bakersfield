@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Board Bored — Print Pack</title>
+<style>
+  @page{size:letter portrait;margin:0.5in}
+  :root{--ink:#000;--mut:#555;--line:#bbb;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#fff;color:var(--ink);font-family:"Helvetica Neue",Arial,sans-serif;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .page{max-width:7.5in;margin:0 auto;padding:0.25in 0;page-break-after:always}
+  .page:last-child{page-break-after:auto}
+  .kick{font-size:12px;letter-spacing:3px;text-transform:uppercase;font-weight:800}
+  h1{font-size:36px;letter-spacing:-1px;line-height:1.02;margin:6px 0 4px}
+  .when{font-size:19px;font-weight:800;margin-top:6px}
+  .where{font-size:14px;color:var(--mut);margin-top:2px}
+  hr{border:0;border-top:3px solid var(--ink);margin:14px 0}
+  table{width:100%;border-collapse:collapse}
+  td{padding:10px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+  .num{font-size:19px;font-weight:900;width:30px}
+  .emo{font-size:20px;width:30px}
+  .nm{font-size:16.5px;font-weight:800}
+  .nm .cat{font-weight:400;font-size:12px;color:var(--mut);margin-left:6px}
+  .nm .addr{display:block;font-weight:400;font-size:12.5px;color:var(--mut);margin-top:2px}
+  .hrs{font-size:13px;font-weight:700;white-space:nowrap;text-align:right}
+  .qrwrap{text-align:center;margin-top:12px}
+  .qrwrap svg{width:2.4in;height:2.4in}
+  .scan{font-size:18px;font-weight:900;margin-top:6px}
+  .sub{font-size:13px;color:var(--mut);margin-top:2px}
+  .foot{border-top:2px solid var(--ink);margin-top:14px;padding-top:8px;font-size:12px;color:var(--mut)}
+  .hero{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:8.6in;text-align:center}
+  .hero h1{font-size:52px}
+  .hero .qrwrap svg{width:4.6in;height:4.6in}
+  .printbtn{position:fixed;right:16px;bottom:16px;font:inherit;font-weight:800;font-size:15px;
+    background:#000;color:#fff;border:0;border-radius:12px;padding:14px 20px;cursor:pointer}
+  @media print{.printbtn{display:none}}
+</style>
+</head>
+<body>
+
+<!-- PAGE 1 — walking list + QR -->
+<div class="page">
+  <div class="kick">● Board Bored · Bakersfield</div>
+  <h1 id="evName">First Friday Art Walk</h1>
+  <div class="when" id="evWhen"></div>
+  <div class="where" id="evWhere"></div>
+  <hr>
+  <table id="list"></table>
+  <div class="qrwrap"><div id="qr1"></div>
+    <div class="scan">📱 Scan for the live map</div>
+    <div class="sub">or just use this paper and your legs — every stop is numbered above</div>
+  </div>
+  <div class="foot" id="foot1"></div>
+</div>
+
+<!-- PAGE 2 — big poster QR -->
+<div class="page hero">
+  <div class="kick">● Board Bored · Bakersfield</div>
+  <h1>Scan me.</h1>
+  <div class="sub" style="font-size:16px" id="heroSub">Tonight's open shops, galleries + pop-ups — one free map.</div>
+  <div class="qrwrap"><div id="qr2"></div></div>
+  <div class="scan" id="heroWhen"></div>
+  <div class="sub" id="foot2"></div>
+</div>
+
+<button class="printbtn" onclick="window.print()">🖨️ Print</button>
+
+<script src="lib/qrcode.js"></script>
+<script>
+(function(){
+  // THE ONE QR: encodes this site's own root URL — wherever this is hosted,
+  // the printed code points there. Content changes; the code never dies.
+  var target=new URL(".",location.href).href;
+
+  function drawQR(elId,cell){
+    try{
+      var q=qrcode(0,"M");q.addData(target);q.make();
+      document.getElementById(elId).innerHTML=q.createSvgTag({cellSize:cell,margin:2});
+    }catch(e){document.getElementById(elId).textContent=target;}
+  }
+  drawQR("qr1",5);drawQR("qr2",9);
+
+  fetch("data/board.json").then(function(r){return r.json()}).then(function(d){
+    var ev=(d.events||[]).filter(function(e){return e.slug===d.featured})[0]||(d.events||[])[0];
+    var email=(d.board&&d.board.contact)||"boardquestionmark@gmail.com";
+    if(!ev)return;
+    document.getElementById("evName").textContent=ev.name;
+    var p=(ev.date||"").split("-");
+    var nice=p.length===3?new Date(+p[0],+p[1]-1,+p[2]).toLocaleDateString(undefined,
+      {weekday:"long",month:"long",day:"numeric"}):ev.date;
+    document.getElementById("evWhen").textContent=nice+" · "+(ev.hours||"");
+    document.getElementById("evWhere").textContent=ev.area||"";
+    document.getElementById("heroWhen").textContent=nice+" · "+(ev.hours||"");
+    document.getElementById("heroSub").textContent=ev.blurb||"";
+    document.getElementById("foot1").textContent="Free & open source · vendors join free: "+email;
+    document.getElementById("foot2").textContent="Free & open source · "+email;
+
+    var rows="";
+    (ev.vendors||[]).forEach(function(v,i){
+      rows+="<tr><td class='num'>"+(i+1)+"</td><td class='emo'>"+(v.emoji||"📍")+"</td>"+
+        "<td class='nm'>"+v.name+"<span class='cat'>"+(v.category||"")+"</span>"+
+        (v.address?"<span class='addr'>"+v.address+"</span>":"")+"</td>"+
+        "<td class='hrs'>"+(v.hours||"")+"</td></tr>";
+    });
+    document.getElementById("list").innerHTML=rows;
+  });
+})();
+</script>
+</body>
+</html>
