@@ -24,7 +24,7 @@
   .emojis{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
   .emojis button{font-size:20px;width:40px;height:40px;border:1.5px solid var(--line);background:#fff;border-radius:10px;cursor:pointer}
   .emojis button.on{border-color:var(--acc);background:#fdeee8}
-  #map{height:220px;border-radius:12px;margin-top:8px;z-index:1}
+  #map,#spMap{height:220px;border-radius:12px;margin-top:8px;z-index:1}
   .hint{font-size:12px;color:var(--mut);margin-top:6px;line-height:1.5}
   .btn{appearance:none;border:0;cursor:pointer;font:inherit;font-weight:800;font-size:15px;border-radius:12px;
     padding:13px;width:100%;margin-top:10px;color:#fff;background:var(--ink)}
@@ -38,6 +38,7 @@
   .vrow .nm{flex:1;font-weight:800;font-size:15.5px}
   .vrow .nm .c{display:block;font-weight:400;font-size:12px;color:var(--mut)}
   .pill{font-size:12px;font-weight:800;padding:8px 12px;border-radius:999px;border:1.5px solid var(--line);background:#fff;cursor:pointer}
+  .pill.on{background:var(--ink);color:#fff;border-color:var(--ink)}
   .pubbar{position:fixed;left:0;right:0;bottom:0;background:rgba(20,17,22,.97);padding:12px 14px calc(12px + env(safe-area-inset-bottom));
     display:flex;gap:8px;z-index:50}
   .pubbar .btn{margin-top:0}
@@ -106,6 +107,39 @@
     <button class="btn grn" id="saveVendor">✅ Save vendor</button>
     <button class="btn danger" id="deleteVendor" style="display:none">🗑 Remove this vendor</button>
     <button class="btn ghost" id="cancelEdit" style="display:none">Cancel</button>
+  </div>
+
+  <div class="card">
+    <h2>🚏 Sidewalk vendor spots (<span id="sn">0</span>)</h2>
+    <div class="hint">Fixed spots you place once, walking the sidewalk — streets stay open, nothing blocks the road. Reassign who's in each spot every month; the spot itself stays put.</div>
+    <div id="slist"></div>
+  </div>
+
+  <div class="card" id="spotEditor">
+    <h2 id="spTitle">➕ New spot</h2>
+    <label>Spot label *</label><input id="spLabel" placeholder="Spot 1">
+    <label>Pick a marker</label>
+    <div class="emojis" id="spEmojis"></div>
+    <div class="hint" id="spLoc">Tap the map to place this spot.</div>
+    <div id="spMap"></div>
+    <label>Status</label>
+    <div class="row">
+      <button class="pill" id="spOpen" type="button">🟢 Open (first come, first served)</button>
+      <button class="pill" id="spConfirmed" type="button">✅ Confirmed — vendor assigned</button>
+    </div>
+    <div id="spVendorFields" style="display:none">
+      <label>Vendor / business name</label><input id="spVName" placeholder="Who's in this spot">
+      <label>Category</label><input id="spVCat" placeholder="Food truck · Craft · Music · ...">
+      <label>Contact</label><input id="spVContact" placeholder="email or phone (for you, not shown publicly)">
+      <label>Note (what's happening, shown on the map)</label><textarea id="spVNote" placeholder="Tacos + agua fresca, cash + card."></textarea>
+      <div class="row">
+        <div><label>Instagram</label><input id="spVIg" placeholder="@handle"></div>
+        <div><label>Website</label><input id="spVWeb" placeholder="https://"></div>
+      </div>
+    </div>
+    <button class="btn grn" id="saveSpot">✅ Save spot</button>
+    <button class="btn danger" id="deleteSpot" style="display:none">🗑 Remove this spot entirely</button>
+    <button class="btn ghost" id="cancelSpot">Cancel / new spot</button>
   </div>
 
   <div class="card">
@@ -195,12 +229,12 @@
     var draft=localStorage.getItem(DRAFT_KEY);
     if(draft){try{DATA=JSON.parse(draft);toast("Loaded your draft (unpublished)");}catch(e){}}
     var p=DATA?Promise.resolve():loadLive().then(function(d){DATA=d;});
-    p.then(function(){fillEvent();renderVendors();initMap();});
+    p.then(function(){fillEvent();renderVendors();initMap();renderSpots();initSpotMap();clearSpotEditor();});
   }
   $("reload").onclick=function(){
     if(!confirm("Replace your draft with the live published data?"))return;
     loadLive().then(function(d){DATA=d;localStorage.removeItem(DRAFT_KEY);
-      fillEvent();renderVendors();toast("Live data loaded");});
+      fillEvent();renderVendors();renderSpots();toast("Live data loaded");});
   };
 
   // ---------- map / geocode ----------
@@ -274,6 +308,113 @@
     if(!confirm("Remove this vendor from the map?"))return;
     var e=ev();e.vendors=(e.vendors||[]).filter(function(x){return x.id!==editingId});
     saveDraft();renderVendors();clearEditor();toast("Removed from draft");
+  };
+
+  // ---------- sidewalk spots ----------
+  var chosenSpot="🌮", editingSpotId=null, map2=null, draftPin2=null, spotStatus="open";
+  function spots(){ var e=ev(); if(!e)return []; e.spots=e.spots||[]; return e.spots; }
+
+  EMO.forEach(function(e,i){var b=document.createElement("button");b.textContent=e;
+    if(e==="🌮")b.className="on";
+    b.onclick=function(){document.querySelectorAll("#spEmojis button").forEach(function(x){x.classList.remove("on")});
+      b.classList.add("on");chosenSpot=e;};
+    $("spEmojis").appendChild(b);});
+  function setChosenSpot(e){chosenSpot=e||"📍";
+    document.querySelectorAll("#spEmojis button").forEach(function(x){x.classList.toggle("on",x.textContent===chosenSpot)});}
+
+  function renderSpots(){
+    var ss=spots(); var box=$("slist"); box.innerHTML="";
+    $("sn").textContent=ss.length;
+    if(!ss.length){box.innerHTML='<div class="hint">No spots yet — walk the sidewalk, then Save a spot below to drop the first pin.</div>';}
+    ss.forEach(function(s){
+      var r=document.createElement("div");r.className="vrow";
+      var who = s.status==="confirmed" && s.vendor ? s.vendor.name : "— open, first come first served —";
+      var badge = s.status==="confirmed" && s.vendor ? (s.vendor.emoji||"✅") : "🟢";
+      r.innerHTML='<span class="emo">'+badge+'</span>'+
+        '<span class="nm">'+s.label+'<span class="c">'+who+'</span></span>';
+      var edit=document.createElement("button");edit.className="pill";edit.textContent="Edit";
+      edit.onclick=function(){startEditSpot(s.id);};
+      r.appendChild(edit);box.appendChild(r);
+    });
+  }
+
+  function initSpotMap(){
+    var ss=spots().filter(function(s){return s.lat&&s.lng});
+    var e=ev(); var vs=(e&&e.vendors)||[];
+    var c=ss[0]||vs[0]||{lat:35.3757,lng:-119.0205};
+    map2=L.map("spMap",{scrollWheelZoom:false}).setView([c.lat,c.lng],16);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+      {maxZoom:19,attribution:"© OpenStreetMap"}).addTo(map2);
+    ss.forEach(function(s){
+      var icon=(s.status==="confirmed"&&s.vendor&&s.vendor.emoji)?s.vendor.emoji:"🟢";
+      L.marker([s.lat,s.lng],{icon:L.divIcon({html:'<div style="font-size:20px">'+icon+'</div>',className:"",iconSize:[24,24]})})
+        .addTo(map2).bindPopup(s.label);});
+    map2.on("click",function(e2){setSpotPin(e2.latlng.lat,e2.latlng.lng,"tapped on map");});
+  }
+  function setSpotPin(lat,lng,why){
+    if(draftPin2)map2.removeLayer(draftPin2);
+    draftPin2=L.marker([lat,lng],{opacity:.75}).addTo(map2).bindPopup("New spot pin").openPopup();
+    draftPin2._lat=lat;draftPin2._lng=lng;
+    $("spLoc").textContent="📍 Pin set ("+lat.toFixed(4)+", "+lng.toFixed(4)+") — "+why;
+    map2.panTo([lat,lng]);
+  }
+  function setSpotStatus(st){
+    spotStatus=st;
+    $("spOpen").classList.toggle("on",st==="open");
+    $("spConfirmed").classList.toggle("on",st==="confirmed");
+    $("spVendorFields").style.display = st==="confirmed" ? "block" : "none";
+  }
+  $("spOpen").onclick=function(){setSpotStatus("open");};
+  $("spConfirmed").onclick=function(){setSpotStatus("confirmed");};
+
+  function clearSpotEditor(){
+    editingSpotId=null; $("spTitle").textContent="➕ New spot";
+    $("spLabel").value = "Spot "+(spots().length+1);
+    setChosenSpot("🌮");
+    ["spVName","spVCat","spVContact","spVNote","spVIg","spVWeb"].forEach(function(id){$(id).value="";});
+    if(draftPin2 && map2){map2.removeLayer(draftPin2);draftPin2=null;}
+    $("spLoc").textContent="Tap the map to place this spot.";
+    setSpotStatus("open");
+    $("deleteSpot").style.display="none";
+  }
+  function startEditSpot(id){
+    var s=spots().filter(function(x){return x.id===id})[0]; if(!s)return;
+    editingSpotId=id; $("spTitle").textContent="✏️ Editing: "+s.label;
+    $("spLabel").value=s.label||"";
+    var v=s.vendor||{};
+    setChosenSpot(v.emoji||"🌮");
+    if(s.lat&&s.lng)setSpotPin(s.lat,s.lng,"current pin");
+    setSpotStatus(s.status||"open");
+    $("spVName").value=v.name||"";$("spVCat").value=v.category||"";$("spVContact").value=v.contact||"";
+    $("spVNote").value=v.note||"";$("spVIg").value=v.instagram||"";$("spVWeb").value=v.website||"";
+    $("deleteSpot").style.display="block";
+    $("spotEditor").scrollIntoView({behavior:"smooth"});
+  }
+  $("cancelSpot").onclick=clearSpotEditor;
+  $("saveSpot").onclick=function(){
+    var label=$("spLabel").value.trim(); if(!label){toast("Spot label required");$("spLabel").focus();return;}
+    var ss=spots();
+    var s = editingSpotId ? ss.filter(function(x){return x.id===editingSpotId})[0]
+                          : {id:"spot_"+Date.now().toString(36)};
+    s.label=label; s.status=spotStatus;
+    if(spotStatus==="confirmed"){
+      s.vendor={name:$("spVName").value.trim(),emoji:chosenSpot,category:$("spVCat").value.trim(),
+        contact:$("spVContact").value.trim(),note:$("spVNote").value.trim(),
+        instagram:$("spVIg").value.trim(),website:$("spVWeb").value.trim()};
+    } else { s.vendor=null; }
+    if(draftPin2){s.lat=draftPin2._lat;s.lng=draftPin2._lng;}
+    if(!editingSpotId){
+      if(!draftPin2){toast("Tap the map to place this spot first");return;}
+      ss.push(s);
+    }
+    saveDraft();renderSpots();clearSpotEditor();
+    toast("Saved to draft — hit 🚀 Publish when ready");
+  };
+  $("deleteSpot").onclick=function(){
+    if(!editingSpotId)return;
+    if(!confirm("Remove this spot entirely? (Not just clear its vendor — delete the spot pin itself.)"))return;
+    var e=ev(); e.spots=(e.spots||[]).filter(function(x){return x.id!==editingSpotId});
+    saveDraft();renderSpots();clearSpotEditor();toast("Spot removed from draft");
   };
 
   // ---------- backup ----------

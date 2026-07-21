@@ -14,6 +14,8 @@
       "hours": "6:00 PM – 10:00 PM",
       "area": "Downtown Bakersfield Arts District",
       "blurb": "Art, coffee, vintage, music — the downtown shops stay open late. Walk in, say hi, keep it local.",
+      "logistics_note": "Streets stay open all night — every vendor spot is on the sidewalk, not the road.",
+      "spots": [],
       "vendors": [
         {
           "id": "biz_001",

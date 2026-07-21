@@ -55,10 +55,10 @@
   </a>
 
   <div class="small">
-    <a class="card" id="vendorCta" href="#">
+    <a class="card" id="vendorCta" href="vendor-signup.html">
       <div class="ico">🏪</div>
       <div class="t">Get your shop<br>on the map</div>
-      <div class="s">Curated · one email to apply</div>
+      <div class="s">Storefront or sidewalk spot</div>
     </a>
     <a class="card" id="ideaCta" href="#">
       <div class="ico">💡</div>
@@ -105,8 +105,6 @@
       } else {b.classList.add("past");b.textContent="Next one soon — check back";}
     }
 
-    var vendorBody="Shop name:%0AAddress:%0AHours that night:%0AInstagram (optional):%0AAnything else:%0A";
-    $("vendorCta").href="mailto:"+email+"?subject="+encodeURIComponent("Put my shop on the Board Bored map")+"&body="+vendorBody;
     $("ideaCta").href="mailto:"+email+"?subject="+encodeURIComponent("What I want to see in Kern")+"&body="+encodeURIComponent("I'd love to see…\n");
     $("mailFoot").href="mailto:"+email; $("mailFoot").textContent=email;
   }).catch(function(){ $("badge").textContent="—"; });

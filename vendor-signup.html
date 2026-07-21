@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Get a spot — Board Bored</title>
+<meta name="description" content="Register a storefront or a sidewalk spot for First Friday Bakersfield.">
+<style>
+  :root{--ink:#141116;--pap:#faf7f2;--card:#fff;--acc:#e4572e;--acc2:#17836c;--line:#e7e1d8;--mut:#7a736b;}
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  body{font-family:-apple-system,"Helvetica Neue",Arial,sans-serif;background:var(--pap);color:var(--ink);
+    min-height:100dvh;padding:20px 16px 40px}
+  .wrap{width:100%;max-width:520px;margin:0 auto}
+  .mark{font-size:13px;letter-spacing:4px;font-weight:900;text-transform:uppercase;color:var(--acc);text-decoration:none}
+  h1{font-size:clamp(26px,7vw,32px);line-height:1.05;letter-spacing:-.5px;margin:10px 0 8px}
+  .tag{color:var(--mut);font-size:15px;line-height:1.5;margin-bottom:16px}
+  .notice{background:#fff8ee;border:1.5px solid #f0dcb8;border-radius:14px;padding:12px 14px;font-size:13.5px;
+    line-height:1.5;margin-bottom:16px}
+  .toggle{display:flex;gap:8px;margin-bottom:16px}
+  .toggle button{flex:1;appearance:none;border:1.5px solid var(--line);background:#fff;color:var(--ink);
+    font:inherit;font-weight:800;font-size:14px;border-radius:12px;padding:13px 8px;cursor:pointer}
+  .toggle button.on{border-color:var(--ink);background:var(--ink);color:#fff}
+  .card{background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:18px;margin-bottom:14px}
+  .avail{font-size:13.5px;font-weight:800;color:var(--acc2);margin-bottom:4px}
+  label{display:block;font-size:11px;font-weight:800;color:var(--mut);text-transform:uppercase;letter-spacing:.5px;margin:12px 0 4px}
+  label:first-of-type{margin-top:0}
+  input,textarea,select{width:100%;font:inherit;font-size:16px;padding:12px;border:1.5px solid var(--line);
+    border-radius:11px;background:#fffdfa}
+  input:focus,textarea:focus,select:focus{outline:2px solid var(--acc);border-color:var(--acc)}
+  textarea{min-height:64px;resize:vertical}
+  .btn{appearance:none;border:0;cursor:pointer;font:inherit;font-weight:800;font-size:16px;border-radius:14px;
+    padding:15px;width:100%;margin-top:16px;color:#fff;background:var(--acc)}
+  .btn:disabled{opacity:.6;cursor:default}
+  .hint{font-size:12px;color:var(--mut);margin-top:8px;line-height:1.5}
+  .status{font-size:14px;font-weight:700;margin-top:10px;min-height:18px}
+  .status.ok{color:var(--acc2)} .status.err{color:#b3261e}
+  .success{display:none;text-align:center;padding:30px 10px}
+  .success .big{font-size:44px;margin-bottom:10px}
+  footer{margin-top:26px;text-align:center;font-size:12px;color:var(--mut);line-height:1.7}
+  footer a{color:var(--acc2);font-weight:700;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="mark" href="./">● Board Bored</a>
+  <h1>Get a spot at First Friday</h1>
+  <p class="tag" id="tagline">Downtown Bakersfield Arts District.</p>
+  <div class="notice">🚸 Streets stay open all night — every sidewalk spot must leave the full sidewalk width clear for foot traffic and not extend into the street or block a driveway/curb ramp. First come, first served.</div>
+
+  <div class="toggle">
+    <button id="tabStore" class="on" type="button">🏪 Storefront on the route</button>
+    <button id="tabSpot" type="button">🚏 Sidewalk / pop-up spot</button>
+  </div>
+
+  <form class="card" id="formStore">
+    <label>Business name *</label><input id="stName" required>
+    <label>Address *</label><input id="stAddr" required placeholder="Street address, Bakersfield">
+    <label>Hours you'll be open that night</label><input id="stHours" placeholder="6p–10p">
+    <label>What's happening (shown on the map)</label><textarea id="stNote" placeholder="Open late — coffee + espresso, live demo at 7."></textarea>
+    <label>Instagram (optional)</label><input id="stIg" placeholder="@handle">
+    <label>Website (optional)</label><input id="stWeb" placeholder="https://">
+    <label>Your contact (email or phone — not shown publicly)</label><input id="stContact" required>
+    <button class="btn" type="submit">Send it in</button>
+    <div class="hint">We add confirmed storefronts to the live map — usually same day.</div>
+    <div class="status" id="stStatus"></div>
+  </form>
+
+  <form class="card" id="formSpot" style="display:none">
+    <div class="avail" id="spotAvail">Checking spot availability…</div>
+    <label>Preferred spot</label>
+    <select id="spPreferred"><option value="">Loading…</option></select>
+    <label>Vendor / business name *</label><input id="spName" required>
+    <label>Category</label><input id="spCat" placeholder="Food truck · Craft · Music · Art · ...">
+    <label>What you're doing / selling (shown on the map)</label><textarea id="spNote" placeholder="Tacos + agua fresca, cash + card."></textarea>
+    <label>Instagram (optional)</label><input id="spIg" placeholder="@handle">
+    <label>Website (optional)</label><input id="spWeb" placeholder="https://">
+    <label>Your contact (email or phone — not shown publicly) *</label><input id="spContact" required>
+    <button class="btn" type="submit">Request this spot</button>
+    <div class="hint">First come, first served. We confirm your exact spot on the live map before the event — you'll hear back at the contact above.</div>
+    <div class="status" id="spStatus"></div>
+  </form>
+
+  <div class="card success" id="successCard">
+    <div class="big">✅</div>
+    <div style="font-weight:800;font-size:17px;margin-bottom:6px">Got it — thanks!</div>
+    <div style="color:var(--mut);font-size:14px">We'll confirm on the live map before First Friday.</div>
+  </div>
+
+  <footer>
+    © 2026 Board Bored · made in Bakersfield<br>
+    <a href="./">← Back to the map</a>
+  </footer>
+</div>
+
+<script>
+(function(){
+  var $=function(id){return document.getElementById(id)};
+
+  // Paste a Formspree "endpoint" URL here (e.g. "https://formspree.io/f/xxxxxxx")
+  // once you've created a free form at formspree.io — submissions POST there AND
+  // you keep a dashboard of every request. Until then, this page falls back to a
+  // structured email (mailto) that opens the sender's own mail app — works today,
+  // zero setup, no external account needed.
+  var FORMSPREE_ENDPOINT = "";
+
+  var CONTACT_EMAIL = "boardquestionmark@gmail.com";
+
+  // ---------- tabs ----------
+  $("tabStore").onclick=function(){
+    $("tabStore").classList.add("on");$("tabSpot").classList.remove("on");
+    $("formStore").style.display="block";$("formSpot").style.display="none";
+  };
+  $("tabSpot").onclick=function(){
+    $("tabSpot").classList.add("on");$("tabStore").classList.remove("on");
+    $("formSpot").style.display="block";$("formStore").style.display="none";
+  };
+
+  // ---------- load live event + spot availability ----------
+  fetch("data/board.json",{cache:"no-store"}).then(function(r){return r.json()}).then(function(d){
+    var ev=(d.events||[]).filter(function(e){return e.slug===d.featured})[0]||(d.events||[])[0];
+    if(!ev)return;
+    $("tagline").textContent=(ev.name||"")+" · "+(ev.area||"")+(ev.date?" · "+ev.date:"");
+    var spots=ev.spots||[];
+    var open=spots.filter(function(s){return s.status!=="confirmed"||!s.vendor;});
+    var sel=$("spPreferred");sel.innerHTML="";
+    if(!spots.length){
+      var o=document.createElement("option");o.value="";o.textContent="No fixed spots yet — tell us your general area below";
+      sel.appendChild(o);
+      $("spotAvail").textContent="Spot map isn't set up yet — describe where you'd like to be in the note below.";
+    } else {
+      var any=document.createElement("option");any.value="";any.textContent="Any open spot";sel.appendChild(any);
+      open.forEach(function(s){var o=document.createElement("option");o.value=s.label;o.textContent=s.label;sel.appendChild(o);});
+      $("spotAvail").textContent=open.length+" of "+spots.length+" spots open — first come, first served.";
+      if(!open.length){$("spotAvail").textContent="All "+spots.length+" spots are currently claimed — request anyway and we'll waitlist you.";}
+    }
+  }).catch(function(){
+    $("spotAvail").textContent="Couldn't load live availability — request anyway, we'll confirm by hand.";
+    $("spPreferred").innerHTML='<option value="">Any open spot</option>';
+  });
+
+  function showSuccess(form){
+    form.style.display="none";
+    $("successCard").style.display="block";
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+
+  function mailFallback(subject,bodyLines){
+    var body=bodyLines.map(function(l){return l[0]+": "+(l[1]||"—");}).join("\n");
+    location.href="mailto:"+CONTACT_EMAIL+"?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(body);
+  }
+
+  function submitViaFormspree(payload,statusEl,onOk){
+    statusEl.className="status";statusEl.textContent="Sending…";
+    fetch(FORMSPREE_ENDPOINT,{
+      method:"POST",headers:{"Accept":"application/json","Content-Type":"application/json"},
+      body:JSON.stringify(payload)
+    }).then(function(r){
+      if(r.ok){onOk();}
+      else{statusEl.className="status err";statusEl.textContent="Couldn't send — try again, or email "+CONTACT_EMAIL+" directly.";}
+    }).catch(function(){
+      statusEl.className="status err";statusEl.textContent="Couldn't send — try again, or email "+CONTACT_EMAIL+" directly.";
+    });
+  }
+
+  // ---------- storefront form ----------
+  $("formStore").addEventListener("submit",function(e){
+    e.preventDefault();
+    var payload={
+      _subject:"Put my shop on the Board Bored map",
+      type:"storefront",
+      name:$("stName").value.trim(),
+      address:$("stAddr").value.trim(),
+      hours:$("stHours").value.trim(),
+      note:$("stNote").value.trim(),
+      instagram:$("stIg").value.trim(),
+      website:$("stWeb").value.trim(),
+      contact:$("stContact").value.trim()
+    };
+    if(!payload.name||!payload.address||!payload.contact){$("stStatus").className="status err";
+      $("stStatus").textContent="Business name, address, and contact are required.";return;}
+    if(FORMSPREE_ENDPOINT){
+      submitViaFormspree(payload,$("stStatus"),function(){showSuccess($("formStore"));});
+    } else {
+      mailFallback(payload._subject,[["Business name",payload.name],["Address",payload.address],
+        ["Hours that night",payload.hours],["What's happening",payload.note],
+        ["Instagram",payload.instagram],["Website",payload.website],["Contact",payload.contact]]);
+      showSuccess($("formStore"));
+    }
+  });
+
+  // ---------- sidewalk spot form ----------
+  $("formSpot").addEventListener("submit",function(e){
+    e.preventDefault();
+    var payload={
+      _subject:"Sidewalk spot request — First Friday",
+      type:"sidewalk_spot",
+      preferred_spot:$("spPreferred").value||"Any open spot",
+      name:$("spName").value.trim(),
+      category:$("spCat").value.trim(),
+      note:$("spNote").value.trim(),
+      instagram:$("spIg").value.trim(),
+      website:$("spWeb").value.trim(),
+      contact:$("spContact").value.trim()
+    };
+    if(!payload.name||!payload.contact){$("spStatus").className="status err";
+      $("spStatus").textContent="Vendor name and contact are required.";return;}
+    if(FORMSPREE_ENDPOINT){
+      submitViaFormspree(payload,$("spStatus"),function(){showSuccess($("formSpot"));});
+    } else {
+      mailFallback(payload._subject,[["Preferred spot",payload.preferred_spot],["Vendor / business name",payload.name],
+        ["Category",payload.category],["What you're doing / selling",payload.note],
+        ["Instagram",payload.instagram],["Website",payload.website],["Contact",payload.contact]]);
+      showSuccess($("formSpot"));
+    }
+  });
+})();
+</script>
+</body>
+</html>

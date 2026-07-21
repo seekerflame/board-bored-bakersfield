@@ -31,8 +31,14 @@
   .v .hrs{font-size:13.5px;color:var(--ink);font-weight:700;margin-top:2px}
   .v .note{font-size:14px;color:#4a443e;margin-top:6px;line-height:1.45}
   .v .links{margin-top:8px;display:flex;gap:8px;flex-wrap:wrap}
-  .v .links a{font-size:13px;font-weight:800;color:var(--acc2);text-decoration:none;border:1.5px solid var(--line);
-    border-radius:999px;padding:6px 12px}
+  .v .links a,.v .links button{font-size:13px;font-weight:800;color:var(--acc2);text-decoration:none;border:1.5px solid var(--line);
+    border-radius:999px;padding:6px 12px;background:#fff;font:inherit;cursor:pointer}
+  .v.open{border-style:dashed}
+  .v .openflag{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.6px;color:var(--acc2)}
+  .notice{max-width:560px;margin:0 auto;padding:0 14px 4px;font-size:13px;color:var(--mut)}
+  .sechead{max-width:560px;margin:22px auto 0;padding:0 14px;font-size:13px;font-weight:800;color:var(--acc2);
+    text-transform:uppercase;letter-spacing:1px}
+  .v.highlighted{outline:2.5px solid var(--acc);outline-offset:2px}
   .cta{display:block;text-align:center;background:var(--ink);color:#fff;text-decoration:none;font-weight:800;
     font-size:16px;border-radius:14px;padding:16px;margin:16px 0 8px}
   .rowbtn{display:flex;gap:10px}
@@ -52,6 +58,7 @@
 </header>
 <h1 id="evName">First Friday Art Walk</h1>
 <div class="sub" id="evSub">Downtown Bakersfield</div>
+<div class="notice" id="logisticsNote" style="display:none"></div>
 
 <div id="map"></div>
 
@@ -59,7 +66,11 @@
   <div class="count" id="count">Loading the walk…</div>
   <div id="vendors"></div>
 
-  <a class="cta" id="vendorCta" href="#">🏪 Vendors: apply to get on the map</a>
+  <div class="sechead" id="spotsHead" style="display:none">Sidewalk vendor spots</div>
+  <div class="count" id="spotsCount" style="display:none"></div>
+  <div id="spotCards"></div>
+
+  <a class="cta" id="vendorCta" href="../vendor-signup.html">🏪 Get a spot on the map</a>
   <div class="rowbtn">
     <button id="share">📣 Share this map</button>
     <a href="../print.html">🖨️ Paper map</a>
@@ -79,6 +90,20 @@
   function toast(m){var t=$("toast");t.textContent=m;t.classList.add("on");
     clearTimeout(t._);t._=setTimeout(function(){t.classList.remove("on")},2000);}
   var map, markers={};
+  var highlightId=new URLSearchParams(location.search).get("highlight");
+
+  function shareLink(id,name,extra){
+    var url=location.origin+location.pathname+"?highlight="+encodeURIComponent(id);
+    var txt="Find "+name+" at First Friday"+(extra?" — "+extra:"")+".";
+    var btn=document.createElement("button");btn.type="button";btn.textContent="🔗 Share this spot";
+    btn.addEventListener("click",function(ev2){
+      ev2.stopPropagation();
+      if(navigator.share){navigator.share({title:name+" — First Friday",text:txt,url:url}).catch(function(){});}
+      else if(navigator.clipboard){navigator.clipboard.writeText(txt+" "+url).then(function(){toast("Link copied — paste it anywhere")});}
+      else{toast(url);}
+    });
+    return btn;
+  }
 
   fetch("../data/board.json").then(function(r){return r.json()}).then(function(d){
     var email=(d.board&&d.board.contact)||"boardquestionmark@gmail.com";
@@ -91,6 +116,7 @@
     document.title=ev.name+" — Board Bored";
     $("evName").textContent=ev.name;
     $("evSub").textContent=(ev.area||"")+(ev.blurb?" · "+ev.blurb:"");
+    if(ev.logistics_note){$("logisticsNote").textContent="🚸 "+ev.logistics_note;$("logisticsNote").style.display="block";}
 
     // date-aware badge
     var today=new Date(); today.setHours(0,0,0,0);
@@ -102,25 +128,38 @@
       b.textContent=evd.toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric"})+" · "+(ev.hours||"");}
     else{b.classList.add("past");b.textContent="Next one soon";}
 
-    // map
-    var vs=(ev.vendors||[]).filter(function(v){return typeof v.lat==="number"&&typeof v.lng==="number"});
-    var c=vs[0]||{lat:35.3757,lng:-119.0205};
+    var vendors=ev.vendors||[];
+    var spots=ev.spots||[];
+
+    // map — storefront vendors + sidewalk spots together
+    var vs=vendors.filter(function(v){return typeof v.lat==="number"&&typeof v.lng==="number"});
+    var ss=spots.filter(function(s){return typeof s.lat==="number"&&typeof s.lng==="number"});
+    var allPts=vs.concat(ss);
+    var c=allPts[0]||{lat:35.3757,lng:-119.0205};
     map=L.map("map",{scrollWheelZoom:false}).setView([c.lat,c.lng],16);
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
       {maxZoom:19,attribution:"© OpenStreetMap contributors"}).addTo(map);
-    if(vs.length>1){map.fitBounds(vs.map(function(v){return [v.lat,v.lng]}),{padding:[30,30]});}
+    if(allPts.length>1){map.fitBounds(allPts.map(function(v){return [v.lat,v.lng]}),{padding:[30,30]});}
 
     vs.forEach(function(v){
       var icon=L.divIcon({html:'<div class="pinmoji">'+(v.emoji||"📍")+'</div>',className:"",iconSize:[34,34],iconAnchor:[17,28]});
-      markers[v.id]=L.marker([v.lat,v.lng],{icon:icon}).addTo(map)
+      markers["v:"+v.id]=L.marker([v.lat,v.lng],{icon:icon}).addTo(map)
         .bindPopup("<b>"+(v.emoji||"")+" "+v.name+"</b><br>"+(v.hours||"")+"<br>"+(v.address||""));
     });
+    ss.forEach(function(s){
+      var open=s.status!=="confirmed"||!s.vendor;
+      var emo=open?"🟢":(s.vendor.emoji||"📍");
+      var icon=L.divIcon({html:'<div class="pinmoji">'+emo+'</div>',className:"",iconSize:[34,34],iconAnchor:[17,28]});
+      var pop=open?"<b>🟢 "+s.label+"</b><br>Open — first come, first served"
+                  :"<b>"+emo+" "+(s.vendor.name||s.label)+"</b><br>"+s.label+(s.vendor.category?" · "+s.vendor.category:"");
+      markers["s:"+s.id]=L.marker([s.lat,s.lng],{icon:icon}).addTo(map).bindPopup(pop);
+    });
 
-    // vendor cards
-    $("count").textContent=(ev.vendors||[]).length+" spots on the walk";
+    // storefront vendor cards
+    $("count").textContent=vendors.length+" stops on the walk";
     var box=$("vendors");
-    (ev.vendors||[]).forEach(function(v){
-      var el=document.createElement("div");el.className="v";
+    vendors.forEach(function(v){
+      var el=document.createElement("div");el.className="v";el.id="card-v-"+v.id;
       var links="";
       if(v.instagram){var ig=v.instagram.indexOf("http")===0?v.instagram:"https://instagram.com/"+v.instagram.replace("@","");
         links+='<a href="'+ig+'" target="_blank" rel="noopener">Instagram</a>';}
@@ -132,23 +171,71 @@
         '<span class="nm">'+v.name+'</span><span class="cat">'+(v.category||"")+'</span></div>'+
         (v.address?'<div class="addr">'+v.address+'</div>':"")+
         (v.hours?'<div class="hrs">'+v.hours+'</div>':"")+
-        (v.note?'<div class="note">'+v.note+'</div>':"")+
-        (links?'<div class="links">'+links+'</div>':"");
+        (v.note?'<div class="note">'+v.note+'</div>':"");
+      var linksEl=document.createElement("div");linksEl.className="links";linksEl.innerHTML=links;
+      linksEl.appendChild(shareLink(v.id,v.name,v.category));
+      el.appendChild(linksEl);
       el.addEventListener("click",function(e){
-        if(e.target.tagName==="A")return;
-        if(markers[v.id]){map.setView(markers[v.id].getLatLng(),17);markers[v.id].openPopup();
-          window.scrollTo({top:0,behavior:"smooth"});}
+        if(e.target.closest("a,button"))return;
+        panTo("v:"+v.id);
       });
       box.appendChild(el);
+      if(highlightId===v.id)el.classList.add("highlighted");
     });
 
-    var vendorBody="Shop name:%0AAddress:%0AHours that night:%0AInstagram (optional):%0AAnything else:%0A";
-    $("vendorCta").href="mailto:"+email+"?subject="+encodeURIComponent("Put my shop on the Board Bored map")+"&body="+vendorBody;
+    // sidewalk spot cards
+    if(spots.length){
+      $("spotsHead").style.display="block";
+      var openCt=spots.filter(function(s){return s.status!=="confirmed"||!s.vendor}).length;
+      $("spotsCount").style.display="block";
+      $("spotsCount").textContent=spots.length+" spots · "+openCt+" open · "+(spots.length-openCt)+" confirmed";
+      var sbox=$("spotCards");
+      spots.forEach(function(s){
+        var open=s.status!=="confirmed"||!s.vendor;
+        var el=document.createElement("div");el.className="v"+(open?" open":"");el.id="card-s-"+s.id;
+        if(open){
+          el.innerHTML='<div class="top"><span class="emo">🟢</span>'+
+            '<span class="nm">'+s.label+'</span><span class="openflag">Open</span></div>'+
+            '<div class="note">First come, first served — sidewalk only, streets stay open. <a href="../vendor-signup.html">Claim this spot →</a></div>';
+        } else {
+          var v=s.vendor;
+          var links="";
+          if(v.instagram){var ig=v.instagram.indexOf("http")===0?v.instagram:"https://instagram.com/"+v.instagram.replace("@","");
+            links+='<a href="'+ig+'" target="_blank" rel="noopener">Instagram</a>';}
+          if(v.website){var w=v.website.indexOf("http")===0?v.website:"https://"+v.website;
+            links+='<a href="'+w+'" target="_blank" rel="noopener">Website</a>';}
+          el.innerHTML='<div class="top"><span class="emo">'+(v.emoji||"📍")+'</span>'+
+            '<span class="nm">'+v.name+'</span><span class="cat">'+(v.category||"")+'</span></div>'+
+            '<div class="addr">'+s.label+'</div>'+
+            (v.note?'<div class="note">'+v.note+'</div>':"");
+          var linksEl=document.createElement("div");linksEl.className="links";linksEl.innerHTML=links;
+          linksEl.appendChild(shareLink(s.id,v.name,s.label));
+          el.appendChild(linksEl);
+        }
+        el.addEventListener("click",function(e){
+          if(e.target.closest("a,button"))return;
+          panTo("s:"+s.id);
+        });
+        sbox.appendChild(el);
+        if(highlightId===s.id)el.classList.add("highlighted");
+      });
+    }
+
+    function panTo(key){
+      if(!markers[key])return;
+      map.setView(markers[key].getLatLng(),17);markers[key].openPopup();
+      window.scrollTo({top:0,behavior:"smooth"});
+    }
+    if(highlightId){
+      var key=markers["v:"+highlightId]?"v:"+highlightId:(markers["s:"+highlightId]?"s:"+highlightId:null);
+      if(key){setTimeout(function(){panTo(key);},300);}
+    }
+
     $("mailFoot").href="mailto:"+email; $("mailFoot").textContent=email;
   }).catch(function(e){$("count").textContent="Couldn't load the map data.";});
 
   $("share").addEventListener("click",function(){
-    var url=location.href.split("#")[0];
+    var url=location.href.split("#")[0].split("?")[0];
     var txt="First Friday in Downtown Bakersfield — free live map of the open shops + galleries.";
     if(navigator.share){navigator.share({title:"First Friday — Board Bored",text:txt,url:url}).catch(function(){});}
     else if(navigator.clipboard){navigator.clipboard.writeText(txt+" "+url).then(function(){toast("Link copied — paste it anywhere")});}
