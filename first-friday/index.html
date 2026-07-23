@@ -8,7 +8,7 @@
 <meta property="og:description" content="Downtown Bakersfield's open shops, galleries, and pop-ups — on one free map.">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
-  :root{--ink:#141116;--pap:#faf7f2;--card:#fff;--acc:#e4572e;--acc2:#17836c;--line:#e7e1d8;--mut:#7a736b;}
+  :root{--ink:#141116;--pap:#faf7f2;--card:#fff;--acc:#ca421a;--acc2:#167f68;--line:#948d88;--mut:#777069;}
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
   body{font-family:-apple-system,"Helvetica Neue",Arial,sans-serif;background:var(--pap);color:var(--ink)}
   header{padding:14px 16px 10px;display:flex;align-items:baseline;justify-content:space-between;gap:10px}
@@ -49,6 +49,9 @@
   .toast{position:fixed;left:50%;bottom:20px;translate:-50% 0;background:var(--ink);color:#fff;padding:11px 18px;
     border-radius:999px;font-size:14px;font-weight:700;opacity:0;transition:.25s;pointer-events:none;z-index:99}
   .toast.on{opacity:1;translate:-50% -8px}
+  .skiplink{position:absolute;left:-9999px;top:auto;background:var(--ink);color:#fff;padding:10px 16px;
+    border-radius:0 0 10px 0;font-weight:800;font-size:13px;text-decoration:none;z-index:100}
+  .skiplink:focus{left:0;top:0}
 </style>
 </head>
 <body>
@@ -59,8 +62,9 @@
 <h1 id="evName">First Friday Art Walk</h1>
 <div class="sub" id="evSub">Downtown Bakersfield</div>
 <div class="notice" id="logisticsNote" style="display:none"></div>
+<a class="skiplink" href="#vendors">Skip map, go to the list</a>
 
-<div id="map"></div>
+<div id="map" role="img" aria-label="Map of First Friday — every pin is also listed as a card below"></div>
 
 <div class="list">
   <div class="count" id="count">Loading the walk…</div>
@@ -81,7 +85,7 @@
   © 2026 Board Bored · made in Bakersfield<br>
   <a id="mailFoot" href="#">boardquestionmark@gmail.com</a>
 </footer>
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
@@ -134,12 +138,24 @@
     // map — storefront vendors + sidewalk spots together
     var vs=vendors.filter(function(v){return typeof v.lat==="number"&&typeof v.lng==="number"});
     var ss=spots.filter(function(s){return typeof s.lat==="number"&&typeof s.lng==="number"});
-    var allPts=vs.concat(ss);
-    var c=allPts[0]||{lat:35.3757,lng:-119.0205};
+    var corridor=ev.corridor;
+    var corridorPts=(corridor&&corridor.path)?corridor.path.map(function(p){return {lat:p[0],lng:p[1]};}):[];
+    var allPts=vs.concat(ss).concat(corridorPts);
+    var c=vs[0]||ss[0]||corridorPts[0]||{lat:35.3757,lng:-119.0205};
     map=L.map("map",{scrollWheelZoom:false}).setView([c.lat,c.lng],16);
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
       {maxZoom:19,attribution:"© OpenStreetMap contributors"}).addTo(map);
-    if(allPts.length>1){map.fitBounds(allPts.map(function(v){return [v.lat,v.lng]}),{padding:[30,30]});}
+    if(allPts.length>1){map.fitBounds(allPts.map(function(v){return [v.lat,v.lng]}),{padding:[36,36]});}
+
+    // Eye Street corridor — the assumed walkable/table-space spine, drawn under everything else
+    if(corridor&&corridor.path&&corridor.path.length>1){
+      L.polyline(corridor.path,{color:"#3a3430",weight:7,opacity:.5,lineCap:"round"}).addTo(map);
+      L.polyline(corridor.path,{color:"#e8b23d",weight:3.5,opacity:.95,dashArray:"1,10",lineCap:"round"}).addTo(map);
+    }
+    (corridor&&corridor.intersections||[]).forEach(function(x){
+      L.circleMarker([x.lat,x.lng],{radius:5,color:"#e8b23d",weight:2,fillColor:"#fff",fillOpacity:1})
+        .addTo(map).bindPopup("<b>🚦 "+x.label+"</b><br>Prime corner — high foot traffic");
+    });
 
     vs.forEach(function(v){
       var icon=L.divIcon({html:'<div class="pinmoji">'+(v.emoji||"📍")+'</div>',className:"",iconSize:[34,34],iconAnchor:[17,28]});

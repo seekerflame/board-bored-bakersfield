@@ -6,7 +6,7 @@
 <title>Get a spot — Board Bored</title>
 <meta name="description" content="Register a storefront or a sidewalk spot for First Friday Bakersfield.">
 <style>
-  :root{--ink:#141116;--pap:#faf7f2;--card:#fff;--acc:#e4572e;--acc2:#17836c;--line:#e7e1d8;--mut:#7a736b;}
+  :root{--ink:#141116;--pap:#faf7f2;--card:#fff;--acc:#ca421a;--acc2:#167f68;--line:#948d88;--mut:#777069;}
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
   body{font-family:-apple-system,"Helvetica Neue",Arial,sans-serif;background:var(--pap);color:var(--ink);
     min-height:100dvh;padding:20px 16px 40px}
@@ -45,7 +45,7 @@
   <a class="mark" href="./">● Board Bored</a>
   <h1>Get a spot at First Friday</h1>
   <p class="tag" id="tagline">Downtown Bakersfield Arts District.</p>
-  <div class="notice">🚸 Streets stay open all night — every sidewalk spot must leave the full sidewalk width clear for foot traffic and not extend into the street or block a driveway/curb ramp. First come, first served.</div>
+  <div class="notice">🚸 Streets stay open all night. Every sidewalk spot must keep at least 4 feet of clear, unobstructed path for pedestrians and wheelchair users — never block a curb ramp, crosswalk, driveway, or building entrance. First come, first served.</div>
 
   <div class="toggle">
     <button id="tabStore" class="on" type="button">🏪 Storefront on the route</button>
@@ -53,31 +53,31 @@
   </div>
 
   <form class="card" id="formStore">
-    <label>Business name *</label><input id="stName" required>
-    <label>Address *</label><input id="stAddr" required placeholder="Street address, Bakersfield">
-    <label>Hours you'll be open that night</label><input id="stHours" placeholder="6p–10p">
-    <label>What's happening (shown on the map)</label><textarea id="stNote" placeholder="Open late — coffee + espresso, live demo at 7."></textarea>
-    <label>Instagram (optional)</label><input id="stIg" placeholder="@handle">
-    <label>Website (optional)</label><input id="stWeb" placeholder="https://">
-    <label>Your contact (email or phone — not shown publicly)</label><input id="stContact" required>
+    <label for="stName">Business name *</label><input id="stName" required>
+    <label for="stAddr">Address *</label><input id="stAddr" required placeholder="Street address, Bakersfield">
+    <label for="stHours">Hours you'll be open that night</label><input id="stHours" placeholder="6p–10p">
+    <label for="stNote">What's happening (shown on the map)</label><textarea id="stNote" placeholder="Open late — coffee + espresso, live demo at 7."></textarea>
+    <label for="stIg">Instagram (optional)</label><input id="stIg" placeholder="@handle">
+    <label for="stWeb">Website (optional)</label><input id="stWeb" placeholder="https://">
+    <label for="stContact">Your contact (email or phone — not shown publicly)</label><input id="stContact" required>
     <button class="btn" type="submit">Send it in</button>
     <div class="hint">We add confirmed storefronts to the live map — usually same day.</div>
-    <div class="status" id="stStatus"></div>
+    <div class="status" id="stStatus" role="status" aria-live="polite"></div>
   </form>
 
   <form class="card" id="formSpot" style="display:none">
     <div class="avail" id="spotAvail">Checking spot availability…</div>
-    <label>Preferred spot</label>
+    <label for="spPreferred">Preferred spot</label>
     <select id="spPreferred"><option value="">Loading…</option></select>
-    <label>Vendor / business name *</label><input id="spName" required>
-    <label>Category</label><input id="spCat" placeholder="Food truck · Craft · Music · Art · ...">
-    <label>What you're doing / selling (shown on the map)</label><textarea id="spNote" placeholder="Tacos + agua fresca, cash + card."></textarea>
-    <label>Instagram (optional)</label><input id="spIg" placeholder="@handle">
-    <label>Website (optional)</label><input id="spWeb" placeholder="https://">
-    <label>Your contact (email or phone — not shown publicly) *</label><input id="spContact" required>
+    <label for="spName">Vendor / business name *</label><input id="spName" required>
+    <label for="spCat">Category</label><input id="spCat" placeholder="Food truck · Craft · Music · Art · ...">
+    <label for="spNote">What you're doing / selling (shown on the map)</label><textarea id="spNote" placeholder="Tacos + agua fresca, cash + card."></textarea>
+    <label for="spIg">Instagram (optional)</label><input id="spIg" placeholder="@handle">
+    <label for="spWeb">Website (optional)</label><input id="spWeb" placeholder="https://">
+    <label for="spContact">Your contact (email or phone — not shown publicly) *</label><input id="spContact" required>
     <button class="btn" type="submit">Request this spot</button>
     <div class="hint">First come, first served. We confirm your exact spot on the live map before the event — you'll hear back at the contact above.</div>
-    <div class="status" id="spStatus"></div>
+    <div class="status" id="spStatus" role="status" aria-live="polite"></div>
   </form>
 
   <div class="card success" id="successCard">

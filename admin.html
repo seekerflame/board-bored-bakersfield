@@ -6,7 +6,7 @@
 <title>Board Bored — Admin</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
-  :root{--ink:#141116;--pap:#faf7f2;--card:#fff;--acc:#e4572e;--acc2:#17836c;--line:#e7e1d8;--mut:#7a736b;--warn:#b3261e;}
+  :root{--ink:#141116;--pap:#faf7f2;--card:#fff;--acc:#ca421a;--acc2:#167f68;--line:#948d88;--mut:#777069;--warn:#b3261e;}
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
   body{font-family:-apple-system,"Helvetica Neue",Arial,sans-serif;background:var(--pap);color:var(--ink);padding-bottom:110px}
   header{padding:14px 16px 6px;display:flex;justify-content:space-between;align-items:center}
@@ -16,7 +16,7 @@
   .wrap{max-width:560px;margin:0 auto;padding:0 14px}
   .card{background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:16px;margin-bottom:12px}
   h2{font-size:13px;text-transform:uppercase;letter-spacing:1px;color:var(--mut);margin-bottom:10px}
-  label{display:block;font-size:11px;font-weight:800;color:var(--mut);text-transform:uppercase;letter-spacing:.5px;margin:10px 0 4px}
+  label,.grouplabel{display:block;font-size:11px;font-weight:800;color:var(--mut);text-transform:uppercase;letter-spacing:.5px;margin:10px 0 4px}
   input,textarea{width:100%;font:inherit;font-size:16px;padding:12px;border:1.5px solid var(--line);border-radius:11px;background:#fffdfa}
   input:focus,textarea:focus{outline:2px solid var(--acc);border-color:var(--acc)}
   textarea{min-height:56px;resize:vertical}
@@ -62,9 +62,9 @@
 
   <div class="card" id="settings">
     <h2>⚙️ Publish settings (one-time, at home)</h2>
-    <label>GitHub repo (owner/name)</label>
+    <label for="repo">GitHub repo (owner/name)</label>
     <input id="repo" placeholder="seekerflame/board-bored-bakersfield">
-    <label>Fine-grained token (Contents: read+write on that repo)</label>
+    <label for="token">Fine-grained token (Contents: read+write on that repo)</label>
     <input id="token" type="password" placeholder="github_pat_…">
     <div class="hint">Make one at github.com → Settings → Developer settings → Fine-grained tokens → only select the board repo → Repository permissions → Contents: Read and write. Paste it here once — it stays in this phone's browser only.</div>
     <button class="btn ghost" id="saveSettings">Save settings</button>
@@ -72,13 +72,13 @@
 
   <div class="card">
     <h2>📅 Event</h2>
-    <label>Name</label><input id="evName">
+    <label for="evName">Name</label><input id="evName">
     <div class="row">
-      <div><label>Date</label><input id="evDate" type="date"></div>
-      <div><label>Hours</label><input id="evHours" placeholder="6:00 PM – 10:00 PM"></div>
+      <div><label for="evDate">Date</label><input id="evDate" type="date"></div>
+      <div><label for="evHours">Hours</label><input id="evHours" placeholder="6:00 PM – 10:00 PM"></div>
     </div>
-    <label>Area</label><input id="evArea">
-    <label>One-line blurb</label><textarea id="evBlurb"></textarea>
+    <label for="evArea">Area</label><input id="evArea">
+    <label for="evBlurb">One-line blurb</label><textarea id="evBlurb"></textarea>
   </div>
 
   <div class="card">
@@ -88,21 +88,21 @@
 
   <div class="card" id="editor">
     <h2 id="edTitle">➕ Add a vendor</h2>
-    <label>Name *</label><input id="vName" placeholder="Shop / gallery / pop-up name">
-    <label>Pick a pin</label>
-    <div class="emojis" id="emojis"></div>
-    <label>Category</label><input id="vCat" placeholder="Cafe · Gallery · Vintage · Food">
-    <label>Address</label><input id="vAddr" placeholder="1600 20th St, Bakersfield">
+    <label for="vName">Name *</label><input id="vName" placeholder="Shop / gallery / pop-up name">
+    <div class="grouplabel" id="emojisLabel">Pick a pin</div>
+    <div class="emojis" id="emojis" role="group" aria-labelledby="emojisLabel"></div>
+    <label for="vCat">Category</label><input id="vCat" placeholder="Cafe · Gallery · Vintage · Food">
+    <label for="vAddr">Address</label><input id="vAddr" placeholder="1600 20th St, Bakersfield">
     <button class="btn ghost" id="find">🔎 Find address → drop pin</button>
     <div class="hint" id="loc">Or tap the map to place the pin.</div>
     <div id="map"></div>
     <div class="row">
-      <div><label>Hours that night</label><input id="vHours" placeholder="6p–10p"></div>
+      <div><label for="vHours">Hours that night</label><input id="vHours" placeholder="6p–10p"></div>
     </div>
-    <label>Note (what's happening)</label><textarea id="vNote" placeholder="Open late for the walk — live demo at 7."></textarea>
+    <label for="vNote">Note (what's happening)</label><textarea id="vNote" placeholder="Open late for the walk — live demo at 7."></textarea>
     <div class="row">
-      <div><label>Instagram</label><input id="vIg" placeholder="@handle"></div>
-      <div><label>Website</label><input id="vWeb" placeholder="https://"></div>
+      <div><label for="vIg">Instagram</label><input id="vIg" placeholder="@handle"></div>
+      <div><label for="vWeb">Website</label><input id="vWeb" placeholder="https://"></div>
     </div>
     <button class="btn grn" id="saveVendor">✅ Save vendor</button>
     <button class="btn danger" id="deleteVendor" style="display:none">🗑 Remove this vendor</button>
@@ -111,30 +111,30 @@
 
   <div class="card">
     <h2>🚏 Sidewalk vendor spots (<span id="sn">0</span>)</h2>
-    <div class="hint">Fixed spots you place once, walking the sidewalk — streets stay open, nothing blocks the road. Reassign who's in each spot every month; the spot itself stays put.</div>
+    <div class="hint">Fixed spots you place once, walking the sidewalk — streets stay open, nothing blocks the road. Keep 4+ feet of clear path for pedestrians/wheelchairs at every spot; skip curb ramps, crosswalks, driveways, and doorways. Reassign who's in each spot every month; the spot itself stays put. The gold dashed line + 🚦 dots on the map below are the Eye Street corridor and its intersections — corners get the most foot traffic.</div>
     <div id="slist"></div>
   </div>
 
   <div class="card" id="spotEditor">
     <h2 id="spTitle">➕ New spot</h2>
-    <label>Spot label *</label><input id="spLabel" placeholder="Spot 1">
-    <label>Pick a marker</label>
-    <div class="emojis" id="spEmojis"></div>
+    <label for="spLabel">Spot label *</label><input id="spLabel" placeholder="Spot 1">
+    <div class="grouplabel" id="spEmojisLabel">Pick a marker</div>
+    <div class="emojis" id="spEmojis" role="group" aria-labelledby="spEmojisLabel"></div>
     <div class="hint" id="spLoc">Tap the map to place this spot.</div>
-    <div id="spMap"></div>
-    <label>Status</label>
-    <div class="row">
+    <div id="spMap" role="img" aria-label="Tap or use arrow keys after focusing the map to place this spot's pin"></div>
+    <div class="grouplabel" id="spStatusLabel">Status</div>
+    <div class="row" role="group" aria-labelledby="spStatusLabel">
       <button class="pill" id="spOpen" type="button">🟢 Open (first come, first served)</button>
       <button class="pill" id="spConfirmed" type="button">✅ Confirmed — vendor assigned</button>
     </div>
     <div id="spVendorFields" style="display:none">
-      <label>Vendor / business name</label><input id="spVName" placeholder="Who's in this spot">
-      <label>Category</label><input id="spVCat" placeholder="Food truck · Craft · Music · ...">
-      <label>Contact</label><input id="spVContact" placeholder="email or phone (for you, not shown publicly)">
-      <label>Note (what's happening, shown on the map)</label><textarea id="spVNote" placeholder="Tacos + agua fresca, cash + card."></textarea>
+      <label for="spVName">Vendor / business name</label><input id="spVName" placeholder="Who's in this spot">
+      <label for="spVCat">Category</label><input id="spVCat" placeholder="Food truck · Craft · Music · ...">
+      <label for="spVContact">Contact</label><input id="spVContact" placeholder="email or phone (for you, not shown publicly)">
+      <label for="spVNote">Note (what's happening, shown on the map)</label><textarea id="spVNote" placeholder="Tacos + agua fresca, cash + card."></textarea>
       <div class="row">
-        <div><label>Instagram</label><input id="spVIg" placeholder="@handle"></div>
-        <div><label>Website</label><input id="spVWeb" placeholder="https://"></div>
+        <div><label for="spVIg">Instagram</label><input id="spVIg" placeholder="@handle"></div>
+        <div><label for="spVWeb">Website</label><input id="spVWeb" placeholder="https://"></div>
       </div>
     </div>
     <button class="btn grn" id="saveSpot">✅ Save spot</button>
@@ -158,8 +158,8 @@
   <button class="btn acc" id="publish" style="flex:2">🚀 Publish live</button>
   <button class="btn ghost" id="preview" style="flex:1">👁 Preview</button>
 </div>
-<div class="status wrap" id="status"></div>
-<div class="toast" id="toast"></div>
+<div class="status wrap" id="status" role="status" aria-live="polite"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
@@ -341,10 +341,19 @@
   function initSpotMap(){
     var ss=spots().filter(function(s){return s.lat&&s.lng});
     var e=ev(); var vs=(e&&e.vendors)||[];
-    var c=ss[0]||vs[0]||{lat:35.3757,lng:-119.0205};
+    var corridor=e&&e.corridor;
+    var c=ss[0]||vs[0]||(corridor&&corridor.path&&corridor.path[Math.floor(corridor.path.length/2)]&&{lat:corridor.path[Math.floor(corridor.path.length/2)][0],lng:corridor.path[Math.floor(corridor.path.length/2)][1]})||{lat:35.3757,lng:-119.0205};
     map2=L.map("spMap",{scrollWheelZoom:false}).setView([c.lat,c.lng],16);
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
       {maxZoom:19,attribution:"© OpenStreetMap"}).addTo(map2);
+    if(corridor&&corridor.path&&corridor.path.length>1){
+      L.polyline(corridor.path,{color:"#3a3430",weight:6,opacity:.45}).addTo(map2);
+      L.polyline(corridor.path,{color:"#e8b23d",weight:3,opacity:.9,dashArray:"1,9"}).addTo(map2);
+    }
+    (corridor&&corridor.intersections||[]).forEach(function(x){
+      L.circleMarker([x.lat,x.lng],{radius:4,color:"#e8b23d",weight:2,fillColor:"#fff",fillOpacity:1})
+        .addTo(map2).bindPopup("🚦 "+x.label+" — prime corner");
+    });
     ss.forEach(function(s){
       var icon=(s.status==="confirmed"&&s.vendor&&s.vendor.emoji)?s.vendor.emoji:"🟢";
       L.marker([s.lat,s.lng],{icon:L.divIcon({html:'<div style="font-size:20px">'+icon+'</div>',className:"",iconSize:[24,24]})})

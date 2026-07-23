@@ -14,7 +14,24 @@
       "hours": "6:00 PM – 10:00 PM",
       "area": "Downtown Bakersfield Arts District",
       "blurb": "Art, coffee, vintage, music — the downtown shops stay open late. Walk in, say hi, keep it local.",
-      "logistics_note": "Streets stay open all night — every vendor spot is on the sidewalk, not the road.",
+      "logistics_note": "Streets stay open all night — every vendor spot is on the sidewalk, not the road. Keep at least 4 feet of clear, unobstructed path for pedestrians and wheelchair users at all times — never block a curb ramp, crosswalk, or building entrance.",
+      "corridor": {
+        "label": "Eye Street — the walk corridor",
+        "path": [
+          [35.3744620, -119.0199290],
+          [35.3754150, -119.0199310],
+          [35.3763530, -119.0199190],
+          [35.3772620, -119.0199160],
+          [35.3782520, -119.0199030]
+        ],
+        "intersections": [
+          {"label": "17th & Eye", "lat": 35.3744620, "lng": -119.0199290},
+          {"label": "18th & Eye", "lat": 35.3754150, "lng": -119.0199310},
+          {"label": "19th & Eye", "lat": 35.3763530, "lng": -119.0199190},
+          {"label": "20th & Eye", "lat": 35.3772620, "lng": -119.0199160},
+          {"label": "21st & Eye", "lat": 35.3782520, "lng": -119.0199030}
+        ]
+      },
       "spots": [],
       "vendors": [
         {

@@ -8,7 +8,7 @@
 <meta property="og:description" content="The free local board. Events, open shops, and the people behind them. No apps, no ads, no cuts.">
 <meta name="description" content="The free local board for Bakersfield. Events, open shops, and the people behind them.">
 <style>
-  :root{--ink:#141116;--pap:#faf7f2;--card:#ffffff;--acc:#e4572e;--acc2:#17836c;--line:#e7e1d8;--mut:#7a736b;}
+  :root{--ink:#141116;--pap:#faf7f2;--card:#ffffff;--acc:#ca421a;--acc2:#167f68;--line:#948d88;--mut:#777069;}
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
   body{font-family:-apple-system,"Helvetica Neue",Arial,sans-serif;background:var(--pap);color:var(--ink);
     min-height:100dvh;display:flex;flex-direction:column;align-items:center;padding:20px 16px 40px}
@@ -27,6 +27,7 @@
   .card h2{font-size:24px;letter-spacing:-.4px;margin-bottom:4px}
   .card .meta{color:var(--mut);font-size:14.5px;line-height:1.4}
   .card .go{margin-top:12px;font-weight:800;color:var(--acc);font-size:15px}
+  .impact{text-align:center;font-size:13px;font-weight:700;color:var(--acc2);margin:2px 0 14px;letter-spacing:.2px}
   .small{display:flex;gap:10px}
   .small .card{flex:1;text-align:center;padding:16px 10px;margin-bottom:0}
   .small .card .ico{font-size:26px}
@@ -54,6 +55,8 @@
     <div class="go">Open the live map →</div>
   </a>
 
+  <div class="impact" id="impact" style="display:none"></div>
+
   <div class="small">
     <a class="card" id="vendorCta" href="vendor-signup.html">
       <div class="ico">🏪</div>
@@ -75,7 +78,7 @@
     <a id="mailFoot" href="#">boardquestionmark@gmail.com</a>
   </footer>
 </div>
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
 (function(){
@@ -93,6 +96,14 @@
       $("evName").textContent=ev.name;
       $("evMeta").textContent=(ev.area||"")+" · "+(ev.hours||"");
       $("featured").href=ev.slug+"/";
+
+      var vendorCount=(ev.vendors||[]).length;
+      var spots=ev.spots||[];
+      var openSpots=spots.filter(function(s){return s.status!=="confirmed"||!s.vendor;}).length;
+      var bits=[];
+      if(vendorCount)bits.push(vendorCount+" local "+(vendorCount===1?"business":"businesses")+" on the map");
+      if(spots.length)bits.push(openSpots+" of "+spots.length+" sidewalk spots open");
+      if(bits.length){$("impact").textContent=bits.join(" · ");$("impact").style.display="block";}
       // date-aware badge: TONIGHT / upcoming date / next one soon
       var today=new Date(); today.setHours(0,0,0,0);
       var p=(ev.date||"").split("-");
