@@ -134,10 +134,12 @@
 
     var vendors=ev.vendors||[];
     var spots=ev.spots||[];
+    var parking=ev.parking||[];
 
-    // map — storefront vendors + sidewalk spots together
+    // map — storefront vendors + sidewalk spots + parking, each its own toggleable layer
     var vs=vendors.filter(function(v){return typeof v.lat==="number"&&typeof v.lng==="number"});
     var ss=spots.filter(function(s){return typeof s.lat==="number"&&typeof s.lng==="number"});
+    var pk=parking.filter(function(p){return typeof p.lat==="number"&&typeof p.lng==="number"});
     var corridor=ev.corridor;
     var corridorPts=(corridor&&corridor.path)?corridor.path.map(function(p){return {lat:p[0],lng:p[1]};}):[];
     var allPts=vs.concat(ss).concat(corridorPts);
@@ -147,7 +149,7 @@
       {maxZoom:19,attribution:"© OpenStreetMap contributors"}).addTo(map);
     if(allPts.length>1){map.fitBounds(allPts.map(function(v){return [v.lat,v.lng]}),{padding:[36,36]});}
 
-    // Eye Street corridor — the assumed walkable/table-space spine, drawn under everything else
+    // Eye Street corridor — the assumed walkable/table-space spine, drawn under everything else, always visible
     if(corridor&&corridor.path&&corridor.path.length>1){
       L.polyline(corridor.path,{color:"#3a3430",weight:7,opacity:.5,lineCap:"round"}).addTo(map);
       L.polyline(corridor.path,{color:"#e8b23d",weight:3.5,opacity:.95,dashArray:"1,10",lineCap:"round"}).addTo(map);
@@ -157,9 +159,11 @@
         .addTo(map).bindPopup("<b>🚦 "+x.label+"</b><br>Prime corner — high foot traffic");
     });
 
+    var storefrontLayer=L.layerGroup(), spotLayer=L.layerGroup(), parkingLayer=L.layerGroup();
+
     vs.forEach(function(v){
       var icon=L.divIcon({html:'<div class="pinmoji">'+(v.emoji||"📍")+'</div>',className:"",iconSize:[34,34],iconAnchor:[17,28]});
-      markers["v:"+v.id]=L.marker([v.lat,v.lng],{icon:icon}).addTo(map)
+      markers["v:"+v.id]=L.marker([v.lat,v.lng],{icon:icon}).addTo(storefrontLayer)
         .bindPopup("<b>"+(v.emoji||"")+" "+v.name+"</b><br>"+(v.hours||"")+"<br>"+(v.address||""));
     });
     ss.forEach(function(s){
@@ -168,8 +172,36 @@
       var icon=L.divIcon({html:'<div class="pinmoji">'+emo+'</div>',className:"",iconSize:[34,34],iconAnchor:[17,28]});
       var pop=open?"<b>🟢 "+s.label+"</b><br>Open — first come, first served"
                   :"<b>"+emo+" "+(s.vendor.name||s.label)+"</b><br>"+s.label+(s.vendor.category?" · "+s.vendor.category:"");
-      markers["s:"+s.id]=L.marker([s.lat,s.lng],{icon:icon}).addTo(map).bindPopup(pop);
+      markers["s:"+s.id]=L.marker([s.lat,s.lng],{icon:icon}).addTo(spotLayer).bindPopup(pop);
     });
+    pk.forEach(function(p){
+      var icon=L.divIcon({html:'<div class="pinmoji" style="font-size:26px">🅿️</div>',className:"",iconSize:[30,30],iconAnchor:[15,24]});
+      L.marker([p.lat,p.lng],{icon:icon}).addTo(parkingLayer)
+        .bindPopup("<b>🅿️ "+(p.label||"Parking")+"</b>"+(p.note?"<br>"+p.note:""));
+    });
+
+    storefrontLayer.addTo(map); spotLayer.addTo(map); parkingLayer.addTo(map);
+    var layerCtl={"🏪 Storefronts":storefrontLayer,"🚏 Vendor spots":spotLayer};
+    if(pk.length)layerCtl["🅿️ Parking"]=parkingLayer;
+    L.control.layers(null,layerCtl,{collapsed:true}).addTo(map);
+
+    // live open-now badge — only meaningful ON the event date itself, since hours_start/
+    // hours_end describe First-Friday-night hours, not the vendor's normal daily hours.
+    var isEventDay=!!(evd&&evd.getTime()===today.getTime());
+    function openBadge(v){
+      if(!isEventDay||!v.hours_start||!v.hours_end)return"";
+      var now=new Date(), mins=now.getHours()*60+now.getMinutes();
+      var sp=v.hours_start.split(":"),ep=v.hours_end.split(":");
+      var startMins=(+sp[0])*60+(+sp[1]), endMins=(+ep[0])*60+(+ep[1]);
+      if(mins<startMins)return'<span class="openflag" style="color:var(--mut)">Opens '+fmtTime(v.hours_start)+'</span>';
+      if(mins>=endMins)return'<span class="openflag" style="color:var(--mut)">Closed for the night</span>';
+      return'<span class="openflag">🟢 Open now</span>';
+    }
+    function fmtTime(hhmm){
+      var p=hhmm.split(":"),h=+p[0];
+      var ap=h>=12?"pm":"am"; h=h%12; if(h===0)h=12;
+      return h+(p[1]!=="00"?":"+p[1]:"")+ap;
+    }
 
     // storefront vendor cards
     $("count").textContent=vendors.length+" stops on the walk";
@@ -186,7 +218,7 @@
       el.innerHTML='<div class="top"><span class="emo">'+(v.emoji||"📍")+'</span>'+
         '<span class="nm">'+v.name+'</span><span class="cat">'+(v.category||"")+'</span></div>'+
         (v.address?'<div class="addr">'+v.address+'</div>':"")+
-        (v.hours?'<div class="hrs">'+v.hours+'</div>':"")+
+        (v.hours?'<div class="hrs">'+v.hours+' '+openBadge(v)+'</div>':"")+
         (v.note?'<div class="note">'+v.note+'</div>':"");
       var linksEl=document.createElement("div");linksEl.className="links";linksEl.innerHTML=links;
       linksEl.appendChild(shareLink(v.id,v.name,v.category));

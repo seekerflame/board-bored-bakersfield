@@ -33,6 +33,7 @@
         ]
       },
       "spots": [],
+      "parking": [],
       "vendors": [
         {
           "id": "biz_001",
@@ -43,6 +44,8 @@
           "lng": -119.0205,
           "address": "1600 20th St, Bakersfield, CA 93301",
           "hours": "6a–10p",
+          "hours_start": "06:00",
+          "hours_end": "22:00",
           "note": "Open late for the art walk — coffee + espresso.",
           "instagram": "",
           "website": ""
@@ -56,6 +59,8 @@
           "lng": -119.0202241,
           "address": "1607 19th St, Bakersfield, CA 93301",
           "hours": "5p–9p (event)",
+          "hours_start": "17:00",
+          "hours_end": "21:00",
           "note": "Member gallery show + live demos.",
           "instagram": "",
           "website": ""
@@ -69,6 +74,8 @@
           "lng": -119.0195,
           "address": "Info table — Downtown Bakersfield Arts District (exact spot TBD)",
           "hours": "5p–9p (event)",
+          "hours_start": "17:00",
+          "hours_end": "21:00",
           "note": "Info table — say hi and grab the walk lineup.",
           "instagram": "",
           "website": "https://kernarts.org/"
@@ -82,6 +89,8 @@
           "lng": -119.0201191,
           "address": "1918 Eye St, Bakersfield, CA 93301",
           "hours": "5p–9p (event)",
+          "hours_start": "17:00",
+          "hours_end": "21:00",
           "note": "Late-night browse — records, retro finds, First Friday-only deals.",
           "instagram": "",
           "website": ""
@@ -95,6 +104,8 @@
           "lng": -119.0201322,
           "address": "1817 Eye St, Bakersfield, CA 93301",
           "hours": "5p–9p (event)",
+          "hours_start": "17:00",
+          "hours_end": "21:00",
           "note": "Open for the walk with a curated First Friday rack.",
           "instagram": "",
           "website": ""

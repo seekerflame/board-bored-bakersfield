@@ -24,7 +24,7 @@
   .emojis{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
   .emojis button{font-size:20px;width:40px;height:40px;border:1.5px solid var(--line);background:#fff;border-radius:10px;cursor:pointer}
   .emojis button.on{border-color:var(--acc);background:#fdeee8}
-  #map,#spMap{height:220px;border-radius:12px;margin-top:8px;z-index:1}
+  #map,#spMap,#pkMap{height:220px;border-radius:12px;margin-top:8px;z-index:1}
   .hint{font-size:12px;color:var(--mut);margin-top:6px;line-height:1.5}
   .btn{appearance:none;border:0;cursor:pointer;font:inherit;font-weight:800;font-size:15px;border-radius:12px;
     padding:13px;width:100%;margin-top:10px;color:#fff;background:var(--ink)}
@@ -143,6 +143,23 @@
   </div>
 
   <div class="card">
+    <h2>🅿️ Parking (<span id="pn">0</span>)</h2>
+    <div class="hint">Known public parking near the corridor — helps people plan ahead and keeps cars off the sidewalk-vendor stretch.</div>
+    <div id="plist"></div>
+  </div>
+
+  <div class="card" id="parkingEditor">
+    <h2 id="pkTitle">➕ New parking spot</h2>
+    <label for="pkLabel">Label *</label><input id="pkLabel" placeholder="City lot — 19th & K">
+    <div class="hint" id="pkLoc">Tap the map to place this parking spot.</div>
+    <div id="pkMap" role="img" aria-label="Tap or use arrow keys after focusing the map to place this parking spot"></div>
+    <label for="pkNote">Note (optional)</label><input id="pkNote" placeholder="Free after 5pm · 40 spaces">
+    <button class="btn grn" id="savePk">✅ Save parking spot</button>
+    <button class="btn danger" id="deletePk" style="display:none">🗑 Remove this parking spot</button>
+    <button class="btn ghost" id="cancelPk">Cancel / new</button>
+  </div>
+
+  <div class="card">
     <h2>💾 Backup</h2>
     <div class="row">
       <button class="btn ghost sm" id="download" style="flex:1">⬇ Download JSON</button>
@@ -229,21 +246,30 @@
     var draft=localStorage.getItem(DRAFT_KEY);
     if(draft){try{DATA=JSON.parse(draft);toast("Loaded your draft (unpublished)");}catch(e){}}
     var p=DATA?Promise.resolve():loadLive().then(function(d){DATA=d;});
-    p.then(function(){fillEvent();renderVendors();initMap();renderSpots();initSpotMap();clearSpotEditor();});
+    p.then(function(){fillEvent();renderVendors();initMap();renderSpots();initSpotMap();clearSpotEditor();
+      renderParking();initParkingMap();clearPkEditor();});
   }
   $("reload").onclick=function(){
     if(!confirm("Replace your draft with the live published data?"))return;
     loadLive().then(function(d){DATA=d;localStorage.removeItem(DRAFT_KEY);
-      fillEvent();renderVendors();renderSpots();toast("Live data loaded");});
+      fillEvent();renderVendors();renderSpots();renderParking();toast("Live data loaded");});
   };
+
+  // ---------- basemap helper (street + free no-key satellite, reused by all 3 admin maps) ----------
+  function addBasemaps(m){
+    var street=L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+      {maxZoom:19,attribution:"© OpenStreetMap"}).addTo(m);
+    var sat=L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+      {maxZoom:19,attribution:"Esri, Maxar, Earthstar Geographics"});
+    L.control.layers({"Streets":street,"Satellite":sat},null,{collapsed:true}).addTo(m);
+  }
 
   // ---------- map / geocode ----------
   function initMap(){
     var e=ev(); var vs=(e&&e.vendors||[]).filter(function(v){return v.lat&&v.lng});
     var c=vs[0]||{lat:35.3757,lng:-119.0205};
     map=L.map("map",{scrollWheelZoom:false}).setView([c.lat,c.lng],15);
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-      {maxZoom:19,attribution:"© OpenStreetMap"}).addTo(map);
+    addBasemaps(map);
     vs.forEach(function(v){
       L.marker([v.lat,v.lng],{icon:L.divIcon({html:'<div style="font-size:22px">'+(v.emoji||"📍")+'</div>',className:"",iconSize:[26,26]})})
         .addTo(map).bindPopup(v.name);});
@@ -251,8 +277,12 @@
   }
   function setPin(lat,lng,why){
     if(draftPin)map.removeLayer(draftPin);
-    draftPin=L.marker([lat,lng],{opacity:.75}).addTo(map).bindPopup("New pin").openPopup();
+    draftPin=L.marker([lat,lng],{opacity:.75,draggable:true}).addTo(map).bindPopup("New pin — drag to fine-tune").openPopup();
     draftPin._lat=lat;draftPin._lng=lng;
+    draftPin.on("dragend",function(){
+      var p=draftPin.getLatLng();draftPin._lat=p.lat;draftPin._lng=p.lng;
+      $("loc").textContent="📍 Pin set ("+p.lat.toFixed(4)+", "+p.lng.toFixed(4)+") — dragged";
+    });
     $("loc").textContent="📍 Pin set ("+lat.toFixed(4)+", "+lng.toFixed(4)+") — "+why;
     map.panTo([lat,lng]);
   }
@@ -344,8 +374,7 @@
     var corridor=e&&e.corridor;
     var c=ss[0]||vs[0]||(corridor&&corridor.path&&corridor.path[Math.floor(corridor.path.length/2)]&&{lat:corridor.path[Math.floor(corridor.path.length/2)][0],lng:corridor.path[Math.floor(corridor.path.length/2)][1]})||{lat:35.3757,lng:-119.0205};
     map2=L.map("spMap",{scrollWheelZoom:false}).setView([c.lat,c.lng],16);
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-      {maxZoom:19,attribution:"© OpenStreetMap"}).addTo(map2);
+    addBasemaps(map2);
     if(corridor&&corridor.path&&corridor.path.length>1){
       L.polyline(corridor.path,{color:"#3a3430",weight:6,opacity:.45}).addTo(map2);
       L.polyline(corridor.path,{color:"#e8b23d",weight:3,opacity:.9,dashArray:"1,9"}).addTo(map2);
@@ -362,8 +391,12 @@
   }
   function setSpotPin(lat,lng,why){
     if(draftPin2)map2.removeLayer(draftPin2);
-    draftPin2=L.marker([lat,lng],{opacity:.75}).addTo(map2).bindPopup("New spot pin").openPopup();
+    draftPin2=L.marker([lat,lng],{opacity:.75,draggable:true}).addTo(map2).bindPopup("New spot pin — drag to fine-tune").openPopup();
     draftPin2._lat=lat;draftPin2._lng=lng;
+    draftPin2.on("dragend",function(){
+      var p=draftPin2.getLatLng();draftPin2._lat=p.lat;draftPin2._lng=p.lng;
+      $("spLoc").textContent="📍 Pin set ("+p.lat.toFixed(4)+", "+p.lng.toFixed(4)+") — dragged";
+    });
     $("spLoc").textContent="📍 Pin set ("+lat.toFixed(4)+", "+lng.toFixed(4)+") — "+why;
     map2.panTo([lat,lng]);
   }
@@ -424,6 +457,86 @@
     if(!confirm("Remove this spot entirely? (Not just clear its vendor — delete the spot pin itself.)"))return;
     var e=ev(); e.spots=(e.spots||[]).filter(function(x){return x.id!==editingSpotId});
     saveDraft();renderSpots();clearSpotEditor();toast("Spot removed from draft");
+  };
+
+  // ---------- parking ----------
+  var editingPkId=null, map3=null, draftPin3=null;
+  function parkingList(){ var e=ev(); if(!e)return []; e.parking=e.parking||[]; return e.parking; }
+
+  function renderParking(){
+    var pp=parkingList(); var box=$("plist"); box.innerHTML="";
+    $("pn").textContent=pp.length;
+    if(!pp.length){box.innerHTML='<div class="hint">No parking spots yet.</div>';}
+    pp.forEach(function(p){
+      var r=document.createElement("div");r.className="vrow";
+      r.innerHTML='<span class="emo">🅿️</span>'+
+        '<span class="nm">'+p.label+(p.note?'<span class="c">'+p.note+'</span>':'')+'</span>';
+      var edit=document.createElement("button");edit.className="pill";edit.textContent="Edit";
+      edit.onclick=function(){startEditPk(p.id);};
+      r.appendChild(edit);box.appendChild(r);
+    });
+  }
+  function initParkingMap(){
+    var pp=parkingList().filter(function(p){return p.lat&&p.lng});
+    var e=ev(); var corridor=e&&e.corridor;
+    var c=pp[0]||(corridor&&corridor.path&&corridor.path[0]&&{lat:corridor.path[0][0],lng:corridor.path[0][1]})||{lat:35.3757,lng:-119.0205};
+    map3=L.map("pkMap",{scrollWheelZoom:false}).setView([c.lat,c.lng],16);
+    addBasemaps(map3);
+    if(corridor&&corridor.path&&corridor.path.length>1){
+      L.polyline(corridor.path,{color:"#3a3430",weight:6,opacity:.45}).addTo(map3);
+      L.polyline(corridor.path,{color:"#e8b23d",weight:3,opacity:.9,dashArray:"1,9"}).addTo(map3);
+    }
+    pp.forEach(function(p){
+      L.marker([p.lat,p.lng],{icon:L.divIcon({html:'<div style="font-size:20px">🅿️</div>',className:"",iconSize:[24,24]})})
+        .addTo(map3).bindPopup(p.label);});
+    map3.on("click",function(e2){setPkPin(e2.latlng.lat,e2.latlng.lng,"tapped on map");});
+  }
+  function setPkPin(lat,lng,why){
+    if(draftPin3)map3.removeLayer(draftPin3);
+    draftPin3=L.marker([lat,lng],{opacity:.75,draggable:true}).addTo(map3).bindPopup("New parking pin — drag to fine-tune").openPopup();
+    draftPin3._lat=lat;draftPin3._lng=lng;
+    draftPin3.on("dragend",function(){
+      var p=draftPin3.getLatLng();draftPin3._lat=p.lat;draftPin3._lng=p.lng;
+      $("pkLoc").textContent="📍 Pin set ("+p.lat.toFixed(4)+", "+p.lng.toFixed(4)+") — dragged";
+    });
+    $("pkLoc").textContent="📍 Pin set ("+lat.toFixed(4)+", "+lng.toFixed(4)+") — "+why;
+    map3.panTo([lat,lng]);
+  }
+  function clearPkEditor(){
+    editingPkId=null; $("pkTitle").textContent="➕ New parking spot";
+    $("pkLabel").value=""; $("pkNote").value="";
+    if(draftPin3&&map3){map3.removeLayer(draftPin3);draftPin3=null;}
+    $("pkLoc").textContent="Tap the map to place this parking spot.";
+    $("deletePk").style.display="none";
+  }
+  function startEditPk(id){
+    var p=parkingList().filter(function(x){return x.id===id})[0]; if(!p)return;
+    editingPkId=id; $("pkTitle").textContent="✏️ Editing: "+p.label;
+    $("pkLabel").value=p.label||""; $("pkNote").value=p.note||"";
+    if(p.lat&&p.lng)setPkPin(p.lat,p.lng,"current pin");
+    $("deletePk").style.display="block";
+    $("parkingEditor").scrollIntoView({behavior:"smooth"});
+  }
+  $("cancelPk").onclick=clearPkEditor;
+  $("savePk").onclick=function(){
+    var label=$("pkLabel").value.trim(); if(!label){toast("Label required");$("pkLabel").focus();return;}
+    var pp=parkingList();
+    var p = editingPkId ? pp.filter(function(x){return x.id===editingPkId})[0]
+                        : {id:"pk_"+Date.now().toString(36)};
+    p.label=label; p.note=$("pkNote").value.trim();
+    if(draftPin3){p.lat=draftPin3._lat;p.lng=draftPin3._lng;}
+    if(!editingPkId){
+      if(!draftPin3){toast("Tap the map to place this parking spot first");return;}
+      pp.push(p);
+    }
+    saveDraft();renderParking();clearPkEditor();
+    toast("Saved to draft — hit 🚀 Publish when ready");
+  };
+  $("deletePk").onclick=function(){
+    if(!editingPkId)return;
+    if(!confirm("Remove this parking spot?"))return;
+    var e=ev(); e.parking=(e.parking||[]).filter(function(x){return x.id!==editingPkId});
+    saveDraft();renderParking();clearPkEditor();toast("Parking spot removed from draft");
   };
 
   // ---------- backup ----------
