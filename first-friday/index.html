@@ -22,24 +22,25 @@
   .pinmoji{font-size:21px;line-height:1;opacity:.62;filter:drop-shadow(0 1px 2px #0004);transition:opacity .15s}
   .pinmoji:hover{opacity:1}
   /* vendor booths: seat-map squares, not pins */
-  .seat{width:11px;height:11px;border-radius:2px;border:1.5px solid;box-sizing:border-box;transition:transform .1s}
-  .seat:hover{transform:scale(1.45)}
-  .seat.open{background:rgba(22,127,104,.30);border-color:#167f68}
-  .seat.pending{background:rgba(201,180,92,.55);border-color:#a68a2e}
+  .seat{width:10px;height:10px;border-radius:1.5px;border:1px solid;box-sizing:border-box;
+    transition:transform .1s,box-shadow .1s;box-shadow:0 1px 1.5px #0002}
+  .seat:hover{transform:scale(1.6);box-shadow:0 2px 4px #0003}
+  .seat.open{background:#e4f2ee;border-color:#167f68}
+  .seat.pending{background:#f5eccb;border-color:#a68a2e}
   .seat.held{background:#167f68;border-color:#0f5c4b}
-  .seat.closed{background:rgba(120,112,105,.25);border-color:#8f8983}
+  .seat.closed{background:#eae8e6;border-color:#a8a29b}
   .parkmoji{font-size:15px;line-height:1;opacity:.5}
   .parkmoji:hover{opacity:.9}
 
   /* legend */
-  .legend{max-width:560px;margin:10px auto 0;padding:0 14px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;
-    font-size:11.5px;font-weight:700;color:var(--mut)}
-  .legend .k{display:flex;align-items:center;gap:5px}
-  .legend .sw{width:11px;height:11px;border-radius:2px;border:1.5px solid;box-sizing:border-box;display:inline-block}
-  .legend .sw.open{background:rgba(22,127,104,.30);border-color:#167f68}
-  .legend .sw.pending{background:rgba(201,180,92,.55);border-color:#a68a2e}
+  .legend{max-width:560px;margin:9px auto 0;padding:0 14px;display:flex;flex-wrap:wrap;gap:9px;align-items:center;
+    font-size:11px;font-weight:700;color:var(--mut);line-height:1.3}
+  .legend .k{display:flex;align-items:center;gap:4px}
+  .legend .sw{width:10px;height:10px;border-radius:1.5px;border:1px solid;box-sizing:border-box;display:inline-block}
+  .legend .sw.open{background:#e4f2ee;border-color:#167f68}
+  .legend .sw.pending{background:#f5eccb;border-color:#a68a2e}
   .legend .sw.held{background:#167f68;border-color:#0f5c4b}
-  .legend .sw.closed{background:rgba(120,112,105,.25);border-color:#8f8983}
+  .legend .sw.closed{background:#eae8e6;border-color:#a8a29b}
 
   /* event intro frame */
   .scrim{position:fixed;inset:0;background:rgba(20,17,22,.55);backdrop-filter:blur(3px);z-index:200;
@@ -325,7 +326,8 @@
       if(highlightId===v.id)el.classList.add("highlighted");
     });
 
-    // sidewalk spot cards
+    // sidewalk spot cards — only spots with something to report (pending/held/closed) get a card;
+    // "open" stays on the map only (43+ identical cards is clutter, not information)
     if(spots.length){
       $("spotsHead").style.display="block";
       var byState={open:0,pending:0,held:0,closed:0};
@@ -337,9 +339,12 @@
       $("spotsCount").style.display="block";
       $("spotsCount").textContent=parts.join(" · ");
       var sbox=$("spotCards");
+      var shown=0;
       spots.forEach(function(s){
         var st=seatState(s);
-        var el=document.createElement("div");el.className="v"+(st!=="held"?" open":"");el.id="card-s-"+s.id;
+        if(st==="open"&&highlightId!==s.id)return;  // skip — the map + legend already cover open spots
+        shown++;
+        var el=document.createElement("div");el.className="v"+(st==="open"?" open":"");el.id="card-s-"+s.id;
         if(st!=="held"){
           var blurb=st==="pending"?"Someone's asked for this one — not settled yet."
                    :st==="closed"?"Not available this month."
@@ -369,6 +374,11 @@
         sbox.appendChild(el);
         if(highlightId===s.id)el.classList.add("highlighted");
       });
+      if(!shown){
+        var hint=document.createElement("div");hint.className="notice";hint.style.padding="4px 2px 0";
+        hint.innerHTML=byState.open+' open booths — tap ▤ Vendor booths on the map above to browse them, or <a href="../vendor-signup.html">grab one now →</a>';
+        sbox.appendChild(hint);
+      }
     }
 
     function panTo(key){
