@@ -15,6 +15,27 @@
       "area": "Downtown Bakersfield Arts District",
       "blurb": "Art, coffee, vintage, music — the downtown shops stay open late. Walk in, say hi, keep it local.",
       "logistics_note": "Streets stay open all night — every vendor spot is on the sidewalk, not the road. Keep at least 4 feet of clear, unobstructed path for pedestrians and wheelchair users at all times — never block a curb ramp, crosswalk, or building entrance. Booth zone: Eye St from 18th (at the public garage) to West 21st St, both sidewalks, plus the 19th & Eye corner extending onto 19th St. Spacing is based on a real 6ft vendor table (9ft pitch) — full corridor could theoretically hold ~386 booths both sides; these 28 are a starter layout on the busiest 2 blocks, not the ceiling.",
+      "boundary": {
+        "label": "Event area — Truxtun to 21st, F St to L St",
+        "polygon": [
+          [
+            35.373403,
+            -119.023417
+          ],
+          [
+            35.373403,
+            -119.016319
+          ],
+          [
+            35.378284,
+            -119.016319
+          ],
+          [
+            35.378284,
+            -119.023417
+          ]
+        ]
+      },
       "corridor": {
         "label": "Eye Street — the walk corridor",
         "path": [

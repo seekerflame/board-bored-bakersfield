@@ -18,23 +18,64 @@
   h1{font-size:clamp(22px,6.5vw,30px);letter-spacing:-.5px;padding:0 16px 2px}
   .sub{color:var(--mut);font-size:13.5px;padding:0 16px 12px}
   #map{height:46vh;min-height:300px;width:100%;z-index:1}
-  .pinmoji{font-size:30px;line-height:1;filter:drop-shadow(0 3px 4px #0006);transform:translate(-2px,-6px)}
-  .list{max-width:560px;margin:0 auto;padding:14px 14px 30px}
-  .count{font-size:13px;font-weight:800;color:var(--acc2);text-transform:uppercase;letter-spacing:1px;margin:4px 2px 10px}
-  .v{background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:15px 16px;margin-bottom:10px;cursor:pointer}
+  /* storefronts: permanent, territorial — kept legible but visually quiet so the street reads through */
+  .pinmoji{font-size:21px;line-height:1;opacity:.62;filter:drop-shadow(0 1px 2px #0004);transition:opacity .15s}
+  .pinmoji:hover{opacity:1}
+  /* vendor booths: seat-map squares, not pins */
+  .seat{width:11px;height:11px;border-radius:2px;border:1.5px solid;box-sizing:border-box;transition:transform .1s}
+  .seat:hover{transform:scale(1.45)}
+  .seat.open{background:rgba(22,127,104,.30);border-color:#167f68}
+  .seat.pending{background:rgba(201,180,92,.55);border-color:#a68a2e}
+  .seat.held{background:#167f68;border-color:#0f5c4b}
+  .seat.closed{background:rgba(120,112,105,.25);border-color:#8f8983}
+  .parkmoji{font-size:15px;line-height:1;opacity:.5}
+  .parkmoji:hover{opacity:.9}
+
+  /* legend */
+  .legend{max-width:560px;margin:10px auto 0;padding:0 14px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;
+    font-size:11.5px;font-weight:700;color:var(--mut)}
+  .legend .k{display:flex;align-items:center;gap:5px}
+  .legend .sw{width:11px;height:11px;border-radius:2px;border:1.5px solid;box-sizing:border-box;display:inline-block}
+  .legend .sw.open{background:rgba(22,127,104,.30);border-color:#167f68}
+  .legend .sw.pending{background:rgba(201,180,92,.55);border-color:#a68a2e}
+  .legend .sw.held{background:#167f68;border-color:#0f5c4b}
+  .legend .sw.closed{background:rgba(120,112,105,.25);border-color:#8f8983}
+
+  /* event intro frame */
+  .scrim{position:fixed;inset:0;background:rgba(20,17,22,.55);backdrop-filter:blur(3px);z-index:200;
+    display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .2s}
+  .scrim.on{opacity:1;pointer-events:auto}
+  .frame{background:var(--card);border-radius:20px;max-width:420px;width:100%;padding:24px 22px 20px;
+    box-shadow:0 24px 60px -20px #000a;transform:translateY(8px);transition:transform .2s}
+  .scrim.on .frame{transform:translateY(0)}
+  .frame .kick{font-size:11px;letter-spacing:3px;font-weight:900;text-transform:uppercase;color:var(--acc);margin-bottom:8px}
+  .frame h2{font-size:26px;letter-spacing:-.5px;line-height:1.1;margin-bottom:10px}
+  .frame .when{font-size:15px;font-weight:800;margin-bottom:4px}
+  .frame .where{font-size:14px;color:var(--mut);line-height:1.5;margin-bottom:12px}
+  .frame .blurb{font-size:14px;line-height:1.55;color:#4a443e;margin-bottom:16px}
+  .frame .stats{display:flex;gap:8px;margin-bottom:16px}
+  .frame .stat{flex:1;background:var(--pap);border:1px solid var(--line);border-radius:11px;padding:9px 10px;text-align:center}
+  .frame .stat .n{font-weight:900;font-size:19px;display:block;line-height:1.1}
+  .frame .stat .l{font-size:10px;color:var(--mut);text-transform:uppercase;letter-spacing:.5px;margin-top:3px}
+  .frame .go{appearance:none;border:none;width:100%;background:var(--ink);color:#fff;font:inherit;font-weight:800;
+    font-size:16px;border-radius:13px;padding:15px;cursor:pointer}
+  .frame .alt{display:block;text-align:center;margin-top:10px;font-size:13.5px;font-weight:800;color:var(--acc2);text-decoration:none}
+  .list{max-width:560px;margin:0 auto;padding:10px 14px 30px}
+  .count{font-size:12px;font-weight:800;color:var(--acc2);text-transform:uppercase;letter-spacing:1px;margin:4px 2px 8px}
+  .v{background:var(--card);border:1.5px solid var(--line);border-radius:13px;padding:10px 12px;margin-bottom:7px;cursor:pointer}
   .v:active{transform:scale(.99)}
-  .v .top{display:flex;align-items:center;gap:10px}
-  .v .emo{font-size:26px}
-  .v .nm{font-weight:800;font-size:17px;letter-spacing:-.2px;flex:1}
-  .v .cat{font-size:11px;font-weight:800;color:var(--mut);text-transform:uppercase;letter-spacing:.6px}
-  .v .addr{font-size:13.5px;color:var(--mut);margin-top:6px}
-  .v .hrs{font-size:13.5px;color:var(--ink);font-weight:700;margin-top:2px}
-  .v .note{font-size:14px;color:#4a443e;margin-top:6px;line-height:1.45}
-  .v .links{margin-top:8px;display:flex;gap:8px;flex-wrap:wrap}
-  .v .links a,.v .links button{font-size:13px;font-weight:800;color:var(--acc2);text-decoration:none;border:1.5px solid var(--line);
-    border-radius:999px;padding:6px 12px;background:#fff;font:inherit;cursor:pointer}
+  .v .top{display:flex;align-items:center;gap:8px}
+  .v .emo{font-size:18px;opacity:.75}
+  .v .nm{font-weight:800;font-size:14.5px;letter-spacing:-.1px;flex:1}
+  .v .cat{font-size:10px;font-weight:800;color:var(--mut);text-transform:uppercase;letter-spacing:.5px}
+  .v .addr{font-size:12px;color:var(--mut);margin-top:3px}
+  .v .hrs{font-size:12px;color:var(--ink);font-weight:700;margin-top:1px}
+  .v .note{font-size:12.5px;color:#4a443e;margin-top:4px;line-height:1.4}
+  .v .links{margin-top:6px;display:flex;gap:6px;flex-wrap:wrap}
+  .v .links a,.v .links button{font-size:11.5px;font-weight:800;color:var(--acc2);text-decoration:none;border:1.5px solid var(--line);
+    border-radius:999px;padding:4px 10px;background:#fff;font:inherit;cursor:pointer}
   .v.open{border-style:dashed}
-  .v .openflag{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.6px;color:var(--acc2)}
+  .v .openflag{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.6px;color:var(--acc2)}
   .notice{max-width:560px;margin:0 auto;padding:0 14px 4px;font-size:13px;color:var(--mut)}
   .sechead{max-width:560px;margin:22px auto 0;padding:0 14px;font-size:13px;font-weight:800;color:var(--acc2);
     text-transform:uppercase;letter-spacing:1px}
@@ -66,6 +107,14 @@
 
 <div id="map" role="img" aria-label="Map of First Friday — every pin is also listed as a card below"></div>
 
+<div class="legend" id="legend" style="display:none">
+  <span class="k"><span class="sw open"></span>Open</span>
+  <span class="k"><span class="sw pending"></span>Pending</span>
+  <span class="k"><span class="sw held"></span>Taken</span>
+  <span class="k"><span class="sw closed"></span>Closed</span>
+  <span class="k" style="color:var(--mut)">· Booths are off by default — flip them on with the ▤ layers button</span>
+</div>
+
 <div class="list">
   <div class="count" id="count">Loading the walk…</div>
   <div id="vendors"></div>
@@ -87,6 +136,19 @@
 </footer>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+<div class="scrim" id="scrim" role="dialog" aria-modal="true" aria-labelledby="frameName">
+  <div class="frame">
+    <div class="kick" id="frameKick">● Board Bored</div>
+    <h2 id="frameName">First Friday Art Walk</h2>
+    <div class="when" id="frameWhen"></div>
+    <div class="where" id="frameWhere"></div>
+    <div class="blurb" id="frameBlurb"></div>
+    <div class="stats" id="frameStats"></div>
+    <button class="go" id="frameGo">See the map →</button>
+    <a class="alt" href="../vendor-signup.html">🏪 Get a booth or register as an artist</a>
+  </div>
+</div>
+
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 (function(){
@@ -95,6 +157,25 @@
     clearTimeout(t._);t._=setTimeout(function(){t.classList.remove("on")},2000);}
   var map, markers={};
   var highlightId=new URLSearchParams(location.search).get("highlight");
+
+  // booth state vocabulary — one place, used by map seats, cards and counts
+  // open = anyone can claim · pending = someone asked, not settled · held = settled, they're coming · closed = not offered
+  function seatState(s){
+    var st=(s.status||"open").toLowerCase();
+    if(st==="confirmed"||st==="held")return s.vendor?"held":"open";
+    if(st==="pending")return "pending";
+    if(st==="closed")return "closed";
+    return "open";
+  }
+  var STATE_LABEL={open:"Open",pending:"Pending",held:"Taken",closed:"Closed"};
+  function seatPopup(s,st){
+    if(st==="held"&&s.vendor)
+      return "<b>"+(s.vendor.emoji||"")+" "+(s.vendor.name||s.label)+"</b><br>"+s.label+
+             (s.vendor.category?" · "+s.vendor.category:"");
+    if(st==="pending")return "<b>"+s.label+"</b><br>Pending — someone's asked for this one";
+    if(st==="closed")return "<b>"+s.label+"</b><br>Not available this month";
+    return "<b>"+s.label+"</b><br>Open — claim it on the signup page";
+  }
 
   function shareLink(id,name,extra){
     var url=location.origin+location.pathname+"?highlight="+encodeURIComponent(id);
@@ -147,43 +228,56 @@
     map=L.map("map",{scrollWheelZoom:false}).setView([c.lat,c.lng],16);
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
       {maxZoom:19,attribution:"© OpenStreetMap contributors"}).addTo(map);
-    if(allPts.length>1){map.fitBounds(allPts.map(function(v){return [v.lat,v.lng]}),{padding:[36,36]});}
 
-    // Eye Street corridor — the assumed walkable/table-space spine, drawn under everything else, always visible
+    // event boundary — Truxtun / F St / 21st / L St
+    if(ev.boundary&&ev.boundary.polygon&&ev.boundary.polygon.length>2){
+      L.polygon(ev.boundary.polygon,{color:"#ca421a",weight:2,opacity:.55,dashArray:"7,7",
+        fill:true,fillColor:"#ca421a",fillOpacity:.035,interactive:false}).addTo(map);
+    }
+
+    // fit to the event footprint (boundary if present, else the pins)
+    if(ev.boundary&&ev.boundary.polygon&&ev.boundary.polygon.length>2){
+      map.fitBounds(ev.boundary.polygon,{padding:[14,14]});
+    } else if(allPts.length>1){
+      map.fitBounds(allPts.map(function(v){return [v.lat,v.lng]}),{padding:[36,36]});
+    }
+
+    // Eye Street corridor — the walkable/table-space spine, drawn under everything else, always visible
     if(corridor&&corridor.path&&corridor.path.length>1){
-      L.polyline(corridor.path,{color:"#3a3430",weight:7,opacity:.5,lineCap:"round"}).addTo(map);
-      L.polyline(corridor.path,{color:"#e8b23d",weight:3.5,opacity:.95,dashArray:"1,10",lineCap:"round"}).addTo(map);
+      L.polyline(corridor.path,{color:"#3a3430",weight:6,opacity:.38,lineCap:"round"}).addTo(map);
+      L.polyline(corridor.path,{color:"#e8b23d",weight:3,opacity:.8,dashArray:"1,10",lineCap:"round"}).addTo(map);
     }
     (corridor&&corridor.intersections||[]).forEach(function(x){
-      L.circleMarker([x.lat,x.lng],{radius:5,color:"#e8b23d",weight:2,fillColor:"#fff",fillOpacity:1})
+      L.circleMarker([x.lat,x.lng],{radius:4,color:"#e8b23d",weight:2,fillColor:"#fff",fillOpacity:1,opacity:.75})
         .addTo(map).bindPopup("<b>🚦 "+x.label+"</b><br>Prime corner — high foot traffic");
     });
 
     var storefrontLayer=L.layerGroup(), spotLayer=L.layerGroup(), parkingLayer=L.layerGroup();
 
     vs.forEach(function(v){
-      var icon=L.divIcon({html:'<div class="pinmoji">'+(v.emoji||"📍")+'</div>',className:"",iconSize:[34,34],iconAnchor:[17,28]});
+      var icon=L.divIcon({html:'<div class="pinmoji">'+(v.emoji||"📍")+'</div>',className:"",iconSize:[24,24],iconAnchor:[12,20]});
       markers["v:"+v.id]=L.marker([v.lat,v.lng],{icon:icon}).addTo(storefrontLayer)
         .bindPopup("<b>"+(v.emoji||"")+" "+v.name+"</b><br>"+(v.hours||"")+"<br>"+(v.address||""));
     });
+
+    // booths render as seat-map squares — state, not emoji
     ss.forEach(function(s){
-      var open=s.status!=="confirmed"||!s.vendor;
-      var emo=open?"🟢":(s.vendor.emoji||"📍");
-      var icon=L.divIcon({html:'<div class="pinmoji">'+emo+'</div>',className:"",iconSize:[34,34],iconAnchor:[17,28]});
-      var pop=open?"<b>🟢 "+s.label+"</b><br>Open — first come, first served"
-                  :"<b>"+emo+" "+(s.vendor.name||s.label)+"</b><br>"+s.label+(s.vendor.category?" · "+s.vendor.category:"");
-      markers["s:"+s.id]=L.marker([s.lat,s.lng],{icon:icon}).addTo(spotLayer).bindPopup(pop);
+      var st=seatState(s);
+      var icon=L.divIcon({html:'<div class="seat '+st+'"></div>',className:"",iconSize:[11,11],iconAnchor:[6,6]});
+      markers["s:"+s.id]=L.marker([s.lat,s.lng],{icon:icon}).addTo(spotLayer).bindPopup(seatPopup(s,st));
     });
     pk.forEach(function(p){
-      var icon=L.divIcon({html:'<div class="pinmoji" style="font-size:26px">🅿️</div>',className:"",iconSize:[30,30],iconAnchor:[15,24]});
+      var icon=L.divIcon({html:'<div class="parkmoji">🅿️</div>',className:"",iconSize:[18,18],iconAnchor:[9,14]});
       L.marker([p.lat,p.lng],{icon:icon}).addTo(parkingLayer)
         .bindPopup("<b>🅿️ "+(p.label||"Parking")+"</b>"+(p.note?"<br>"+p.note:""));
     });
 
-    storefrontLayer.addTo(map); spotLayer.addTo(map); parkingLayer.addTo(map);
-    var layerCtl={"🏪 Storefronts":storefrontLayer,"🚏 Vendor spots":spotLayer};
+    // storefronts + parking on by default; booths OFF until someone asks for them
+    storefrontLayer.addTo(map); parkingLayer.addTo(map);
+    var layerCtl={"🏪 Storefronts":storefrontLayer,"▤ Vendor booths":spotLayer};
     if(pk.length)layerCtl["🅿️ Parking"]=parkingLayer;
     L.control.layers(null,layerCtl,{collapsed:true}).addTo(map);
+    if(ss.length)$("legend").style.display="flex";
 
     // live open-now badge — only meaningful ON the event date itself, since hours_start/
     // hours_end describe First-Friday-night hours, not the vendor's normal daily hours.
@@ -234,17 +328,25 @@
     // sidewalk spot cards
     if(spots.length){
       $("spotsHead").style.display="block";
-      var openCt=spots.filter(function(s){return s.status!=="confirmed"||!s.vendor}).length;
+      var byState={open:0,pending:0,held:0,closed:0};
+      spots.forEach(function(s){byState[seatState(s)]++;});
+      var parts=[spots.length+" booths"];
+      ["open","pending","held","closed"].forEach(function(k){
+        if(byState[k])parts.push(byState[k]+" "+STATE_LABEL[k].toLowerCase());
+      });
       $("spotsCount").style.display="block";
-      $("spotsCount").textContent=spots.length+" spots · "+openCt+" open · "+(spots.length-openCt)+" confirmed";
+      $("spotsCount").textContent=parts.join(" · ");
       var sbox=$("spotCards");
       spots.forEach(function(s){
-        var open=s.status!=="confirmed"||!s.vendor;
-        var el=document.createElement("div");el.className="v"+(open?" open":"");el.id="card-s-"+s.id;
-        if(open){
-          el.innerHTML='<div class="top"><span class="emo">🟢</span>'+
-            '<span class="nm">'+s.label+'</span><span class="openflag">Open</span></div>'+
-            '<div class="note">First come, first served — sidewalk only, streets stay open. <a href="../vendor-signup.html">Claim this spot →</a></div>';
+        var st=seatState(s);
+        var el=document.createElement("div");el.className="v"+(st!=="held"?" open":"");el.id="card-s-"+s.id;
+        if(st!=="held"){
+          var blurb=st==="pending"?"Someone's asked for this one — not settled yet."
+                   :st==="closed"?"Not available this month."
+                   :'First come, first served — sidewalk only, streets stay open. <a href="../vendor-signup.html">Claim this spot →</a>';
+          el.innerHTML='<div class="top"><span class="emo"><span class="seat '+st+'" style="display:inline-block"></span></span>'+
+            '<span class="nm">'+s.label+'</span><span class="openflag">'+STATE_LABEL[st]+'</span></div>'+
+            '<div class="note">'+blurb+'</div>';
         } else {
           var v=s.vendor;
           var links="";
@@ -278,6 +380,37 @@
       var key=markers["v:"+highlightId]?"v:"+highlightId:(markers["s:"+highlightId]?"s:"+highlightId:null);
       if(key){setTimeout(function(){panTo(key);},300);}
     }
+
+    // ---- event intro frame: what this is, before the map ----
+    (function(){
+      var seen=false;
+      try{seen=sessionStorage.getItem("bb_ff_frame_"+ev.date)==="1";}catch(e){}
+      if(seen||highlightId)return;  // a shared deep-link goes straight to its pin
+      $("frameName").textContent=ev.name;
+      $("frameWhen").textContent=(evd?evd.toLocaleDateString(undefined,{weekday:"long",month:"long",day:"numeric"}):ev.date||"")+
+        (ev.hours?" · "+ev.hours:"");
+      $("frameWhere").textContent=ev.area||"";
+      $("frameBlurb").textContent=ev.blurb||"";
+      var openCt=spots.filter(function(s){return seatState(s)==="open";}).length;
+      var st=$("frameStats");st.innerHTML="";
+      [[vendors.length,vendors.length===1?"shop open":"shops open"],
+       [openCt,openCt===1?"booth open":"booths open"],
+       [pk.length,pk.length===1?"parking lot":"parking lots"]]
+        .forEach(function(pair){
+          if(!pair[0])return;
+          var d2=document.createElement("div");d2.className="stat";
+          d2.innerHTML='<span class="n">'+pair[0]+'</span><span class="l">'+pair[1]+'</span>';
+          st.appendChild(d2);
+        });
+      var scrim=$("scrim");
+      function close(){scrim.classList.remove("on");
+        try{sessionStorage.setItem("bb_ff_frame_"+ev.date,"1");}catch(e){}}
+      $("frameGo").addEventListener("click",close);
+      scrim.addEventListener("click",function(e){if(e.target===scrim)close();});
+      document.addEventListener("keydown",function(e){if(e.key==="Escape")close();});
+      scrim.classList.add("on");
+      setTimeout(function(){$("frameGo").focus();},220);
+    })();
 
     $("mailFoot").href="mailto:"+email; $("mailFoot").textContent=email;
   }).catch(function(e){$("count").textContent="Couldn't load the map data.";});

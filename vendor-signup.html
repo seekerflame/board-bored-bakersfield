@@ -16,9 +16,9 @@
   .tag{color:var(--mut);font-size:15px;line-height:1.5;margin-bottom:16px}
   .notice{background:#fff8ee;border:1.5px solid #f0dcb8;border-radius:14px;padding:12px 14px;font-size:13.5px;
     line-height:1.5;margin-bottom:16px}
-  .toggle{display:flex;gap:8px;margin-bottom:16px}
-  .toggle button{flex:1;appearance:none;border:1.5px solid var(--line);background:#fff;color:var(--ink);
-    font:inherit;font-weight:800;font-size:14px;border-radius:12px;padding:13px 8px;cursor:pointer}
+  .toggle{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+  .toggle button{flex:1;min-width:100px;appearance:none;border:1.5px solid var(--line);background:#fff;color:var(--ink);
+    font:inherit;font-weight:800;font-size:13px;border-radius:12px;padding:12px 6px;cursor:pointer}
   .toggle button.on{border-color:var(--ink);background:var(--ink);color:#fff}
   .card{background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:18px;margin-bottom:14px}
   .avail{font-size:13.5px;font-weight:800;color:var(--acc2);margin-bottom:4px}
@@ -48,8 +48,9 @@
   <div class="notice">🚸 Streets stay open all night. Every sidewalk spot must keep at least 4 feet of clear, unobstructed path for pedestrians and wheelchair users — never block a curb ramp, crosswalk, driveway, or building entrance. First come, first served.</div>
 
   <div class="toggle">
-    <button id="tabStore" class="on" type="button">🏪 Storefront on the route</button>
-    <button id="tabSpot" type="button">🚏 Sidewalk / pop-up spot</button>
+    <button id="tabStore" class="on" type="button">🏪 Storefront</button>
+    <button id="tabSpot" type="button">🚏 Sidewalk spot</button>
+    <button id="tabArtist" type="button">🎨 Artist / wares</button>
   </div>
 
   <form class="card" id="formStore">
@@ -80,6 +81,19 @@
     <div class="status" id="spStatus" role="status" aria-live="polite"></div>
   </form>
 
+  <form class="card" id="formArtist" style="display:none">
+    <div class="avail">Register ahead — show up on the map before First Friday.</div>
+    <label for="arName">Artist / studio name *</label><input id="arName" required>
+    <label for="arMedium">Medium</label><input id="arMedium" placeholder="Painting · Ceramics · Jewelry · Photography · ...">
+    <label for="arWares">Your wares (shown on the map so people can browse ahead)</label>
+    <textarea id="arWares" placeholder="Small original paintings $20-80, hand-thrown mugs $25, stickers $3."></textarea>
+    <label for="arPortfolio">Portfolio / Instagram / website (optional)</label><input id="arPortfolio" placeholder="@handle or https://">
+    <label for="arContact">Your contact (email or phone — not shown publicly) *</label><input id="arContact" required>
+    <button class="btn" type="submit">Send it in</button>
+    <div class="hint">This is a preview, not a store — people browse your wares here, then buy in person at the event. No online checkout, nothing charged through this page.</div>
+    <div class="status" id="arStatus" role="status" aria-live="polite"></div>
+  </form>
+
   <div class="card success" id="successCard">
     <div class="big">✅</div>
     <div style="font-weight:800;font-size:17px;margin-bottom:6px">Got it — thanks!</div>
@@ -106,14 +120,17 @@
   var CONTACT_EMAIL = "boardquestionmark@gmail.com";
 
   // ---------- tabs ----------
-  $("tabStore").onclick=function(){
-    $("tabStore").classList.add("on");$("tabSpot").classList.remove("on");
-    $("formStore").style.display="block";$("formSpot").style.display="none";
-  };
-  $("tabSpot").onclick=function(){
-    $("tabSpot").classList.add("on");$("tabStore").classList.remove("on");
-    $("formSpot").style.display="block";$("formStore").style.display="none";
-  };
+  var tabs={store:["tabStore","formStore"],spot:["tabSpot","formSpot"],artist:["tabArtist","formArtist"]};
+  function showTab(which){
+    Object.keys(tabs).forEach(function(k){
+      var on=k===which;
+      $(tabs[k][0]).classList.toggle("on",on);
+      $(tabs[k][1]).style.display=on?"block":"none";
+    });
+  }
+  $("tabStore").onclick=function(){showTab("store");};
+  $("tabSpot").onclick=function(){showTab("spot");};
+  $("tabArtist").onclick=function(){showTab("artist");};
 
   // ---------- load live event + spot availability ----------
   fetch("data/board.json",{cache:"no-store"}).then(function(r){return r.json()}).then(function(d){
@@ -211,6 +228,29 @@
         ["Category",payload.category],["What you're doing / selling",payload.note],
         ["Instagram",payload.instagram],["Website",payload.website],["Contact",payload.contact]]);
       showSuccess($("formSpot"));
+    }
+  });
+
+  // ---------- artist / wares form ----------
+  $("formArtist").addEventListener("submit",function(e){
+    e.preventDefault();
+    var payload={
+      _subject:"Artist registration — First Friday",
+      type:"artist",
+      name:$("arName").value.trim(),
+      medium:$("arMedium").value.trim(),
+      wares:$("arWares").value.trim(),
+      portfolio:$("arPortfolio").value.trim(),
+      contact:$("arContact").value.trim()
+    };
+    if(!payload.name||!payload.contact){$("arStatus").className="status err";
+      $("arStatus").textContent="Artist name and contact are required.";return;}
+    if(FORMSPREE_ENDPOINT){
+      submitViaFormspree(payload,$("arStatus"),function(){showSuccess($("formArtist"));});
+    } else {
+      mailFallback(payload._subject,[["Artist / studio name",payload.name],["Medium",payload.medium],
+        ["Wares",payload.wares],["Portfolio",payload.portfolio],["Contact",payload.contact]]);
+      showSuccess($("formArtist"));
     }
   });
 })();

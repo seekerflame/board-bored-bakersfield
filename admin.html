@@ -123,10 +123,13 @@
     <div class="hint" id="spLoc">Tap the map to place this spot.</div>
     <div id="spMap" role="img" aria-label="Tap or use arrow keys after focusing the map to place this spot's pin"></div>
     <div class="grouplabel" id="spStatusLabel">Status</div>
-    <div class="row" role="group" aria-labelledby="spStatusLabel">
-      <button class="pill" id="spOpen" type="button">🟢 Open (first come, first served)</button>
-      <button class="pill" id="spConfirmed" type="button">✅ Confirmed — vendor assigned</button>
+    <div class="row" role="group" aria-labelledby="spStatusLabel" style="flex-wrap:wrap">
+      <button class="pill" id="spOpen" type="button">Open</button>
+      <button class="pill" id="spPending" type="button">Pending</button>
+      <button class="pill" id="spConfirmed" type="button">Taken</button>
+      <button class="pill" id="spClosed" type="button">Closed</button>
     </div>
+    <div class="hint">Open = anyone can claim it · Pending = someone asked, not settled · Taken = settled, they're coming (fill in who below) · Closed = not offered this month.</div>
     <div id="spVendorFields" style="display:none">
       <label for="spVName">Vendor / business name</label><input id="spVName" placeholder="Who's in this spot">
       <label for="spVCat">Category</label><input id="spVCat" placeholder="Food truck · Craft · Music · ...">
@@ -358,8 +361,12 @@
     if(!ss.length){box.innerHTML='<div class="hint">No spots yet — walk the sidewalk, then Save a spot below to drop the first pin.</div>';}
     ss.forEach(function(s){
       var r=document.createElement("div");r.className="vrow";
-      var who = s.status==="confirmed" && s.vendor ? s.vendor.name : "— open, first come first served —";
-      var badge = s.status==="confirmed" && s.vendor ? (s.vendor.emoji||"✅") : "🟢";
+      var st=(s.status||"open").toLowerCase();
+      var who, badge;
+      if(st==="confirmed"&&s.vendor){who=s.vendor.name;badge=s.vendor.emoji||"✅";}
+      else if(st==="pending"){who="— pending, not settled —";badge="🟡";}
+      else if(st==="closed"){who="— closed this month —";badge="⬜";}
+      else {who="— open, first come first served —";badge="🟢";}
       r.innerHTML='<span class="emo">'+badge+'</span>'+
         '<span class="nm">'+s.label+'<span class="c">'+who+'</span></span>';
       var edit=document.createElement("button");edit.className="pill";edit.textContent="Edit";
@@ -384,8 +391,10 @@
         .addTo(map2).bindPopup("🚦 "+x.label+" — prime corner");
     });
     ss.forEach(function(s){
-      var icon=(s.status==="confirmed"&&s.vendor&&s.vendor.emoji)?s.vendor.emoji:"🟢";
-      L.marker([s.lat,s.lng],{icon:L.divIcon({html:'<div style="font-size:20px">'+icon+'</div>',className:"",iconSize:[24,24]})})
+      var st=(s.status||"open").toLowerCase();
+      var icon=(st==="confirmed"&&s.vendor&&s.vendor.emoji)?s.vendor.emoji
+              :st==="pending"?"🟡":st==="closed"?"⬜":"🟢";
+      L.marker([s.lat,s.lng],{icon:L.divIcon({html:'<div style="font-size:16px;opacity:.8">'+icon+'</div>',className:"",iconSize:[20,20]})})
         .addTo(map2).bindPopup(s.label);});
     map2.on("click",function(e2){setSpotPin(e2.latlng.lat,e2.latlng.lng,"tapped on map");});
   }
@@ -403,11 +412,15 @@
   function setSpotStatus(st){
     spotStatus=st;
     $("spOpen").classList.toggle("on",st==="open");
+    $("spPending").classList.toggle("on",st==="pending");
     $("spConfirmed").classList.toggle("on",st==="confirmed");
+    $("spClosed").classList.toggle("on",st==="closed");
     $("spVendorFields").style.display = st==="confirmed" ? "block" : "none";
   }
   $("spOpen").onclick=function(){setSpotStatus("open");};
+  $("spPending").onclick=function(){setSpotStatus("pending");};
   $("spConfirmed").onclick=function(){setSpotStatus("confirmed");};
+  $("spClosed").onclick=function(){setSpotStatus("closed");};
 
   function clearSpotEditor(){
     editingSpotId=null; $("spTitle").textContent="➕ New spot";
