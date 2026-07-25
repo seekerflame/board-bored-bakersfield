@@ -32,8 +32,23 @@
           {"label": "21st & Eye", "lat": 35.3782520, "lng": -119.0199030}
         ]
       },
-      "spots": [],
-      "parking": [],
+      "history": [
+        {"date": "2026-07-03", "note": "The first First Friday Art Walk under Board Bored — 5 downtown businesses, one live map, zero apps."}
+      ],
+      "spots": [
+        {"id": "spot_01", "label": "Spot 1", "lat": 35.374732, "lng": -119.019840, "status": "open", "vendor": null, "note": "Provisional draft placement — verify sidewalk width + 4ft clear path in person before First Friday."},
+        {"id": "spot_02", "label": "Spot 2", "lat": 35.375271, "lng": -119.019841, "status": "open", "vendor": null, "note": "Provisional draft placement — verify sidewalk width + 4ft clear path in person before First Friday."},
+        {"id": "spot_03", "label": "Spot 3", "lat": 35.375811, "lng": -119.019836, "status": "open", "vendor": null, "note": "Provisional draft placement — verify sidewalk width + 4ft clear path in person before First Friday."},
+        {"id": "spot_04", "label": "Spot 4", "lat": 35.376351, "lng": -119.019829, "status": "open", "vendor": null, "note": "Provisional draft placement — verify sidewalk width + 4ft clear path in person before First Friday."},
+        {"id": "spot_05", "label": "Spot 5", "lat": 35.376890, "lng": -119.019827, "status": "open", "vendor": null, "note": "Provisional draft placement — verify sidewalk width + 4ft clear path in person before First Friday."},
+        {"id": "spot_06", "label": "Spot 6", "lat": 35.377430, "lng": -119.019824, "status": "open", "vendor": null, "note": "Provisional draft placement — verify sidewalk width + 4ft clear path in person before First Friday."},
+        {"id": "spot_07", "label": "Spot 7", "lat": 35.377969, "lng": -119.019817, "status": "open", "vendor": null, "note": "Provisional draft placement — verify sidewalk width + 4ft clear path in person before First Friday."}
+      ],
+      "parking": [
+        {"id": "pk_18th_eye", "label": "18th & Eye Public Garage", "lat": 35.375374, "lng": -119.020182, "note": "1600 18th St — public garage, first 2 hours free."},
+        {"id": "pk_19th_eye", "label": "19th & Eye Free Public Garage", "lat": 35.376353, "lng": -119.019769, "note": "Free public parking garage at 19th & Eye."},
+        {"id": "pk_20th_mall", "label": "20th St Parking Mall", "lat": 35.377262, "lng": -119.020216, "note": "City diagonal-parking mall, 20th St between H & Eye."}
+      ],
       "vendors": [
         {
           "id": "biz_001",
