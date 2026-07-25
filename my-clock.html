@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>My Clock × the Board — Board Bored</title>
-<meta property="og:title" content="My Clock × the Board">
-<meta property="og:description" content="Your own 52-week/90-year life calendar, next to Bakersfield's First Friday timeline. Nothing you enter here leaves your browser.">
+<title>Bakersfield Timeline — Board Bored</title>
+<meta property="og:title" content="Bakersfield Timeline">
+<meta property="og:description" content="First Friday, month by month — a real, growing record of Bakersfield's downtown art walk.">
 <style>
   :root{--ink:#141116;--pap:#faf7f2;--card:#fff;--acc:#e4572e;--acc2:#17836c;--line:#e7e1d8;--mut:#7a736b;--live:#c9b45c;}
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -20,26 +20,8 @@
   section h2{font-size:18px;letter-spacing:-.2px;margin-bottom:4px}
   section .desc{color:var(--mut);font-size:13.5px;line-height:1.5;margin-bottom:14px}
 
-  .privacy{font-size:12px;font-weight:800;color:var(--acc2);text-transform:uppercase;letter-spacing:.5px;
-    background:#e9f4f1;border-radius:8px;padding:6px 10px;display:inline-block;margin-bottom:12px}
-
-  .birthrow{display:flex;gap:8px;margin-bottom:14px}
-  .birthrow input{flex:1;border:1.5px solid var(--line);border-radius:10px;padding:11px 12px;font:inherit;font-size:15px}
-  .birthrow button{appearance:none;border:none;background:var(--ink);color:#fff;font:inherit;font-weight:800;
-    border-radius:10px;padding:0 16px;cursor:pointer}
-
-  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin-bottom:14px}
-  .stat{background:var(--pap);border:1px solid var(--line);border-radius:10px;padding:9px 11px}
-  .stat .n{font-family:ui-monospace,Menlo,monospace;font-weight:700;font-size:17px;display:block}
-  .stat .l{color:var(--mut);font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
-
-  #grid{display:grid;grid-template-columns:repeat(52,1fr);gap:2px;margin-bottom:8px}
-  #grid .wk{aspect-ratio:1;border-radius:1.5px;background:var(--line)}
-  #grid .wk.lived{background:var(--acc)}
-  #grid .wk.now{background:var(--live);box-shadow:0 0 0 1px var(--ink)}
-  .gridnote{color:var(--mut);font-size:11.5px;line-height:1.5}
-  .gridnote b{color:var(--ink)}
-  @media (max-width:420px){#grid{grid-template-columns:repeat(26,1fr)}}
+  .privacy{font-size:12px;font-weight:800;color:var(--acc);text-transform:uppercase;letter-spacing:.5px;
+    background:#fbe9df;border-radius:8px;padding:6px 10px;display:inline-block;margin-bottom:12px}
 
   #timeline{position:relative;padding-left:22px;margin-bottom:4px}
   #timeline::before{content:"";position:absolute;left:5px;top:6px;bottom:6px;width:2px;background:var(--line)}
@@ -51,9 +33,6 @@
   .tl-date{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.6px;color:var(--acc2)}
   .tl-item.upcoming .tl-date{color:#a68a2e}
   .tl-note{font-size:13.5px;line-height:1.5;margin-top:2px}
-
-  .note{border:1.5px dashed var(--line);border-radius:12px;padding:12px 14px;font-size:12.5px;color:var(--mut);line-height:1.55}
-  .note b{color:var(--ink)}
 
   .rowbtn{display:flex;gap:10px;margin-top:4px}
   .rowbtn a{flex:1;appearance:none;text-align:center;text-decoration:none;border:1.5px solid var(--ink);
@@ -67,46 +46,21 @@
 <header>
   <a class="mark" href="./">● Board Bored</a>
 </header>
-<h1>My Clock × the Board</h1>
-<div class="sub">Your own life in weeks, next to what's actually happening around you right now. Two calendars, one page — personal on the left, public on the right.</div>
+<h1>Bakersfield Timeline</h1>
+<div class="sub">First Friday, month by month — a real, growing record of what's actually happened downtown.</div>
 
 <div class="wrap">
 
   <section>
-    <span class="privacy">🔒 Private — stays in this browser only</span>
-    <h2>My Clock</h2>
-    <div class="desc">One dot per week of a ~90-year life. Enter your birthday once — it's saved to this device's local storage, never sent anywhere. No account, no server, no tracking.</div>
-
-    <div class="birthrow">
-      <input type="date" id="birthdate" aria-label="Your birth date">
-      <button id="calc">Calculate</button>
-    </div>
-
-    <div class="stats" id="stats" style="display:none">
-      <div class="stat"><span class="n" id="statWeeks">—</span><span class="l">Weeks lived</span></div>
-      <div class="stat"><span class="n" id="statPct">—</span><span class="l">Of 90 years</span></div>
-      <div class="stat"><span class="n" id="statLeft">—</span><span class="l">Weeks left (est.)</span></div>
-      <div class="stat"><span class="n" id="statAge">—</span><span class="l">Current age</span></div>
-    </div>
-
-    <div id="grid"></div>
-    <div class="gridnote" id="gridnote">Enter a birth date above to render your grid — <b style="color:var(--acc)">filled</b> = lived, <b style="color:var(--live)">outlined</b> = this week, empty = ahead of you.</div>
-  </section>
-
-  <section>
-    <span class="privacy" style="background:#fbe9df;color:var(--acc)">🌍 Public — live from the Board</span>
-    <h2>Bakersfield Timeline</h2>
-    <div class="desc">First Friday, month by month — real dates only, growing as each one actually happens. Not a countdown, a record.</div>
+    <span class="privacy">🌍 Live from the Board</span>
+    <h2>First Friday history</h2>
+    <div class="desc">Real dates only, growing as each one actually happens. Not a countdown, a record.</div>
     <div id="timeline"></div>
     <div class="rowbtn">
       <a href="first-friday/">Open full map →</a>
       <a href="./">🏪 Get your shop listed</a>
     </div>
   </section>
-
-  <div class="note">
-    <b>Why two separate panels, not one shared calendar yet:</b> a real public exchange — where anyone can save their own birthday, opt in to a collective view, while your private data stays gated behind a login — needs real auth and a database (Supabase + Vercel is the scoped plan). That's a multi-day build, not something to fake with a client-only page. This page is the honest version of both halves today: your clock is 100% private and real; the public half is Board Bored's actual live event feed, also real. See <code>knowledge/GLOBAL_TIME_CLOCK_PROPOSAL_S58.md</code> for the full spec.
-  </div>
 
   <footer>
     © 2026 Board Bored · made in Bakersfield<br>
@@ -117,47 +71,7 @@
 <script>
 (function(){
   var $=function(id){return document.getElementById(id)};
-  var LS_KEY="boardbored_myclock_birthdate";
-  var LIFE_YEARS=90, WEEKS_PER_YEAR=52, TOTAL_WEEKS=LIFE_YEARS*WEEKS_PER_YEAR;
 
-  function renderClock(dateStr){
-    if(!dateStr)return;
-    var birth=new Date(dateStr+"T00:00:00");
-    if(isNaN(birth.getTime()))return;
-    var now=new Date();
-    var msPerWeek=7*24*60*60*1000;
-    var weeksLived=Math.floor((now-birth)/msPerWeek);
-    if(weeksLived<0){$("gridnote").textContent="That date is in the future — try again.";return;}
-    var pct=Math.min(100,(weeksLived/TOTAL_WEEKS*100));
-    var weeksLeft=Math.max(0,TOTAL_WEEKS-weeksLived);
-    var ageYears=Math.floor(weeksLived/WEEKS_PER_YEAR);
-
-    $("statWeeks").textContent=weeksLived.toLocaleString();
-    $("statPct").textContent=pct.toFixed(1)+"%";
-    $("statLeft").textContent=weeksLeft.toLocaleString();
-    $("statAge").textContent=ageYears;
-    $("stats").style.display="";
-
-    var grid=$("grid"); grid.innerHTML="";
-    for(var i=0;i<TOTAL_WEEKS;i++){
-      var cell=document.createElement("div");
-      cell.className="wk"+(i<weeksLived?" lived":"")+(i===weeksLived?" now":"");
-      grid.appendChild(cell);
-    }
-    $("gridnote").innerHTML=TOTAL_WEEKS.toLocaleString()+" total squares · <b>"+weeksLived.toLocaleString()+" filled</b> · this is entirely computed in your browser from the date you entered — nothing is uploaded.";
-  }
-
-  var saved=localStorage.getItem(LS_KEY);
-  if(saved){$("birthdate").value=saved; renderClock(saved);}
-
-  $("calc").addEventListener("click",function(){
-    var v=$("birthdate").value;
-    if(!v)return;
-    localStorage.setItem(LS_KEY,v);
-    renderClock(v);
-  });
-
-  // --- public half: Bakersfield / First Friday timeline, sourced from board.json ---
   function fmtDate(iso){
     var p=iso.split("-"); if(p.length!==3)return iso;
     var d=new Date(+p[0],+p[1]-1,+p[2]);

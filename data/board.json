@@ -61,7 +61,7 @@
           "hours": "6a–10p",
           "hours_start": "06:00",
           "hours_end": "22:00",
-          "note": "Open late for the art walk — coffee + espresso.",
+          "note": "Open late for the art walk — coffee + espresso. Poetry night, 6–8pm.",
           "instagram": "",
           "website": ""
         },
@@ -76,7 +76,7 @@
           "hours": "5p–9p (event)",
           "hours_start": "17:00",
           "hours_end": "21:00",
-          "note": "Member gallery show + live demos.",
+          "note": "Member gallery show + live demos. Feature wall + refreshments.",
           "instagram": "",
           "website": ""
         },
@@ -85,13 +85,13 @@
           "name": "Arts Council of Kern (ACK)",
           "emoji": "🏛️",
           "category": "Arts Org",
-          "lat": 35.3736,
-          "lng": -119.0195,
-          "address": "Info table — Downtown Bakersfield Arts District (exact spot TBD)",
+          "lat": 35.3753496,
+          "lng": -119.0132551,
+          "address": "1020 18th St, Bakersfield, CA 93301",
           "hours": "5p–9p (event)",
           "hours_start": "17:00",
           "hours_end": "21:00",
-          "note": "Info table — say hi and grab the walk lineup.",
+          "note": "Exhibiting from their home base — stop by and see what they're showing.",
           "instagram": "",
           "website": "https://kernarts.org/"
         },
@@ -106,7 +106,7 @@
           "hours": "5p–9p (event)",
           "hours_start": "17:00",
           "hours_end": "21:00",
-          "note": "Late-night browse — records, retro finds, First Friday-only deals.",
+          "note": "Live music vibes + vintage clothes — late-night browse, First Friday-only deals.",
           "instagram": "",
           "website": ""
         },
@@ -121,7 +121,7 @@
           "hours": "5p–9p (event)",
           "hours_start": "17:00",
           "hours_end": "21:00",
-          "note": "Open for the walk with a curated First Friday rack.",
+          "note": "$1 sale for the community — plus a curated First Friday rack.",
           "instagram": "",
           "website": ""
         }
