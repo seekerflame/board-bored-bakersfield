@@ -14,40 +14,341 @@
       "hours": "6:00 PM – 10:00 PM",
       "area": "Downtown Bakersfield Arts District",
       "blurb": "Art, coffee, vintage, music — the downtown shops stay open late. Walk in, say hi, keep it local.",
-      "logistics_note": "Streets stay open all night — every vendor spot is on the sidewalk, not the road. Keep at least 4 feet of clear, unobstructed path for pedestrians and wheelchair users at all times — never block a curb ramp, crosswalk, or building entrance.",
+      "logistics_note": "Streets stay open all night — every vendor spot is on the sidewalk, not the road. Keep at least 4 feet of clear, unobstructed path for pedestrians and wheelchair users at all times — never block a curb ramp, crosswalk, or building entrance. Booth zone: Eye St from 18th (at the public garage) to West 21st St, both sidewalks, plus the 19th & Eye corner extending onto 19th St. Spacing is based on a real 6ft vendor table (9ft pitch) — full corridor could theoretically hold ~386 booths both sides; these 28 are a starter layout on the busiest 2 blocks, not the ceiling.",
       "corridor": {
         "label": "Eye Street — the walk corridor",
         "path": [
-          [35.3744620, -119.0199290],
-          [35.3754150, -119.0199310],
-          [35.3763530, -119.0199190],
-          [35.3772620, -119.0199160],
-          [35.3782520, -119.0199030]
+          [
+            35.374462,
+            -119.019929
+          ],
+          [
+            35.375415,
+            -119.019931
+          ],
+          [
+            35.376353,
+            -119.019919
+          ],
+          [
+            35.377262,
+            -119.019916
+          ],
+          [
+            35.378252,
+            -119.019903
+          ]
         ],
         "intersections": [
-          {"label": "17th & Eye", "lat": 35.3744620, "lng": -119.0199290},
-          {"label": "18th & Eye", "lat": 35.3754150, "lng": -119.0199310},
-          {"label": "19th & Eye", "lat": 35.3763530, "lng": -119.0199190},
-          {"label": "20th & Eye", "lat": 35.3772620, "lng": -119.0199160},
-          {"label": "21st & Eye", "lat": 35.3782520, "lng": -119.0199030}
+          {
+            "label": "17th & Eye",
+            "lat": 35.374462,
+            "lng": -119.019929
+          },
+          {
+            "label": "18th & Eye",
+            "lat": 35.375415,
+            "lng": -119.019931
+          },
+          {
+            "label": "19th & Eye",
+            "lat": 35.376353,
+            "lng": -119.019919
+          },
+          {
+            "label": "20th & Eye",
+            "lat": 35.377262,
+            "lng": -119.019916
+          },
+          {
+            "label": "21st & Eye",
+            "lat": 35.378252,
+            "lng": -119.019903
+          }
         ]
       },
       "history": [
-        {"date": "2026-07-03", "note": "The first First Friday Art Walk under Board Bored — 5 downtown businesses, one live map, zero apps."}
+        {
+          "date": "2026-07-03",
+          "note": "The first First Friday Art Walk under Board Bored — 5 downtown businesses, one live map, zero apps."
+        }
       ],
       "spots": [
-        {"id": "spot_01", "label": "Spot 1", "lat": 35.374732, "lng": -119.019840, "status": "open", "vendor": null, "note": "Provisional draft placement — verify sidewalk width + 4ft clear path in person before First Friday."},
-        {"id": "spot_02", "label": "Spot 2", "lat": 35.375271, "lng": -119.019841, "status": "open", "vendor": null, "note": "Provisional draft placement — verify sidewalk width + 4ft clear path in person before First Friday."},
-        {"id": "spot_03", "label": "Spot 3", "lat": 35.375811, "lng": -119.019836, "status": "open", "vendor": null, "note": "Provisional draft placement — verify sidewalk width + 4ft clear path in person before First Friday."},
-        {"id": "spot_04", "label": "Spot 4", "lat": 35.376351, "lng": -119.019829, "status": "open", "vendor": null, "note": "Provisional draft placement — verify sidewalk width + 4ft clear path in person before First Friday."},
-        {"id": "spot_05", "label": "Spot 5", "lat": 35.376890, "lng": -119.019827, "status": "open", "vendor": null, "note": "Provisional draft placement — verify sidewalk width + 4ft clear path in person before First Friday."},
-        {"id": "spot_06", "label": "Spot 6", "lat": 35.377430, "lng": -119.019824, "status": "open", "vendor": null, "note": "Provisional draft placement — verify sidewalk width + 4ft clear path in person before First Friday."},
-        {"id": "spot_07", "label": "Spot 7", "lat": 35.377969, "lng": -119.019817, "status": "open", "vendor": null, "note": "Provisional draft placement — verify sidewalk width + 4ft clear path in person before First Friday."}
+        {
+          "id": "spot_01",
+          "label": "Spot 1 (E side, Eye St)",
+          "lat": 35.375505,
+          "lng": -119.019853,
+          "status": "open",
+          "vendor": null,
+          "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday."
+        },
+        {
+          "id": "spot_02",
+          "label": "Spot 2 (W side, Eye St)",
+          "lat": 35.375505,
+          "lng": -119.020007,
+          "status": "open",
+          "vendor": null,
+          "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday."
+        },
+        {
+          "id": "spot_03",
+          "label": "Spot 3 (E side, Eye St)",
+          "lat": 35.375685,
+          "lng": -119.01985,
+          "status": "open",
+          "vendor": null,
+          "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday."
+        },
+        {
+          "id": "spot_04",
+          "label": "Spot 4 (W side, Eye St)",
+          "lat": 35.375685,
+          "lng": -119.020005,
+          "status": "open",
+          "vendor": null,
+          "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday."
+        },
+        {
+          "id": "spot_05",
+          "label": "Spot 5 (E side, Eye St)",
+          "lat": 35.375865,
+          "lng": -119.019848,
+          "status": "open",
+          "vendor": null,
+          "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday."
+        },
+        {
+          "id": "spot_06",
+          "label": "Spot 6 (W side, Eye St)",
+          "lat": 35.375865,
+          "lng": -119.020002,
+          "status": "open",
+          "vendor": null,
+          "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday."
+        },
+        {
+          "id": "spot_07",
+          "label": "Spot 7 (E side, Eye St)",
+          "lat": 35.376044,
+          "lng": -119.019846,
+          "status": "open",
+          "vendor": null,
+          "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday."
+        },
+        {
+          "id": "spot_08",
+          "label": "Spot 8 (W side, Eye St)",
+          "lat": 35.376044,
+          "lng": -119.02,
+          "status": "open",
+          "vendor": null,
+          "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday."
+        },
+        {
+          "id": "spot_09",
+          "label": "Spot 9 (E side, Eye St)",
+          "lat": 35.376224,
+          "lng": -119.019843,
+          "status": "open",
+          "vendor": null,
+          "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday."
+        },
+        {
+          "id": "spot_10",
+          "label": "Spot 10 (W side, Eye St)",
+          "lat": 35.376224,
+          "lng": -119.019998,
+          "status": "open",
+          "vendor": null,
+          "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday."
+        },
+        {
+          "id": "spot_11",
+          "label": "Spot 11 (E side, Eye St)",
+          "lat": 35.376404,
+          "lng": -119.019842,
+          "status": "open",
+          "vendor": null,
+          "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday."
+        },
+        {
+          "id": "spot_12",
+          "label": "Spot 12 (W side, Eye St)",
+          "lat": 35.376404,
+          "lng": -119.019996,
+          "status": "open",
+          "vendor": null,
+          "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday."
+        },
+        {
+          "id": "spot_13",
+          "label": "Spot 13 (E side, Eye St)",
+          "lat": 35.376584,
+          "lng": -119.019841,
+          "status": "open",
+          "vendor": null,
+          "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday."
+        },
+        {
+          "id": "spot_14",
+          "label": "Spot 14 (W side, Eye St)",
+          "lat": 35.376584,
+          "lng": -119.019995,
+          "status": "open",
+          "vendor": null,
+          "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday."
+        },
+        {
+          "id": "spot_15",
+          "label": "Spot 15 (E side, Eye St)",
+          "lat": 35.376764,
+          "lng": -119.01984,
+          "status": "open",
+          "vendor": null,
+          "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday."
+        },
+        {
+          "id": "spot_16",
+          "label": "Spot 16 (W side, Eye St)",
+          "lat": 35.376764,
+          "lng": -119.019995,
+          "status": "open",
+          "vendor": null,
+          "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday."
+        },
+        {
+          "id": "spot_17",
+          "label": "Spot 17 (E side, Eye St)",
+          "lat": 35.376944,
+          "lng": -119.01984,
+          "status": "open",
+          "vendor": null,
+          "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday."
+        },
+        {
+          "id": "spot_18",
+          "label": "Spot 18 (W side, Eye St)",
+          "lat": 35.376944,
+          "lng": -119.019994,
+          "status": "open",
+          "vendor": null,
+          "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday."
+        },
+        {
+          "id": "spot_19",
+          "label": "Spot 19 (E side, Eye St)",
+          "lat": 35.377124,
+          "lng": -119.019839,
+          "status": "open",
+          "vendor": null,
+          "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday."
+        },
+        {
+          "id": "spot_20",
+          "label": "Spot 20 (W side, Eye St)",
+          "lat": 35.377124,
+          "lng": -119.019994,
+          "status": "open",
+          "vendor": null,
+          "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday."
+        },
+        {
+          "id": "spot_21",
+          "label": "Spot 21 (19th St, west of Eye)",
+          "lat": 35.376412,
+          "lng": -119.020084,
+          "status": "open",
+          "vendor": null,
+          "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday."
+        },
+        {
+          "id": "spot_22",
+          "label": "Spot 22 (19th St, west of Eye)",
+          "lat": 35.376405,
+          "lng": -119.02036,
+          "status": "open",
+          "vendor": null,
+          "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday."
+        },
+        {
+          "id": "spot_23",
+          "label": "Spot 23 (19th St, west of Eye)",
+          "lat": 35.376399,
+          "lng": -119.020636,
+          "status": "open",
+          "vendor": null,
+          "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday."
+        },
+        {
+          "id": "spot_24",
+          "label": "Spot 24 (19th St, west of Eye)",
+          "lat": 35.376392,
+          "lng": -119.020911,
+          "status": "open",
+          "vendor": null,
+          "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday."
+        },
+        {
+          "id": "spot_25",
+          "label": "Spot 25 (19th St, west of Eye)",
+          "lat": 35.376386,
+          "lng": -119.021187,
+          "status": "open",
+          "vendor": null,
+          "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday."
+        },
+        {
+          "id": "spot_26",
+          "label": "Spot 26 (19th St, east of Eye)",
+          "lat": 35.376408,
+          "lng": -119.019754,
+          "status": "open",
+          "vendor": null,
+          "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday."
+        },
+        {
+          "id": "spot_27",
+          "label": "Spot 27 (19th St, east of Eye)",
+          "lat": 35.376396,
+          "lng": -119.019478,
+          "status": "open",
+          "vendor": null,
+          "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday."
+        },
+        {
+          "id": "spot_28",
+          "label": "Spot 28 (19th St, east of Eye)",
+          "lat": 35.376383,
+          "lng": -119.019203,
+          "status": "open",
+          "vendor": null,
+          "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday."
+        }
       ],
       "parking": [
-        {"id": "pk_18th_eye", "label": "18th & Eye Public Garage", "lat": 35.375374, "lng": -119.020182, "note": "1600 18th St — public garage, first 2 hours free."},
-        {"id": "pk_19th_eye", "label": "19th & Eye Free Public Garage", "lat": 35.376353, "lng": -119.019769, "note": "Free public parking garage at 19th & Eye."},
-        {"id": "pk_20th_mall", "label": "20th St Parking Mall", "lat": 35.377262, "lng": -119.020216, "note": "City diagonal-parking mall, 20th St between H & Eye."}
+        {
+          "id": "pk_18th_eye",
+          "label": "18th & Eye Public Garage",
+          "lat": 35.375374,
+          "lng": -119.020182,
+          "note": "1600 18th St — public garage, first 2 hours free."
+        },
+        {
+          "id": "pk_19th_eye",
+          "label": "19th & Eye Free Public Garage",
+          "lat": 35.376353,
+          "lng": -119.019769,
+          "note": "Free public parking garage at 19th & Eye."
+        },
+        {
+          "id": "pk_20th_mall",
+          "label": "20th St Parking Mall",
+          "lat": 35.377262,
+          "lng": -119.020216,
+          "note": "City diagonal-parking mall, 20th St between H & Eye."
+        }
       ],
       "vendors": [
         {
@@ -115,7 +416,7 @@
           "name": "Encore Boutique",
           "emoji": "👗",
           "category": "Retail / Boutique",
-          "lat": 35.3754470,
+          "lat": 35.375447,
           "lng": -119.0201322,
           "address": "1817 Eye St, Bakersfield, CA 93301",
           "hours": "5p–9p (event)",
