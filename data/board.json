@@ -963,6 +963,21 @@
           "note": "$1 sale for the community — plus a curated First Friday rack.",
           "instagram": "",
           "website": ""
+        },
+        {
+          "id": "biz_006",
+          "name": "Jerry's Pizza & Pub",
+          "emoji": "🍕",
+          "category": "Pizza & Pub",
+          "lat": 35.375859,
+          "lng": -119.018901,
+          "address": "1817 Chester Ave, Bakersfield, CA 93301",
+          "hours": "9a–1a",
+          "hours_start": "09:00",
+          "hours_end": "22:00",
+          "note": "Open for dine-in and drinks during First Friday.",
+          "instagram": "jerryspizzapub",
+          "website": "jerryspizza.com"
         }
       ]
     }

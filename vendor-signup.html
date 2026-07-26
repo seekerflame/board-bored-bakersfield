@@ -60,7 +60,8 @@
     <label for="stNote">What's happening (shown on the map)</label><textarea id="stNote" placeholder="Open late — coffee + espresso, live demo at 7."></textarea>
     <label for="stIg">Instagram (optional)</label><input id="stIg" placeholder="@handle">
     <label for="stWeb">Website (optional)</label><input id="stWeb" placeholder="https://">
-    <label for="stContact">Your contact (email or phone — not shown publicly)</label><input id="stContact" required>
+    <label for="stPhone">Phone (for a day-of confirmation text — not shown publicly) *</label><input id="stPhone" type="tel" required placeholder="(661) 555-0100">
+    <label for="stEmail">Email (optional — not shown publicly)</label><input id="stEmail" type="email" placeholder="you@example.com">
     <button class="btn" type="submit">Send it in</button>
     <div class="hint">We add confirmed storefronts to the live map — usually same day.</div>
     <div class="status" id="stStatus" role="status" aria-live="polite"></div>
@@ -75,7 +76,8 @@
     <label for="spNote">What you're doing / selling (shown on the map)</label><textarea id="spNote" placeholder="Tacos + agua fresca, cash + card."></textarea>
     <label for="spIg">Instagram (optional)</label><input id="spIg" placeholder="@handle">
     <label for="spWeb">Website (optional)</label><input id="spWeb" placeholder="https://">
-    <label for="spContact">Your contact (email or phone — not shown publicly) *</label><input id="spContact" required>
+    <label for="spPhone">Phone (for a day-of confirmation text — not shown publicly) *</label><input id="spPhone" type="tel" required placeholder="(661) 555-0100">
+    <label for="spEmail">Email (optional — not shown publicly)</label><input id="spEmail" type="email" placeholder="you@example.com">
     <button class="btn" type="submit">Request this spot</button>
     <div class="hint">First come, first served. We confirm your exact spot on the live map before the event — you'll hear back at the contact above.</div>
     <div class="status" id="spStatus" role="status" aria-live="polite"></div>
@@ -88,7 +90,8 @@
     <label for="arWares">Your wares (shown on the map so people can browse ahead)</label>
     <textarea id="arWares" placeholder="Small original paintings $20-80, hand-thrown mugs $25, stickers $3."></textarea>
     <label for="arPortfolio">Portfolio / Instagram / website (optional)</label><input id="arPortfolio" placeholder="@handle or https://">
-    <label for="arContact">Your contact (email or phone — not shown publicly) *</label><input id="arContact" required>
+    <label for="arPhone">Phone (for a day-of confirmation text — not shown publicly) *</label><input id="arPhone" type="tel" required placeholder="(661) 555-0100">
+    <label for="arEmail">Email (optional — not shown publicly)</label><input id="arEmail" type="email" placeholder="you@example.com">
     <button class="btn" type="submit">Send it in</button>
     <div class="hint">This is a preview, not a store — people browse your wares here, then buy in person at the event. No online checkout, nothing charged through this page.</div>
     <div class="status" id="arStatus" role="status" aria-live="polite"></div>
@@ -186,16 +189,18 @@
       note:$("stNote").value.trim(),
       instagram:$("stIg").value.trim(),
       website:$("stWeb").value.trim(),
-      contact:$("stContact").value.trim()
+      phone:$("stPhone").value.trim(),
+      email:$("stEmail").value.trim()
     };
-    if(!payload.name||!payload.address||!payload.contact){$("stStatus").className="status err";
-      $("stStatus").textContent="Business name, address, and contact are required.";return;}
+    if(!payload.name||!payload.address||!payload.phone){$("stStatus").className="status err";
+      $("stStatus").textContent="Business name, address, and phone are required.";return;}
     if(FORMSPREE_ENDPOINT){
       submitViaFormspree(payload,$("stStatus"),function(){showSuccess($("formStore"));});
     } else {
       mailFallback(payload._subject,[["Business name",payload.name],["Address",payload.address],
         ["Hours that night",payload.hours],["What's happening",payload.note],
-        ["Instagram",payload.instagram],["Website",payload.website],["Contact",payload.contact]]);
+        ["Instagram",payload.instagram],["Website",payload.website],
+        ["Phone",payload.phone],["Email",payload.email]]);
       showSuccess($("formStore"));
     }
   });
@@ -212,16 +217,18 @@
       note:$("spNote").value.trim(),
       instagram:$("spIg").value.trim(),
       website:$("spWeb").value.trim(),
-      contact:$("spContact").value.trim()
+      phone:$("spPhone").value.trim(),
+      email:$("spEmail").value.trim()
     };
-    if(!payload.name||!payload.contact){$("spStatus").className="status err";
-      $("spStatus").textContent="Vendor name and contact are required.";return;}
+    if(!payload.name||!payload.phone){$("spStatus").className="status err";
+      $("spStatus").textContent="Vendor name and phone are required.";return;}
     if(FORMSPREE_ENDPOINT){
       submitViaFormspree(payload,$("spStatus"),function(){showSuccess($("formSpot"));});
     } else {
       mailFallback(payload._subject,[["Preferred spot",payload.preferred_spot],["Vendor / business name",payload.name],
         ["Category",payload.category],["What you're doing / selling",payload.note],
-        ["Instagram",payload.instagram],["Website",payload.website],["Contact",payload.contact]]);
+        ["Instagram",payload.instagram],["Website",payload.website],
+        ["Phone",payload.phone],["Email",payload.email]]);
       showSuccess($("formSpot"));
     }
   });
@@ -236,15 +243,17 @@
       medium:$("arMedium").value.trim(),
       wares:$("arWares").value.trim(),
       portfolio:$("arPortfolio").value.trim(),
-      contact:$("arContact").value.trim()
+      phone:$("arPhone").value.trim(),
+      email:$("arEmail").value.trim()
     };
-    if(!payload.name||!payload.contact){$("arStatus").className="status err";
-      $("arStatus").textContent="Artist name and contact are required.";return;}
+    if(!payload.name||!payload.phone){$("arStatus").className="status err";
+      $("arStatus").textContent="Artist name and phone are required.";return;}
     if(FORMSPREE_ENDPOINT){
       submitViaFormspree(payload,$("arStatus"),function(){showSuccess($("formArtist"));});
     } else {
       mailFallback(payload._subject,[["Artist / studio name",payload.name],["Medium",payload.medium],
-        ["Wares",payload.wares],["Portfolio",payload.portfolio],["Contact",payload.contact]]);
+        ["Wares",payload.wares],["Portfolio",payload.portfolio],
+        ["Phone",payload.phone],["Email",payload.email]]);
       showSuccess($("formArtist"));
     }
   });
