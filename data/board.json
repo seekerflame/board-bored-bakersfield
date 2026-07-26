@@ -14,7 +14,7 @@
       "hours": "6:00 PM – 10:00 PM",
       "area": "Downtown Bakersfield Arts District",
       "blurb": "Art, coffee, vintage, music — the downtown shops stay open late. Walk in, say hi, keep it local.",
-      "logistics_note": "Streets stay open all night — every vendor spot is on the sidewalk, not the road. Keep at least 4 feet of clear, unobstructed path for pedestrians and wheelchair users at all times — never block a curb ramp, crosswalk, or building entrance. Booth zone: Eye St from Dagny's and Bakersfield Vintage (20th St) down to Encore and the parking garage (18th St), both sidewalks, plus the 19th & Eye corner extending east on 19th toward the 1400 block as the street opens up (skips the frontage directly in front of Jin Sushi at 1600 19th St). Spacing is based on a real 6ft vendor table (9ft pitch) — full corridor could theoretically hold ~386 booths both sides; these 74 are a denser starter layout, not the ceiling. Main parking: 18th & Eye Public Garage. Reserve a spot ahead via the vendor signup form, or just show up night-of.",
+      "logistics_note": "Streets stay open all night — every vendor spot is on the sidewalk, not the road. Keep at least 4 feet of clear, unobstructed path for pedestrians and wheelchair users at all times — never block a curb ramp, crosswalk, or building entrance. Booth zone: Eye St from Dagny's and Bakersfield Vintage (20th St) down to Encore and the parking garage (18th St), both sidewalks, plus the 19th & Eye corner extending east on 19th toward the 1400 block as the street opens up (skips the frontage directly in front of Jin Sushi at 1600 19th St). Spacing is based on a real 6ft vendor table (9ft pitch) — full corridor could theoretically hold ~386 booths both sides; these 86 are a denser starter layout, not the ceiling. Main parking: 18th & Eye Public Garage. Reserve a spot ahead via the vendor signup form, or just show up night-of.",
       "boundary": {
         "label": "Event area — Truxtun to 21st, F St to L St",
         "polygon": [
@@ -647,8 +647,8 @@
         {
           "id": "spot_62",
           "label": "Spot 62 (19th St, west of Eye)",
-          "lat": 35.376405,
-          "lng": -119.02036,
+          "lat": 35.376412,
+          "lng": -119.020084,
           "status": "open",
           "vendor": null,
           "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday."
@@ -656,8 +656,8 @@
         {
           "id": "spot_63",
           "label": "Spot 63 (19th St, west of Eye)",
-          "lat": 35.376398,
-          "lng": -119.020636,
+          "lat": 35.376405,
+          "lng": -119.02036,
           "status": "open",
           "vendor": null,
           "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday."
@@ -665,8 +665,8 @@
         {
           "id": "spot_64",
           "label": "Spot 64 (19th St, west of Eye)",
-          "lat": 35.376391,
-          "lng": -119.020912,
+          "lat": 35.376402,
+          "lng": -119.020498,
           "status": "open",
           "vendor": null,
           "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday."
@@ -674,6 +674,42 @@
         {
           "id": "spot_65",
           "label": "Spot 65 (19th St, west of Eye)",
+          "lat": 35.376398,
+          "lng": -119.020636,
+          "status": "open",
+          "vendor": null,
+          "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday."
+        },
+        {
+          "id": "spot_66",
+          "label": "Spot 66 (19th St, west of Eye)",
+          "lat": 35.376395,
+          "lng": -119.020774,
+          "status": "open",
+          "vendor": null,
+          "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday."
+        },
+        {
+          "id": "spot_67",
+          "label": "Spot 67 (19th St, west of Eye)",
+          "lat": 35.376391,
+          "lng": -119.020912,
+          "status": "open",
+          "vendor": null,
+          "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday."
+        },
+        {
+          "id": "spot_68",
+          "label": "Spot 68 (19th St, west of Eye)",
+          "lat": 35.376387,
+          "lng": -119.02105,
+          "status": "open",
+          "vendor": null,
+          "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday."
+        },
+        {
+          "id": "spot_69",
+          "label": "Spot 69 (19th St, west of Eye)",
           "lat": 35.376384,
           "lng": -119.021188,
           "status": "open",
@@ -681,8 +717,8 @@
           "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday."
         },
         {
-          "id": "spot_66",
-          "label": "Spot 66 (19th St, east of Eye)",
+          "id": "spot_70",
+          "label": "Spot 70 (19th St, east of Eye)",
           "lat": 35.376408,
           "lng": -119.019754,
           "status": "open",
@@ -690,46 +726,10 @@
           "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday. Extends toward the 1400 block as 19th St opens up east of Eye."
         },
         {
-          "id": "spot_67",
-          "label": "Spot 67 (19th St, east of Eye)",
-          "lat": 35.376401,
-          "lng": -119.019478,
-          "status": "open",
-          "vendor": null,
-          "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday. Extends toward the 1400 block as 19th St opens up east of Eye."
-        },
-        {
-          "id": "spot_68",
-          "label": "Spot 68 (19th St, east of Eye)",
-          "lat": 35.376394,
-          "lng": -119.019202,
-          "status": "open",
-          "vendor": null,
-          "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday. Extends toward the 1400 block as 19th St opens up east of Eye."
-        },
-        {
-          "id": "spot_69",
-          "label": "Spot 69 (19th St, east of Eye)",
-          "lat": 35.376387,
-          "lng": -119.018926,
-          "status": "open",
-          "vendor": null,
-          "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday. Extends toward the 1400 block as 19th St opens up east of Eye."
-        },
-        {
-          "id": "spot_70",
-          "label": "Spot 70 (19th St, east of Eye)",
-          "lat": 35.37638,
-          "lng": -119.01865,
-          "status": "open",
-          "vendor": null,
-          "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday. Extends toward the 1400 block as 19th St opens up east of Eye."
-        },
-        {
           "id": "spot_71",
           "label": "Spot 71 (19th St, east of Eye)",
-          "lat": 35.376373,
-          "lng": -119.018374,
+          "lat": 35.376404,
+          "lng": -119.019616,
           "status": "open",
           "vendor": null,
           "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday. Extends toward the 1400 block as 19th St opens up east of Eye."
@@ -737,8 +737,8 @@
         {
           "id": "spot_72",
           "label": "Spot 72 (19th St, east of Eye)",
-          "lat": 35.376366,
-          "lng": -119.018098,
+          "lat": 35.376401,
+          "lng": -119.019478,
           "status": "open",
           "vendor": null,
           "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday. Extends toward the 1400 block as 19th St opens up east of Eye."
@@ -746,8 +746,8 @@
         {
           "id": "spot_73",
           "label": "Spot 73 (19th St, east of Eye)",
-          "lat": 35.376359,
-          "lng": -119.017822,
+          "lat": 35.376397,
+          "lng": -119.01934,
           "status": "open",
           "vendor": null,
           "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday. Extends toward the 1400 block as 19th St opens up east of Eye."
@@ -755,6 +755,114 @@
         {
           "id": "spot_74",
           "label": "Spot 74 (19th St, east of Eye)",
+          "lat": 35.376394,
+          "lng": -119.019202,
+          "status": "open",
+          "vendor": null,
+          "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday. Extends toward the 1400 block as 19th St opens up east of Eye."
+        },
+        {
+          "id": "spot_75",
+          "label": "Spot 75 (19th St, east of Eye)",
+          "lat": 35.37639,
+          "lng": -119.019064,
+          "status": "open",
+          "vendor": null,
+          "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday. Extends toward the 1400 block as 19th St opens up east of Eye."
+        },
+        {
+          "id": "spot_76",
+          "label": "Spot 76 (19th St, east of Eye)",
+          "lat": 35.376387,
+          "lng": -119.018926,
+          "status": "open",
+          "vendor": null,
+          "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday. Extends toward the 1400 block as 19th St opens up east of Eye."
+        },
+        {
+          "id": "spot_77",
+          "label": "Spot 77 (19th St, east of Eye)",
+          "lat": 35.376383,
+          "lng": -119.018788,
+          "status": "open",
+          "vendor": null,
+          "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday. Extends toward the 1400 block as 19th St opens up east of Eye."
+        },
+        {
+          "id": "spot_78",
+          "label": "Spot 78 (19th St, east of Eye)",
+          "lat": 35.37638,
+          "lng": -119.01865,
+          "status": "open",
+          "vendor": null,
+          "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday. Extends toward the 1400 block as 19th St opens up east of Eye."
+        },
+        {
+          "id": "spot_79",
+          "label": "Spot 79 (19th St, east of Eye)",
+          "lat": 35.376376,
+          "lng": -119.018512,
+          "status": "open",
+          "vendor": null,
+          "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday. Extends toward the 1400 block as 19th St opens up east of Eye."
+        },
+        {
+          "id": "spot_80",
+          "label": "Spot 80 (19th St, east of Eye)",
+          "lat": 35.376373,
+          "lng": -119.018374,
+          "status": "open",
+          "vendor": null,
+          "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday. Extends toward the 1400 block as 19th St opens up east of Eye."
+        },
+        {
+          "id": "spot_81",
+          "label": "Spot 81 (19th St, east of Eye)",
+          "lat": 35.376369,
+          "lng": -119.018236,
+          "status": "open",
+          "vendor": null,
+          "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday. Extends toward the 1400 block as 19th St opens up east of Eye."
+        },
+        {
+          "id": "spot_82",
+          "label": "Spot 82 (19th St, east of Eye)",
+          "lat": 35.376366,
+          "lng": -119.018098,
+          "status": "open",
+          "vendor": null,
+          "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday. Extends toward the 1400 block as 19th St opens up east of Eye."
+        },
+        {
+          "id": "spot_83",
+          "label": "Spot 83 (19th St, east of Eye)",
+          "lat": 35.376362,
+          "lng": -119.01796,
+          "status": "open",
+          "vendor": null,
+          "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday. Extends toward the 1400 block as 19th St opens up east of Eye."
+        },
+        {
+          "id": "spot_84",
+          "label": "Spot 84 (19th St, east of Eye)",
+          "lat": 35.376359,
+          "lng": -119.017822,
+          "status": "open",
+          "vendor": null,
+          "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday. Extends toward the 1400 block as 19th St opens up east of Eye."
+        },
+        {
+          "id": "spot_85",
+          "label": "Spot 85 (19th St, east of Eye)",
+          "lat": 35.376355,
+          "lng": -119.017684,
+          "status": "open",
+          "vendor": null,
+          "note": "Provisional draft placement (real Lifetime 6ft table = 9ft booth pitch, ~7m sidewalk offset estimate) — verify sidewalk width + 4ft clear path in person before First Friday. Extends toward the 1400 block as 19th St opens up east of Eye."
+        },
+        {
+          "id": "spot_86",
+          "label": "Spot 86 (19th St, east of Eye)",
           "lat": 35.376352,
           "lng": -119.017546,
           "status": "open",
@@ -832,7 +940,7 @@
           "emoji": "📻",
           "category": "Retail / Vintage",
           "lat": 35.3765656,
-          "lng": -119.0201191,
+          "lng": -119.019668,
           "address": "1918 Eye St, Bakersfield, CA 93301",
           "hours": "5p–9p (event)",
           "hours_start": "17:00",
