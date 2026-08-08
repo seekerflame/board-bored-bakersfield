@@ -32,6 +32,10 @@
     padding:15px;width:100%;margin-top:16px;color:#fff;background:var(--acc)}
   .btn:disabled{opacity:.6;cursor:default}
   .hint{font-size:12px;color:var(--mut);margin-top:8px;line-height:1.5}
+  .privacy{font-size:12px;color:var(--mut);margin-top:14px;padding:11px 13px;line-height:1.6;
+    border:1px solid var(--line);border-radius:11px;background:rgba(0,0,0,.02)}
+  .privacy b{color:var(--ink)}
+  .privacy a{color:var(--acc2);font-weight:700}
   .status{font-size:14px;font-weight:700;margin-top:10px;min-height:18px}
   .status.ok{color:var(--acc2)} .status.err{color:#b3261e}
   .success{display:none;text-align:center;padding:30px 10px}
@@ -64,6 +68,20 @@
     <label for="stEmail">Email (optional — not shown publicly)</label><input id="stEmail" type="email" placeholder="you@example.com">
     <button class="btn" type="submit">Send it in</button>
     <div class="hint">We add confirmed storefronts to the live map — usually same day.</div>
+    <div class="privacy">
+      <b>What happens to your info:</b> your business name, address, hours, and any links you give us
+      go on the public map. <b>Your phone and email never do</b> — we use them only to confirm details
+      before the event. Form submissions are handled by
+      <a href="https://formspree.io/legal/privacy-policy/" target="_blank" rel="noopener">Formspree</a>.
+      We delete contact details within 90 days after the event. Want yours removed sooner, or want to
+      see what we have on file? Email
+      <a href="mailto:boardquestionmark@gmail.com">boardquestionmark@gmail.com</a> — no reason needed.
+      <br><br>
+      <b>About that text:</b> by giving us your number you agree we may text or call you
+      <b>about this event only</b> — confirming your spot, or letting you know if something changes.
+      We will not text you marketing. Reply <b>STOP</b> any time and we stop immediately.
+      Message and data rates may apply.
+    </div>
     <div class="status" id="stStatus" role="status" aria-live="polite"></div>
   </form>
 
@@ -80,6 +98,20 @@
     <label for="spEmail">Email (optional — not shown publicly)</label><input id="spEmail" type="email" placeholder="you@example.com">
     <button class="btn" type="submit">Request this spot</button>
     <div class="hint">First come, first served. We confirm your exact spot on the live map before the event — you'll hear back at the contact above.</div>
+    <div class="privacy">
+      <b>What happens to your info:</b> your vendor name, category, and any links you give us go on
+      the public map. <b>Your phone and email never do</b> — we use them only to confirm your spot
+      before the event. Form submissions are handled by
+      <a href="https://formspree.io/legal/privacy-policy/" target="_blank" rel="noopener">Formspree</a>.
+      We delete contact details within 90 days after the event. Want yours removed sooner, or want to
+      see what we have on file? Email
+      <a href="mailto:boardquestionmark@gmail.com">boardquestionmark@gmail.com</a> — no reason needed.
+      <br><br>
+      <b>About that text:</b> by giving us your number you agree we may text or call you
+      <b>about this event only</b> — confirming your spot, or letting you know if something changes.
+      We will not text you marketing. Reply <b>STOP</b> any time and we stop immediately.
+      Message and data rates may apply.
+    </div>
     <div class="status" id="spStatus" role="status" aria-live="polite"></div>
   </form>
 
@@ -94,6 +126,20 @@
     <label for="arEmail">Email (optional — not shown publicly)</label><input id="arEmail" type="email" placeholder="you@example.com">
     <button class="btn" type="submit">Send it in</button>
     <div class="hint">This is a preview, not a store — people browse your wares here, then buy in person at the event. No online checkout, nothing charged through this page.</div>
+    <div class="privacy">
+      <b>What happens to your info:</b> your artist name, medium, wares, and portfolio link go on the
+      public map. <b>Your phone and email never do</b> — we use them only to confirm details before
+      the event. Form submissions are handled by
+      <a href="https://formspree.io/legal/privacy-policy/" target="_blank" rel="noopener">Formspree</a>.
+      We delete contact details within 90 days after the event. Want yours removed sooner, or want to
+      see what we have on file? Email
+      <a href="mailto:boardquestionmark@gmail.com">boardquestionmark@gmail.com</a> — no reason needed.
+      <br><br>
+      <b>About that text:</b> by giving us your number you agree we may text or call you
+      <b>about this event only</b> — confirming your spot, or letting you know if something changes.
+      We will not text you marketing. Reply <b>STOP</b> any time and we stop immediately.
+      Message and data rates may apply.
+    </div>
     <div class="status" id="arStatus" role="status" aria-live="polite"></div>
   </form>
 
@@ -114,6 +160,38 @@
   var $=function(id){return document.getElementById(id)};
 
   var FORMSPREE_ENDPOINT = "https://formspree.io/f/mdaqpjkb";
+
+  // ---------- referral / source tracking ----------
+  // Every signup records WHO sent them and THROUGH WHAT. Without this you can
+  // never answer "which vendor actually brings people in" — the only question
+  // that tells you where to spend your Friday.
+  //   ?ref=taco-cart   who referred them (a vendor slug, a business, a person)
+  //   ?src=qr          the channel: qr | flyer | ig | text | walkup | web
+  // Persisted to localStorage so it survives a tab reload or a detour to
+  // Instagram and back — otherwise you lose the attribution at the last step.
+  var REF = (function(){
+    var q = new URLSearchParams(location.search);
+    var clean = function(v){ return (v||"").trim().toLowerCase().replace(/[^a-z0-9_-]/g,"").slice(0,40); };
+    var ref = clean(q.get("ref")), src = clean(q.get("src"));
+    try {
+      if (ref) localStorage.setItem("bb_ref", ref);
+      else ref = localStorage.getItem("bb_ref") || "";
+      if (src) localStorage.setItem("bb_src", src);
+      else src = localStorage.getItem("bb_src") || "";
+    } catch(e){}
+    return { ref: ref || "direct", src: src || "direct" };
+  })();
+
+  // Show the referrer their credit — it makes the ask real for the person who shared.
+  (function(){
+    if (REF.ref === "direct") return;
+    var b = document.createElement("div");
+    b.className = "avail";
+    b.style.cssText = "margin-bottom:14px;border-color:var(--acc2)";
+    b.innerHTML = "👋 Referred by <b>" + REF.ref.replace(/-/g," ") + "</b> — we'll let them know you signed up.";
+    var w = document.querySelector(".toggle");
+    if (w && w.parentNode) w.parentNode.insertBefore(b, w);
+  })();
 
   var CONTACT_EMAIL = "boardquestionmark@gmail.com";
 
@@ -183,6 +261,8 @@
     var payload={
       _subject:"Put my shop on the Board Bored map",
       type:"storefront",
+      referred_by:REF.ref,
+      source:REF.src,
       name:$("stName").value.trim(),
       address:$("stAddr").value.trim(),
       hours:$("stHours").value.trim(),
@@ -211,6 +291,8 @@
     var payload={
       _subject:"Sidewalk spot request — First Friday",
       type:"sidewalk_spot",
+      referred_by:REF.ref,
+      source:REF.src,
       preferred_spot:$("spPreferred").value||"Any open spot",
       name:$("spName").value.trim(),
       category:$("spCat").value.trim(),
@@ -239,6 +321,8 @@
     var payload={
       _subject:"Artist registration — First Friday",
       type:"artist",
+      referred_by:REF.ref,
+      source:REF.src,
       name:$("arName").value.trim(),
       medium:$("arMedium").value.trim(),
       wares:$("arWares").value.trim(),

@@ -48,7 +48,15 @@
             -119.019931
           ],
           [
+            35.375773,
+            -119.019919
+          ],
+          [
             35.376353,
+            -119.019919
+          ],
+          [
+            35.376716,
             -119.019919
           ],
           [
@@ -72,9 +80,21 @@
             "lng": -119.019931
           },
           {
+            "label": "Wall St & Eye",
+            "lat": 35.375773,
+            "lng": -119.019919,
+            "note": "Mid-block cross street — half a block, not a main corner"
+          },
+          {
             "label": "19th & Eye",
             "lat": 35.376353,
             "lng": -119.019919
+          },
+          {
+            "label": "Service St & Eye",
+            "lat": 35.376716,
+            "lng": -119.019919,
+            "note": "Mid-block service street (rear access) — half a block, not a main corner"
           },
           {
             "label": "20th & Eye",
@@ -915,7 +935,7 @@
           "hours": "5p–9p (event)",
           "hours_start": "17:00",
           "hours_end": "21:00",
-          "note": "Member gallery show + live demos. Feature wall + refreshments.",
+          "note": "ART CONTEST tonight — bring a piece or vote on the feature wall. Member gallery show + live demos, refreshments out.",
           "instagram": "",
           "website": ""
         },
@@ -939,13 +959,13 @@
           "name": "Bakersfield Vintage",
           "emoji": "📻",
           "category": "Retail / Vintage",
-          "lat": 35.3765656,
+          "lat": 35.3768,
           "lng": -119.019668,
           "address": "1918 Eye St, Bakersfield, CA 93301",
-          "hours": "5p–9p (event)",
+          "hours": "5p–2a (First Friday)",
           "hours_start": "17:00",
-          "hours_end": "21:00",
-          "note": "Live music vibes + vintage clothes — late-night browse, First Friday-only deals.",
+          "hours_end": "02:00",
+          "note": "Open LATE until 2am — the last door open downtown. Live music vibes, vintage racks, First-Friday-only deals. When the walk winds down, the night keeps going here.",
           "instagram": "",
           "website": ""
         },
@@ -960,7 +980,7 @@
           "hours": "5p–9p (event)",
           "hours_start": "17:00",
           "hours_end": "21:00",
-          "note": "$1 sale for the community — plus a curated First Friday rack.",
+          "note": "$1 SALE — every rack, tonight only. Community pricing, plus a curated First Friday rack up front. Bring a bag.",
           "instagram": "",
           "website": ""
         },
@@ -974,10 +994,25 @@
           "address": "1817 Chester Ave, Bakersfield, CA 93301",
           "hours": "9a–1a",
           "hours_start": "09:00",
-          "hours_end": "22:00",
+          "hours_end": "01:00",
           "note": "Open for dine-in and drinks during First Friday.",
           "instagram": "jerryspizzapub",
           "website": "jerryspizza.com"
+        },
+        {
+          "id": "biz_007",
+          "name": "Zama Latin American Cuisine",
+          "emoji": "🥘",
+          "category": "Latin American",
+          "lat": 35.376149,
+          "lng": -119.020366,
+          "address": "1623 19th St, Bakersfield, CA 93301",
+          "hours": "4:30p–12a",
+          "hours_start": "16:30",
+          "hours_end": "00:00",
+          "note": "Latin American plates + seafood, dinner till midnight right on the corridor. Patio Club (21+) goes till 1:30am.",
+          "instagram": "zamalatinamericancuisine",
+          "website": "zamalatinamericancuisine.com"
         }
       ]
     }

@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>How was tonight? — Board Bored</title>
+<meta name="description" content="Tell us how First Friday went. Takes ten seconds, no account, no email needed.">
+<style>
+  :root{--ink:#141116;--pap:#faf7f2;--card:#fff;--acc:#ca421a;--acc2:#167f68;--line:#948d88;--mut:#777069;}
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  body{font-family:-apple-system,"Helvetica Neue",Arial,sans-serif;background:var(--pap);color:var(--ink);
+    min-height:100dvh;padding:20px 16px 40px}
+  .wrap{width:100%;max-width:520px;margin:0 auto}
+  .mark{font-size:13px;letter-spacing:4px;font-weight:900;text-transform:uppercase;color:var(--acc);text-decoration:none}
+  h1{font-size:clamp(26px,7vw,32px);line-height:1.05;letter-spacing:-.5px;margin:10px 0 8px}
+  .tag{color:var(--mut);font-size:15px;line-height:1.5;margin-bottom:16px}
+  .card{background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:18px;margin-bottom:14px}
+  label{display:block;font-size:11px;font-weight:800;color:var(--mut);text-transform:uppercase;letter-spacing:.5px;margin:16px 0 6px}
+  label:first-of-type{margin-top:0}
+  input,textarea,select{width:100%;font:inherit;font-size:16px;padding:12px;border:1.5px solid var(--line);
+    border-radius:11px;background:#fffdfa}
+  input:focus,textarea:focus,select:focus{outline:2px solid var(--acc);border-color:var(--acc)}
+  textarea{min-height:80px;resize:vertical}
+  .vibes{display:flex;gap:6px}
+  .vibes button{flex:1;appearance:none;border:1.5px solid var(--line);background:#fff;font:inherit;
+    font-size:26px;line-height:1;border-radius:12px;padding:12px 2px 9px;cursor:pointer}
+  .vibes button .lbl{display:block;font-size:10px;font-weight:800;color:var(--mut);margin-top:5px;text-transform:uppercase}
+  .vibes button.on{border-color:var(--ink);background:var(--ink)}
+  .vibes button.on .lbl{color:#fff}
+  .who{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+  .who button{flex:1;min-width:92px;appearance:none;border:1.5px solid var(--line);background:#fff;color:var(--ink);
+    font:inherit;font-weight:800;font-size:13px;border-radius:12px;padding:11px 6px;cursor:pointer}
+  .who button.on{border-color:var(--ink);background:var(--ink);color:#fff}
+  .btn{appearance:none;border:0;cursor:pointer;font:inherit;font-weight:800;font-size:16px;border-radius:14px;
+    padding:15px;width:100%;margin-top:18px;color:#fff;background:var(--acc)}
+  .btn:disabled{opacity:.6;cursor:default}
+  .optin{display:flex;gap:10px;align-items:flex-start;margin-top:16px;padding:12px 13px;
+    border:1px solid var(--line);border-radius:11px;background:rgba(0,0,0,.02)}
+  .optin input{width:20px;height:20px;flex:0 0 20px;margin-top:1px}
+  .optin span{font-size:13px;line-height:1.5;color:var(--mut)}
+  .reply{display:none;margin-top:6px}
+  .hint{font-size:12px;color:var(--mut);margin-top:8px;line-height:1.5}
+  .privacy{font-size:12px;color:var(--mut);margin-top:14px;padding:11px 13px;line-height:1.6;
+    border:1px solid var(--line);border-radius:11px;background:rgba(0,0,0,.02)}
+  .privacy b{color:var(--ink)}
+  .privacy a{color:var(--acc2);font-weight:700}
+  .status{font-size:14px;font-weight:700;margin-top:10px;min-height:18px}
+  .status.ok{color:var(--acc2)} .status.err{color:#b3261e}
+  .success{display:none;text-align:center;padding:30px 10px}
+  .success .big{font-size:44px;margin-bottom:10px}
+  .refnote{font-size:13px;color:var(--acc2);font-weight:700;margin-bottom:12px}
+  footer{margin-top:26px;text-align:center;font-size:12px;color:var(--mut);line-height:1.7}
+  footer a{color:var(--acc2);font-weight:700;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="mark" href="./">● Board Bored</a>
+  <h1>How was tonight?</h1>
+  <p class="tag">Ten seconds. No account, no email needed. We read every one of these before we plan the next First Friday.</p>
+
+  <div id="refNote" class="refnote" style="display:none"></div>
+
+  <form id="formFb" class="card" novalidate>
+    <label>The vibe</label>
+    <div class="vibes" id="vibes">
+      <button type="button" data-v="1">😖<span class="lbl">Rough</span></button>
+      <button type="button" data-v="2">😐<span class="lbl">Meh</span></button>
+      <button type="button" data-v="3">🙂<span class="lbl">Good</span></button>
+      <button type="button" data-v="4">😃<span class="lbl">Great</span></button>
+      <button type="button" data-v="5">🤩<span class="lbl">Best yet</span></button>
+    </div>
+
+    <label>You came as a…</label>
+    <div class="who" id="who">
+      <button type="button" data-w="visitor">Visitor</button>
+      <button type="button" data-w="vendor">Vendor</button>
+      <button type="button" data-w="shop">Shop / venue</button>
+      <button type="button" data-w="artist">Artist</button>
+    </div>
+
+    <label for="fbBest">What worked?</label>
+    <textarea id="fbBest" placeholder="The thing you'd tell a friend about."></textarea>
+
+    <label for="fbFix">What would make the next one better?</label>
+    <textarea id="fbFix" placeholder="Be blunt. Parking, noise, timing, layout, trash — whatever it was."></textarea>
+
+    <div class="optin">
+      <input type="checkbox" id="fbReply">
+      <span><b>Want us to follow up?</b> Tick this and leave a number or email. By ticking it you agree
+      we may text, call, or email you <b>about this feedback only</b>. Reply STOP any time. Message and
+      data rates may apply. Leave it unticked to stay completely anonymous — the form still works.</span>
+    </div>
+    <div class="reply" id="replyWrap">
+      <label for="fbContact">Phone or email</label>
+      <input id="fbContact" type="text" inputmode="email" placeholder="661-555-0100 or you@example.com" autocomplete="off">
+      <label for="fbName">Name (optional)</label>
+      <input id="fbName" type="text" placeholder="What should we call you?" autocomplete="off">
+    </div>
+
+    <button class="btn" type="submit" id="fbSend">Send it</button>
+    <div class="status" id="fbStatus"></div>
+
+    <div class="privacy">
+      <b>What happens to this:</b> your answers are read by the people who run the event and are used
+      to plan the next one. <b>Nothing here goes on the public map.</b> If you don't tick the follow-up
+      box we never ask for and never store a way to contact you. Submissions are handled by
+      <a href="https://formspree.io/legal/privacy-policy/" target="_blank" rel="noopener">Formspree</a>.
+      Any contact details are deleted within 90 days. Want yours removed sooner? Email
+      <a href="mailto:boardquestionmark@gmail.com">boardquestionmark@gmail.com</a> — no reason needed.
+    </div>
+  </form>
+
+  <div class="success" id="fbDone">
+    <div class="big">🙏</div>
+    <h1>Got it — thank you.</h1>
+    <p class="tag">This actually changes what we do next month. If you want to be on the map yourself,
+      <a href="vendor-signup.html">grab a spot</a>.</p>
+  </div>
+
+  <footer>
+    First Friday · Downtown Bakersfield Arts District<br>
+    <a href="first-friday/">See who's out tonight</a> · <a href="vendor-signup.html">Get a spot</a>
+  </footer>
+</div>
+
+<script>
+(function(){
+  var $ = function(id){ return document.getElementById(id); };
+  var FORMSPREE_ENDPOINT = "https://formspree.io/f/mdaqpjkb";
+  var CONTACT_EMAIL = "boardquestionmark@gmail.com";
+
+  // Same attribution capture as vendor-signup.html — a QR on a vendor's table
+  // carries ?ref=their-slug, so we learn WHOSE crowd is giving which feedback.
+  // Identical sanitizer on purpose: if these two ever drift, codes handed out
+  // stop matching codes recorded and attribution breaks with no error anywhere.
+  var REF = (function(){
+    var q = new URLSearchParams(location.search);
+    var clean = function(v){ return (v||"").trim().toLowerCase().replace(/[^a-z0-9_-]/g,"").slice(0,40); };
+    var ref = clean(q.get("ref")), src = clean(q.get("src"));
+    try {
+      if (ref) localStorage.setItem("bb_ref", ref);
+      else ref = localStorage.getItem("bb_ref") || "";
+      if (src) localStorage.setItem("bb_src", src);
+      else src = localStorage.getItem("bb_src") || "";
+    } catch(e){}
+    return { ref: ref || "direct", src: src || "direct" };
+  })();
+
+  if (REF.ref && REF.ref !== "direct") {
+    $("refNote").style.display = "block";
+    $("refNote").textContent = "👋 Came in from " + REF.ref.replace(/-/g, " ");
+  }
+
+  var vibe = "", who = "";
+  function pick(wrapId, attr, set){
+    var wrap = $(wrapId);
+    wrap.addEventListener("click", function(e){
+      var b = e.target.closest("button[" + attr + "]");
+      if (!b) return;
+      Array.prototype.forEach.call(wrap.querySelectorAll("button"), function(x){ x.classList.remove("on"); });
+      b.classList.add("on");
+      set(b.getAttribute(attr));
+    });
+  }
+  pick("vibes", "data-v", function(v){ vibe = v; });
+  pick("who", "data-w", function(w){ who = w; });
+
+  $("fbReply").addEventListener("change", function(){
+    $("replyWrap").style.display = this.checked ? "block" : "none";
+    if (!this.checked) { $("fbContact").value = ""; $("fbName").value = ""; }
+  });
+
+  function mailFallback(subject, bodyLines){
+    var body = bodyLines.map(function(l){ return l[0] + ": " + (l[1] || "—"); }).join("\n");
+    location.href = "mailto:" + CONTACT_EMAIL + "?subject=" + encodeURIComponent(subject) +
+                    "&body=" + encodeURIComponent(body);
+  }
+
+  $("formFb").addEventListener("submit", function(e){
+    e.preventDefault();
+    var st = $("fbStatus");
+    var best = $("fbBest").value.trim(), fix = $("fbFix").value.trim();
+    var wantsReply = $("fbReply").checked;
+
+    if (!vibe && !best && !fix) {
+      st.className = "status err";
+      st.textContent = "Tap a vibe or write a line — anything at all.";
+      return;
+    }
+    if (wantsReply && !$("fbContact").value.trim()) {
+      st.className = "status err";
+      st.textContent = "You ticked follow-up — leave a number or email, or untick it.";
+      return;
+    }
+
+    var payload = {
+      _subject: "First Friday feedback",
+      type: "feedback",
+      referred_by: REF.ref,
+      source: REF.src,
+      vibe: vibe || "",
+      role: who || "",
+      what_worked: best,
+      what_to_fix: fix,
+      // Only ever populated when the box is ticked. Unticked means we do not
+      // collect it at all, rather than collecting it and promising not to use it.
+      contact_consent: wantsReply ? "yes" : "no",
+      contact: wantsReply ? $("fbContact").value.trim() : "",
+      name: wantsReply ? $("fbName").value.trim() : ""
+    };
+
+    $("fbSend").disabled = true;
+    st.className = "status"; st.textContent = "Sending…";
+    fetch(FORMSPREE_ENDPOINT, {
+      method: "POST",
+      headers: { "Accept": "application/json", "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    }).then(function(r){
+      if (r.ok) {
+        $("formFb").style.display = "none";
+        $("fbDone").style.display = "block";
+      } else {
+        $("fbSend").disabled = false;
+        st.className = "status err";
+        st.textContent = "Couldn't send — try again, or email " + CONTACT_EMAIL + " directly.";
+        mailFallback("First Friday feedback", [
+          ["Vibe", vibe], ["Role", who], ["What worked", best], ["What to fix", fix]
+        ]);
+      }
+    }).catch(function(){
+      $("fbSend").disabled = false;
+      st.className = "status err";
+      st.textContent = "Couldn't send — try again, or email " + CONTACT_EMAIL + " directly.";
+    });
+  });
+})();
+</script>
+</body>
+</html>

@@ -72,13 +72,38 @@
 
   <div class="card">
     <h2>📅 Event</h2>
-    <label for="evName">Name</label><input id="evName">
+    <label for="evPick">Editing</label>
+    <select id="evPick"></select>
+    <div class="hint" id="evMeta">—</div>
+    <div class="row" style="margin-top:10px">
+      <button class="btn ghost" id="evNext" type="button">➕ Next month</button>
+      <button class="btn ghost" id="evFeature" type="button">⭐ Make this the live one</button>
+    </div>
+    <div class="hint">“Next month” copies this event forward to the next First Friday — keeps all
+      <span id="evSpotCount">0</span> surveyed spot positions, the corridor and parking, and clears
+      every vendor so the new month starts empty. You survey the sidewalk once, not every month.</div>
+
+    <label for="evName" style="margin-top:14px">Name</label><input id="evName">
     <div class="row">
       <div><label for="evDate">Date</label><input id="evDate" type="date"></div>
       <div><label for="evHours">Hours</label><input id="evHours" placeholder="6:00 PM – 10:00 PM"></div>
     </div>
     <label for="evArea">Area</label><input id="evArea">
     <label for="evBlurb">One-line blurb</label><textarea id="evBlurb"></textarea>
+  </div>
+
+  <div class="card">
+    <h2>📋 After the event</h2>
+    <div class="hint">Fill this in once it's over. Anyone assigned a spot who isn't ticked below is
+      counted a no-show — that's how you see who actually turns up, month over month.</div>
+    <label for="rcAttendance">Rough headcount</label>
+    <input id="rcAttendance" type="number" inputmode="numeric" placeholder="450">
+    <label for="rcWeather">Weather</label><input id="rcWeather" placeholder="clear, 95°F">
+    <label for="rcNotes">Notes</label><textarea id="rcNotes" placeholder="Busiest yet. Corner spots filled first."></textarea>
+    <label style="margin-top:10px">Who showed up</label>
+    <div id="rcPresent" class="hint">Assign vendors to spots first.</div>
+    <button class="btn" id="rcSave" type="button" style="margin-top:12px">Save the record</button>
+    <div class="hint" id="rcStatus"></div>
   </div>
 
   <div class="card">
@@ -215,9 +240,86 @@
     document.querySelectorAll("#emojis button").forEach(function(x){x.classList.toggle("on",x.textContent===chosen)});}
 
   // ---------- data ----------
+  // `editingSlug` decouples WHICH event you're editing from which one is LIVE.
+  // Before this, ev() always returned the featured event, so the board could only
+  // ever hold one — you could not build next month while this month was published.
+  var editingSlug=null;
   function ev(){ if(!DATA)return null;
-    var e=(DATA.events||[]).filter(function(x){return x.slug===DATA.featured})[0]||(DATA.events||[])[0];
-    return e;}
+    var evs=DATA.events||[];
+    return evs.filter(function(x){return x.slug===editingSlug})[0]
+        || evs.filter(function(x){return x.slug===DATA.featured})[0]
+        || evs[0];}
+
+  // --- recurrence: nth <weekday> of month. Mirrors scripts/board_events.py.
+  // Throws rather than silently rolling into the next month when the occurrence
+  // does not exist (there is no 5th Friday most months).
+  function nthWeekdayOfMonth(y,m,weekday,n){          // m: 1-12, weekday: 0=Sun..6=Sat
+    var first=new Date(y,m-1,1);
+    var offset=(weekday-first.getDay()+7)%7;
+    var day=1+offset+(n-1)*7;
+    var last=new Date(y,m,0).getDate();
+    if(day>last)return null;
+    return new Date(y,m-1,day);
+  }
+  function nextOccurrence(afterISO,rule){
+    rule=rule||{weekday:5,n:1};                        // default: first Friday
+    var a=new Date(afterISO+"T12:00:00");              // noon avoids DST edge cases
+    var y=a.getFullYear(), m=a.getMonth()+1;
+    for(var i=0;i<14;i++){
+      var c=nthWeekdayOfMonth(y,m,rule.weekday,rule.n);
+      if(c&&c>a)return c;
+      if(m===12){y++;m=1;}else{m++;}
+    }
+    return null;
+  }
+  function isoDate(d){
+    return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+  }
+
+  function fillEventPicker(){
+    var sel=$("evPick"); if(!sel||!DATA)return;
+    var evs=(DATA.events||[]).slice().sort(function(a,b){return (a.date||"")<(b.date||"")?-1:1;});
+    var cur=ev();
+    sel.innerHTML="";
+    evs.forEach(function(e){
+      var o=document.createElement("option");
+      o.value=e.slug;
+      var live=(e.slug===DATA.featured)?" ⭐ live":"";
+      o.textContent=(e.date||"")+" · "+(e.name||e.slug)+" ["+(e.status||"upcoming")+"]"+live;
+      if(cur&&e.slug===cur.slug)o.selected=true;
+      sel.appendChild(o);
+    });
+    var e=cur||{};
+    var spots=e.spots||[]; var filled=spots.filter(function(s){return s.vendor}).length;
+    $("evMeta").textContent=(DATA.featured===e.slug?"This is the LIVE event. ":"Not live — editing a draft. ")
+      +filled+" of "+spots.length+" spots filled"
+      +(e.record?" · recorded "+(e.record.attendance_estimate||"?")+" people":"");
+    $("evSpotCount").textContent=spots.length;
+    fillRecord();
+  }
+
+  function fillRecord(){
+    var e=ev(); if(!e)return;
+    var r=e.record||{};
+    $("rcAttendance").value=r.attendance_estimate||"";
+    $("rcWeather").value=r.weather||"";
+    $("rcNotes").value=r.notes||"";
+    var assigned=(e.spots||[]).filter(function(s){return s.vendor}).map(function(s){return s.vendor;});
+    var box=$("rcPresent");
+    if(!assigned.length){box.className="hint";box.textContent="No vendors assigned to spots yet.";return;}
+    box.className=""; box.innerHTML="";
+    var present=r.vendors_present||assigned;   // default: everyone showed
+    assigned.forEach(function(v,i){
+      var id="rcp_"+i;
+      var wrap=document.createElement("label");
+      wrap.style.cssText="display:flex;align-items:center;gap:8px;font-weight:600;margin:4px 0";
+      var cb=document.createElement("input");
+      cb.type="checkbox"; cb.id=id; cb.value=v; cb.checked=present.indexOf(v)>=0;
+      cb.style.cssText="width:auto;margin:0";
+      wrap.appendChild(cb); wrap.appendChild(document.createTextNode(v));
+      box.appendChild(wrap);
+    });
+  }
   function saveDraft(){localStorage.setItem(DRAFT_KEY,JSON.stringify(DATA));}
   function fillEvent(){var e=ev();if(!e)return;
     $("evName").value=e.name||"";$("evDate").value=e.date||"";$("evHours").value=e.hours||"";
@@ -226,7 +328,69 @@
     e.name=$("evName").value.trim();e.date=$("evDate").value.trim();e.hours=$("evHours").value.trim();
     e.area=$("evArea").value.trim();e.blurb=$("evBlurb").value.trim();}
   ["evName","evDate","evHours","evArea","evBlurb"].forEach(function(id){
-    $(id).addEventListener("change",function(){readEvent();saveDraft();});});
+    $(id).addEventListener("change",function(){readEvent();saveDraft();fillEventPicker();});});
+
+  // ---------- event lifecycle ----------
+  $("evPick").addEventListener("change",function(){
+    readEvent();                       // flush edits to the event you're leaving
+    editingSlug=this.value;
+    fillEvent();renderVendors();renderSpots();renderParking();fillEventPicker();
+    toast("Editing "+editingSlug);
+  });
+
+  $("evFeature").addEventListener("click",function(){
+    var e=ev(); if(!e)return;
+    DATA.featured=e.slug;
+    if((e.status||"draft")==="draft")e.status="upcoming";
+    saveDraft();fillEventPicker();
+    toast(e.slug+" is now the live event");
+  });
+
+  $("evNext").addEventListener("click",function(){
+    var src=ev(); if(!src||!src.date){toast("Set a date on this event first");return;}
+    var rule=src.recurrence||{weekday:5,n:1};
+    var d=nextOccurrence(src.date,rule);
+    if(!d){toast("Couldn't work out the next date");return;}
+    var slug=(rule.label||"first-friday")+"-"+isoDate(d);
+    if((DATA.events||[]).some(function(x){return x.slug===slug})){
+      editingSlug=slug;fillEvent();renderSpots();fillEventPicker();
+      toast(slug+" already exists — switched to it");return;
+    }
+    // Carry the surveyed geometry forward; reset the people.
+    var spots=(src.spots||[]).map(function(s){
+      var c=JSON.parse(JSON.stringify(s));
+      c.vendor=null; c.status="open";
+      Object.keys(c).forEach(function(k){ if(k.indexOf("vendor_")===0)delete c[k]; });
+      return c;
+    });
+    var next={slug:slug,name:src.name||"",date:isoDate(d),status:"draft",
+      recurrence:rule,generated_from:src.slug,generated_at:new Date().toISOString(),
+      spots:spots,vendors:[],history:src.history||""};
+    ["area","blurb","logistics_note","boundary","corridor","parking","hours"].forEach(function(k){
+      if(src[k]!==undefined)next[k]=JSON.parse(JSON.stringify(src[k]));});
+    DATA.events=DATA.events||[]; DATA.events.push(next);   // append-only
+    editingSlug=slug;
+    saveDraft();fillEvent();renderVendors();renderSpots();renderParking();fillEventPicker();
+    toast("Added "+slug+" — "+spots.length+" spots carried, vendors cleared");
+  });
+
+  $("rcSave").addEventListener("click",function(){
+    var e=ev(); if(!e)return;
+    var assigned=(e.spots||[]).filter(function(s){return s.vendor}).map(function(s){return s.vendor;});
+    var present=[].slice.call(document.querySelectorAll("#rcPresent input:checked"))
+                  .map(function(cb){return cb.value;});
+    var noshow=assigned.filter(function(v){return present.indexOf(v)<0;});
+    var att=$("rcAttendance").value.trim();
+    e.record={recorded_at:new Date().toISOString(),
+      attendance_estimate:att?parseInt(att,10):null,
+      vendors_assigned:assigned.length,vendors_present:present,vendors_noshow:noshow,
+      weather:$("rcWeather").value.trim(),notes:$("rcNotes").value.trim()};
+    e.status="recorded";
+    saveDraft();fillEventPicker();
+    $("rcStatus").textContent="Saved. "+present.length+" showed, "+noshow.length+" no-show"
+      +(noshow.length?" ("+noshow.join(", ")+")":"")+". Export the JSON to publish it.";
+    toast("Record saved to draft");
+  });
 
   function renderVendors(){
     var e=ev(); var box=$("vlist"); box.innerHTML="";
@@ -249,13 +413,13 @@
     var draft=localStorage.getItem(DRAFT_KEY);
     if(draft){try{DATA=JSON.parse(draft);toast("Loaded your draft (unpublished)");}catch(e){}}
     var p=DATA?Promise.resolve():loadLive().then(function(d){DATA=d;});
-    p.then(function(){fillEvent();renderVendors();initMap();renderSpots();initSpotMap();clearSpotEditor();
+    p.then(function(){fillEvent();fillEventPicker();renderVendors();initMap();renderSpots();initSpotMap();clearSpotEditor();
       renderParking();initParkingMap();clearPkEditor();});
   }
   $("reload").onclick=function(){
     if(!confirm("Replace your draft with the live published data?"))return;
-    loadLive().then(function(d){DATA=d;localStorage.removeItem(DRAFT_KEY);
-      fillEvent();renderVendors();renderSpots();renderParking();toast("Live data loaded");});
+    loadLive().then(function(d){DATA=d;localStorage.removeItem(DRAFT_KEY);editingSlug=null;
+      fillEvent();fillEventPicker();renderVendors();renderSpots();renderParking();toast("Live data loaded");});
   };
 
   // ---------- basemap helper (street + free no-key satellite, reused by all 3 admin maps) ----------
@@ -388,7 +552,7 @@
     }
     (corridor&&corridor.intersections||[]).forEach(function(x){
       L.circleMarker([x.lat,x.lng],{radius:4,color:"#e8b23d",weight:2,fillColor:"#fff",fillOpacity:1})
-        .addTo(map2).bindPopup("🚦 "+x.label+" — prime corner");
+        .addTo(map2).bindPopup("🚦 "+x.label+" — "+(x.note||"prime corner"));
     });
     ss.forEach(function(s){
       var st=(s.status||"open").toLowerCase();
