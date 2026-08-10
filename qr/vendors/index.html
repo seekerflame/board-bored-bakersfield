@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vendor QR cards — Board Bored</title>
+<style>
+  @page{size:letter portrait;margin:0.45in}
+  :root{--ink:#141116;--pap:#faf7f2;--mut:#777069;--line:#948d88;--acc:#ca421a;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,"Helvetica Neue",Arial,sans-serif;background:var(--pap);
+    color:var(--ink);padding:24px 16px 48px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .wrap{max-width:840px;margin:0 auto}
+  .mark{font-size:13px;letter-spacing:4px;font-weight:900;text-transform:uppercase;
+    color:var(--acc);text-decoration:none}
+  h1{font-size:30px;letter-spacing:-.5px;margin:10px 0 6px}
+  .tag{color:var(--mut);font-size:15px;line-height:1.5;margin-bottom:22px}
+  .card{background:#fff;border:2px solid var(--ink);border-radius:18px;padding:20px 20px 22px;
+    margin-bottom:16px;page-break-inside:avoid;break-inside:avoid}
+  .card h2{font-size:21px;letter-spacing:-.3px}
+  .code{font-size:11px;color:var(--mut);font-weight:800;text-transform:uppercase;
+    letter-spacing:.5px;margin:2px 0 14px}
+  .qrs{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .qr{text-align:center}
+  .qr img{width:100%;max-width:180px;height:auto;image-rendering:pixelated}
+  .qt{font-size:13.5px;font-weight:900;margin-top:6px}
+  .qw{font-size:11px;color:var(--mut);line-height:1.45;margin-top:3px}
+  .note{margin-top:20px;font-size:12.5px;color:var(--mut);line-height:1.65;
+    border:1px solid var(--line);border-radius:12px;padding:13px 15px;background:rgba(0,0,0,.02)}
+  .note b{color:var(--ink)}
+  @media print{ body{background:#fff;padding:0} .note{display:none} }
+  @media (max-width:560px){ .qrs{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="mark" href="../../">● Board Bored</a>
+  <h1>Vendor QR cards</h1>
+  <p class="tag">One card per stop on the map. Every code carries that vendor's
+    referral tag, so a scan is credited to whoever handed it over. Cut along the cards.</p>
+
+  <section class="card">
+    <h2>Dagny's Coffee Co.</h2>
+    <div class="code">code: dagny-s-coffee-co</div>
+    <div class="qrs">
+      <div class="qr"><img src="dagny-s-coffee-co__map.png" alt="QR for Dagny's Coffee Co. — Who's out tonight"><div class="qt">Who's out tonight</div><div class="qw">Put this on the table. A passer-by scans it and sees the whole walk.</div></div>
+      <div class="qr"><img src="dagny-s-coffee-co__feedback.png" alt="QR for Dagny's Coffee Co. — How was tonight?"><div class="qt">How was tonight?</div><div class="qw">Hand this over as they leave. Ten seconds, works anonymously.</div></div>
+      <div class="qr"><img src="dagny-s-coffee-co__signup.png" alt="QR for Dagny's Coffee Co. — Get a spot"><div class="qt">Get a spot</div><div class="qw">For the shop next door who asks how you got out here.</div></div>
+    </div>
+  </section>
+  <section class="card">
+    <h2>Bakersfield Art Association — Art Center</h2>
+    <div class="code">code: bakersfield-art-association-art-center</div>
+    <div class="qrs">
+      <div class="qr"><img src="bakersfield-art-association-art-center__map.png" alt="QR for Bakersfield Art Association — Art Center — Who's out tonight"><div class="qt">Who's out tonight</div><div class="qw">Put this on the table. A passer-by scans it and sees the whole walk.</div></div>
+      <div class="qr"><img src="bakersfield-art-association-art-center__feedback.png" alt="QR for Bakersfield Art Association — Art Center — How was tonight?"><div class="qt">How was tonight?</div><div class="qw">Hand this over as they leave. Ten seconds, works anonymously.</div></div>
+      <div class="qr"><img src="bakersfield-art-association-art-center__signup.png" alt="QR for Bakersfield Art Association — Art Center — Get a spot"><div class="qt">Get a spot</div><div class="qw">For the shop next door who asks how you got out here.</div></div>
+    </div>
+  </section>
+  <section class="card">
+    <h2>Arts Council of Kern (ACK)</h2>
+    <div class="code">code: arts-council-of-kern-ack</div>
+    <div class="qrs">
+      <div class="qr"><img src="arts-council-of-kern-ack__map.png" alt="QR for Arts Council of Kern (ACK) — Who's out tonight"><div class="qt">Who's out tonight</div><div class="qw">Put this on the table. A passer-by scans it and sees the whole walk.</div></div>
+      <div class="qr"><img src="arts-council-of-kern-ack__feedback.png" alt="QR for Arts Council of Kern (ACK) — How was tonight?"><div class="qt">How was tonight?</div><div class="qw">Hand this over as they leave. Ten seconds, works anonymously.</div></div>
+      <div class="qr"><img src="arts-council-of-kern-ack__signup.png" alt="QR for Arts Council of Kern (ACK) — Get a spot"><div class="qt">Get a spot</div><div class="qw">For the shop next door who asks how you got out here.</div></div>
+    </div>
+  </section>
+  <section class="card">
+    <h2>Bakersfield Vintage</h2>
+    <div class="code">code: bakersfield-vintage</div>
+    <div class="qrs">
+      <div class="qr"><img src="bakersfield-vintage__map.png" alt="QR for Bakersfield Vintage — Who's out tonight"><div class="qt">Who's out tonight</div><div class="qw">Put this on the table. A passer-by scans it and sees the whole walk.</div></div>
+      <div class="qr"><img src="bakersfield-vintage__feedback.png" alt="QR for Bakersfield Vintage — How was tonight?"><div class="qt">How was tonight?</div><div class="qw">Hand this over as they leave. Ten seconds, works anonymously.</div></div>
+      <div class="qr"><img src="bakersfield-vintage__signup.png" alt="QR for Bakersfield Vintage — Get a spot"><div class="qt">Get a spot</div><div class="qw">For the shop next door who asks how you got out here.</div></div>
+    </div>
+  </section>
+  <section class="card">
+    <h2>Encore Boutique</h2>
+    <div class="code">code: encore-boutique</div>
+    <div class="qrs">
+      <div class="qr"><img src="encore-boutique__map.png" alt="QR for Encore Boutique — Who's out tonight"><div class="qt">Who's out tonight</div><div class="qw">Put this on the table. A passer-by scans it and sees the whole walk.</div></div>
+      <div class="qr"><img src="encore-boutique__feedback.png" alt="QR for Encore Boutique — How was tonight?"><div class="qt">How was tonight?</div><div class="qw">Hand this over as they leave. Ten seconds, works anonymously.</div></div>
+      <div class="qr"><img src="encore-boutique__signup.png" alt="QR for Encore Boutique — Get a spot"><div class="qt">Get a spot</div><div class="qw">For the shop next door who asks how you got out here.</div></div>
+    </div>
+  </section>
+  <section class="card">
+    <h2>Jerry's Pizza & Pub</h2>
+    <div class="code">code: jerry-s-pizza-pub</div>
+    <div class="qrs">
+      <div class="qr"><img src="jerry-s-pizza-pub__map.png" alt="QR for Jerry's Pizza & Pub — Who's out tonight"><div class="qt">Who's out tonight</div><div class="qw">Put this on the table. A passer-by scans it and sees the whole walk.</div></div>
+      <div class="qr"><img src="jerry-s-pizza-pub__feedback.png" alt="QR for Jerry's Pizza & Pub — How was tonight?"><div class="qt">How was tonight?</div><div class="qw">Hand this over as they leave. Ten seconds, works anonymously.</div></div>
+      <div class="qr"><img src="jerry-s-pizza-pub__signup.png" alt="QR for Jerry's Pizza & Pub — Get a spot"><div class="qt">Get a spot</div><div class="qw">For the shop next door who asks how you got out here.</div></div>
+    </div>
+  </section>
+  <section class="card">
+    <h2>Zama Latin American Cuisine</h2>
+    <div class="code">code: zama-latin-american-cuisine</div>
+    <div class="qrs">
+      <div class="qr"><img src="zama-latin-american-cuisine__map.png" alt="QR for Zama Latin American Cuisine — Who's out tonight"><div class="qt">Who's out tonight</div><div class="qw">Put this on the table. A passer-by scans it and sees the whole walk.</div></div>
+      <div class="qr"><img src="zama-latin-american-cuisine__feedback.png" alt="QR for Zama Latin American Cuisine — How was tonight?"><div class="qt">How was tonight?</div><div class="qw">Hand this over as they leave. Ten seconds, works anonymously.</div></div>
+      <div class="qr"><img src="zama-latin-american-cuisine__signup.png" alt="QR for Zama Latin American Cuisine — Get a spot"><div class="qt">Get a spot</div><div class="qw">For the shop next door who asks how you got out here.</div></div>
+    </div>
+  </section>
+
+  <div class="note">
+    <b>Why per-vendor:</b> a generic code tells you a scan happened. These tell you
+    <i>whose table</i> it happened at — which is what decides who gets the good spot
+    next month. Read the results with
+    <code>python3 scripts/board_referral.py credit</code>.<br><br>
+    <b>Printing:</b> keep the white border around each code. That quiet zone is what
+    lets a phone camera find it at an angle. Anything down to ~1 inch square scans fine.
+  </div>
+</div>
+</body>
+</html>

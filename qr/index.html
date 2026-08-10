@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QR codes — Board Bored</title>
+<style>
+  @page{size:letter portrait;margin:0.5in}
+  :root{--ink:#141116;--pap:#faf7f2;--mut:#777069;--line:#948d88;--acc:#ca421a;--acc2:#167f68;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,"Helvetica Neue",Arial,sans-serif;background:var(--pap);color:var(--ink);
+    padding:24px 16px 48px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .wrap{max-width:760px;margin:0 auto}
+  .mark{font-size:13px;letter-spacing:4px;font-weight:900;text-transform:uppercase;color:var(--acc);text-decoration:none}
+  h1{font-size:30px;letter-spacing:-.5px;margin:10px 0 6px}
+  .tag{color:var(--mut);font-size:15px;line-height:1.5;margin-bottom:22px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:18px}
+  .card{background:#fff;border:2px solid var(--ink);border-radius:18px;padding:20px;text-align:center;
+    page-break-inside:avoid;break-inside:avoid}
+  .card h2{font-size:19px;margin-bottom:4px}
+  .card .who{font-size:12.5px;color:var(--mut);line-height:1.5;margin-bottom:14px;min-height:38px}
+  .card img{width:100%;max-width:260px;height:auto;display:block;margin:0 auto;image-rendering:pixelated}
+  .card .url{font-size:10.5px;color:var(--mut);word-break:break-all;margin-top:12px;line-height:1.45}
+  .card .cta{font-size:15px;font-weight:900;margin-top:12px}
+  .fb .cta{color:var(--acc)} .gh .cta{color:var(--acc2)}
+  .note{margin-top:24px;font-size:12.5px;color:var(--mut);line-height:1.65;
+    border:1px solid var(--line);border-radius:12px;padding:13px 15px;background:rgba(0,0,0,.02)}
+  .note b{color:var(--ink)}
+  @media print{ body{background:#fff;padding:0} .note{display:none} .mark,h1,.tag{margin-bottom:8px} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="mark" href="../">● Board Bored</a>
+  <h1>Scan me</h1>
+  <p class="tag">Print this, or hold your phone up to it. Both codes were decoded and confirmed
+    before printing — they go where they say they go.</p>
+
+  <div class="grid">
+    <div class="card fb">
+      <h2>How was tonight?</h2>
+      <div class="who">For anyone who came — visitors, vendors, shops. Ten seconds, works anonymously.</div>
+      <img src="feedback.png" alt="QR code linking to the First Friday feedback form">
+      <div class="cta">Tell us how it went →</div>
+      <div class="url">seekerflame.github.io/board-bored-bakersfield/feedback.html</div>
+    </div>
+
+    <div class="card gh">
+      <h2>The code</h2>
+      <div class="who">The whole site is open. Fork it, run your own street, or send a fix.</div>
+      <img src="github.png" alt="QR code linking to the Board Bored GitHub repository">
+      <div class="cta">Build on it →</div>
+      <div class="url">github.com/seekerflame/board-bored-bakersfield</div>
+    </div>
+  </div>
+
+  <div class="note">
+    <b>Printing:</b> any size down to about 1 inch square scans fine — these are 37×37 and 33×33 modules
+    at error-correction level M, the same level as the existing print pack. Keep the white border; that
+    quiet zone is what lets a camera find the code at an angle.<br><br>
+    <b>Tracking who sent people:</b> these two are generic. For per-vendor codes that credit whoever
+    handed them out, run <code>python3 scripts/board_referral.py links --all</code> and generate a code
+    from that vendor's URL instead.
+  </div>
+</div>
+</body>
+</html>
