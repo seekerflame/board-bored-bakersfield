@@ -6,6 +6,11 @@
 <title>First Friday — Board Bored</title>
 <meta property="og:title" content="First Friday Art Walk — live map">
 <meta property="og:description" content="Downtown Bakersfield's open shops, galleries, and pop-ups — on one free map.">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta name="theme-color" content="#ca421a">
+<link rel="apple-touch-icon" href="../icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Board Bored">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -505,6 +510,27 @@
     if(navigator.share){navigator.share({title:"First Friday — Board Bored",text:txt,url:url}).catch(function(){});}
     else if(navigator.clipboard){navigator.clipboard.writeText(txt+" "+url).then(function(){toast("Link copied — paste it anywhere")});}
     else{toast(url);}
+  });
+})();
+</script>
+<script src="../lib/pwa.js"></script>
+<script>
+/* Install affordance — injected so it can't disturb the existing map DOM.
+   Only appears when the browser says the app is installable (Chrome/Edge/Android).
+   iOS installs via Share → Add to Home Screen; there is no programmatic prompt there. */
+(function(){
+  if(!window.BB) return;
+  var b=document.createElement("button");
+  b.textContent="⬇ Install this map";
+  b.setAttribute("aria-label","Install Board Bored");
+  b.style.cssText="position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:9999;"+
+    "display:none;border:0;border-radius:999px;padding:11px 18px;font:600 14px -apple-system,Arial;"+
+    "background:#ca421a;color:#fff;box-shadow:0 4px 14px rgba(0,0,0,.25);cursor:pointer";
+  document.body.appendChild(b);
+  window.BB_onInstallable=function(){ b.style.display="block"; };
+  b.addEventListener("click",function(){
+    b.style.display="none";
+    window.BB.install();
   });
 })();
 </script>

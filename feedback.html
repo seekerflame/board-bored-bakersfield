@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>How was tonight? — Board Bored</title>
 <meta name="description" content="Tell us how First Friday went. Takes ten seconds, no account, no email needed.">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#ca421a">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
 <style>
   :root{--ink:#141116;--pap:#faf7f2;--card:#fff;--acc:#ca421a;--acc2:#167f68;--line:#948d88;--mut:#777069;}
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -124,6 +127,7 @@
   </footer>
 </div>
 
+<script src="lib/pwa.js"></script>
 <script>
 (function(){
   var $ = function(id){ return document.getElementById(id); };
@@ -212,27 +216,41 @@
 
     $("fbSend").disabled = true;
     st.className = "status"; st.textContent = "Sending…";
-    fetch(FORMSPREE_ENDPOINT, {
-      method: "POST",
-      headers: { "Accept": "application/json", "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    }).then(function(r){
-      if (r.ok) {
-        $("formFb").style.display = "none";
-        $("fbDone").style.display = "block";
-      } else {
-        $("fbSend").disabled = false;
-        st.className = "status err";
-        st.textContent = "Couldn't send — try again, or email " + CONTACT_EMAIL + " directly.";
-        mailFallback("First Friday feedback", [
-          ["Vibe", vibe], ["Role", who], ["What worked", best], ["What to fix", fix]
-        ]);
-      }
-    }).catch(function(){
+
+    var onSent = function(){
+      $("formFb").style.display = "none";
+      $("fbDone").style.display = "block";
+    };
+    // Offline: the submission is safe on this device and goes out on reconnect.
+    // Tell them the truth — it's saved — instead of a scary "couldn't send".
+    var onQueued = function(){
+      $("formFb").style.display = "none";
+      $("fbDone").style.display = "block";
+      var m = $("fbDone").querySelector(".tag");
+      if (m) m.textContent = "Saved — you're offline right now, so we'll send it the moment you're back on. You can close this.";
+    };
+    var onFail = function(){
       $("fbSend").disabled = false;
       st.className = "status err";
       st.textContent = "Couldn't send — try again, or email " + CONTACT_EMAIL + " directly.";
-    });
+      mailFallback("First Friday feedback", [
+        ["Vibe", vibe], ["Role", who], ["What worked", best], ["What to fix", fix]
+      ]);
+    };
+
+    if (window.BB && window.BB.submit) {
+      window.BB.submit(FORMSPREE_ENDPOINT, payload).then(function(res){
+        if (res.queued) onQueued();
+        else if (res.ok) onSent();
+        else onFail();
+      });
+    } else {
+      fetch(FORMSPREE_ENDPOINT, {
+        method: "POST",
+        headers: { "Accept": "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      }).then(function(r){ if (r.ok) onSent(); else onFail(); }).catch(onFail);
+    }
   });
 })();
 </script>

@@ -935,9 +935,10 @@
           "hours": "5p–9p (event)",
           "hours_start": "17:00",
           "hours_end": "21:00",
-          "note": "ART CONTEST tonight — bring a piece or vote on the feature wall. Member gallery show + live demos, refreshments out.",
+          "note": "CONFIRMED for First Friday. Art contest — bring a piece or vote on the feature wall. Member gallery show + live demos, refreshments out.",
           "instagram": "",
-          "website": ""
+          "website": "",
+          "confirmed": true
         },
         {
           "id": "biz_003",
@@ -980,9 +981,11 @@
           "hours": "5p–9p (event)",
           "hours_start": "17:00",
           "hours_end": "21:00",
-          "note": "$1 SALE — every rack, tonight only. Community pricing, plus a curated First Friday rack up front. Bring a bag.",
+          "note": "$1 SALE — every rack. Here EVERY First Friday, not a one-off. Community pricing plus a curated First Friday rack up front.",
           "instagram": "",
-          "website": ""
+          "website": "",
+          "confirmed": true,
+          "recurring": "every First Friday"
         },
         {
           "id": "biz_006",
@@ -1014,7 +1017,17 @@
           "instagram": "zamalatinamericancuisine",
           "website": "zamalatinamericancuisine.com"
         }
-      ]
+      ],
+      "record": {
+        "recorded_at": "2026-08-10T22:06:42.163658+00:00",
+        "attendance_estimate": null,
+        "vendors_assigned": 0,
+        "vendors_present": [],
+        "vendors_noshow": [],
+        "weather": "",
+        "notes": "Bakersfield Vintage referred vendors who showed — first real-world proof the referral path works, and it came from the late-night anchor. Did the full run-through of the shops, walked and shopped. GAPS: fliers never got printed; no solid vendor-facing map existed on the night. Photos taken of 2 vendors to feature. Spot signups via Formspree: 0 ingested at time of record."
+      },
+      "status": "recorded"
     }
   ]
 }

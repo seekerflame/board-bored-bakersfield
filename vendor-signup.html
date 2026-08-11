@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Get a spot — Board Bored</title>
 <meta name="description" content="Register a storefront or a sidewalk spot for First Friday Bakersfield.">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#ca421a">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
 <style>
   :root{--ink:#141116;--pap:#faf7f2;--card:#fff;--acc:#ca421a;--acc2:#167f68;--line:#948d88;--mut:#777069;}
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -155,6 +158,7 @@
   </footer>
 </div>
 
+<script src="lib/pwa.js"></script>
 <script>
 (function(){
   var $=function(id){return document.getElementById(id)};
@@ -244,15 +248,21 @@
 
   function submitViaFormspree(payload,statusEl,onOk){
     statusEl.className="status";statusEl.textContent="Sending…";
+    var fail=function(){statusEl.className="status err";statusEl.textContent="Couldn't send — try again, or email "+CONTACT_EMAIL+" directly.";};
+    // Offline at the event? The signup is saved on their device and sent on
+    // reconnect. onOk() still fires so they see the success screen — it IS saved.
+    if(window.BB&&window.BB.submit){
+      window.BB.submit(FORMSPREE_ENDPOINT,payload).then(function(res){
+        if(res.queued){statusEl.className="status ok";statusEl.textContent="Saved — you're offline, so we'll send it when you're back on.";onOk();}
+        else if(res.ok){onOk();}
+        else{fail();}
+      });
+      return;
+    }
     fetch(FORMSPREE_ENDPOINT,{
       method:"POST",headers:{"Accept":"application/json","Content-Type":"application/json"},
       body:JSON.stringify(payload)
-    }).then(function(r){
-      if(r.ok){onOk();}
-      else{statusEl.className="status err";statusEl.textContent="Couldn't send — try again, or email "+CONTACT_EMAIL+" directly.";}
-    }).catch(function(){
-      statusEl.className="status err";statusEl.textContent="Couldn't send — try again, or email "+CONTACT_EMAIL+" directly.";
-    });
+    }).then(function(r){ if(r.ok){onOk();}else{fail();} }).catch(fail);
   }
 
   // ---------- storefront form ----------
