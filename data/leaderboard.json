@@ -1,0 +1,16 @@
+{
+  "generated": "2026-08-13T18:22:27",
+  "event": "first-friday",
+  "boards": {
+    "sponsors": {
+      "title": "Top Community Investors",
+      "subtitle": "The shops funding the free night",
+      "rows": []
+    },
+    "walkers": {
+      "title": "Top Walkers",
+      "subtitle": "Neighbors who show up and share",
+      "rows": []
+    }
+  }
+}

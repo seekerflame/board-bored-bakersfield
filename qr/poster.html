@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>First Friday — scan the map</title>
+<style>
+  @page{size:letter portrait;margin:0.4in}
+  :root{--ink:#141116;--pap:#faf7f2;--mut:#6d665f;--acc:#ca421a;--acc2:#167f68;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,"Helvetica Neue",Arial,sans-serif;background:var(--pap);
+    color:var(--ink);padding:6vh 24px;-webkit-print-color-adjust:exact;print-color-adjust:exact;
+    min-height:100dvh;display:flex;align-items:center;justify-content:center}
+  .poster{max-width:640px;width:100%;text-align:center}
+  .kick{font-size:15px;letter-spacing:5px;font-weight:900;text-transform:uppercase;color:var(--acc)}
+  h1{font-size:clamp(38px,10vw,62px);line-height:.98;letter-spacing:-1.5px;margin:10px 0 6px}
+  .sub{font-size:clamp(17px,4.5vw,22px);color:var(--mut);line-height:1.4;margin-bottom:26px}
+  .qbox{background:#fff;border:3px solid var(--ink);border-radius:26px;padding:22px;
+    display:inline-block;margin-bottom:22px}
+  .qbox img{width:min(64vw,380px);height:auto;image-rendering:pixelated;display:block}
+  .scan{font-size:clamp(22px,6vw,30px);font-weight:900;margin-bottom:6px}
+  .treats{font-size:16px;color:var(--acc2);font-weight:800;margin-bottom:18px}
+  .url{font-family:ui-monospace,Menlo,monospace;font-size:15px;color:var(--mut);word-break:break-all}
+  .url b{color:var(--ink)}
+  .foot{margin-top:20px;font-size:12px;letter-spacing:3px;text-transform:uppercase;
+    font-weight:900;color:var(--acc)}
+  @media print{ body{background:#fff} }
+</style>
+</head>
+<body>
+  <div class="poster">
+    <div class="kick">Downtown Bakersfield Arts District</div>
+    <h1>First Friday<br>is on the map.</h1>
+    <p class="sub">See who's open, who's out on the sidewalk, and what's happening — live, on your phone.</p>
+    <div class="qbox"><img src="master-map.png" alt="Scan for the live First Friday map"></div>
+    <div class="scan">📲 Scan to see who's out tonight</div>
+    <div class="treats">🍿 Free popcorn · 🌭 hot dogs · 🍦 ice cream on the street</div>
+    <div class="url">or open <b>seekerflame.github.io/board-bored-bakersfield/first-friday/</b></div>
+    <div class="foot">● Board Bored · follow @boredboardkern</div>
+  </div>
+</body>
+</html>

@@ -116,6 +116,20 @@
   .sechead{max-width:560px;margin:30px auto 0;padding:0 18px;font-family:var(--display);font-style:italic;
     font-size:14px;font-weight:600;color:var(--acc2);letter-spacing:.2px}
   .v.highlighted{outline:2.5px solid var(--acc);outline-offset:2px}
+  .lbcard{max-width:560px;margin:26px auto 0;background:var(--card);border:2px solid var(--acc);border-radius:16px;padding:14px 16px 8px}
+  .lbcard+.lbcard{margin-top:14px}
+  .lbhead{font-family:var(--display);font-style:italic;font-weight:600;font-size:16px;color:var(--acc);margin-bottom:2px}
+  .lbhead span{display:block;font-family:-apple-system,Arial;font-style:normal;font-size:12px;font-weight:600;color:var(--mut);margin-top:2px}
+  .lbempty{font-size:13.5px;color:var(--mut);line-height:1.5;padding:10px 2px 12px}
+  .lbempty a{color:var(--acc2);font-weight:800;text-decoration:none}
+  .lbrow{display:flex;align-items:center;gap:9px;padding:9px 2px;border-top:1px solid #14111614}
+  .lbrow:first-of-type{border-top:0}
+  .lbrank{font-family:var(--display);font-weight:600;font-size:15px;color:var(--acc3);width:20px;text-align:center;flex:none}
+  .lbname{font-weight:800;font-size:14.5px;flex:1;min-width:0}
+  .lbstar{display:inline-block;font-size:10px;font-weight:800;color:var(--acc);margin-left:6px;white-space:nowrap}
+  .lbmeta{font-size:11.5px;font-weight:700;color:var(--mut);white-space:nowrap}
+  .lbstreak{color:var(--acc);margin-left:4px}
+  .lbpts{font-family:var(--display);font-weight:600;font-size:14px;color:var(--acc2);white-space:nowrap;flex:none}
   .cta{display:block;text-align:center;background:var(--ink);color:#fffaf5;text-decoration:none;font-weight:700;
     font-size:16px;border-radius:14px;padding:17px;margin:20px 0 10px;transition:transform .15s var(--ease),background .15s}
   .cta:hover{background:#28222c}
@@ -178,6 +192,8 @@
   <div class="sechead" id="spotsHead" style="display:none">Sidewalk vendor spots</div>
   <div class="count" id="spotsCount" style="display:none"></div>
   <div id="spotCards"></div>
+
+  <div id="lbWrap"></div>
 
   <a class="cta" id="vendorCta" href="../vendor-signup.html">🏪 Get a spot on the map</a>
   <div class="rowbtn">
@@ -518,6 +534,42 @@
 /* Install affordance — injected so it can't disturb the existing map DOM.
    Only appears when the browser says the app is installable (Chrome/Edge/Android).
    iOS installs via Share → Add to Home Screen; there is no programmatic prompt there. */
+// The public leaderboard — sponsors (Top Community Investors) + any other earn-board
+// (walk-earn, etc.) published to leaderboard.json. Names + points only; no PII ever.
+(function(){
+  var wrap=document.getElementById("lbWrap");
+  if(!wrap) return;
+  function esc(s){var d=document.createElement("div");d.textContent=String(s==null?"":s);return d.innerHTML;}
+  var LVL={New:"",Bronze:"🥉",Silver:"🥈",Gold:"🥇",Platinum:"💎"};
+  function board(k,bd){
+    if(!bd||!bd.rows) return "";
+    var head='<div class="lbhead">'+esc(bd.title)+'<span>'+esc(bd.subtitle||"")+'</span></div>';
+    if(!bd.rows.length){
+      if(k!=="sponsors") return "";           // only the sponsor board invites when empty
+      return '<div class="lbcard">'+head+
+        '<div class="lbempty">Be the first — <a href="../sponsor.html">claim a founding spot</a>. '+
+        'The first 10 shops lock their rate for life.</div></div>';
+    }
+    var rows=bd.rows.map(function(r,i){
+      var medal=LVL[r.level]||"";
+      var star=r.founding?'<span class="lbstar">⭐ Founding</span>':"";
+      var streak=r.streak?'<span class="lbstreak">🔥'+esc(r.streak)+'</span>':"";
+      return '<div class="lbrow"><span class="lbrank">'+(i+1)+'</span>'+
+        '<span class="lbname">'+esc(r.name)+star+'</span>'+
+        '<span class="lbmeta">'+medal+' '+esc(r.level)+streak+'</span>'+
+        '<span class="lbpts">'+esc(r.points)+' pts</span></div>';
+    }).join("");
+    return '<div class="lbcard">'+head+rows+'</div>';
+  }
+  fetch("../data/leaderboard.json",{cache:"no-store"}).then(function(r){return r.json()}).then(function(d){
+    var bds=(d&&d.boards)||{};
+    var seen={}, html="";
+    ["sponsors","walkers"].forEach(function(k){ if(bds[k]){html+=board(k,bds[k]);seen[k]=1;} });
+    Object.keys(bds).forEach(function(k){ if(!seen[k]) html+=board(k,bds[k]); });
+    wrap.innerHTML=html;
+  }).catch(function(){});
+})();
+
 (function(){
   if(!window.BB) return;
   var b=document.createElement("button");

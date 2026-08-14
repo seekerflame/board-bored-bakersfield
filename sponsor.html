@@ -1,0 +1,353 @@
+<!doctype html>
+<!-- © 2026 Board Bored — Bakersfield. All Rights Reserved. Proprietary; not open source. See LICENSE. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sponsor First Friday — Board Bored</title>
+<meta name="description" content="Put your shop on the First Friday map. Vendors free, storefronts sponsor.">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#ca421a">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<style>
+  :root{--ink:#141116;--pap:#faf7f2;--card:#fff;--acc:#ca421a;--acc2:#167f68;--line:#948d88;--mut:#777069;}
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  body{font-family:-apple-system,"Helvetica Neue",Arial,sans-serif;background:var(--pap);color:var(--ink);
+    min-height:100dvh;padding:20px 16px 44px}
+  .wrap{width:100%;max-width:540px;margin:0 auto}
+  .mark{font-size:13px;letter-spacing:4px;font-weight:900;text-transform:uppercase;color:var(--acc);text-decoration:none}
+  h1{font-size:clamp(26px,7vw,33px);line-height:1.05;letter-spacing:-.5px;margin:10px 0 8px}
+  .tag{color:var(--mut);font-size:15px;line-height:1.55;margin-bottom:18px}
+  .free{background:#eef7f4;border:1.5px solid var(--acc2);border-radius:14px;padding:13px 15px;
+    font-size:14px;line-height:1.55;margin-bottom:18px}
+  .free b{color:var(--acc2)}
+  .gives{background:#fdf2ec;border:1.5px solid var(--acc);border-radius:14px;padding:13px 15px;
+    font-size:14px;line-height:1.55;margin-bottom:18px}
+  .gives b{color:var(--acc)}
+  .tf{display:inline-block;font-size:11px;font-weight:800;color:var(--acc2);margin-top:6px}
+  .founding{background:linear-gradient(180deg,#fff6ea,#fdeede);border:2px solid var(--acc);border-radius:14px;padding:13px 15px;margin-bottom:18px}
+  .founding b{color:var(--acc)}
+  .founding .cap{font-size:12px;color:var(--mut);margin-top:4px;line-height:1.5}
+  .pick{font-size:13px;font-weight:800;color:var(--mut);margin:2px 0 8px}
+  .structbar{display:flex;gap:7px;margin-bottom:16px}
+  .structbtn{flex:1;position:relative;text-align:center;font:inherit;font-weight:800;font-size:13px;cursor:pointer;border:1.5px solid var(--line);border-radius:11px;padding:11px 6px 8px;background:#fff;color:var(--ink);line-height:1.15}
+  .structbtn small{display:block;font-size:10px;font-weight:700;color:var(--mut);margin-top:3px}
+  .structbtn.on{border-color:var(--acc);border-width:2px;background:#fffaf8;color:var(--acc)}
+  .structbtn .bv{position:absolute;top:-8px;left:50%;transform:translateX(-50%);font-size:8.5px;font-weight:900;color:#fff;background:var(--acc2);text-transform:uppercase;letter-spacing:.4px;padding:1px 6px;border-radius:5px;white-space:nowrap}
+  .consent{display:flex;gap:9px;align-items:flex-start;font-size:13px;color:var(--ink);margin-top:16px;line-height:1.45;cursor:pointer}
+  .consent input{width:20px;height:20px;margin-top:1px;accent-color:var(--acc2);flex:none}
+  .tier{background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:16px;margin-bottom:11px;
+    cursor:pointer;display:block;position:relative}
+  .tier.on{border-color:var(--acc);border-width:2.5px;background:#fffaf8}
+  .tier input{position:absolute;opacity:0;pointer-events:none}
+  .tr{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+  .tn{font-size:18px;font-weight:900}
+  .tp{font-size:20px;font-weight:900;color:var(--acc);white-space:nowrap}
+  .td{font-size:13.5px;color:var(--mut);line-height:1.5;margin-top:5px}
+  .best{display:inline-block;font-size:10px;font-weight:900;letter-spacing:.5px;text-transform:uppercase;
+    background:var(--acc);color:#fff;padding:2px 7px;border-radius:5px;margin-left:6px;vertical-align:2px}
+  label.f{display:block;font-size:11px;font-weight:800;color:var(--mut);text-transform:uppercase;
+    letter-spacing:.5px;margin:15px 0 5px}
+  input[type=text],input[type=email],input[type=tel]{width:100%;font:inherit;font-size:16px;padding:12px;
+    border:1.5px solid var(--line);border-radius:11px;background:#fffdfa}
+  input:focus{outline:2px solid var(--acc);border-color:var(--acc)}
+  .pay{margin-top:20px;background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:16px}
+  .pay h2{font-size:15px;margin-bottom:4px}
+  .payhint{font-size:13px;color:var(--mut);line-height:1.5;margin-bottom:12px}
+  .pb{display:block;width:100%;text-align:center;text-decoration:none;font:inherit;font-weight:800;font-size:16px;
+    border-radius:13px;padding:14px;margin-bottom:9px;border:1.5px solid var(--line);color:var(--ink);background:#fff}
+  .pb.primary{background:var(--acc);color:#fff;border-color:var(--acc)}
+  .amt{font-weight:900}
+  .btn{appearance:none;border:0;cursor:pointer;font:inherit;font-weight:800;font-size:16px;border-radius:14px;
+    padding:15px;width:100%;margin-top:14px;color:#fff;background:var(--acc2)}
+  .btn:disabled{opacity:.5;cursor:default}
+  .status{font-size:14px;font-weight:700;margin-top:10px;min-height:18px}
+  .status.ok{color:var(--acc2)} .status.err{color:#b3261e}
+  .privacy{font-size:12px;color:var(--mut);margin-top:14px;padding:11px 13px;line-height:1.6;
+    border:1px solid var(--line);border-radius:11px;background:rgba(0,0,0,.02)}
+  .privacy a{color:var(--acc2);font-weight:700}
+  .done{display:none;text-align:center;padding:26px 10px}
+  .done .big{font-size:44px;margin-bottom:10px}
+  .share{background:#fff;border:2px solid var(--acc);border-radius:16px;padding:16px;margin-top:16px;text-align:left}
+  .share h3{font-size:15px;margin-bottom:6px}
+  .sharelink{font-size:12.5px;word-break:break-all;background:rgba(0,0,0,.04);padding:9px 11px;
+    border-radius:9px;margin:9px 0;font-family:ui-monospace,Menlo,monospace}
+  footer{margin-top:24px;text-align:center;font-size:12px;color:var(--mut);line-height:1.7}
+  footer a{color:var(--acc2);font-weight:700;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="mark" href="./">● Board Bored</a>
+  <h1>Put your shop on the map</h1>
+  <p class="tag">First Friday, Downtown Bakersfield Arts District. People pull the map up on the night to see who's open.</p>
+
+  <div class="free">
+    <b>Vendors are always free.</b> That's what fills the sidewalk. Storefronts sponsor the map because
+    you're getting in front of the crowd the sidewalk creates. You're buying the front of the window.
+  </div>
+
+  <div class="gives">
+    <b>You're not buying an ad — you're hosting the night.</b> Your sponsorship gives the event the
+    eyes it deserves and puts your name on it. You get <b>celebrated</b>: your shop on the map, your
+    name on the free kettle-corn cart, a public thank-you on the night and online. When we have the
+    funding and the volunteers, every First Friday gets free popcorn, hot dogs, and ice cream for the
+    crowd — paid for by sponsors like you. A fuller sidewalk is a better night for your shop. Invest
+    in your community, get celebrated, sell more.
+  </div>
+
+  <div class="founding">
+    <b>🎒 Back-to-School Founding Offer.</b> The first <b>10 shops</b> to sign on lock their rate
+    <b>for life</b> and get a permanent <b>Founding Sponsor</b> badge on the map. When the 10 are
+    gone, this offer closes.
+    <div class="cap">One event, monthly, or a whole season — your founding rate holds as long as you stay.</div>
+  </div>
+
+  <form id="f">
+    <p class="pick">First — how do you want to pay?</p>
+    <div class="structbar" id="structbar">
+      <button type="button" class="structbtn" data-struct="once">Just one event<small>no commitment</small></button>
+      <button type="button" class="structbtn on" data-struct="mo">Monthly<small>steady</small></button>
+      <button type="button" class="structbtn" data-struct="season"><span class="bv">best value</span>Season pass<small>6 events, prepaid</small></button>
+    </div>
+    <p class="pick">Then — pick your spot:</p>
+    <div id="tiers">
+      <label class="tier" data-tier="listed" data-once="35" data-mo="25" data-season="100">
+        <input type="radio" name="tier" value="listed">
+        <div class="tr"><span class="tn">Listed</span><span class="tp"></span></div>
+        <div class="td">Your name and pin on the live map, so people see you're open — plus <b>your own QR
+          code</b> for your window and counter. Every scan of it gets credited to you.</div>
+        <div class="tf">🍿 helps fund the free treats on the street</div>
+      </label>
+      <label class="tier" data-tier="featured" data-once="100" data-mo="75" data-season="300">
+        <input type="radio" name="tier" value="featured">
+        <div class="tr"><span class="tn">Featured<span class="best">most pick this</span></span><span class="tp"></span></div>
+        <div class="td">Everything in Listed, plus a highlighted pin, top of the list, and your QR code
+          printed on every card we hand out on the night.</div>
+        <div class="tf">🍿 helps fund the free treats on the street</div>
+      </label>
+      <label class="tier" data-tier="anchor" data-once="200" data-mo="150" data-season="600">
+        <input type="radio" name="tier" value="anchor">
+        <div class="tr"><span class="tn">Anchor</span><span class="tp"></span></div>
+        <div class="td">Everything in Featured, plus "Presented by you" top billing on the map, your logo,
+          first pick of placement — and your name on the free kettle-corn cart.</div>
+        <div class="tf">🍿 you're the reason the popcorn's free</div>
+      </label>
+    </div>
+
+    <label class="f" for="biz">Your business name</label>
+    <input id="biz" type="text" placeholder="e.g. Corner Coffee" autocomplete="organization">
+
+    <label class="f" for="who">Your name</label>
+    <input id="who" type="text" placeholder="Who should I ask for?" autocomplete="name">
+
+    <label class="f" for="contact">Phone or email</label>
+    <input id="contact" type="text" inputmode="email" placeholder="So I can confirm and send your QR" autocomplete="off">
+
+    <div class="pay" id="paybox" style="display:none">
+      <h2>Pay <span class="amt" id="amtLbl"></span></h2>
+      <p class="payhint">Pick whichever is easiest. Your founding rate locks — you'll never pay more than this, as long as you stay on.</p>
+      <a class="pb primary" id="paySquare" href="#" target="_blank" rel="noopener">💳 Pay by card</a>
+      <a class="pb primary" id="payVenmo" href="#" target="_blank" rel="noopener">Pay with Venmo</a>
+      <a class="pb" id="payCash" href="#" target="_blank" rel="noopener">Pay with Cash App</a>
+      <a class="pb" id="payZelle" href="#">Zelle / bank transfer — tap for details</a>
+      <p class="payhint" style="margin:6px 0 0">Prefer cash? Hand it to me at the event — tap <b>Reserve my spot</b> below and I'll bring your QR card.</p>
+    </div>
+
+    <label class="consent"><input type="checkbox" id="consent">
+      <span>Yes — I give Board Bored permission to feature my shop on the First Friday map, and I want to be part of the night.</span>
+    </label>
+    <button class="btn" id="go" type="submit" disabled>Pick a tier to continue</button>
+    <div class="status" id="st"></div>
+
+    <div class="privacy">
+      <b>What's public:</b> your business name, hours, and links go on the map — that's what you're paying for.
+      <b>Your phone and email never do.</b> They stay private and are only used to confirm your spot and send your QR.
+      Submissions handled by <a href="https://formspree.io/legal/privacy-policy/" target="_blank" rel="noopener">Formspree</a>.
+      Contact details deleted within 90 days. Want them gone sooner? Email
+      <a href="mailto:boardquestionmark@gmail.com">boardquestionmark@gmail.com</a>.
+    </div>
+  </form>
+
+  <div class="done" id="done">
+    <div class="big">🎉</div>
+    <h1>You're in.</h1>
+    <p class="tag" id="doneMsg">I'll confirm and get your QR card printed before the event.</p>
+
+    <div class="share">
+      <h3>Share the night — it's how the street fills</h3>
+      <p class="tag" style="font-size:13.5px;margin-bottom:4px">Send this to your staff, your regulars, anyone. It's your link — scans get credited to you.</p>
+      <div class="sharelink" id="shareUrl"></div>
+      <button class="btn" id="copyBtn" type="button" style="background:var(--acc)">Copy my link</button>
+      <button class="btn" id="shareBtn" type="button" style="display:none">Share</button>
+    </div>
+  </div>
+
+  <footer>
+    <a href="first-friday/">See the live map</a> · <a href="vendor-signup.html">Vendors: get a free spot</a><br>
+    Follow <a href="https://instagram.com/boredboardkern" target="_blank" rel="noopener">@boredboardkern</a>
+  </footer>
+</div>
+
+<script src="lib/pwa.js"></script>
+<script>
+(function(){
+  var $ = function(id){ return document.getElementById(id); };
+  var FORMSPREE_ENDPOINT = "https://formspree.io/f/mdaqpjkb";
+  var CONTACT_EMAIL = "boardquestionmark@gmail.com";
+  // Payment handles. Change these two lines to change where money goes.
+  // BUSINESS handle only — keep personal + business funds separate (Nick's rule). Fill this the
+  // moment the Venmo BUSINESS profile exists; until then the button stays hidden, so a personal
+  // account is never the business pay target. Same for Cash App / a Square link.
+  var VENMO_USER = "";       // e.g. "BoardBored-Kern" (business profile) — empty hides the button
+  // Square payment links (business rail, tap-to-pay) — one per tier, verified by item title.
+  var SQUARE_LINKS = {
+    listed:   "https://square.link/u/n7A2fIxb",   // "Basic - Bored Board"
+    featured: "https://square.link/u/Is4PY6ci",   // "Featured - Bored Board"
+    anchor:   "https://square.link/u/ExDFuZAL"    // "Anchor - Bored Board"
+  };
+  var CASHAPP_USER = "";     // e.g. "$nickox" — leave empty to hide the button
+  var ZELLE_INFO = "Zelle to " + CONTACT_EMAIL;
+
+  // Same attribution capture as every other page — a sponsor who arrives from a
+  // vendor's QR gets credited to that vendor. Identical sanitizer on purpose.
+  var REF = (function(){
+    var q = new URLSearchParams(location.search);
+    var clean = function(v){ return (v||"").trim().toLowerCase().replace(/[^a-z0-9_-]/g,"").slice(0,40); };
+    var ref = clean(q.get("ref")), src = clean(q.get("src"));
+    try {
+      if (ref) localStorage.setItem("bb_ref", ref); else ref = localStorage.getItem("bb_ref") || "";
+      if (src) localStorage.setItem("bb_src", src); else src = localStorage.getItem("bb_src") || "";
+    } catch(e){}
+    return { ref: ref || "direct", src: src || "direct" };
+  })();
+
+  var picked = null, price = 0, structure = "mo";
+  var SUF = { once:" once", mo:"/mo", season:"/season" };
+
+  function priceFor(el){ return parseInt(el.getAttribute("data-" + structure), 10); }
+
+  function wirePay(){
+    var el = document.querySelector('.tier[data-tier="' + picked + '"]');
+    price = priceFor(el);
+    $("amtLbl").textContent = "$" + price;
+    $("go").textContent = "Reserve my spot — $" + price + SUF[structure];
+    var note = encodeURIComponent("First Friday sponsor - " + picked + " (" + structure + ")");
+    var sq = SQUARE_LINKS[picked];
+    if (sq) { $("paySquare").href = sq; $("paySquare").style.display = "block"; }
+    else { $("paySquare").style.display = "none"; }
+    if (VENMO_USER) {
+      $("payVenmo").href = "https://venmo.com/" + VENMO_USER + "?txn=pay&amount=" + price + "&note=" + note;
+      $("payVenmo").style.display = "block";
+    } else { $("payVenmo").style.display = "none"; }
+    if (CASHAPP_USER) {
+      $("payCash").href = "https://cash.app/" + CASHAPP_USER + "/" + price;
+      $("payCash").style.display = "block";
+    } else { $("payCash").style.display = "none"; }
+  }
+
+  function renderPrices(){
+    Array.prototype.forEach.call(document.querySelectorAll(".tier"), function(el){
+      el.querySelector(".tp").innerHTML =
+        "$" + priceFor(el) + "<span style='font-size:13px;font-weight:700'>" + SUF[structure] + "</span>";
+    });
+    if (picked) wirePay();
+  }
+
+  // how-to-pay toggle (per-event / monthly / season)
+  Array.prototype.forEach.call(document.querySelectorAll(".structbtn"), function(b){
+    b.addEventListener("click", function(){
+      Array.prototype.forEach.call(document.querySelectorAll(".structbtn"), function(x){ x.classList.remove("on"); });
+      b.classList.add("on");
+      structure = b.getAttribute("data-struct");
+      renderPrices();
+    });
+  });
+
+  // tier selection
+  Array.prototype.forEach.call(document.querySelectorAll(".tier"), function(el){
+    el.addEventListener("click", function(){
+      Array.prototype.forEach.call(document.querySelectorAll(".tier"), function(x){ x.classList.remove("on"); });
+      el.classList.add("on");
+      el.querySelector("input").checked = true;
+      picked = el.getAttribute("data-tier");
+      $("paybox").style.display = "block";
+      $("go").disabled = false;
+      wirePay();
+    });
+  });
+
+  renderPrices();   // fill tier prices on load
+
+  $("payZelle").addEventListener("click", function(e){
+    e.preventDefault();
+    alert(ZELLE_INFO + "\n\nAmount: $" + price + "\nNote: First Friday sponsor - " + picked);
+  });
+
+  function shareUrlFor(biz){
+    var slug = (biz||"").trim().toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"").slice(0,40);
+    return "https://seekerflame.github.io/board-bored-bakersfield/first-friday/?ref=" +
+           (slug || "sponsor") + "&src=shop";
+  }
+
+  $("f").addEventListener("submit", function(e){
+    e.preventDefault();
+    var st = $("st");
+    var biz = $("biz").value.trim(), who = $("who").value.trim(), contact = $("contact").value.trim();
+    if (!picked) { st.className="status err"; st.textContent="Pick a tier first."; return; }
+    if (!biz)    { st.className="status err"; st.textContent="What's the business name?"; return; }
+    if (!contact){ st.className="status err"; st.textContent="Leave a phone or email so I can confirm."; return; }
+    if (!$("consent").checked){ st.className="status err"; st.textContent="Check the box so I can feature your shop on the map."; return; }
+
+    var payload = {
+      _subject: "SPONSOR — " + biz + " (" + picked + " " + structure + ", $" + price + ")",
+      type: "sponsor",
+      business: biz, contact_name: who, contact: contact,
+      tier: picked, structure: structure, amount: price,
+      hosting_permission: true,
+      referred_by: REF.ref, source: REF.src
+    };
+
+    $("go").disabled = true;
+    st.className="status"; st.textContent="Sending…";
+
+    var finish = function(offline){
+      $("f").style.display = "none";
+      $("done").style.display = "block";
+      if (offline) $("doneMsg").textContent =
+        "Saved — you're offline, so this sends the moment you're back on. I'll confirm and print your QR card.";
+      var url = shareUrlFor(biz);
+      $("shareUrl").textContent = url;
+      $("copyBtn").addEventListener("click", function(){
+        navigator.clipboard && navigator.clipboard.writeText(url).then(function(){
+          $("copyBtn").textContent = "Copied ✓";
+        });
+      });
+      if (navigator.share) {
+        var sb = $("shareBtn"); sb.style.display = "block";
+        sb.addEventListener("click", function(){
+          navigator.share({ title: "First Friday", text: "We're on the First Friday map — come by!", url: url });
+        });
+      }
+    };
+    var fail = function(){
+      $("go").disabled = false;
+      st.className="status err";
+      st.textContent="Couldn't send — try again, or just text me. " + CONTACT_EMAIL;
+    };
+
+    if (window.BB && window.BB.submit) {
+      window.BB.submit(FORMSPREE_ENDPOINT, payload).then(function(r){
+        if (r.queued) finish(true); else if (r.ok) finish(false); else fail();
+      });
+    } else {
+      fetch(FORMSPREE_ENDPOINT, {
+        method:"POST", headers:{"Accept":"application/json","Content-Type":"application/json"},
+        body: JSON.stringify(payload)
+      }).then(function(r){ if (r.ok) finish(false); else fail(); }).catch(fail);
+    }
+  });
+})();
+</script>
+</body>
+</html>
