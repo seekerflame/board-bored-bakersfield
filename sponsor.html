@@ -150,7 +150,6 @@
       <a class="pb primary" id="paySquare" href="#" target="_blank" rel="noopener">💳 Pay by card</a>
       <a class="pb primary" id="payVenmo" href="#" target="_blank" rel="noopener">Pay with Venmo</a>
       <a class="pb" id="payCash" href="#" target="_blank" rel="noopener">Pay with Cash App</a>
-      <a class="pb" id="payZelle" href="#">Zelle / bank transfer — tap for details</a>
       <p class="payhint" style="margin:6px 0 0">Prefer cash? Hand it to me at the event — tap <b>Reserve my spot</b> below and I'll bring your QR card.</p>
     </div>
 
@@ -200,14 +199,14 @@
   // moment the Venmo BUSINESS profile exists; until then the button stays hidden, so a personal
   // account is never the business pay target. Same for Cash App / a Square link.
   var VENMO_USER = "";       // e.g. "BoardBored-Kern" (business profile) — empty hides the button
-  // Square payment links (business rail, tap-to-pay) — one per tier, verified by item title.
+  // Square payment links (business rail) — per tier × structure, verified by item title.
+  // "once" (one event) has no fixed link → card button hides; use Tap to Pay / an invoice.
   var SQUARE_LINKS = {
-    listed:   "https://square.link/u/n7A2fIxb",   // "Basic - Bored Board"
-    featured: "https://square.link/u/Is4PY6ci",   // "Featured - Bored Board"
-    anchor:   "https://square.link/u/ExDFuZAL"    // "Anchor - Bored Board"
+    listed:   { mo:"https://square.link/u/n7A2fIxb", season:"https://square.link/u/8ayWIWS0" },
+    featured: { mo:"https://square.link/u/Is4PY6ci", season:"https://square.link/u/icYPQLtY" },
+    anchor:   { mo:"https://square.link/u/ExDFuZAL", season:"https://square.link/u/P4EVwF36" }
   };
   var CASHAPP_USER = "";     // e.g. "$nickox" — leave empty to hide the button
-  var ZELLE_INFO = "Zelle to " + CONTACT_EMAIL;
 
   // Same attribution capture as every other page — a sponsor who arrives from a
   // vendor's QR gets credited to that vendor. Identical sanitizer on purpose.
@@ -233,7 +232,7 @@
     $("amtLbl").textContent = "$" + price;
     $("go").textContent = "Reserve my spot — $" + price + SUF[structure];
     var note = encodeURIComponent("First Friday sponsor - " + picked + " (" + structure + ")");
-    var sq = SQUARE_LINKS[picked];
+    var sq = (SQUARE_LINKS[picked] || {})[structure];   // once has no link → Tap to Pay in person
     if (sq) { $("paySquare").href = sq; $("paySquare").style.display = "block"; }
     else { $("paySquare").style.display = "none"; }
     if (VENMO_USER) {
@@ -278,11 +277,6 @@
   });
 
   renderPrices();   // fill tier prices on load
-
-  $("payZelle").addEventListener("click", function(e){
-    e.preventDefault();
-    alert(ZELLE_INFO + "\n\nAmount: $" + price + "\nNote: First Friday sponsor - " + picked);
-  });
 
   function shareUrlFor(biz){
     var slug = (biz||"").trim().toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"").slice(0,40);
