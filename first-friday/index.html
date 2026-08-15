@@ -12,6 +12,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Board Bored">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet-gesture-handling/dist/leaflet-gesture-handling.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500;1,9..144,600;1,9..144,700&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -170,12 +171,13 @@
   <a class="mark" href="../">● Board Bored</a>
   <span class="badge" id="badge">…</span>
 </header>
-<h1 id="evName">First Friday Art Walk</h1>
-<div class="sub" id="evSub">Downtown Bakersfield</div>
-<div class="notice" id="logisticsNote" style="display:none"></div>
 <a class="skiplink" href="#vendors">Skip map, go to the list</a>
 
 <div id="map" role="img" aria-label="Map of First Friday — every pin is also listed as a card below"></div>
+
+<h1 id="evName">First Friday Art Walk</h1>
+<div class="sub" id="evSub">Downtown Bakersfield</div>
+<div class="notice" id="logisticsNote" style="display:none"></div>
 
 <div class="legend" id="legend" style="display:none">
   <span class="k"><span class="sw open"></span>Open</span>
@@ -222,6 +224,7 @@
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-gesture-handling"></script>
 <script>
 (function(){
   var $=function(id){return document.getElementById(id)};
@@ -297,7 +300,7 @@
     var corridorPts=(corridor&&corridor.path)?corridor.path.map(function(p){return {lat:p[0],lng:p[1]};}):[];
     var allPts=vs.concat(ss).concat(corridorPts);
     var c=vs[0]||ss[0]||corridorPts[0]||{lat:35.3757,lng:-119.0205};
-    map=L.map("map",{scrollWheelZoom:false}).setView([c.lat,c.lng],16);
+    map=L.map("map",{scrollWheelZoom:false,gestureHandling:true}).setView([c.lat,c.lng],16);
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
       {maxZoom:19,attribution:"© OpenStreetMap contributors"}).addTo(map);
 
