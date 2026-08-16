@@ -62,6 +62,13 @@
     </div>
   </section>
 
+  <section id="commSection" style="display:none">
+    <span class="privacy">🌆 From around Bakersfield</span>
+    <h2>Community events history</h2>
+    <div class="desc">Past events from around town — a growing record as each week rolls by.</div>
+    <div id="commTimeline"></div>
+  </section>
+
   <footer>
     © 2026 Board Bored · made in Bakersfield<br>
     <a href="mailto:boardquestionmark@gmail.com">boardquestionmark@gmail.com</a>
@@ -100,6 +107,29 @@
         '<div class="tl-note">'+e.note+'</div>';
       box.appendChild(el);
     });
+
+    // ---- Community events history (past events around Bakersfield) ----
+    var todayC=new Date();todayC.setHours(0,0,0,0);
+    var arch=(d.city_events_archive||[]).slice();
+    (d.city_events||[]).forEach(function(e){
+      var s=e.schedule||{};
+      if(s.date){var pp=s.date.split("-");var dt=new Date(+pp[0],+pp[1]-1,+pp[2]);if(dt<todayC)arch.push(e);}
+    });
+    var seen={},comm=[];
+    arch.forEach(function(e){
+      var s=e.schedule||{}; if(!s.date||seen[e.id])return; seen[e.id]=1;
+      comm.push({date:s.date,note:(e.emoji?e.emoji+" ":"")+e.name+(e.venue?" — "+e.venue:"")});
+    });
+    comm.sort(function(a,b){return a.date<b.date?1:-1;});   // most recent first
+    if(comm.length){
+      $("commSection").style.display="block";
+      var cb=$("commTimeline");cb.innerHTML="";
+      comm.forEach(function(e){
+        var el=document.createElement("div");el.className="tl-item";
+        el.innerHTML='<div class="tl-date">'+fmtDate(e.date)+'</div><div class="tl-note">'+e.note+'</div>';
+        cb.appendChild(el);
+      });
+    }
   }).catch(function(){$("timeline").innerHTML='<div class="tl-note">Couldn\'t load the timeline.</div>';});
 })();
 </script>
