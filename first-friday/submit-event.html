@@ -125,6 +125,16 @@
     <label for="evCost">Cost</label>
     <input id="evCost" placeholder="Free · $10 · $22–27">
 
+    <label for="evPermit">Do you have a permit? <span class="req">*</span></label>
+    <select id="evPermit">
+      <option value="">Pick one…</option>
+      <option>Yes — I have the permit(s)</option>
+      <option>Applied / in progress</option>
+      <option>Not yet — need info</option>
+      <option>Not required for this</option>
+    </select>
+    <div class="hint" style="margin-top:5px">Helps us confirm and approve you. City vendor / seller's / health permits where they apply.</div>
+
     <label for="evDesc">One-line description <span class="req">*</span></label>
     <textarea id="evDesc" required placeholder="Free all-ages summer festival with live music from 12:30 PM."></textarea>
 
@@ -138,6 +148,7 @@
 
     <button class="btn" type="submit">Send it in →</button>
     <div class="hint">Confirmed events go on the live map, usually same day. We may text/email to confirm details.</div>
+    <div class="hint">Questions? Contact us: <a href="mailto:boardquestionmark@gmail.com" style="color:var(--acc2);font-weight:700">boardquestionmark@gmail.com</a></div>
     <div class="status" id="status" role="status" aria-live="polite"></div>
   </form>
 
@@ -212,13 +223,14 @@
       venue:$("evVenue").value.trim(),
       address:$("evAddr").value.trim(),
       cost:$("evCost").value.trim(),
+      permit:$("evPermit").value,
       description:$("evDesc").value.trim(),
       link:$("evLink").value.trim(),
       instagram:$("evIg").value.trim(),
       contact:$("evContact").value.trim()
     };
-    if(!payload.name||!payload.venue||!payload.address||!payload.description||!payload.contact){
-      st.className="status err";st.textContent="Please fill in the required fields (marked *).";return;}
+    if(!payload.name||!payload.venue||!payload.address||!payload.description||!payload.contact||!payload.permit){
+      st.className="status err";st.textContent="Please fill in the required fields (marked *), including the permit question.";return;}
     var btn=$("form").querySelector(".btn");btn.disabled=true;st.textContent="Sending…";
     fetch(FORMSPREE_ENDPOINT,{method:"POST",headers:{"Accept":"application/json","Content-Type":"application/json"},
       body:JSON.stringify(payload)})
@@ -226,7 +238,7 @@
         else{st.className="status err";st.textContent="Couldn't send — try again, or email "+CONTACT_EMAIL+".";btn.disabled=false;} })
       .catch(function(){ // network/endpoint down → fall back to a pre-filled email so the submission still lands
         mailFallback(payload._subject,[["Event",payload.name],["Category",payload.category],["When",payload.when],
-          ["Venue",payload.venue],["Address",payload.address],["Cost",payload.cost],
+          ["Venue",payload.venue],["Address",payload.address],["Cost",payload.cost],["Permit",payload.permit],
           ["Description",payload.description],["Link",payload.link],["Instagram",payload.instagram],
           ["Contact",payload.contact]]);
         showSuccess();

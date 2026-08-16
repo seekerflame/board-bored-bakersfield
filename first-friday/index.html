@@ -207,7 +207,7 @@
   <!-- ===== Container A: Happening now (all of Bako) ===== -->
   <section class="container" id="c-now">
     <div class="sechead">📅 What's on around Bakersfield</div>
-    <div class="secsub">Real events happening today and the days ahead — all of Bako. Tap one for tickets or directions.</div>
+    <div class="secsub">Real events happening today and the days ahead — all of Bako. Tap one for tickets or directions. <a href="calendar.html" style="color:var(--acc2);font-weight:700;text-decoration:none;white-space:nowrap">📆 See the calendar →</a></div>
     <div class="xlink" id="ffTeaser" style="display:none"></div>
     <div class="list" style="padding-top:12px">
       <div class="chips" id="chips"></div>
@@ -215,7 +215,8 @@
       <div id="events"></div>
       <a class="cta submit" href="submit-event.html">➕ Add your event to the map — free</a>
       <div class="rowbtn" style="margin-top:10px">
-        <button id="share" type="button">📣 Share the map</button>
+        <a href="calendar.html">📆 Calendar</a>
+        <button id="share" type="button">📣 Share</button>
         <a href="../print.html">🖨️ Paper map</a>
       </div>
     </div>
@@ -226,7 +227,9 @@
     <div class="sechead" id="ffHead">🎨 First Friday Art Walk</div>
     <div class="secsub" id="ffSub"></div>
     <div class="fflinks">
-      <a href="about.html">ℹ️ Vendor spots &amp; accessibility</a>
+      <a href="calendar.html">📆 Calendar</a>
+      <a id="ffAddCal" href="#" target="_blank" rel="noopener">📅 Add to your calendar</a>
+      <a href="about.html">ℹ️ Vendor info</a>
       <a href="submit-event.html">➕ Submit an event</a>
     </div>
     <div class="list" style="padding-top:12px">
@@ -248,6 +251,7 @@
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="../lib/cal.js"></script>
 <script>
 (function(){
   var $=function(id){return document.getElementById(id)};
@@ -328,6 +332,9 @@
     $("ffHead").textContent="🎨 "+ev.name;
     $("ffSub").textContent=(evd?evd.toLocaleDateString(undefined,{weekday:"long",month:"long",day:"numeric"}):"")+
       (ev.hours?" · "+ev.hours:"")+" · "+(ev.area||"")+". "+(ev.blurb||"");
+    if(window.bbCal&&ev.date){$("ffAddCal").href=bbCal.gcal({name:ev.name,schedule:{date:ev.date},
+      start:ev.start||"18:00",end:ev.end||"22:00",venue:ev.area,address:"Eye St & 19th St, Bakersfield, CA 93301",
+      desc:ev.blurb,link:location.origin+location.pathname+"?view=ff"});}
 
     var vendors=ev.vendors||[], spots=ev.spots||[], parking=ev.parking||[], cityEvents=d.city_events||[];
     var vs=vendors.filter(function(v){return typeof v.lat==="number"&&typeof v.lng==="number"});
@@ -419,6 +426,7 @@
         var linksEl=document.createElement("div");linksEl.className="links";
         var lh=""; if(e.link)lh+='<a href="'+e.link+'" target="_blank" rel="noopener">🎟️ Tickets / info</a>';
         lh+='<a href="'+dirUrl(e.address)+'" target="_blank" rel="noopener">🧭 Directions</a>';
+        if(window.bbCal)lh+='<a href="'+bbCal.gcal(e)+'" target="_blank" rel="noopener">📅 Add</a>';
         linksEl.innerHTML=lh; linksEl.appendChild(shareLink(e.id,e.name,e.category));
         el.appendChild(linksEl);
         el.addEventListener("click",function(evt){if(evt.target.closest("a,button"))return;panTo("e:"+e.id);});

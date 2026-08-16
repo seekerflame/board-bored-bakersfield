@@ -34,7 +34,9 @@
   .card h2{font-size:24px;letter-spacing:-.4px;margin-bottom:4px}
   .card .meta{color:var(--mut);font-size:14.5px;line-height:1.4}
   .card .go{margin-top:12px;font-weight:800;color:var(--acc);font-size:15px}
-  .impact{text-align:center;font-size:13px;font-weight:700;color:var(--acc2);margin:2px 0 14px;letter-spacing:.2px}
+  .impact{font-size:12.5px;font-weight:700;color:var(--acc2);margin:9px 0 0;letter-spacing:.1px}
+  .card.hero{border-color:var(--acc);border-width:2px}
+  .card.hero h2{color:var(--ink)}
   .small{display:flex;gap:10px}
   .small .card{flex:1;text-align:center;padding:16px 10px;margin-bottom:0}
   .small .card .ico{font-size:26px}
@@ -55,39 +57,48 @@
   <h1 id="h1">What's popping in Bakersfield</h1>
   <p class="tag" id="tagline">The free local board. Events, open shops, and the people behind them. No apps, no ads, no cuts.</p>
 
-  <a class="card" id="featured" href="first-friday/">
-    <span class="badge" id="badge">Loading…</span>
-    <h2 id="evName">First Friday Art Walk</h2>
-    <div class="meta" id="evMeta">Downtown Bakersfield</div>
+  <!-- MAIN FREE FUNNEL — everything happening now -->
+  <a class="card hero" href="first-friday/">
+    <span class="badge">🔥 Live now</span>
+    <h2>What's on around Bakersfield</h2>
+    <div class="meta">Real events happening today and the days ahead — all of Bako. Free.</div>
     <div class="go">Open the live map →</div>
   </a>
 
-  <div class="impact" id="impact" style="display:none"></div>
-
-  <a class="card" href="first-friday/?view=ff" style="margin-bottom:14px">
-    <span class="badge future">🎨 First Friday</span>
-    <h2 style="font-size:20px">The flagship night</h2>
-    <div class="meta">First Friday Art Walk downtown — its own map, open shops &amp; vendor booths.</div>
+  <!-- FIRST FRIDAY — the flagship, one card -->
+  <a class="card" id="featured" href="first-friday/?view=ff">
+    <span class="badge" id="badge">Loading…</span>
+    <h2 id="evName">First Friday Art Walk</h2>
+    <div class="meta" id="evMeta">Downtown Bakersfield</div>
+    <div class="impact" id="impact" style="display:none"></div>
+    <div class="meta" style="margin-top:8px">🎨 The flagship night — its own map, open shops &amp; vendor booths.</div>
     <div class="go">Open the First Friday map →</div>
   </a>
 
   <div class="small">
+    <a class="card" href="first-friday/calendar.html">
+      <div class="ico">📆</div>
+      <div class="t">Calendar</div>
+      <div class="s">Dates, times · add to yours</div>
+    </a>
     <a class="card" href="first-friday/submit-event.html">
       <div class="ico">📅</div>
       <div class="t">Submit an<br>event</div>
       <div class="s">Free · lands on the map</div>
     </a>
+  </div>
+  <div class="small" style="margin-top:14px">
     <a class="card" id="vendorCta" href="vendor-signup.html">
       <div class="ico">🏪</div>
       <div class="t">Get your shop<br>on the map</div>
       <div class="s">Storefront or sidewalk spot</div>
     </a>
+    <a class="card" id="ideaCta" href="mailto:boardquestionmark@gmail.com?subject=What%20I%20want%20to%20see%20in%20Kern&body=I%27d%20love%20to%20see%E2%80%A6">
+      <div class="ico">💡</div>
+      <div class="t">What to see<br>in Kern?</div>
+      <div class="s">Tell us · we organize it</div>
+    </a>
   </div>
-  <a class="card" id="ideaCta" href="mailto:boardquestionmark@gmail.com?subject=What%20I%20want%20to%20see%20in%20Kern&body=I%27d%20love%20to%20see%E2%80%A6" style="text-align:center;margin-top:14px">
-    <div class="ico" style="font-size:22px">💡</div>
-    <div class="t" style="font-weight:800;font-size:15px;margin-top:4px">What do you want to see in Kern?</div>
-    <div class="s" style="font-size:12px;color:var(--mut);margin-top:3px">Tell us · we organize it</div>
-  </a>
 
   <a class="card" href="my-clock.html" style="margin-bottom:14px">
     <span class="badge" style="background:#c9b45c">⏳ New</span>
@@ -121,7 +132,7 @@
     if(ev){
       $("evName").textContent=ev.name;
       $("evMeta").textContent=(ev.area||"")+" · "+(ev.hours||"");
-      $("featured").href=ev.slug+"/";
+      $("featured").href="first-friday/?view=ff";
 
       var vendorCount=(ev.vendors||[]).length;
       var spots=ev.spots||[];

@@ -1031,7 +1031,9 @@
         "weather": "",
         "notes": "Bakersfield Vintage referred vendors who showed — first real-world proof the referral path works, and it came from the late-night anchor. Did the full run-through of the shops, walked and shopped. GAPS: fliers never got printed; no solid vendor-facing map existed on the night. Photos taken of 2 vendors to feature. Spot signups via Formspree: 0 ingested at time of record."
       },
-      "status": "recorded"
+      "status": "recorded",
+      "start": "18:00",
+      "end": "22:00"
     }
   ],
   "city_events": [
@@ -1051,7 +1053,9 @@
       "schedule": {
         "date": "2026-08-15"
       },
-      "area": "citywide"
+      "area": "citywide",
+      "start": "05:45",
+      "end": "08:30"
     },
     {
       "id": "ce_fitspot",
@@ -1069,7 +1073,9 @@
       "schedule": {
         "date": "2026-08-15"
       },
-      "area": "citywide"
+      "area": "citywide",
+      "start": "06:00",
+      "end": null
     },
     {
       "id": "ce_writers",
@@ -1087,7 +1093,9 @@
       "schedule": {
         "date": "2026-08-15"
       },
-      "area": "citywide"
+      "area": "citywide",
+      "start": "08:30",
+      "end": null
     },
     {
       "id": "ce_sensory",
@@ -1105,7 +1113,9 @@
       "schedule": {
         "date": "2026-08-15"
       },
-      "area": "downtown"
+      "area": "downtown",
+      "start": "10:00",
+      "end": "15:00"
     },
     {
       "id": "ce_mercadito",
@@ -1123,7 +1133,9 @@
       "schedule": {
         "date": "2026-08-15"
       },
-      "area": "citywide"
+      "area": "citywide",
+      "start": "10:00",
+      "end": "14:00"
     },
     {
       "id": "ce_skate",
@@ -1141,7 +1153,9 @@
       "schedule": {
         "date": "2026-08-15"
       },
-      "area": "downtown"
+      "area": "downtown",
+      "start": "11:00",
+      "end": "13:30"
     },
     {
       "id": "ce_stories",
@@ -1159,7 +1173,9 @@
       "schedule": {
         "date": "2026-08-15"
       },
-      "area": "downtown"
+      "area": "downtown",
+      "start": "11:00",
+      "end": "14:00"
     },
     {
       "id": "ce_clippings",
@@ -1177,7 +1193,10 @@
       "schedule": {
         "ongoing": true
       },
-      "area": "downtown"
+      "area": "downtown",
+      "start": null,
+      "end": null,
+      "allday": true
     },
     {
       "id": "ce_jamfest",
@@ -1195,7 +1214,9 @@
       "schedule": {
         "date": "2026-08-15"
       },
-      "area": "citywide"
+      "area": "citywide",
+      "start": "11:00",
+      "end": "22:00"
     },
     {
       "id": "ce_ballerina",
@@ -1213,7 +1234,9 @@
       "schedule": {
         "date": "2026-08-15"
       },
-      "area": "downtown"
+      "area": "downtown",
+      "start": "13:00",
+      "end": "14:30"
     },
     {
       "id": "ce_burritodnd",
@@ -1231,7 +1254,9 @@
       "schedule": {
         "date": "2026-08-15"
       },
-      "area": "citywide"
+      "area": "citywide",
+      "start": "13:00",
+      "end": "17:00"
     },
     {
       "id": "ce_soulfood",
@@ -1249,7 +1274,9 @@
       "schedule": {
         "date": "2026-08-15"
       },
-      "area": "citywide"
+      "area": "citywide",
+      "start": "15:00",
+      "end": "20:00"
     },
     {
       "id": "ce_viewmarket",
@@ -1267,7 +1294,9 @@
       "schedule": {
         "date": "2026-08-15"
       },
-      "area": "citywide"
+      "area": "citywide",
+      "start": "17:30",
+      "end": "21:30"
     },
     {
       "id": "ce_zoofari",
@@ -1285,7 +1314,9 @@
       "schedule": {
         "date": "2026-08-15"
       },
-      "area": "citywide"
+      "area": "citywide",
+      "start": "17:00",
+      "end": "19:30"
     },
     {
       "id": "ce_bluesbash",
@@ -1303,7 +1334,9 @@
       "schedule": {
         "date": "2026-08-15"
       },
-      "area": "citywide"
+      "area": "citywide",
+      "start": "18:30",
+      "end": null
     },
     {
       "id": "ce_forevermine",
@@ -1321,7 +1354,9 @@
       "schedule": {
         "date": "2026-08-15"
       },
-      "area": "downtown"
+      "area": "downtown",
+      "start": "18:00",
+      "end": null
     },
     {
       "id": "ce_mug",
@@ -1339,7 +1374,9 @@
       "schedule": {
         "date": "2026-08-15"
       },
-      "area": "citywide"
+      "area": "citywide",
+      "start": "18:00",
+      "end": null
     },
     {
       "id": "ce_movieclub",
@@ -1357,7 +1394,9 @@
       "schedule": {
         "date": "2026-08-15"
       },
-      "area": "citywide"
+      "area": "citywide",
+      "start": "18:25",
+      "end": null
     },
     {
       "id": "ce_dinnerdet",
@@ -1375,7 +1414,9 @@
       "schedule": {
         "date": "2026-08-15"
       },
-      "area": "citywide"
+      "area": "citywide",
+      "start": "18:00",
+      "end": "21:00"
     },
     {
       "id": "ce_bluey",
@@ -1393,7 +1434,9 @@
       "schedule": {
         "date": "2026-08-15"
       },
-      "area": "citywide"
+      "area": "citywide",
+      "start": "19:00",
+      "end": "20:30"
     },
     {
       "id": "ce_delia",
@@ -1411,7 +1454,9 @@
       "schedule": {
         "date": "2026-08-15"
       },
-      "area": "citywide"
+      "area": "citywide",
+      "start": "19:00",
+      "end": "21:30"
     },
     {
       "id": "ce_sunshine",
@@ -1429,7 +1474,9 @@
       "schedule": {
         "date": "2026-08-15"
       },
-      "area": "downtown"
+      "area": "downtown",
+      "start": "19:00",
+      "end": "21:00"
     },
     {
       "id": "ce_fireflies",
@@ -1447,7 +1494,9 @@
       "schedule": {
         "date": "2026-08-15"
       },
-      "area": "citywide"
+      "area": "citywide",
+      "start": "19:30",
+      "end": null
     },
     {
       "id": "ce_perseids",
@@ -1465,7 +1514,9 @@
       "schedule": {
         "date": "2026-08-15"
       },
-      "area": "citywide"
+      "area": "citywide",
+      "start": "19:30",
+      "end": "21:30"
     },
     {
       "id": "ce_candipop",
@@ -1483,7 +1534,9 @@
       "schedule": {
         "date": "2026-08-15"
       },
-      "area": "downtown"
+      "area": "downtown",
+      "start": "21:00",
+      "end": "02:00"
     },
     {
       "id": "ce_audiowalk",
@@ -1501,7 +1554,9 @@
       "schedule": {
         "date": "2026-08-16"
       },
-      "area": "citywide"
+      "area": "citywide",
+      "start": "06:15",
+      "end": null
     },
     {
       "id": "ce_oldfriend",
@@ -1519,7 +1574,9 @@
       "schedule": {
         "date": "2026-08-16"
       },
-      "area": "downtown"
+      "area": "downtown",
+      "start": "11:30",
+      "end": "14:30"
     },
     {
       "id": "ce_reptiles",
@@ -1537,7 +1594,9 @@
       "schedule": {
         "date": "2026-08-16"
       },
-      "area": "citywide"
+      "area": "citywide",
+      "start": "14:00",
+      "end": null
     },
     {
       "id": "ce_fanhalen",
@@ -1555,7 +1614,9 @@
       "schedule": {
         "date": "2026-08-16"
       },
-      "area": "citywide"
+      "area": "citywide",
+      "start": "19:30",
+      "end": null
     },
     {
       "id": "ce_paintbestie",
@@ -1573,7 +1634,9 @@
       "schedule": {
         "date": "2026-08-17"
       },
-      "area": "downtown"
+      "area": "downtown",
+      "start": "18:30",
+      "end": null
     },
     {
       "id": "ce_kidsbook",
@@ -1591,7 +1654,9 @@
       "schedule": {
         "date": "2026-08-18"
       },
-      "area": "downtown"
+      "area": "downtown",
+      "start": "09:00",
+      "end": null
     },
     {
       "id": "ce_plantbingo",
@@ -1609,7 +1674,9 @@
       "schedule": {
         "date": "2026-08-18"
       },
-      "area": "downtown"
+      "area": "downtown",
+      "start": "18:00",
+      "end": null
     },
     {
       "id": "ce_iphonephoto",
@@ -1627,7 +1694,9 @@
       "schedule": {
         "date": "2026-08-19"
       },
-      "area": "citywide"
+      "area": "citywide",
+      "start": "12:00",
+      "end": "13:00"
     },
     {
       "id": "ce_kidscrafty",
@@ -1645,7 +1714,9 @@
       "schedule": {
         "weekday": 4
       },
-      "area": "downtown"
+      "area": "downtown",
+      "start": "16:00",
+      "end": "17:00"
     },
     {
       "id": "ce_chess",
@@ -1663,7 +1734,9 @@
       "schedule": {
         "weekday": 4
       },
-      "area": "citywide"
+      "area": "citywide",
+      "start": "17:00",
+      "end": null
     },
     {
       "id": "ce_cruise",
@@ -1681,7 +1754,9 @@
       "schedule": {
         "weekday": 4
       },
-      "area": "citywide"
+      "area": "citywide",
+      "start": "18:00",
+      "end": null
     },
     {
       "id": "ce_openmic",
@@ -1699,7 +1774,9 @@
       "schedule": {
         "weekday": 4
       },
-      "area": "citywide"
+      "area": "citywide",
+      "start": "19:00",
+      "end": null
     },
     {
       "id": "ce_soulful",
@@ -1717,7 +1794,9 @@
       "schedule": {
         "weekday": 4
       },
-      "area": "citywide"
+      "area": "citywide",
+      "start": "18:00",
+      "end": "19:00"
     },
     {
       "id": "ce_bluedoor",
@@ -1735,7 +1814,9 @@
       "schedule": {
         "weekday": 4
       },
-      "area": "downtown"
+      "area": "downtown",
+      "start": "19:00",
+      "end": null
     },
     {
       "id": "ce_linedance_th",
@@ -1753,7 +1834,9 @@
       "schedule": {
         "weekday": 4
       },
-      "area": "citywide"
+      "area": "citywide",
+      "start": "18:30",
+      "end": "21:30"
     },
     {
       "id": "ce_legacyrun",
@@ -1771,7 +1854,9 @@
       "schedule": {
         "weekday": 4
       },
-      "area": "citywide"
+      "area": "citywide",
+      "start": "19:00",
+      "end": null
     },
     {
       "id": "ce_mahjongg",
@@ -1789,7 +1874,9 @@
       "schedule": {
         "weekday": 5
       },
-      "area": "citywide"
+      "area": "citywide",
+      "start": "12:00",
+      "end": "16:00"
     },
     {
       "id": "ce_writeworkshop",
@@ -1807,7 +1894,9 @@
       "schedule": {
         "weekday": 5
       },
-      "area": "downtown"
+      "area": "downtown",
+      "start": "16:30",
+      "end": "17:30"
     },
     {
       "id": "ce_formfridays",
@@ -1825,7 +1914,9 @@
       "schedule": {
         "weekday": 5
       },
-      "area": "downtown"
+      "area": "downtown",
+      "start": "17:30",
+      "end": "19:00"
     },
     {
       "id": "ce_fnm",
@@ -1843,7 +1934,9 @@
       "schedule": {
         "weekday": 5
       },
-      "area": "citywide"
+      "area": "citywide",
+      "start": "18:30",
+      "end": null
     },
     {
       "id": "ce_grangedance",
@@ -1861,7 +1954,9 @@
       "schedule": {
         "weekday": 5
       },
-      "area": "citywide"
+      "area": "citywide",
+      "start": "19:00",
+      "end": "21:00"
     },
     {
       "id": "ce_fstmarket",
@@ -1879,7 +1974,9 @@
       "schedule": {
         "weekday": 6
       },
-      "area": "downtown"
+      "area": "downtown",
+      "start": "07:45",
+      "end": "12:00"
     },
     {
       "id": "ce_pasala_sat",
@@ -1897,7 +1994,9 @@
       "schedule": {
         "weekday": 6
       },
-      "area": "citywide"
+      "area": "citywide",
+      "start": "08:30",
+      "end": "10:45"
     },
     {
       "id": "ce_riverlakesmkt",
@@ -1915,7 +2014,9 @@
       "schedule": {
         "weekday": 6
       },
-      "area": "citywide"
+      "area": "citywide",
+      "start": "09:00",
+      "end": "13:00"
     },
     {
       "id": "ce_pilates",
@@ -1933,7 +2034,9 @@
       "schedule": {
         "weekday": 6
       },
-      "area": "downtown"
+      "area": "downtown",
+      "start": "10:00",
+      "end": "11:00"
     },
     {
       "id": "ce_bluegrass",
@@ -1951,7 +2054,9 @@
       "schedule": {
         "weekday": 6
       },
-      "area": "downtown"
+      "area": "downtown",
+      "start": "14:00",
+      "end": "16:00"
     },
     {
       "id": "ce_hagginmkt",
@@ -1969,7 +2074,9 @@
       "schedule": {
         "weekday": 0
       },
-      "area": "citywide"
+      "area": "citywide",
+      "start": "09:00",
+      "end": "14:00"
     },
     {
       "id": "ce_carscoffee",
@@ -1987,7 +2094,9 @@
       "schedule": {
         "weekday": 0
       },
-      "area": "citywide"
+      "area": "citywide",
+      "start": "07:30",
+      "end": "10:00"
     },
     {
       "id": "ce_ukulele",
@@ -2005,7 +2114,9 @@
       "schedule": {
         "weekday": 1
       },
-      "area": "downtown"
+      "area": "downtown",
+      "start": "17:00",
+      "end": null
     },
     {
       "id": "ce_motown",
@@ -2023,7 +2134,9 @@
       "schedule": {
         "weekday": 1
       },
-      "area": "downtown"
+      "area": "downtown",
+      "start": "18:00",
+      "end": "22:00"
     },
     {
       "id": "ce_pasala_mon",
@@ -2041,7 +2154,9 @@
       "schedule": {
         "weekday": 1
       },
-      "area": "citywide"
+      "area": "citywide",
+      "start": "18:00",
+      "end": "21:40"
     },
     {
       "id": "ce_linedance_mon",
@@ -2059,7 +2174,9 @@
       "schedule": {
         "weekday": 1
       },
-      "area": "citywide"
+      "area": "citywide",
+      "start": "18:30",
+      "end": "20:30"
     },
     {
       "id": "ce_jazzorch",
@@ -2081,7 +2198,9 @@
           3
         ]
       },
-      "area": "citywide"
+      "area": "citywide",
+      "start": "19:00",
+      "end": "21:00"
     },
     {
       "id": "ce_bingobeer",
@@ -2099,7 +2218,9 @@
       "schedule": {
         "weekday": 1
       },
-      "area": "citywide"
+      "area": "citywide",
+      "start": "19:00",
+      "end": null
     },
     {
       "id": "ce_dnd",
@@ -2117,7 +2238,9 @@
       "schedule": {
         "weekday": 1
       },
-      "area": "citywide"
+      "area": "citywide",
+      "start": "19:00",
+      "end": null
     },
     {
       "id": "ce_jazzwork",
@@ -2135,7 +2258,9 @@
       "schedule": {
         "weekday": 2
       },
-      "area": "downtown"
+      "area": "downtown",
+      "start": "18:30",
+      "end": "21:30"
     },
     {
       "id": "ce_trivia",
@@ -2153,7 +2278,9 @@
       "schedule": {
         "weekday": 2
       },
-      "area": "citywide"
+      "area": "citywide",
+      "start": "19:00",
+      "end": null
     },
     {
       "id": "ce_gamenight",
@@ -2171,7 +2298,9 @@
       "schedule": {
         "weekday": 3
       },
-      "area": "citywide"
+      "area": "citywide",
+      "start": "16:00",
+      "end": null
     },
     {
       "id": "ce_cornhole",
@@ -2189,7 +2318,9 @@
       "schedule": {
         "weekday": 3
       },
-      "area": "citywide"
+      "area": "citywide",
+      "start": "17:30",
+      "end": null
     },
     {
       "id": "ce_western",
@@ -2207,7 +2338,9 @@
       "schedule": {
         "weekday": 3
       },
-      "area": "citywide"
+      "area": "citywide",
+      "start": "18:00",
+      "end": null
     },
     {
       "id": "ce_barrelbingo",
@@ -2225,7 +2358,9 @@
       "schedule": {
         "weekday": 3
       },
-      "area": "citywide"
+      "area": "citywide",
+      "start": "18:00",
+      "end": null
     },
     {
       "id": "ce_mixxedfit",
@@ -2243,7 +2378,9 @@
       "schedule": {
         "weekday": 3
       },
-      "area": "citywide"
+      "area": "citywide",
+      "start": "19:00",
+      "end": "20:00"
     },
     {
       "id": "ce_emokaraoke",
@@ -2261,7 +2398,9 @@
       "schedule": {
         "weekday": 3
       },
-      "area": "downtown"
+      "area": "downtown",
+      "start": "19:00",
+      "end": "00:00"
     },
     {
       "id": "ce_pasala_wed",
@@ -2279,7 +2418,9 @@
       "schedule": {
         "weekday": 3
       },
-      "area": "citywide"
+      "area": "citywide",
+      "start": "19:30",
+      "end": "21:30"
     },
     {
       "id": "ce_roosterbingo",
@@ -2297,7 +2438,9 @@
       "schedule": {
         "weekday": 3
       },
-      "area": "citywide"
+      "area": "citywide",
+      "start": "20:00",
+      "end": null
     },
     {
       "id": "ce_tikiclub",
@@ -2315,7 +2458,10 @@
       "schedule": {
         "weekday": 3
       },
-      "area": "downtown"
+      "area": "downtown",
+      "start": null,
+      "end": null,
+      "allday": true
     }
   ]
 }
