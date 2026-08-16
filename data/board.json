@@ -2463,5 +2463,1852 @@
       "end": null,
       "allday": true
     }
+  ],
+  "city_events_archive": [
+    {
+      "id": "arch_001",
+      "name": "DBA Business Vitality Series",
+      "emoji": "📅",
+      "venue": "KCSOS City Centre",
+      "schedule": {
+        "date": "2026-05-28"
+      }
+    },
+    {
+      "id": "arch_002",
+      "name": "One Book/One Coast: Emma Buckmaster",
+      "emoji": "📚",
+      "venue": "Beale Memorial Library",
+      "schedule": {
+        "date": "2026-05-28"
+      }
+    },
+    {
+      "id": "arch_003",
+      "name": "Tokyo Thursdays: UNKAGED",
+      "emoji": "🎤",
+      "venue": "Kage Asian Bistro",
+      "schedule": {
+        "date": "2026-05-28"
+      }
+    },
+    {
+      "id": "arch_004",
+      "name": "May Sip & Cookie Workshop",
+      "emoji": "🎨",
+      "venue": "Wine Me Up",
+      "schedule": {
+        "date": "2026-05-28"
+      }
+    },
+    {
+      "id": "arch_005",
+      "name": "Concerts at The Marketplace ft. South 40",
+      "emoji": "🎵",
+      "venue": "The Marketplace",
+      "schedule": {
+        "date": "2026-05-28"
+      }
+    },
+    {
+      "id": "arch_006",
+      "name": "Golden Ox Grand Opening",
+      "emoji": "🎉",
+      "venue": "2933 N Chester Ave",
+      "schedule": {
+        "date": "2026-05-29"
+      }
+    },
+    {
+      "id": "arch_007",
+      "name": "Critical Mass Bakersfield Bike Ride",
+      "emoji": "🚴",
+      "venue": "Beach Park",
+      "schedule": {
+        "date": "2026-05-29"
+      }
+    },
+    {
+      "id": "arch_008",
+      "name": "Locked-In Drag Racing Series Round 2",
+      "emoji": "🏁",
+      "venue": "Famoso Dragstrip",
+      "schedule": {
+        "date": "2026-05-29"
+      }
+    },
+    {
+      "id": "arch_009",
+      "name": "Prairie Fire Finale",
+      "emoji": "📅",
+      "venue": "The Padre Hotel Rooftop",
+      "schedule": {
+        "date": "2026-05-29"
+      }
+    },
+    {
+      "id": "arch_010",
+      "name": "Panter Belico Live",
+      "emoji": "🎵",
+      "venue": "Paradise Palace Event Center",
+      "schedule": {
+        "date": "2026-05-29"
+      }
+    },
+    {
+      "id": "arch_011",
+      "name": "Girls Run B Birthday Celebration Run",
+      "emoji": "🏃",
+      "venue": "River Walk",
+      "schedule": {
+        "date": "2026-05-30"
+      }
+    },
+    {
+      "id": "arch_012",
+      "name": "Walk for Kids",
+      "emoji": "🏃",
+      "venue": "Kern County Museum",
+      "schedule": {
+        "date": "2026-05-30"
+      }
+    },
+    {
+      "id": "arch_013",
+      "name": "Trinket Fest",
+      "emoji": "🎉",
+      "venue": "Downtown Bakersfield",
+      "schedule": {
+        "date": "2026-05-30"
+      }
+    },
+    {
+      "id": "arch_014",
+      "name": "Antongiovanni Park Groundbreaking",
+      "emoji": "📅",
+      "venue": "Mountain Ridge Dr",
+      "schedule": {
+        "date": "2026-05-30"
+      }
+    },
+    {
+      "id": "arch_015",
+      "name": "Sister Cities: Bakersfield & Wakayama",
+      "emoji": "📅",
+      "venue": "Beale Memorial Library",
+      "schedule": {
+        "date": "2026-05-30"
+      }
+    },
+    {
+      "id": "arch_016",
+      "name": "Bak-Anime",
+      "emoji": "🎲",
+      "venue": "Kern County Fairgrounds",
+      "schedule": {
+        "date": "2026-05-30"
+      }
+    },
+    {
+      "id": "arch_017",
+      "name": "The Goonies Movie Night & Hunt",
+      "emoji": "🎬",
+      "venue": "Murray Family Farms",
+      "schedule": {
+        "date": "2026-05-30"
+      }
+    },
+    {
+      "id": "arch_018",
+      "name": "Zootopia 2 Movie Night",
+      "emoji": "🎬",
+      "venue": "Wind Wolves Preserve",
+      "schedule": {
+        "date": "2026-05-30"
+      }
+    },
+    {
+      "id": "arch_019",
+      "name": "Baby I'm Strange Tour 2026",
+      "emoji": "🎵",
+      "venue": "Temblor Brewing Company",
+      "schedule": {
+        "date": "2026-06-03"
+      }
+    },
+    {
+      "id": "arch_020",
+      "name": "Bakersfield Summer Carnival",
+      "emoji": "🎉",
+      "venue": "Kern County Fairgrounds",
+      "schedule": {
+        "date": "2026-06-04"
+      }
+    },
+    {
+      "id": "arch_021",
+      "name": "PostHuman Metal Show",
+      "emoji": "📅",
+      "venue": "Jerry's Pizza & Pub",
+      "schedule": {
+        "date": "2026-06-04"
+      }
+    },
+    {
+      "id": "arch_022",
+      "name": "Concerts at The Marketplace - Warfield",
+      "emoji": "🎵",
+      "venue": "The Marketplace",
+      "schedule": {
+        "date": "2026-06-04"
+      }
+    },
+    {
+      "id": "arch_023",
+      "name": "Coffee Rave",
+      "emoji": "🌃",
+      "venue": "The Amara Venue",
+      "schedule": {
+        "date": "2026-06-05"
+      }
+    },
+    {
+      "id": "arch_024",
+      "name": "First Friday & Museums on Us",
+      "emoji": "📅",
+      "venue": "Bakersfield Museum of Art",
+      "schedule": {
+        "date": "2026-06-05"
+      }
+    },
+    {
+      "id": "arch_025",
+      "name": "Arts Council of Kern First Friday Reception",
+      "emoji": "📅",
+      "venue": "Arts Council of Kern",
+      "schedule": {
+        "date": "2026-06-05"
+      }
+    },
+    {
+      "id": "arch_026",
+      "name": "First Friday ArtWalk",
+      "emoji": "🏃",
+      "venue": "The Amara Venue",
+      "schedule": {
+        "date": "2026-06-05"
+      }
+    },
+    {
+      "id": "arch_027",
+      "name": "Movies in the Park: A Minecraft Movie",
+      "emoji": "🎬",
+      "venue": "Greystone Park",
+      "schedule": {
+        "date": "2026-06-05"
+      }
+    },
+    {
+      "id": "arch_028",
+      "name": "Will Burkart Live",
+      "emoji": "🎵",
+      "venue": "The Well Comedy Club",
+      "schedule": {
+        "date": "2026-06-05"
+      }
+    },
+    {
+      "id": "arch_029",
+      "name": "Mean Girls",
+      "emoji": "🎭",
+      "venue": "Ovation Theatre",
+      "schedule": {
+        "date": "2026-06-05"
+      }
+    },
+    {
+      "id": "arch_030",
+      "name": "Kobe & Friends Live Music",
+      "emoji": "🎵",
+      "venue": "Jerry's Pizza & Pub",
+      "schedule": {
+        "date": "2026-06-05"
+      }
+    },
+    {
+      "id": "arch_031",
+      "name": "Hot Fudge Sundae Run & Walk",
+      "emoji": "🏃",
+      "venue": "Bakersfield",
+      "schedule": {
+        "date": "2026-06-06"
+      }
+    },
+    {
+      "id": "arch_032",
+      "name": "Lavender Festival",
+      "emoji": "🎉",
+      "venue": "The Lavender Garden",
+      "schedule": {
+        "date": "2026-06-06"
+      }
+    },
+    {
+      "id": "arch_033",
+      "name": "Luxor Venue Open House",
+      "emoji": "🎉",
+      "venue": "Luxor Venue",
+      "schedule": {
+        "date": "2026-06-06"
+      }
+    },
+    {
+      "id": "arch_034",
+      "name": "DanceNation Y2K Finale Showcase",
+      "emoji": "💃",
+      "venue": "Historic Fox Theater",
+      "schedule": {
+        "date": "2026-06-06"
+      }
+    },
+    {
+      "id": "arch_035",
+      "name": "Bakersfield Youth Symphony Concert",
+      "emoji": "🎵",
+      "venue": "CSUB Dore Theatre",
+      "schedule": {
+        "date": "2026-06-06"
+      }
+    },
+    {
+      "id": "arch_036",
+      "name": "Father's Day Farmers Market",
+      "emoji": "🛍️",
+      "venue": "Outlets at Tejon",
+      "schedule": {
+        "date": "2026-06-06"
+      }
+    },
+    {
+      "id": "arch_037",
+      "name": "Southwest Night Market",
+      "emoji": "🛍️",
+      "venue": "Independence High School",
+      "schedule": {
+        "date": "2026-06-06"
+      }
+    },
+    {
+      "id": "arch_038",
+      "name": "Summer Nights Throwback ft. Mellow Man Ace",
+      "emoji": "🎵",
+      "venue": "BottleShock Wine & Brew",
+      "schedule": {
+        "date": "2026-06-06"
+      }
+    },
+    {
+      "id": "arch_039",
+      "name": "Christopher Cross Concert",
+      "emoji": "🎵",
+      "venue": "Historic Fox Theater",
+      "schedule": {
+        "date": "2026-06-07"
+      }
+    },
+    {
+      "id": "arch_040",
+      "name": "Art in Parks Festival",
+      "emoji": "🎉",
+      "venue": "Tule Elk State Natural Reserve",
+      "schedule": {
+        "date": "2026-06-12"
+      }
+    },
+    {
+      "id": "arch_041",
+      "name": "Movie Night at The Lot: The Sandlot",
+      "emoji": "🎬",
+      "venue": "The Lot",
+      "schedule": {
+        "date": "2026-06-12"
+      }
+    },
+    {
+      "id": "arch_042",
+      "name": "Mal Hall Comedy Show",
+      "emoji": "🎤",
+      "venue": "Sonder American Bistro",
+      "schedule": {
+        "date": "2026-06-12"
+      }
+    },
+    {
+      "id": "arch_043",
+      "name": "Matt Stone as Elvis",
+      "emoji": "📅",
+      "venue": "The Nile Theater",
+      "schedule": {
+        "date": "2026-06-12"
+      }
+    },
+    {
+      "id": "arch_044",
+      "name": "Jay Chandrasekhar Live",
+      "emoji": "🎵",
+      "venue": "The Well Comedy Club",
+      "schedule": {
+        "date": "2026-06-12"
+      }
+    },
+    {
+      "id": "arch_045",
+      "name": "Mean Girls",
+      "emoji": "🎭",
+      "venue": "Ovation Theatre",
+      "schedule": {
+        "date": "2026-06-12"
+      }
+    },
+    {
+      "id": "arch_046",
+      "name": "The Ghost Brothers of Darkland County",
+      "emoji": "🎭",
+      "venue": "Bakersfield Community Theatre",
+      "schedule": {
+        "date": "2026-06-12"
+      }
+    },
+    {
+      "id": "arch_047",
+      "name": "Movies in the Park: Despicable Me 4",
+      "emoji": "🎬",
+      "venue": "Bakersfield Sports Village",
+      "schedule": {
+        "date": "2026-06-12"
+      }
+    },
+    {
+      "id": "arch_048",
+      "name": "MADGRRL",
+      "emoji": "📅",
+      "venue": "Paradise Palace Event Center",
+      "schedule": {
+        "date": "2026-06-12"
+      }
+    },
+    {
+      "id": "arch_049",
+      "name": "Free Smog Repair Event",
+      "emoji": "🤝",
+      "venue": "Kern County Fairgrounds",
+      "schedule": {
+        "date": "2026-06-13"
+      }
+    },
+    {
+      "id": "arch_050",
+      "name": "Free Bulky Item Drop-Off Event",
+      "emoji": "🤝",
+      "venue": "Riverlakes Ranch Park",
+      "schedule": {
+        "date": "2026-06-13"
+      }
+    },
+    {
+      "id": "arch_051",
+      "name": "Folk's in the Oaks Yard Sale",
+      "emoji": "🛍️",
+      "venue": "Oaks Neighborhood",
+      "schedule": {
+        "date": "2026-06-13"
+      }
+    },
+    {
+      "id": "arch_052",
+      "name": "Root & Rise",
+      "emoji": "📅",
+      "venue": "Almondale Park",
+      "schedule": {
+        "date": "2026-06-13"
+      }
+    },
+    {
+      "id": "arch_053",
+      "name": "Summer Social Market",
+      "emoji": "🛍️",
+      "venue": "Tractor Supply Co.",
+      "schedule": {
+        "date": "2026-06-13"
+      }
+    },
+    {
+      "id": "arch_054",
+      "name": "Skateboard Contest",
+      "emoji": "🏁",
+      "venue": "Heritage Park",
+      "schedule": {
+        "date": "2026-06-13"
+      }
+    },
+    {
+      "id": "arch_055",
+      "name": "Beautiful Bakersfield Awards 2026",
+      "emoji": "📅",
+      "venue": "Dignity Health Theater",
+      "schedule": {
+        "date": "2026-06-13"
+      }
+    },
+    {
+      "id": "arch_056",
+      "name": "Toros y Alabanzas",
+      "emoji": "📅",
+      "venue": "Rancho Los Palominos",
+      "schedule": {
+        "date": "2026-06-13"
+      }
+    },
+    {
+      "id": "arch_057",
+      "name": "CENTER STAGE Drag Benefit",
+      "emoji": "🎭",
+      "venue": "The Center",
+      "schedule": {
+        "date": "2026-06-13"
+      }
+    },
+    {
+      "id": "arch_058",
+      "name": "School's Out For Summer Race Night",
+      "emoji": "🏁",
+      "venue": "Bakersfield Speedway",
+      "schedule": {
+        "date": "2026-06-13"
+      }
+    },
+    {
+      "id": "arch_059",
+      "name": "KERN OIL Documentary Screening",
+      "emoji": "🎬",
+      "venue": "Studio Movie Grill",
+      "schedule": {
+        "date": "2026-06-17"
+      }
+    },
+    {
+      "id": "arch_060",
+      "name": "Garden Bros Circus",
+      "emoji": "🎪",
+      "venue": "Maya Cinema lot",
+      "schedule": {
+        "date": "2026-06-18"
+      }
+    },
+    {
+      "id": "arch_061",
+      "name": "Stepping Stones Free Art Session",
+      "emoji": "🎨",
+      "venue": "nX Annex",
+      "schedule": {
+        "date": "2026-06-18"
+      }
+    },
+    {
+      "id": "arch_062",
+      "name": "Children First Food Distribution",
+      "emoji": "🤝",
+      "venue": "David Nelson Pocket Park",
+      "schedule": {
+        "date": "2026-06-18"
+      }
+    },
+    {
+      "id": "arch_063",
+      "name": "Mexico vs South Korea World Cup Watch",
+      "emoji": "⚽",
+      "venue": "King Leo's Pizza",
+      "schedule": {
+        "date": "2026-06-18"
+      }
+    },
+    {
+      "id": "arch_064",
+      "name": "Chingo Bling Live Comedy",
+      "emoji": "🎵",
+      "venue": "The Well Comedy Club",
+      "schedule": {
+        "date": "2026-06-18"
+      }
+    },
+    {
+      "id": "arch_065",
+      "name": "Vince Galindo & Country Deluxe Concert",
+      "emoji": "🎵",
+      "venue": "The Marketplace",
+      "schedule": {
+        "date": "2026-06-18"
+      }
+    },
+    {
+      "id": "arch_066",
+      "name": "USA vs Australia World Cup Watch Party",
+      "emoji": "⚽",
+      "venue": "Legends Event Center",
+      "schedule": {
+        "date": "2026-06-19"
+      }
+    },
+    {
+      "id": "arch_067",
+      "name": "Spider-Man Visit",
+      "emoji": "🧸",
+      "venue": "Rathbun Branch Library",
+      "schedule": {
+        "date": "2026-06-19"
+      }
+    },
+    {
+      "id": "arch_068",
+      "name": "Bako Market",
+      "emoji": "🛍️",
+      "venue": "Centennial Plaza",
+      "schedule": {
+        "date": "2026-06-19"
+      }
+    },
+    {
+      "id": "arch_069",
+      "name": "GOAT Movie in the Park",
+      "emoji": "🎬",
+      "venue": "Gossamer Grove",
+      "schedule": {
+        "date": "2026-06-19"
+      }
+    },
+    {
+      "id": "arch_070",
+      "name": "Father's Day Workshop",
+      "emoji": "🎨",
+      "venue": "Meraki Creative Works",
+      "schedule": {
+        "date": "2026-06-19"
+      }
+    },
+    {
+      "id": "arch_071",
+      "name": "Trish Toledo Concert",
+      "emoji": "🎵",
+      "venue": "The Nile Theater",
+      "schedule": {
+        "date": "2026-06-19"
+      }
+    },
+    {
+      "id": "arch_072",
+      "name": "TOPDOG/UNDERDOG Stage Production",
+      "emoji": "🎭",
+      "venue": "The Empty Space",
+      "schedule": {
+        "date": "2026-06-19"
+      }
+    },
+    {
+      "id": "arch_073",
+      "name": "Paranormal Cirque",
+      "emoji": "🎪",
+      "venue": "Kern County Fairgrounds",
+      "schedule": {
+        "date": "2026-06-19"
+      }
+    },
+    {
+      "id": "arch_074",
+      "name": "Finding Nemo Movie in the Park",
+      "emoji": "🎬",
+      "venue": "Mesa Marin Sports Complex",
+      "schedule": {
+        "date": "2026-06-19"
+      }
+    },
+    {
+      "id": "arch_075",
+      "name": "Bakersfield Father's Day Run",
+      "emoji": "🏃",
+      "venue": "The Park at River Walk",
+      "schedule": {
+        "date": "2026-06-20"
+      }
+    },
+    {
+      "id": "arch_076",
+      "name": "Bako Card Fest",
+      "emoji": "🎉",
+      "venue": "Eagles",
+      "schedule": {
+        "date": "2026-06-20"
+      }
+    },
+    {
+      "id": "arch_077",
+      "name": "Go Skate Day & Shop Showdown",
+      "emoji": "🏁",
+      "venue": "Downtown Bakersfield",
+      "schedule": {
+        "date": "2026-06-21"
+      }
+    },
+    {
+      "id": "arch_078",
+      "name": "Summer Soulstice 70s Party",
+      "emoji": "🎉",
+      "venue": "Haggin Oaks Farmers Market",
+      "schedule": {
+        "date": "2026-06-21"
+      }
+    },
+    {
+      "id": "arch_079",
+      "name": "Sushi Making Class",
+      "emoji": "🍽️",
+      "venue": "Corks & Strokes",
+      "schedule": {
+        "date": "2026-06-25"
+      }
+    },
+    {
+      "id": "arch_080",
+      "name": "Art After Dark: Celebrate Pride",
+      "emoji": "🎨",
+      "venue": "Bakersfield Museum of Art",
+      "schedule": {
+        "date": "2026-06-25"
+      }
+    },
+    {
+      "id": "arch_081",
+      "name": "Concerts at The Marketplace: Mento Buru",
+      "emoji": "🎵",
+      "venue": "The Marketplace",
+      "schedule": {
+        "date": "2026-06-25"
+      }
+    },
+    {
+      "id": "arch_082",
+      "name": "Bakersfield Fairytale Friends",
+      "emoji": "🎉",
+      "venue": "Rathbun Branch Library",
+      "schedule": {
+        "date": "2026-06-26"
+      }
+    },
+    {
+      "id": "arch_083",
+      "name": "The Krock Pot ft. Nef the Pharaoh",
+      "emoji": "📅",
+      "venue": "Paradise Palace",
+      "schedule": {
+        "date": "2026-06-26"
+      }
+    },
+    {
+      "id": "arch_084",
+      "name": "The View Night Market",
+      "emoji": "🛍️",
+      "venue": "Ridgeview High School",
+      "schedule": {
+        "date": "2026-06-26"
+      }
+    },
+    {
+      "id": "arch_085",
+      "name": "Hip-Hop Music Bingo Night",
+      "emoji": "🎵",
+      "venue": "Centro Cali Brewing",
+      "schedule": {
+        "date": "2026-06-26"
+      }
+    },
+    {
+      "id": "arch_086",
+      "name": "Crushed Glass Art Party",
+      "emoji": "🎨",
+      "venue": "Corks & Strokes",
+      "schedule": {
+        "date": "2026-06-26"
+      }
+    },
+    {
+      "id": "arch_087",
+      "name": "The Heights",
+      "emoji": "🎭",
+      "venue": "Spotlight Academy Theatre",
+      "schedule": {
+        "date": "2026-06-26"
+      }
+    },
+    {
+      "id": "arch_088",
+      "name": "Hi Friends Secret Rave",
+      "emoji": "🌃",
+      "venue": "Secret Location",
+      "schedule": {
+        "date": "2026-06-26"
+      }
+    },
+    {
+      "id": "arch_089",
+      "name": "Girls Run B Pride Run",
+      "emoji": "🏃",
+      "venue": "The Park at River Walk",
+      "schedule": {
+        "date": "2026-06-27"
+      }
+    },
+    {
+      "id": "arch_090",
+      "name": "Science Saturday",
+      "emoji": "🧸",
+      "venue": "Buena Vista Museum",
+      "schedule": {
+        "date": "2026-06-27"
+      }
+    },
+    {
+      "id": "arch_091",
+      "name": "Teresa Casa de Modas Grand Opening",
+      "emoji": "🎉",
+      "venue": "316 H St",
+      "schedule": {
+        "date": "2026-06-27"
+      }
+    },
+    {
+      "id": "arch_092",
+      "name": "Curious Giraffe Paint Party",
+      "emoji": "🎨",
+      "venue": "Corks & Strokes",
+      "schedule": {
+        "date": "2026-06-27"
+      }
+    },
+    {
+      "id": "arch_093",
+      "name": "The Baka Few Tour",
+      "emoji": "🎵",
+      "venue": "Northeast Branch Library",
+      "schedule": {
+        "date": "2026-06-27"
+      }
+    },
+    {
+      "id": "arch_094",
+      "name": "American Kids Sports Center Opening",
+      "emoji": "🧸",
+      "venue": "5010 Young St",
+      "schedule": {
+        "date": "2026-06-27"
+      }
+    },
+    {
+      "id": "arch_095",
+      "name": "Minecraft Kids Rave: Creeper Glow Fest",
+      "emoji": "🎉",
+      "venue": "Jerry's Pizza & Pub",
+      "schedule": {
+        "date": "2026-06-27"
+      }
+    },
+    {
+      "id": "arch_096",
+      "name": "Magnolia Kitchen Grand Opening",
+      "emoji": "🎉",
+      "venue": "Magnolia Kitchen",
+      "schedule": {
+        "date": "2026-06-27"
+      }
+    },
+    {
+      "id": "arch_097",
+      "name": "Handel's Ice Cream Grand Opening",
+      "emoji": "🎉",
+      "venue": "Bakersfield",
+      "schedule": {
+        "date": "2026-07-02"
+      }
+    },
+    {
+      "id": "arch_098",
+      "name": "Weekday Market Bakersfield",
+      "emoji": "🛍️",
+      "venue": "1718 17th St",
+      "schedule": {
+        "date": "2026-07-02"
+      }
+    },
+    {
+      "id": "arch_099",
+      "name": "Concerts at The Marketplace: South 40",
+      "emoji": "🎵",
+      "venue": "The Marketplace",
+      "schedule": {
+        "date": "2026-07-02"
+      }
+    },
+    {
+      "id": "arch_100",
+      "name": "The Real Thing (Opening Night)",
+      "emoji": "🎭",
+      "venue": "The Underground at Ovation",
+      "schedule": {
+        "date": "2026-07-02"
+      }
+    },
+    {
+      "id": "arch_101",
+      "name": "U.S. 250 Festival in the Park",
+      "emoji": "🎉",
+      "venue": "The Park at River Walk",
+      "schedule": {
+        "date": "2026-07-03"
+      }
+    },
+    {
+      "id": "arch_102",
+      "name": "Little Hikers Meetup",
+      "emoji": "📅",
+      "venue": "Jastro Spray Park",
+      "schedule": {
+        "date": "2026-07-03"
+      }
+    },
+    {
+      "id": "arch_103",
+      "name": "Corey Dain Live",
+      "emoji": "🎵",
+      "venue": "Chuy's Baja Grill",
+      "schedule": {
+        "date": "2026-07-03"
+      }
+    },
+    {
+      "id": "arch_104",
+      "name": "Mythical Beauty Paint Night",
+      "emoji": "🎨",
+      "venue": "Corks & Strokes",
+      "schedule": {
+        "date": "2026-07-03"
+      }
+    },
+    {
+      "id": "arch_105",
+      "name": "Red White & 90s Bingo Party",
+      "emoji": "📅",
+      "venue": "Bootleggers Craft Pub",
+      "schedule": {
+        "date": "2026-07-03"
+      }
+    },
+    {
+      "id": "arch_106",
+      "name": "Bike Jam Fireworks Meetup",
+      "emoji": "🚴",
+      "venue": "Aera Park",
+      "schedule": {
+        "date": "2026-07-03"
+      }
+    },
+    {
+      "id": "arch_107",
+      "name": "Girls Run B: 4th of July Run",
+      "emoji": "🏃",
+      "venue": "Hart Park",
+      "schedule": {
+        "date": "2026-07-04"
+      }
+    },
+    {
+      "id": "arch_108",
+      "name": "Harvest Helpers Volunteer Day",
+      "emoji": "🤝",
+      "venue": "Fortitude Community Farm",
+      "schedule": {
+        "date": "2026-07-04"
+      }
+    },
+    {
+      "id": "arch_109",
+      "name": "The American 250",
+      "emoji": "📅",
+      "venue": "Kern Raceway",
+      "schedule": {
+        "date": "2026-07-04"
+      }
+    },
+    {
+      "id": "arch_110",
+      "name": "Saunders Park Cleanup",
+      "emoji": "🤝",
+      "venue": "Saunders Park",
+      "schedule": {
+        "date": "2026-07-05"
+      }
+    },
+    {
+      "id": "arch_111",
+      "name": "Canyon Watering Volunteer Day",
+      "emoji": "🎤",
+      "venue": "Wind Wolves Preserve",
+      "schedule": {
+        "date": "2026-07-08"
+      }
+    },
+    {
+      "id": "arch_112",
+      "name": "Magic: The Gathering 101",
+      "emoji": "🎲",
+      "venue": "Baker Branch Library",
+      "schedule": {
+        "date": "2026-07-09"
+      }
+    },
+    {
+      "id": "arch_113",
+      "name": "Twisted Coffee Grand Opening",
+      "emoji": "🎉",
+      "venue": "1917 Eye St",
+      "schedule": {
+        "date": "2026-07-09"
+      }
+    },
+    {
+      "id": "arch_114",
+      "name": "Dine with Dignity",
+      "emoji": "🤝",
+      "venue": "Mercy House Navigation Center",
+      "schedule": {
+        "date": "2026-07-09"
+      }
+    },
+    {
+      "id": "arch_115",
+      "name": "Sunsets on the River",
+      "emoji": "📅",
+      "venue": "Yokuts Park",
+      "schedule": {
+        "date": "2026-07-09"
+      }
+    },
+    {
+      "id": "arch_116",
+      "name": "Road to the Fair Karaoke Competition",
+      "emoji": "🎉",
+      "venue": "Temblor Brewing",
+      "schedule": {
+        "date": "2026-07-09"
+      }
+    },
+    {
+      "id": "arch_117",
+      "name": "Jessie \"Jetski\" Johnson",
+      "emoji": "🎤",
+      "venue": "The Well Comedy Club",
+      "schedule": {
+        "date": "2026-07-09"
+      }
+    },
+    {
+      "id": "arch_118",
+      "name": "Tinker Pixie Meet & Greet",
+      "emoji": "🧸",
+      "venue": "Rathbun Branch Library",
+      "schedule": {
+        "date": "2026-07-10"
+      }
+    },
+    {
+      "id": "arch_119",
+      "name": "Ceramics (Clay) Level 1",
+      "emoji": "🎨",
+      "venue": "Art with Heart",
+      "schedule": {
+        "date": "2026-07-10"
+      }
+    },
+    {
+      "id": "arch_120",
+      "name": "Baywatch Bar Crawl",
+      "emoji": "📅",
+      "venue": "Downtown Bakersfield",
+      "schedule": {
+        "date": "2026-07-10"
+      }
+    },
+    {
+      "id": "arch_121",
+      "name": "Jokes On You Roast Battle",
+      "emoji": "🎤",
+      "venue": "The Well Comedy Club",
+      "schedule": {
+        "date": "2026-07-10"
+      }
+    },
+    {
+      "id": "arch_122",
+      "name": "BCT's 38th Annual One Act Festival",
+      "emoji": "🎉",
+      "venue": "Bakersfield Community Theatre",
+      "schedule": {
+        "date": "2026-07-10"
+      }
+    },
+    {
+      "id": "arch_123",
+      "name": "Crushed Glass: Christmas in July",
+      "emoji": "📅",
+      "venue": "Corks & Strokes",
+      "schedule": {
+        "date": "2026-07-10"
+      }
+    },
+    {
+      "id": "arch_124",
+      "name": "Girls Run B: Bombshell Run",
+      "emoji": "🏃",
+      "venue": "River Walk",
+      "schedule": {
+        "date": "2026-07-11"
+      }
+    },
+    {
+      "id": "arch_125",
+      "name": "Bakolandia Grand Opening",
+      "emoji": "🎉",
+      "venue": "California Truck Stop",
+      "schedule": {
+        "date": "2026-07-11"
+      }
+    },
+    {
+      "id": "arch_126",
+      "name": "Rave Into Reading",
+      "emoji": "🌃",
+      "venue": "Northeast Branch Library",
+      "schedule": {
+        "date": "2026-07-11"
+      }
+    },
+    {
+      "id": "arch_127",
+      "name": "Tim Elam: Life on the Edge",
+      "emoji": "📅",
+      "venue": "Buena Vista Museum",
+      "schedule": {
+        "date": "2026-07-11"
+      }
+    },
+    {
+      "id": "arch_128",
+      "name": "The Hobby Gym Grand Opening",
+      "emoji": "🎉",
+      "venue": "The Hobby Gym",
+      "schedule": {
+        "date": "2026-07-11"
+      }
+    },
+    {
+      "id": "arch_129",
+      "name": "Southwest Market",
+      "emoji": "🛍️",
+      "venue": "Independence High School",
+      "schedule": {
+        "date": "2026-07-11"
+      }
+    },
+    {
+      "id": "arch_130",
+      "name": "RPW Summer Stampede Wrestling",
+      "emoji": "🏁",
+      "venue": "BPAL Center",
+      "schedule": {
+        "date": "2026-07-11"
+      }
+    },
+    {
+      "id": "arch_131",
+      "name": "NASTY DUO",
+      "emoji": "📅",
+      "venue": "Paradise Palace Event Center",
+      "schedule": {
+        "date": "2026-07-11"
+      }
+    },
+    {
+      "id": "arch_132",
+      "name": "Stormy Daniels",
+      "emoji": "🎤",
+      "venue": "The Well Comedy Club",
+      "schedule": {
+        "date": "2026-07-16"
+      }
+    },
+    {
+      "id": "arch_133",
+      "name": "Midland",
+      "emoji": "🎵",
+      "venue": "Dignity Health Theater",
+      "schedule": {
+        "date": "2026-07-16"
+      }
+    },
+    {
+      "id": "arch_134",
+      "name": "Pirates! The Penzance Musical",
+      "emoji": "🎭",
+      "venue": "Bakersfield College",
+      "schedule": {
+        "date": "2026-07-17"
+      }
+    },
+    {
+      "id": "arch_135",
+      "name": "Eleanor Kerrigan",
+      "emoji": "🎤",
+      "venue": "The Well Comedy Club",
+      "schedule": {
+        "date": "2026-07-17"
+      }
+    },
+    {
+      "id": "arch_136",
+      "name": "The Valley's Collectors Expo",
+      "emoji": "🛍️",
+      "venue": "The Well Comedy Club",
+      "schedule": {
+        "date": "2026-07-18"
+      }
+    },
+    {
+      "id": "arch_137",
+      "name": "Free Welding Experience Day",
+      "emoji": "🤝",
+      "venue": "Elite Metal Works",
+      "schedule": {
+        "date": "2026-07-18"
+      }
+    },
+    {
+      "id": "arch_138",
+      "name": "Special Needs Screening: Moana",
+      "emoji": "🎬",
+      "venue": "Studio Movie Grill",
+      "schedule": {
+        "date": "2026-07-18"
+      }
+    },
+    {
+      "id": "arch_139",
+      "name": "Lisa Frank Junk Journal Workshop",
+      "emoji": "🎨",
+      "venue": "Jerry's Pizza & Pub",
+      "schedule": {
+        "date": "2026-07-18"
+      }
+    },
+    {
+      "id": "arch_140",
+      "name": "Night at the Races",
+      "emoji": "🏁",
+      "venue": "Kern Raceway",
+      "schedule": {
+        "date": "2026-07-18"
+      }
+    },
+    {
+      "id": "arch_141",
+      "name": "Lucha Libre: Mascarita Sagrada",
+      "emoji": "🏁",
+      "venue": "3500 21st St",
+      "schedule": {
+        "date": "2026-07-18"
+      }
+    },
+    {
+      "id": "arch_142",
+      "name": "Spectra: Pride Extravaganza",
+      "emoji": "🚴",
+      "venue": "The Eligon Social Co",
+      "schedule": {
+        "date": "2026-07-18"
+      }
+    },
+    {
+      "id": "arch_143",
+      "name": "Gothicumbia",
+      "emoji": "📅",
+      "venue": "The Nile Theater",
+      "schedule": {
+        "date": "2026-07-18"
+      }
+    },
+    {
+      "id": "arch_144",
+      "name": "Korn Tribute by Elote",
+      "emoji": "🎵",
+      "venue": "Hard Rock Casino Tejon",
+      "schedule": {
+        "date": "2026-07-18"
+      }
+    },
+    {
+      "id": "arch_145",
+      "name": "Kern County Vintage Flea",
+      "emoji": "🛍️",
+      "venue": "Kern County Fairgrounds",
+      "schedule": {
+        "date": "2026-07-19"
+      }
+    },
+    {
+      "id": "arch_146",
+      "name": "80s Market Rave",
+      "emoji": "🛍️",
+      "venue": "Haggin Oaks Farmers Market",
+      "schedule": {
+        "date": "2026-07-19"
+      }
+    },
+    {
+      "id": "arch_147",
+      "name": "Stampede Benefit Show",
+      "emoji": "🏁",
+      "venue": "Legends Event Center",
+      "schedule": {
+        "date": "2026-07-21"
+      }
+    },
+    {
+      "id": "arch_148",
+      "name": "Paper + Pinot",
+      "emoji": "🍽️",
+      "venue": "TLO Wines",
+      "schedule": {
+        "date": "2026-07-23"
+      }
+    },
+    {
+      "id": "arch_149",
+      "name": "Sunsets on the River",
+      "emoji": "📅",
+      "venue": "Yokuts Park",
+      "schedule": {
+        "date": "2026-07-23"
+      }
+    },
+    {
+      "id": "arch_150",
+      "name": "Love on Tap Speed Dating",
+      "emoji": "🍽️",
+      "venue": "Temblor Brewing",
+      "schedule": {
+        "date": "2026-07-23"
+      }
+    },
+    {
+      "id": "arch_151",
+      "name": "Olivia Rodrigo Night",
+      "emoji": "🎵",
+      "venue": "Jerry's Pizza & Pub",
+      "schedule": {
+        "date": "2026-07-24"
+      }
+    },
+    {
+      "id": "arch_152",
+      "name": "Summer of Soul Concert",
+      "emoji": "🎵",
+      "venue": "Pyrenees Cafe",
+      "schedule": {
+        "date": "2026-07-24"
+      }
+    },
+    {
+      "id": "arch_153",
+      "name": "Hip Hop & Corridos Concert",
+      "emoji": "🎵",
+      "venue": "Paradise Palace",
+      "schedule": {
+        "date": "2026-07-24"
+      }
+    },
+    {
+      "id": "arch_154",
+      "name": "2nd Annual Summerween Market",
+      "emoji": "🛍️",
+      "venue": "California Truck",
+      "schedule": {
+        "date": "2026-07-25"
+      }
+    },
+    {
+      "id": "arch_155",
+      "name": "Turning Bird Grand Opening",
+      "emoji": "🎉",
+      "venue": "Turning Bird",
+      "schedule": {
+        "date": "2026-07-25"
+      }
+    },
+    {
+      "id": "arch_156",
+      "name": "Streets of Bakersfield Dog Adventure",
+      "emoji": "📅",
+      "venue": "Kern County Animal Services",
+      "schedule": {
+        "date": "2026-07-25"
+      }
+    },
+    {
+      "id": "arch_157",
+      "name": "Bakersfield EDM Festival",
+      "emoji": "🎉",
+      "venue": "Paradise Palace Event Center",
+      "schedule": {
+        "date": "2026-07-25"
+      }
+    },
+    {
+      "id": "arch_158",
+      "name": "A Summer Night in Mariposa",
+      "emoji": "📅",
+      "venue": "Basement at Woolworth's",
+      "schedule": {
+        "date": "2026-07-25"
+      }
+    },
+    {
+      "id": "arch_159",
+      "name": "Night Hike",
+      "emoji": "📅",
+      "venue": "Wind Wolves Preserve",
+      "schedule": {
+        "date": "2026-07-25"
+      }
+    },
+    {
+      "id": "arch_160",
+      "name": "Feels Like 2005 Emo Night",
+      "emoji": "🌃",
+      "venue": "The Padre Hotel",
+      "schedule": {
+        "date": "2026-07-25"
+      }
+    },
+    {
+      "id": "arch_161",
+      "name": "Education & Resources Festival",
+      "emoji": "🎉",
+      "venue": "CALM Zoo",
+      "schedule": {
+        "date": "2026-07-26"
+      }
+    },
+    {
+      "id": "arch_162",
+      "name": "WWE Summer Tour",
+      "emoji": "🎵",
+      "venue": "Dignity Health Arena",
+      "schedule": {
+        "date": "2026-07-26"
+      }
+    },
+    {
+      "id": "arch_163",
+      "name": "Beginner Tango Dance Series",
+      "emoji": "💃",
+      "venue": "Fairfax Grange",
+      "schedule": {
+        "date": "2026-07-27"
+      }
+    },
+    {
+      "id": "arch_164",
+      "name": "Iron Vixens Roller Derby Recruitment",
+      "emoji": "🏁",
+      "venue": "Rollerama",
+      "schedule": {
+        "date": "2026-07-27"
+      }
+    },
+    {
+      "id": "arch_165",
+      "name": "Bike Basics: Fix Your First Flat",
+      "emoji": "🎤",
+      "venue": "Snider's Cyclery",
+      "schedule": {
+        "date": "2026-07-29"
+      }
+    },
+    {
+      "id": "arch_166",
+      "name": "Thrive's Day Out",
+      "emoji": "📅",
+      "venue": "Kids Empire",
+      "schedule": {
+        "date": "2026-07-30"
+      }
+    },
+    {
+      "id": "arch_167",
+      "name": "80's Music Bingo Night",
+      "emoji": "🎵",
+      "venue": "Centro Cali Brewing",
+      "schedule": {
+        "date": "2026-07-30"
+      }
+    },
+    {
+      "id": "arch_168",
+      "name": "Sunsets on the River",
+      "emoji": "📅",
+      "venue": "Yokuts Park",
+      "schedule": {
+        "date": "2026-07-30"
+      }
+    },
+    {
+      "id": "arch_169",
+      "name": "Sweet Revenge: MCR Tribute",
+      "emoji": "🎵",
+      "venue": "Jerry's Pizza & Pub",
+      "schedule": {
+        "date": "2026-07-30"
+      }
+    },
+    {
+      "id": "arch_170",
+      "name": "Once Upon a One More Time",
+      "emoji": "🎭",
+      "venue": "The Empty Space",
+      "schedule": {
+        "date": "2026-07-30"
+      }
+    },
+    {
+      "id": "arch_171",
+      "name": "Lefty Gunplay Live",
+      "emoji": "🎵",
+      "venue": "La Movida",
+      "schedule": {
+        "date": "2026-07-30"
+      }
+    },
+    {
+      "id": "arch_172",
+      "name": "Spidey Duo Meet & Greet",
+      "emoji": "🧸",
+      "venue": "Beale Memorial Library",
+      "schedule": {
+        "date": "2026-07-31"
+      }
+    },
+    {
+      "id": "arch_173",
+      "name": "America's 250th Celebration Concert",
+      "emoji": "🎵",
+      "venue": "Beale Memorial Library",
+      "schedule": {
+        "date": "2026-07-31"
+      }
+    },
+    {
+      "id": "arch_174",
+      "name": "Running for a Cause",
+      "emoji": "🏃",
+      "venue": "Uncharted Adventures Cafe",
+      "schedule": {
+        "date": "2026-07-31"
+      }
+    },
+    {
+      "id": "arch_175",
+      "name": "TCG & Collectibles Pop-Up",
+      "emoji": "🎲",
+      "venue": "Fantasy Sports Cards",
+      "schedule": {
+        "date": "2026-07-31"
+      }
+    },
+    {
+      "id": "arch_176",
+      "name": "Southwest Market x Cali Night Market",
+      "emoji": "🛍️",
+      "venue": "Golden Valley High School",
+      "schedule": {
+        "date": "2026-07-31"
+      }
+    },
+    {
+      "id": "arch_177",
+      "name": "Critical Mass: Pirate Ride",
+      "emoji": "🚴",
+      "venue": "Beach Park",
+      "schedule": {
+        "date": "2026-07-31"
+      }
+    },
+    {
+      "id": "arch_178",
+      "name": "Jim Ranger Live",
+      "emoji": "🎵",
+      "venue": "STIR Cocktails & Kitchen",
+      "schedule": {
+        "date": "2026-07-31"
+      }
+    },
+    {
+      "id": "arch_179",
+      "name": "2nd Annual Lagersfield",
+      "emoji": "🍽️",
+      "venue": "BottleShock Wine & Brew",
+      "schedule": {
+        "date": "2026-07-31"
+      }
+    },
+    {
+      "id": "arch_180",
+      "name": "The Grown-Ups",
+      "emoji": "🎭",
+      "venue": "The Underground at Ovation",
+      "schedule": {
+        "date": "2026-07-31"
+      }
+    },
+    {
+      "id": "arch_181",
+      "name": "Bop to the Top Tour",
+      "emoji": "🎵",
+      "venue": "The Nile Theater",
+      "schedule": {
+        "date": "2026-07-31"
+      }
+    },
+    {
+      "id": "arch_182",
+      "name": "Toy Story Free Summer Screening",
+      "emoji": "🎬",
+      "venue": "Historic Fox Theater",
+      "schedule": {
+        "date": "2026-08-01"
+      }
+    },
+    {
+      "id": "arch_183",
+      "name": "Taking Back Sandwich",
+      "emoji": "🍽️",
+      "venue": "Sub Station",
+      "schedule": {
+        "date": "2026-08-01"
+      }
+    },
+    {
+      "id": "arch_184",
+      "name": "Grumpy's Brewing 3-Year Anniversary",
+      "emoji": "🎉",
+      "venue": "Grumpy's Brewing Co",
+      "schedule": {
+        "date": "2026-08-01"
+      }
+    },
+    {
+      "id": "arch_185",
+      "name": "Mickey Avalon: 20th Anniversary Tour",
+      "emoji": "🎉",
+      "venue": "Temblor Brewing",
+      "schedule": {
+        "date": "2026-08-01"
+      }
+    },
+    {
+      "id": "arch_186",
+      "name": "Salty's BBQ Grand Opening",
+      "emoji": "🎉",
+      "venue": "3214 Coffee Rd",
+      "schedule": {
+        "date": "2026-08-06"
+      }
+    },
+    {
+      "id": "arch_187",
+      "name": "Kern County Fair Discount Day",
+      "emoji": "🎉",
+      "venue": "Kern County Fair",
+      "schedule": {
+        "date": "2026-08-07"
+      }
+    },
+    {
+      "id": "arch_188",
+      "name": "Friends of the Library Used Book Sale",
+      "emoji": "📚",
+      "venue": "Beale Memorial Library",
+      "schedule": {
+        "date": "2026-08-07"
+      }
+    },
+    {
+      "id": "arch_189",
+      "name": "Summerween Outdoor Cinema",
+      "emoji": "🎉",
+      "venue": "The Snuggle Barn",
+      "schedule": {
+        "date": "2026-08-07"
+      }
+    },
+    {
+      "id": "arch_190",
+      "name": "Fast Friday Drag Racing",
+      "emoji": "🏁",
+      "venue": "Famoso Dragstrip",
+      "schedule": {
+        "date": "2026-08-07"
+      }
+    },
+    {
+      "id": "arch_191",
+      "name": "Fireflies (Stage Production)",
+      "emoji": "🎭",
+      "venue": "Bakersfield Community Theatre",
+      "schedule": {
+        "date": "2026-08-07"
+      }
+    },
+    {
+      "id": "arch_192",
+      "name": "The Grown-Ups (Stage Production)",
+      "emoji": "🎭",
+      "venue": "The Underground at Ovation",
+      "schedule": {
+        "date": "2026-08-07"
+      }
+    },
+    {
+      "id": "arch_193",
+      "name": "Neo Soul Night",
+      "emoji": "📅",
+      "venue": "The Jazz Spot",
+      "schedule": {
+        "date": "2026-08-07"
+      }
+    },
+    {
+      "id": "arch_194",
+      "name": "Free Bulky Item Drop-Off",
+      "emoji": "🤝",
+      "venue": "Bakersfield Sports Village",
+      "schedule": {
+        "date": "2026-08-08"
+      }
+    },
+    {
+      "id": "arch_195",
+      "name": "Kernville Summer Festival",
+      "emoji": "🎉",
+      "venue": "Circle Park, Kernville",
+      "schedule": {
+        "date": "2026-08-08"
+      }
+    },
+    {
+      "id": "arch_196",
+      "name": "Second Saturday",
+      "emoji": "📅",
+      "venue": "In Your Wildest Dreams",
+      "schedule": {
+        "date": "2026-08-08"
+      }
+    },
+    {
+      "id": "arch_197",
+      "name": "Bakersfield Collector-Con",
+      "emoji": "🛍️",
+      "venue": "Dignity Health Arena",
+      "schedule": {
+        "date": "2026-08-08"
+      }
+    },
+    {
+      "id": "arch_198",
+      "name": "Summer Luau",
+      "emoji": "🎉",
+      "venue": "MB2 Entertainment",
+      "schedule": {
+        "date": "2026-08-08"
+      }
+    },
+    {
+      "id": "arch_199",
+      "name": "Buck's Birthday Bash",
+      "emoji": "📅",
+      "venue": "The Basement at Woolworth's",
+      "schedule": {
+        "date": "2026-08-08"
+      }
+    },
+    {
+      "id": "arch_200",
+      "name": "Strangelove: Depeche Mode Experience",
+      "emoji": "🎵",
+      "venue": "The Nile Theater",
+      "schedule": {
+        "date": "2026-08-08"
+      }
+    },
+    {
+      "id": "arch_201",
+      "name": "Michael Yo (Comedy Show)",
+      "emoji": "🎤",
+      "venue": "The Well Comedy Club",
+      "schedule": {
+        "date": "2026-08-08"
+      }
+    },
+    {
+      "id": "arch_202",
+      "name": "BLADE: Vampire Protocol Rave",
+      "emoji": "🌃",
+      "venue": "Paradise Palace Event Center",
+      "schedule": {
+        "date": "2026-08-08"
+      }
+    },
+    {
+      "id": "arch_203",
+      "name": "The Community Market",
+      "emoji": "🛍️",
+      "venue": "Rio Bravo Ranch",
+      "schedule": {
+        "date": "2026-08-09"
+      }
+    },
+    {
+      "id": "arch_204",
+      "name": "Petals & Play",
+      "emoji": "🎭",
+      "venue": "Mesa Marin Park",
+      "schedule": {
+        "date": "2026-08-09"
+      }
+    },
+    {
+      "id": "arch_205",
+      "name": "Taste the Hash",
+      "emoji": "🍽️",
+      "venue": "Bakersfield",
+      "schedule": {
+        "date": "2026-08-09"
+      }
+    }
   ]
 }
