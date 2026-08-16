@@ -4,15 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>First Friday — Board Bored</title>
-<meta property="og:title" content="First Friday Art Walk — live map">
-<meta property="og:description" content="Downtown Bakersfield's open shops, galleries, and pop-ups — on one free map.">
-<link rel="manifest" href="../manifest.webmanifest">
-<meta name="theme-color" content="#ca421a">
-<link rel="apple-touch-icon" href="../icons/icon-192.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Board Bored">
+<meta property="og:title" content="Board Bored — What's on in Bakersfield">
+<meta property="og:description" content="First Friday Art Walk, plus everything else happening around Bakersfield this week — one free map. No apps, no fee.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://seekerflame.github.io/board-bored-bakersfield/first-friday/">
+<meta property="og:image" content="https://seekerflame.github.io/board-bored-bakersfield/first-friday/share.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Board Bored — What's on in Bakersfield">
+<meta name="twitter:description" content="First Friday plus everything happening around Bakersfield this week — one free map.">
+<meta name="twitter:image" content="https://seekerflame.github.io/board-bored-bakersfield/first-friday/share.png">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-<link rel="stylesheet" href="https://unpkg.com/leaflet-gesture-handling/dist/leaflet-gesture-handling.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500;1,9..144,600;1,9..144,700&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -40,13 +43,26 @@
   .badge.past{background:var(--mut);box-shadow:none}
   h1{font-family:var(--display);font-weight:600;font-size:clamp(28px,7.5vw,40px);letter-spacing:-.3px;
     line-height:1.02;padding:10px 18px 4px}
-  .sub{color:var(--mut);font-size:14.5px;padding:0 18px 16px;max-width:44ch;line-height:1.45}
-  #map{height:46vh;min-height:300px;width:100%;z-index:1;border-top:1px solid #14111614;border-bottom:1px solid #14111614}
+  .sub{color:var(--mut);font-size:14.5px;padding:0 18px 12px;max-width:44ch;line-height:1.45}
+  /* anchor strip — First Friday framed as the flagship, with quick links */
+  .anchor{max-width:600px;margin:0 auto;padding:0 18px 14px;display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
+  .anchor .flag{font-size:12.5px;font-weight:700;color:var(--acc);display:flex;align-items:center;gap:6px}
+  .anchor a{font-size:13px;font-weight:700;color:var(--acc2);text-decoration:none;display:inline-flex;align-items:center;gap:5px;
+    border:1.5px solid #14111618;border-radius:999px;padding:6px 12px;background:var(--card);transition:border-color .15s,background .15s}
+  .anchor a:hover{border-color:var(--acc2);background:#167f680d}
+  .anchor a.submit{background:var(--acc);color:#fffaf5;border-color:var(--acc)}
+  .anchor a.submit:hover{background:#b23a17;border-color:#b23a17}
+  #map{height:50vh;min-height:320px;width:100%;z-index:1;border-top:1px solid #14111614;border-bottom:1px solid #14111614}
   /* storefronts: permanent, territorial — bold badges so they read first, before anything else on the map */
   .pinmoji{font-size:22px;line-height:1;width:40px;height:40px;border-radius:50%;
     background:var(--card);border:2.5px solid var(--acc3);display:flex;align-items:center;justify-content:center;
     box-shadow:0 1px 0 #fff inset,0 4px 12px #14111645,0 1px 3px #14111633;transition:transform .2s var(--ease)}
   .pinmoji:hover{transform:scale(1.16) translateY(-1px)}
+  /* citywide happenings: teal-ringed emoji pins, distinct from the amber storefront pins */
+  .evpin{font-size:16px;line-height:1;width:30px;height:30px;border-radius:50%;
+    background:var(--card);border:2px solid var(--acc2);display:flex;align-items:center;justify-content:center;
+    box-shadow:0 3px 9px #14111636,0 1px 2px #14111726;transition:transform .18s var(--ease)}
+  .evpin:hover{transform:scale(1.2) translateY(-1px)}
   /* vendor booths: seat-map squares, not pins */
   .seat{width:10px;height:10px;border-radius:1.5px;border:1px solid;box-sizing:border-box;
     transition:transform .1s,box-shadow .1s;box-shadow:0 1px 1.5px #0002}
@@ -60,8 +76,15 @@
 
   a:focus-visible,button:focus-visible,[tabindex]:focus-visible{outline:2.5px solid var(--acc3);outline-offset:2px;border-radius:4px}
 
+  /* map focus controls */
+  .focus{max-width:600px;margin:12px auto 0;padding:0 18px;display:flex;gap:8px;align-items:center}
+  .focus button{appearance:none;font:inherit;font-size:12.5px;font-weight:700;color:var(--ink);cursor:pointer;
+    border:1.5px solid #14111620;background:var(--card);border-radius:999px;padding:7px 13px;transition:all .15s}
+  .focus button:hover{border-color:var(--acc3)}
+  .focus button.on{background:var(--ink);color:#fffaf5;border-color:var(--ink)}
+
   /* legend */
-  .legend{max-width:560px;margin:14px auto 0;padding:0 18px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;
+  .legend{max-width:600px;margin:12px auto 0;padding:0 18px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;
     font-size:11.5px;font-weight:600;color:var(--mut);line-height:1.3}
   .legend .k{display:flex;align-items:center;gap:5px}
   .legend .sw{width:10px;height:10px;border-radius:1.5px;border:1px solid;box-sizing:border-box;display:inline-block}
@@ -69,6 +92,8 @@
   .legend .sw.pending{background:#f5eccb;border-color:#a68a2e}
   .legend .sw.held{background:#167f68;border-color:#0f5c4b}
   .legend .sw.closed{background:#eae8e6;border-color:#a8a29b}
+  .legend .dot{width:11px;height:11px;border-radius:50%;border:2px solid var(--acc2);background:var(--card);display:inline-block}
+  .legend .dot.store{border-color:var(--acc3)}
 
   /* event intro frame */
   .scrim{position:fixed;inset:0;background:oklch(15% .02 300 / .6);backdrop-filter:blur(6px) saturate(1.1);z-index:200;
@@ -94,7 +119,7 @@
   .frame .go:hover{background:#28222c}
   .frame .go:active{transform:scale(.98)}
   .frame .alt{display:block;text-align:center;margin-top:12px;font-size:13.5px;font-weight:700;color:var(--acc2);text-decoration:none}
-  .list{max-width:560px;margin:0 auto;padding:14px 18px 30px}
+  .list{max-width:600px;margin:0 auto;padding:14px 18px 30px}
   .count{font-family:var(--display);font-style:italic;font-size:13px;font-weight:600;color:var(--acc2);letter-spacing:.2px;margin:6px 2px 12px}
   .v{background:var(--card);border:1.5px solid #14111617;border-radius:14px;padding:12px 14px;margin-bottom:9px;cursor:pointer;
     transition:transform .15s var(--ease),box-shadow .15s var(--ease),border-color .15s}
@@ -113,28 +138,37 @@
   .v .links a:hover,.v .links button:hover{border-color:var(--acc2);background:#167f680d}
   .v.open{border-style:dashed}
   .v .openflag{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--acc2)}
-  .notice{max-width:560px;margin:0 auto;padding:0 18px 4px;font-size:13.5px;color:var(--mut)}
-  .sechead{max-width:560px;margin:30px auto 0;padding:0 18px;font-family:var(--display);font-style:italic;
+  /* event card extras */
+  .v .when2{font-size:12.5px;color:var(--ink);font-weight:700;margin-top:3px}
+  .v .venue2{font-size:12.5px;color:var(--mut);margin-top:2px}
+  .v .tag{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--acc3);
+    border:1.5px solid #c98a2c55;border-radius:999px;padding:2px 7px;margin-left:auto;white-space:nowrap}
+  .v .tag.cost{color:var(--acc2);border-color:#167f6844}
+  .notice{max-width:600px;margin:0 auto;padding:0 18px 4px;font-size:13.5px;color:var(--mut)}
+  .sechead{max-width:600px;margin:34px auto 2px;padding:0 18px;font-family:var(--display);font-weight:600;
+    font-size:23px;letter-spacing:-.2px;color:var(--ink);line-height:1.1}
+  .secsub{max-width:600px;margin:0 auto;padding:0 18px;font-size:13.5px;color:var(--mut);line-height:1.45}
+  .subhead{max-width:600px;margin:22px auto 0;padding:0 18px;font-family:var(--display);font-style:italic;
     font-size:14px;font-weight:600;color:var(--acc2);letter-spacing:.2px}
+  /* day-group headers in the agenda */
+  .dayhead{font-family:var(--display);font-weight:700;font-size:15px;color:var(--ink);letter-spacing:-.1px;
+    margin:16px 2px 8px;display:flex;align-items:baseline;gap:8px}
+  .dayhead.today{color:var(--acc)}
+  .dayhead small{font-family:var(--body);font-size:11px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.5px}
+  /* category filter chips */
+  .chips{display:flex;gap:7px;overflow-x:auto;padding:4px 2px 8px;margin:0 -2px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .chips::-webkit-scrollbar{display:none}
+  .chip{flex:0 0 auto;font-size:12px;font-weight:700;color:var(--ink);border:1.5px solid #14111620;background:var(--card);
+    border-radius:999px;padding:6px 12px;cursor:pointer;white-space:nowrap;transition:all .13s;font:inherit;font-weight:700}
+  .chip:hover{border-color:var(--acc3)}
+  .chip.on{background:var(--ink);color:#fffaf5;border-color:var(--ink)}
   .v.highlighted{outline:2.5px solid var(--acc);outline-offset:2px}
-  .lbcard{max-width:560px;margin:26px auto 0;background:var(--card);border:2px solid var(--acc);border-radius:16px;padding:14px 16px 8px}
-  .lbcard+.lbcard{margin-top:14px}
-  .lbhead{font-family:var(--display);font-style:italic;font-weight:600;font-size:16px;color:var(--acc);margin-bottom:2px}
-  .lbhead span{display:block;font-family:-apple-system,Arial;font-style:normal;font-size:12px;font-weight:600;color:var(--mut);margin-top:2px}
-  .lbempty{font-size:13.5px;color:var(--mut);line-height:1.5;padding:10px 2px 12px}
-  .lbempty a{color:var(--acc2);font-weight:800;text-decoration:none}
-  .lbrow{display:flex;align-items:center;gap:9px;padding:9px 2px;border-top:1px solid #14111614}
-  .lbrow:first-of-type{border-top:0}
-  .lbrank{font-family:var(--display);font-weight:600;font-size:15px;color:var(--acc3);width:20px;text-align:center;flex:none}
-  .lbname{font-weight:800;font-size:14.5px;flex:1;min-width:0}
-  .lbstar{display:inline-block;font-size:10px;font-weight:800;color:var(--acc);margin-left:6px;white-space:nowrap}
-  .lbmeta{font-size:11.5px;font-weight:700;color:var(--mut);white-space:nowrap}
-  .lbstreak{color:var(--acc);margin-left:4px}
-  .lbpts{font-family:var(--display);font-weight:600;font-size:14px;color:var(--acc2);white-space:nowrap;flex:none}
   .cta{display:block;text-align:center;background:var(--ink);color:#fffaf5;text-decoration:none;font-weight:700;
     font-size:16px;border-radius:14px;padding:17px;margin:20px 0 10px;transition:transform .15s var(--ease),background .15s}
   .cta:hover{background:#28222c}
   .cta:active{transform:scale(.985)}
+  .cta.submit{background:var(--acc)}
+  .cta.submit:hover{background:#b23a17}
   .rowbtn{display:flex;gap:10px}
   .rowbtn button,.rowbtn a{flex:1;appearance:none;text-align:center;text-decoration:none;border:1.5px solid var(--ink);
     background:transparent;color:var(--ink);font:inherit;font-weight:700;font-size:14.5px;border-radius:12px;padding:14px;
@@ -163,6 +197,8 @@
     box-shadow:0 12px 32px -10px #14111655!important}
   .leaflet-popup-content{font-family:var(--body);font-size:13.5px;line-height:1.5;color:var(--ink)}
   .leaflet-popup-content b{font-family:var(--display);font-weight:600;font-size:15px}
+  .leaflet-popup-content .pop-links{margin-top:6px;display:flex;gap:8px}
+  .leaflet-popup-content .pop-links a{color:var(--acc2);font-weight:700;text-decoration:none}
   .leaflet-popup-tip{background:var(--card)!important}
 </style>
 </head>
@@ -171,35 +207,57 @@
   <a class="mark" href="../">● Board Bored</a>
   <span class="badge" id="badge">…</span>
 </header>
-<a class="skiplink" href="#vendors">Skip map, go to the list</a>
-
-<div id="map" role="img" aria-label="Map of First Friday — every pin is also listed as a card below"></div>
-
 <h1 id="evName">First Friday Art Walk</h1>
 <div class="sub" id="evSub">Downtown Bakersfield</div>
-<div class="notice" id="logisticsNote" style="display:none"></div>
+<div class="anchor">
+  <span class="flag" id="flag">★ The monthly flagship</span>
+  <a href="#whatson">📅 What's on this week</a>
+  <a class="submit" href="submit-event.html">➕ Submit an event</a>
+  <a href="about.html">ℹ️ Vendor info</a>
+</div>
+<a class="skiplink" href="#whatson">Skip map, go to the list</a>
 
-<div class="legend" id="legend" style="display:none">
-  <span class="k"><span class="sw open"></span>Open</span>
-  <span class="k"><span class="sw pending"></span>Pending</span>
-  <span class="k"><span class="sw held"></span>Taken</span>
-  <span class="k"><span class="sw closed"></span>Closed</span>
-  <span class="k" style="color:var(--mut)">· Booths are off by default — flip them on with the ▤ layers button</span>
+<div id="map" role="img" aria-label="Map of First Friday plus everything happening around Bakersfield — every pin is also listed as a card below"></div>
+
+<div class="focus" id="focus">
+  <button id="focusAll" class="on" type="button">🌆 All of Bako</button>
+  <button id="focusFF" type="button">🎨 First Friday corridor</button>
 </div>
 
-<div class="list">
+<div class="legend" id="legend">
+  <span class="k"><span class="dot"></span>Happening</span>
+  <span class="k"><span class="dot store"></span>Open shop</span>
+  <span class="k" id="legOpen" style="display:none"><span class="sw open"></span>Open booth</span>
+  <span class="k" id="legPend" style="display:none"><span class="sw pending"></span>Pending</span>
+  <span class="k" id="legHeld" style="display:none"><span class="sw held"></span>Taken</span>
+  <span class="k" style="color:var(--mut)">· Booths &amp; layers: tap the ▤ button on the map</span>
+</div>
+
+<!-- ===== First Friday — the anchor ===== -->
+<div class="sechead" id="ffHead">🎨 First Friday Art Walk</div>
+<div class="secsub" id="ffSub"></div>
+<div class="list" style="padding-top:12px">
   <div class="count" id="count">Loading the walk…</div>
   <div id="vendors"></div>
 
-  <div class="sechead" id="spotsHead" style="display:none">Sidewalk vendor spots</div>
+  <div class="subhead" id="spotsHead" style="display:none">Sidewalk vendor spots</div>
   <div class="count" id="spotsCount" style="display:none"></div>
   <div id="spotCards"></div>
 
-  <div id="lbWrap"></div>
+  <a class="cta" id="vendorCta" href="../vendor-signup.html">🏪 Get a spot on the map</a>
+</div>
 
-  <a class="cta" id="vendorCta" href="https://board-bored-shop-intake.ai.studio">🏪 Get a spot on the map</a>
-  <div class="rowbtn">
-    <button id="share">📣 Share this map</button>
+<!-- ===== What's on around Bakersfield ===== -->
+<div class="sechead" id="whatson">📅 What's on around Bakersfield</div>
+<div class="secsub">Between First Fridays — real events happening today and the days ahead. Tap one for tickets or directions.</div>
+<div class="list" style="padding-top:10px">
+  <div class="chips" id="chips"></div>
+  <div class="count" id="evCount"></div>
+  <div id="events"></div>
+
+  <a class="cta submit" href="submit-event.html">➕ Add your event to the map — free</a>
+  <div class="rowbtn" style="margin-top:10px">
+    <button id="share">📣 Share this board</button>
     <a href="../print.html">🖨️ Paper map</a>
   </div>
 </div>
@@ -224,7 +282,6 @@
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="https://unpkg.com/leaflet-gesture-handling"></script>
 <script>
 (function(){
   var $=function(id){return document.getElementById(id)};
@@ -233,8 +290,39 @@
   var map, markers={};
   var highlightId=new URLSearchParams(location.search).get("highlight");
 
+  // ---- date helpers (all local, midnight-normalized) ----
+  function todayMid(){var d=new Date();d.setHours(0,0,0,0);return d;}
+  function parseISO(s){var p=(s||"").split("-");return p.length===3?new Date(+p[0],+p[1]-1,+p[2]):null;}
+  function nextWeekday(from,wd,weeks){
+    var d=new Date(from);
+    for(var i=0;i<70;i++){
+      if(d.getDay()===wd){
+        if(!weeks)return d;
+        var wom=Math.floor((d.getDate()-1)/7)+1;
+        if(weeks.indexOf(wom)>=0)return d;
+      }
+      d.setDate(d.getDate()+1);
+    }
+    return null;
+  }
+  function effDate(ev){
+    var s=ev.schedule||{};
+    if(s.ongoing)return todayMid();
+    if(s.date)return parseISO(s.date);
+    if(typeof s.weekday==="number")return nextWeekday(todayMid(),s.weekday,s.weeks);
+    return null;
+  }
+  function dayLabel(eff,ev){
+    if(ev.schedule&&ev.schedule.ongoing)return "On view now";
+    var t=todayMid(),diff=Math.round((eff-t)/86400000);
+    if(diff===0)return "Today";
+    if(diff===1)return "Tomorrow";
+    if(diff<7)return eff.toLocaleDateString(undefined,{weekday:"long"});
+    return eff.toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric"});
+  }
+  function isRecurring(ev){var s=ev.schedule||{};return typeof s.weekday==="number";}
+
   // booth state vocabulary — one place, used by map seats, cards and counts
-  // open = anyone can claim · pending = someone asked, not settled · held = settled, they're coming · closed = not offered
   function seatState(s){
     var st=(s.status||"open").toLowerCase();
     if(st==="confirmed"||st==="held")return s.vendor?"held":"open";
@@ -252,13 +340,15 @@
     return "<b>"+s.label+"</b><br>Open — claim it on the signup page";
   }
 
+  function dirUrl(addr){return "https://www.google.com/maps/dir/?api=1&destination="+encodeURIComponent(addr);}
+
   function shareLink(id,name,extra){
     var url=location.origin+location.pathname+"?highlight="+encodeURIComponent(id);
-    var txt="Find "+name+" at First Friday"+(extra?" — "+extra:"")+".";
-    var btn=document.createElement("button");btn.type="button";btn.textContent="🔗 Share this spot";
+    var txt="Find "+name+" on the Board Bored map"+(extra?" — "+extra:"")+".";
+    var btn=document.createElement("button");btn.type="button";btn.textContent="🔗 Share";
     btn.addEventListener("click",function(ev2){
       ev2.stopPropagation();
-      if(navigator.share){navigator.share({title:name+" — First Friday",text:txt,url:url}).catch(function(){});}
+      if(navigator.share){navigator.share({title:name+" — Board Bored",text:txt,url:url}).catch(function(){});}
       else if(navigator.clipboard){navigator.clipboard.writeText(txt+" "+url).then(function(){toast("Link copied — paste it anywhere")});}
       else{toast(url);}
     });
@@ -276,31 +366,32 @@
     document.title=ev.name+" — Board Bored";
     $("evName").textContent=ev.name;
     $("evSub").textContent=(ev.area||"")+(ev.blurb?" · "+ev.blurb:"");
-    if(ev.logistics_note){$("logisticsNote").textContent="🚸 "+ev.logistics_note;$("logisticsNote").style.display="block";}
 
     // date-aware badge
-    var today=new Date(); today.setHours(0,0,0,0);
-    var p=(ev.date||"").split("-");
-    var evd=p.length===3?new Date(+p[0],+p[1]-1,+p[2]):null;
+    var today=todayMid();
+    var evd=parseISO(ev.date);
     var b=$("badge");
     if(evd&&evd.getTime()===today.getTime()){b.textContent="🔥 TONIGHT · "+(ev.hours||"");}
     else if(evd&&evd>today){b.classList.add("future");
       b.textContent=evd.toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric"})+" · "+(ev.hours||"");}
     else{b.classList.add("past");b.textContent="Next one soon";}
+    $("ffHead").textContent="🎨 "+ev.name;
+    $("ffSub").textContent=(evd?evd.toLocaleDateString(undefined,{weekday:"long",month:"long",day:"numeric"}):"")+
+      (ev.hours?" · "+ev.hours:"")+" · "+(ev.area||"")+". "+(ev.blurb||"");
 
     var vendors=ev.vendors||[];
     var spots=ev.spots||[];
     var parking=ev.parking||[];
+    var cityEvents=d.city_events||[];
 
-    // map — storefront vendors + sidewalk spots + parking, each its own toggleable layer
+    // map — storefront vendors + sidewalk spots + parking + citywide happenings, each its own toggleable layer
     var vs=vendors.filter(function(v){return typeof v.lat==="number"&&typeof v.lng==="number"});
     var ss=spots.filter(function(s){return typeof s.lat==="number"&&typeof s.lng==="number"});
     var pk=parking.filter(function(p){return typeof p.lat==="number"&&typeof p.lng==="number"});
     var corridor=ev.corridor;
     var corridorPts=(corridor&&corridor.path)?corridor.path.map(function(p){return {lat:p[0],lng:p[1]};}):[];
-    var allPts=vs.concat(ss).concat(corridorPts);
     var c=vs[0]||ss[0]||corridorPts[0]||{lat:35.3757,lng:-119.0205};
-    map=L.map("map",{scrollWheelZoom:false,gestureHandling:true}).setView([c.lat,c.lng],16);
+    map=L.map("map",{scrollWheelZoom:false}).setView([c.lat,c.lng],14);
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
       {maxZoom:19,attribution:"© OpenStreetMap contributors"}).addTo(map);
 
@@ -310,24 +401,17 @@
         fill:true,fillColor:"#ca421a",fillOpacity:.035,interactive:false}).addTo(map);
     }
 
-    // fit to the event footprint (boundary if present, else the pins)
-    if(ev.boundary&&ev.boundary.polygon&&ev.boundary.polygon.length>2){
-      map.fitBounds(ev.boundary.polygon,{padding:[14,14]});
-    } else if(allPts.length>1){
-      map.fitBounds(allPts.map(function(v){return [v.lat,v.lng]}),{padding:[36,36]});
-    }
-
     // Eye Street corridor — the walkable/table-space spine, drawn under everything else, always visible
     if(corridor&&corridor.path&&corridor.path.length>1){
       L.polyline(corridor.path,{color:"#3a3430",weight:6,opacity:.38,lineCap:"round"}).addTo(map);
       L.polyline(corridor.path,{color:"#c98a2c",weight:3,opacity:.8,dashArray:"1,10",lineCap:"round"}).addTo(map);
     }
     (corridor&&corridor.intersections||[]).forEach(function(x){
-      L.circleMarker([x.lat,x.lng],{radius:4,color:"#c98a2c",weight:2,fillColor:"#fffdfa",fillOpacity:1,opacity:.85,weight:2.5})
+      L.circleMarker([x.lat,x.lng],{radius:4,color:"#c98a2c",weight:2.5,fillColor:"#fffdfa",fillOpacity:1,opacity:.85})
         .addTo(map).bindPopup("<b>🚦 "+x.label+"</b><br>"+(x.note||"Prime corner — high foot traffic"));
     });
 
-    var storefrontLayer=L.layerGroup(), spotLayer=L.layerGroup(), parkingLayer=L.layerGroup();
+    var storefrontLayer=L.layerGroup(), spotLayer=L.layerGroup(), parkingLayer=L.layerGroup(), eventLayer=L.layerGroup();
 
     vs.forEach(function(v){
       var icon=L.divIcon({html:'<div class="pinmoji">'+(v.emoji||"📍")+'</div>',className:"",iconSize:[40,40],iconAnchor:[20,20]});
@@ -347,58 +431,126 @@
         .bindPopup("<b>🅿️ "+(p.label||"Parking")+"</b>"+(p.note?"<br>"+p.note:""));
     });
 
-    // storefronts + parking on by default; booths OFF until someone asks for them
-    storefrontLayer.addTo(map); parkingLayer.addTo(map);
-    var layerCtl={"🏪 Storefronts":storefrontLayer,"▤ Vendor booths":spotLayer};
+    // ---- citywide happenings: filter to today+future, annotate, sort ----
+    var upcoming=cityEvents.map(function(e){
+      var eff=effDate(e); return eff?{e:e,eff:eff}:null;
+    }).filter(function(x){return x&&x.eff>=today;});
+    // ongoing first, then chronological
+    upcoming.sort(function(a,b){
+      var ao=a.e.schedule&&a.e.schedule.ongoing?0:1, bo=b.e.schedule&&b.e.schedule.ongoing?0:1;
+      if(ao!==bo)return ao-bo;
+      return a.eff-b.eff;
+    });
+
+    var eventPts=[];
+    upcoming.forEach(function(x){
+      var e=x.e;
+      if(typeof e.lat!=="number"||typeof e.lng!=="number")return;
+      eventPts.push([e.lat,e.lng]);
+    });
+
+    // category set (in first-seen order)
+    var cats=[]; upcoming.forEach(function(x){if(cats.indexOf(x.e.category)<0)cats.push(x.e.category);});
+    cats.sort();
+
+    // storefronts + parking + events on by default; booths OFF until someone asks
+    storefrontLayer.addTo(map); parkingLayer.addTo(map); eventLayer.addTo(map);
+    var layerCtl={"📅 This week's events":eventLayer,"🏪 Storefronts":storefrontLayer,"▤ Vendor booths":spotLayer};
     if(pk.length)layerCtl["🅿️ Parking"]=parkingLayer;
     L.control.layers(null,layerCtl,{collapsed:true}).addTo(map);
-    if(ss.length)$("legend").style.display="flex";
+    if(ss.length){$("legOpen").style.display="flex";$("legPend").style.display="flex";$("legHeld").style.display="flex";}
 
-    // live open-now badge — only meaningful ON the event night itself, since hours_start/
-    // hours_end describe First-Friday-night hours, not the vendor's normal daily hours.
-    //
-    // "Event night" is NOT the same as "event date". A shop closing at 2am closes on
-    // SATURDAY by the calendar, and at 12:01am the calendar date has already rolled
-    // over. Treating the night as ending at midnight would blank every badge exactly
-    // when the late shops are the only ones still open. So the night runs until 4am.
-    var NIGHT_ENDS_HOUR=4;
-    function isEventNight(now){
-      if(!evd)return false;
-      var d=new Date(now); d.setHours(0,0,0,0);
-      if(evd.getTime()===d.getTime())return true;
-      // still the small hours of the morning after? then it is still that night.
-      var prev=new Date(d); prev.setDate(prev.getDate()-1);
-      return evd.getTime()===prev.getTime()&&now.getHours()<NIGHT_ENDS_HOUR;
+    // ---- render agenda + event pins, filterable by category ----
+    var curCat=null;
+    function eventPopup(e){
+      var l="";
+      if(e.link)l+='<a href="'+e.link+'" target="_blank" rel="noopener">Tickets / info</a>';
+      l+='<a href="'+dirUrl(e.address)+'" target="_blank" rel="noopener">Directions</a>';
+      return "<b>"+(e.emoji||"📍")+" "+e.name+"</b><br>"+e.when+"<br><span style='color:#777069'>"+e.venue+"</span>"+
+             "<div class='pop-links'>"+l+"</div>";
     }
-    function openBadge(v,now){
-      now=now||new Date();
-      if(!isEventNight(now)||!v.hours_start||!v.hours_end)return"";
-      var mins=now.getHours()*60+now.getMinutes();
+    function paint(cat){
+      curCat=cat;
+      eventLayer.clearLayers();
+      var box=$("events");box.innerHTML="";
+      var list=upcoming.filter(function(x){return !cat||x.e.category===cat;});
+      $("evCount").textContent=list.length+" event"+(list.length===1?"":"s")+(cat?" · "+cat:" this week & ahead");
+      var lastLabel=null, curPts=[];
+      list.forEach(function(x){
+        var e=x.e, lbl=dayLabel(x.eff,e);
+        if(lbl!==lastLabel){
+          var h=document.createElement("div");h.className="dayhead"+(lbl==="Today"?" today":"");
+          var sub= (e.schedule&&e.schedule.ongoing)?"":
+                   (lbl==="Today"||lbl==="Tomorrow"||/,/.test(lbl))?"":
+                   x.eff.toLocaleDateString(undefined,{month:"short",day:"numeric"});
+          h.innerHTML=lbl+(sub?" <small>"+sub+"</small>":"");
+          box.appendChild(h);lastLabel=lbl;
+        }
+        var el=document.createElement("div");el.className="v";el.id="card-e-"+e.id;
+        var tag= e.cost?'<span class="tag cost">'+e.cost+'</span>':(isRecurring(e)?'<span class="tag">Weekly</span>':"");
+        el.innerHTML='<div class="top"><span class="emo">'+(e.emoji||"📍")+'</span>'+
+          '<span class="nm">'+e.name+'</span>'+tag+'</div>'+
+          '<div class="when2">'+e.when+(isRecurring(e)&&!e.cost?' · every week':'')+'</div>'+
+          '<div class="venue2">'+e.venue+(e.area==="downtown"?' · downtown':'')+'</div>'+
+          (e.desc?'<div class="note">'+e.desc+'</div>':"");
+        var linksEl=document.createElement("div");linksEl.className="links";
+        var lh="";
+        if(e.link)lh+='<a href="'+e.link+'" target="_blank" rel="noopener">🎟️ Tickets / info</a>';
+        lh+='<a href="'+dirUrl(e.address)+'" target="_blank" rel="noopener">🧭 Directions</a>';
+        linksEl.innerHTML=lh;
+        linksEl.appendChild(shareLink(e.id,e.name,e.category));
+        el.appendChild(linksEl);
+        el.addEventListener("click",function(evt){if(evt.target.closest("a,button"))return;panTo("e:"+e.id);});
+        box.appendChild(el);
+        if(highlightId===e.id)el.classList.add("highlighted");
+        // map pin
+        if(typeof e.lat==="number"&&typeof e.lng==="number"){
+          var icon=L.divIcon({html:'<div class="evpin">'+(e.emoji||"📍")+'</div>',className:"",iconSize:[30,30],iconAnchor:[15,15]});
+          markers["e:"+e.id]=L.marker([e.lat,e.lng],{icon:icon,zIndexOffset:500}).addTo(eventLayer).bindPopup(eventPopup(e));
+          curPts.push([e.lat,e.lng]);
+        }
+      });
+      if(!list.length){box.innerHTML='<div class="notice" style="padding:6px 2px">No events in this category right now — tap “All” to see everything.</div>';}
+      return curPts;
+    }
+    // chips
+    var chipBox=$("chips");
+    function mkChip(label,val){
+      var c2=document.createElement("button");c2.type="button";c2.className="chip"+(val===curCat?" on":"");
+      c2.textContent=label;
+      c2.addEventListener("click",function(){
+        Array.prototype.forEach.call(chipBox.children,function(n){n.classList.remove("on")});
+        c2.classList.add("on");
+        var pts=paint(val);
+        if(curFocus==="all")fitAll();
+      });
+      return c2;
+    }
+    if(cats.length){
+      chipBox.appendChild(mkChip("All",null));
+      cats.forEach(function(cat){chipBox.appendChild(mkChip(cat,cat));});
+    }
+    chipBox.firstChild&&chipBox.firstChild.classList.add("on");
+    paint(null);
+
+    // ---- First Friday vendor cards ----
+    function openBadge(v){
+      var isEventDay=!!(evd&&evd.getTime()===today.getTime());
+      if(!isEventDay||!v.hours_start||!v.hours_end)return"";
+      var now=new Date(), mins=now.getHours()*60+now.getMinutes();
       var sp=v.hours_start.split(":"),ep=v.hours_end.split(":");
       var startMins=(+sp[0])*60+(+sp[1]), endMins=(+ep[0])*60+(+ep[1]);
-      // A close time at or before the open time crosses midnight: 5p–2a, 9a–1a.
-      // Without this the naive mins>=endMins test reads 7pm as "past 2am" and shows
-      // the latest-open shop on the street as closed all night.
-      var wraps=endMins<=startMins;
-      var open=wraps?(mins>=startMins||mins<endMins):(mins>=startMins&&mins<endMins);
-      if(open)return'<span class="openflag">🟢 Open now</span>';
-      // Not open. Two different "not open"s: done for the night, or not started yet.
-      // Small hours and not open => the night is over for this shop, whatever its
-      // hours were. Without the first clause a 5p–9p shop reads "Opens 5pm" at 12:30am,
-      // which is true of the coming evening but useless to someone standing outside it.
-      var doneForNight=(mins<NIGHT_ENDS_HOUR*60)||(!wraps&&mins>=endMins);
-      if(doneForNight)return'<span class="openflag" style="color:var(--mut)">Closed for the night</span>';
-      return'<span class="openflag" style="color:var(--mut)">Opens '+fmtTime(v.hours_start)+'</span>';
+      if(mins<startMins)return'<span class="openflag" style="color:var(--mut)">Opens '+fmtTime(v.hours_start)+'</span>';
+      if(mins>=endMins)return'<span class="openflag" style="color:var(--mut)">Closed for the night</span>';
+      return'<span class="openflag">🟢 Open now</span>';
     }
     function fmtTime(hhmm){
       var p=hhmm.split(":"),h=+p[0];
       var ap=h>=12?"pm":"am"; h=h%12; if(h===0)h=12;
       return h+(p[1]!=="00"?":"+p[1]:"")+ap;
     }
-
-    // storefront vendor cards
     $("count").textContent=vendors.length+" stops on the walk";
-    var box=$("vendors");
+    var vbox=$("vendors");
     vendors.forEach(function(v){
       var el=document.createElement("div");el.className="v";el.id="card-v-"+v.id;
       var links="";
@@ -407,7 +559,7 @@
       if(v.website){var w=v.website.indexOf("http")===0?v.website:"https://"+v.website;
         links+='<a href="'+w+'" target="_blank" rel="noopener">Website</a>';}
       if(v.address&&v.address.indexOf("verify")===-1){
-        links+='<a href="https://www.google.com/maps/dir/?api=1&destination='+encodeURIComponent(v.address)+'" target="_blank" rel="noopener">Directions</a>';}
+        links+='<a href="'+dirUrl(v.address)+'" target="_blank" rel="noopener">Directions</a>';}
       el.innerHTML='<div class="top"><span class="emo">'+(v.emoji||"📍")+'</span>'+
         '<span class="nm">'+v.name+'</span><span class="cat">'+(v.category||"")+'</span></div>'+
         (v.address?'<div class="addr">'+v.address+'</div>':"")+
@@ -416,31 +568,26 @@
       var linksEl=document.createElement("div");linksEl.className="links";linksEl.innerHTML=links;
       linksEl.appendChild(shareLink(v.id,v.name,v.category));
       el.appendChild(linksEl);
-      el.addEventListener("click",function(e){
-        if(e.target.closest("a,button"))return;
-        panTo("v:"+v.id);
-      });
-      box.appendChild(el);
+      el.addEventListener("click",function(e){if(e.target.closest("a,button"))return;panTo("v:"+v.id);});
+      vbox.appendChild(el);
       if(highlightId===v.id)el.classList.add("highlighted");
     });
 
-    // sidewalk spot cards — only spots with something to report (pending/held/closed) get a card;
-    // "open" stays on the map only (43+ identical cards is clutter, not information)
+    // sidewalk spot cards — only spots with something to report (pending/held/closed) get a card
     if(spots.length){
       $("spotsHead").style.display="block";
       var byState={open:0,pending:0,held:0,closed:0};
       spots.forEach(function(s){byState[seatState(s)]++;});
       var parts=[spots.length+" booths"];
       ["open","pending","held","closed"].forEach(function(k){
-        if(byState[k])parts.push(byState[k]+" "+STATE_LABEL[k].toLowerCase());
-      });
+        if(byState[k])parts.push(byState[k]+" "+STATE_LABEL[k].toLowerCase());});
       $("spotsCount").style.display="block";
       $("spotsCount").textContent=parts.join(" · ");
       var sbox=$("spotCards");
       var shown=0;
       spots.forEach(function(s){
         var st=seatState(s);
-        if(st==="open"&&highlightId!==s.id)return;  // skip — the map + legend already cover open spots
+        if(st==="open"&&highlightId!==s.id)return;
         shown++;
         var el=document.createElement("div");el.className="v"+(st==="open"?" open":"");el.id="card-s-"+s.id;
         if(st!=="held"){
@@ -465,31 +612,69 @@
           linksEl.appendChild(shareLink(s.id,v.name,s.label));
           el.appendChild(linksEl);
         }
-        el.addEventListener("click",function(e){
-          if(e.target.closest("a,button"))return;
-          panTo("s:"+s.id);
-        });
+        el.addEventListener("click",function(e){if(e.target.closest("a,button"))return;panTo("s:"+s.id);});
         sbox.appendChild(el);
         if(highlightId===s.id)el.classList.add("highlighted");
       });
       if(!shown){
         var hint=document.createElement("div");hint.className="notice";hint.style.padding="4px 2px 0";
-        hint.innerHTML=byState.open+' open booths — tap ▤ Vendor booths on the map above to browse them, or <a href="../vendor-signup.html">grab one now →</a>';
+        hint.innerHTML=byState.open+' open booths — tap ▤ Vendor booths on the map, or <a href="../vendor-signup.html">grab one now →</a>';
         sbox.appendChild(hint);
       }
     }
 
+    // ---- map focus controls ----
+    var curFocus="all";
+    // downtown anchor — used to keep the default view on the dense central cluster
+    // instead of blowing out to a few far-flung pins (Wind Wolves, Arvin, the zoo).
+    var CTR=[35.3757,-119.0205], CORE_DEG=0.055; // ~3.8 miles — the dense downtown/midtown cluster
+    function nearCore(lat,lng){return Math.abs(lat-CTR[0])<=CORE_DEG&&Math.abs(lng-CTR[1])<=CORE_DEG;}
+    function fitAll(){
+      map.invalidateSize();   // container size can shift as cards load below — re-measure before fitting
+      var all=[], core=[];
+      eventLayer.eachLayer(function(m){var ll=m.getLatLng();all.push([ll.lat,ll.lng]);if(nearCore(ll.lat,ll.lng))core.push([ll.lat,ll.lng]);});
+      corridorPts.forEach(function(p){all.push([p.lat,p.lng]);core.push([p.lat,p.lng]);});
+      vs.forEach(function(v){all.push([v.lat,v.lng]);core.push([v.lat,v.lng]);});
+      var pts=core.length>1?core:all;   // frame the central cluster; outlier pins stay on the map
+      if(pts.length>1)map.fitBounds(pts,{padding:[34,34],maxZoom:15});
+      else if(pts.length===1)map.setView(pts[0],14);
+    }
+    function fitFF(){
+      map.invalidateSize();
+      if(ev.boundary&&ev.boundary.polygon&&ev.boundary.polygon.length>2)map.fitBounds(ev.boundary.polygon,{padding:[16,16]});
+      else if(corridorPts.length)map.fitBounds(corridorPts.map(function(p){return[p.lat,p.lng]}),{padding:[30,30]});
+    }
+    $("focusAll").addEventListener("click",function(){curFocus="all";$("focusAll").classList.add("on");$("focusFF").classList.remove("on");fitAll();});
+    $("focusFF").addEventListener("click",function(){curFocus="ff";$("focusFF").classList.add("on");$("focusAll").classList.remove("on");fitFF();});
+    // default focus: on First Friday night, zoom the corridor; otherwise a clean, predictable
+    // downtown-centered citywide view (the "All of Bako" button re-fits to the live pins).
+    var isEventDay=!!(evd&&evd.getTime()===today.getTime());
+    function applyDefaultView(){
+      map.invalidateSize();
+      if(isEventDay){curFocus="ff";$("focusFF").classList.add("on");$("focusAll").classList.remove("on");fitFF();}
+      else{map.setView(CTR,13);}
+    }
+    applyDefaultView();
+    // re-measure after fonts/layout settle and on resize/orientation change (avoids stale-size blank tiles)
+    setTimeout(applyDefaultView,350);
+    window.addEventListener("resize",function(){clearTimeout(window._bbrz);window._bbrz=setTimeout(function(){map.invalidateSize();},200);});
+
     function panTo(key){
       if(!markers[key])return;
-      map.setView(markers[key].getLatLng(),17);markers[key].openPopup();
+      // make sure the right layer is on
+      if(key.indexOf("e:")===0&&!map.hasLayer(eventLayer))eventLayer.addTo(map);
+      if(key.indexOf("s:")===0&&!map.hasLayer(spotLayer))spotLayer.addTo(map);
+      map.setView(markers[key].getLatLng(),key.indexOf("e:")===0?16:17);markers[key].openPopup();
       window.scrollTo({top:0,behavior:"smooth"});
     }
     if(highlightId){
-      var key=markers["v:"+highlightId]?"v:"+highlightId:(markers["s:"+highlightId]?"s:"+highlightId:null);
+      var key=markers["v:"+highlightId]?"v:"+highlightId
+             :markers["s:"+highlightId]?"s:"+highlightId
+             :markers["e:"+highlightId]?"e:"+highlightId:null;
       if(key){setTimeout(function(){panTo(key);},300);}
     }
 
-    // ---- event intro frame: what this is, before the map ----
+    // ---- intro frame: what this board is, before the map ----
     (function(){
       var seen=false;
       try{seen=sessionStorage.getItem("bb_ff_frame_"+ev.date)==="1";}catch(e){}
@@ -498,12 +683,13 @@
       $("frameWhen").textContent=(evd?evd.toLocaleDateString(undefined,{weekday:"long",month:"long",day:"numeric"}):ev.date||"")+
         (ev.hours?" · "+ev.hours:"");
       $("frameWhere").textContent=ev.area||"";
-      $("frameBlurb").textContent=ev.blurb||"";
+      $("frameBlurb").textContent=(ev.blurb||"")+" Plus everything else happening around Bakersfield this week.";
       var openCt=spots.filter(function(s){return seatState(s)==="open";}).length;
+      var weekCt=upcoming.filter(function(x){return Math.round((x.eff-today)/86400000)<7&&!(x.e.schedule&&x.e.schedule.ongoing);}).length;
       var st=$("frameStats");st.innerHTML="";
       [[vendors.length,vendors.length===1?"shop open":"shops open"],
        [openCt,openCt===1?"booth open":"booths open"],
-       [pk.length,pk.length===1?"parking lot":"parking lots"]]
+       [weekCt,"events this week"]]
         .forEach(function(pair){
           if(!pair[0])return;
           var d2=document.createElement("div");d2.className="stat";
@@ -525,67 +711,10 @@
 
   $("share").addEventListener("click",function(){
     var url=location.href.split("#")[0].split("?")[0];
-    var txt="First Friday in Downtown Bakersfield — free live map of the open shops + galleries.";
-    if(navigator.share){navigator.share({title:"First Friday — Board Bored",text:txt,url:url}).catch(function(){});}
+    var txt="Board Bored — First Friday plus everything happening around Bakersfield this week. Free live map.";
+    if(navigator.share){navigator.share({title:"Board Bored — Bakersfield",text:txt,url:url}).catch(function(){});}
     else if(navigator.clipboard){navigator.clipboard.writeText(txt+" "+url).then(function(){toast("Link copied — paste it anywhere")});}
     else{toast(url);}
-  });
-})();
-</script>
-<script src="../lib/pwa.js"></script>
-<script>
-/* Install affordance — injected so it can't disturb the existing map DOM.
-   Only appears when the browser says the app is installable (Chrome/Edge/Android).
-   iOS installs via Share → Add to Home Screen; there is no programmatic prompt there. */
-// The public leaderboard — sponsors (Top Community Investors) + any other earn-board
-// (walk-earn, etc.) published to leaderboard.json. Names + points only; no PII ever.
-(function(){
-  var wrap=document.getElementById("lbWrap");
-  if(!wrap) return;
-  function esc(s){var d=document.createElement("div");d.textContent=String(s==null?"":s);return d.innerHTML;}
-  var LVL={New:"",Bronze:"🥉",Silver:"🥈",Gold:"🥇",Platinum:"💎"};
-  function board(k,bd){
-    if(!bd||!bd.rows) return "";
-    var head='<div class="lbhead">'+esc(bd.title)+'<span>'+esc(bd.subtitle||"")+'</span></div>';
-    if(!bd.rows.length){
-      if(k!=="sponsors") return "";           // only the sponsor board invites when empty
-      return '<div class="lbcard">'+head+
-        '<div class="lbempty">Be the first — <a href="https://board-bored-shop-intake.ai.studio">claim a founding spot</a>. '+
-        'The first 10 shops lock their rate for life.</div></div>';
-    }
-    var rows=bd.rows.map(function(r,i){
-      var medal=LVL[r.level]||"";
-      var star=r.founding?'<span class="lbstar">⭐ Founding</span>':"";
-      var streak=r.streak?'<span class="lbstreak">🔥'+esc(r.streak)+'</span>':"";
-      return '<div class="lbrow"><span class="lbrank">'+(i+1)+'</span>'+
-        '<span class="lbname">'+esc(r.name)+star+'</span>'+
-        '<span class="lbmeta">'+medal+' '+esc(r.level)+streak+'</span>'+
-        '<span class="lbpts">'+esc(r.points)+' pts</span></div>';
-    }).join("");
-    return '<div class="lbcard">'+head+rows+'</div>';
-  }
-  fetch("../data/leaderboard.json",{cache:"no-store"}).then(function(r){return r.json()}).then(function(d){
-    var bds=(d&&d.boards)||{};
-    var seen={}, html="";
-    ["sponsors","walkers"].forEach(function(k){ if(bds[k]){html+=board(k,bds[k]);seen[k]=1;} });
-    Object.keys(bds).forEach(function(k){ if(!seen[k]) html+=board(k,bds[k]); });
-    wrap.innerHTML=html;
-  }).catch(function(){});
-})();
-
-(function(){
-  if(!window.BB) return;
-  var b=document.createElement("button");
-  b.textContent="⬇ Install this map";
-  b.setAttribute("aria-label","Install Board Bored");
-  b.style.cssText="position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:9999;"+
-    "display:none;border:0;border-radius:999px;padding:11px 18px;font:600 14px -apple-system,Arial;"+
-    "background:#ca421a;color:#fff;box-shadow:0 4px 14px rgba(0,0,0,.25);cursor:pointer";
-  document.body.appendChild(b);
-  window.BB_onInstallable=function(){ b.style.display="block"; };
-  b.addEventListener("click",function(){
-    b.style.display="none";
-    window.BB.install();
   });
 })();
 </script>

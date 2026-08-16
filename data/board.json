@@ -10,7 +10,7 @@
     {
       "slug": "first-friday",
       "name": "First Friday Art Walk",
-      "date": "2026-08-07",
+      "date": "2026-09-04",
       "hours": "6:00 PM – 10:00 PM",
       "area": "Downtown Bakersfield Arts District",
       "blurb": "Art, coffee, vintage, music — the downtown shops stay open late. Walk in, say hi, keep it local.",
@@ -112,6 +112,10 @@
         {
           "date": "2026-07-03",
           "note": "The first First Friday Art Walk under Board Bored — 5 downtown businesses, one live map, zero apps."
+        },
+        {
+          "date": "2026-08-07",
+          "note": "August First Friday — downtown shops open late on the Eye Street walk."
         }
       ],
       "spots": [
@@ -1028,6 +1032,1290 @@
         "notes": "Bakersfield Vintage referred vendors who showed — first real-world proof the referral path works, and it came from the late-night anchor. Did the full run-through of the shops, walked and shopped. GAPS: fliers never got printed; no solid vendor-facing map existed on the night. Photos taken of 2 vendors to feature. Spot signups via Formspree: 0 ingested at time of record."
       },
       "status": "recorded"
+    }
+  ],
+  "city_events": [
+    {
+      "id": "ce_grouprun",
+      "name": "IBProFun × Bakersfield Marathon Group Run",
+      "emoji": "🏃",
+      "category": "Fitness",
+      "venue": "Jastro Park",
+      "address": "Jastro Park, Bakersfield, CA",
+      "lat": 35.374422,
+      "lng": -119.035152,
+      "when": "Sat 5:45–8:30 AM",
+      "cost": null,
+      "desc": "Community group run with 4-, 6- and 8-mile routes, raffles and race-discount codes.",
+      "link": null,
+      "schedule": {
+        "date": "2026-08-15"
+      },
+      "area": "citywide"
+    },
+    {
+      "id": "ce_fitspot",
+      "name": "Fit Spot Free Community Workout",
+      "emoji": "💪",
+      "category": "Fitness",
+      "venue": "Hart Memorial Park",
+      "address": "Hart Memorial Park, Bakersfield, CA",
+      "lat": 35.447619,
+      "lng": -118.911348,
+      "when": "Sat 6:00 AM",
+      "cost": "Free",
+      "desc": "Free outdoor community bootcamp in the park — all fitness levels.",
+      "link": null,
+      "schedule": {
+        "date": "2026-08-15"
+      },
+      "area": "citywide"
+    },
+    {
+      "id": "ce_writers",
+      "name": "Writers of Kern: Pen Names or Not",
+      "emoji": "✍️",
+      "category": "Literary",
+      "venue": "Hodel's Country Dining",
+      "address": "5917 Knudsen Dr, Bakersfield, CA 93308",
+      "lat": 35.3888,
+      "lng": -119.0507,
+      "when": "Sat 8:30 AM",
+      "cost": null,
+      "desc": "Writers of Kern morning session on why authors use pen names.",
+      "link": null,
+      "schedule": {
+        "date": "2026-08-15"
+      },
+      "area": "citywide"
+    },
+    {
+      "id": "ce_sensory",
+      "name": "Sensory Play at Baby Wobble",
+      "emoji": "🧸",
+      "category": "Family",
+      "venue": "Baby Wobble",
+      "address": "1200 California Ave, Bakersfield, CA 93304",
+      "lat": 35.368557,
+      "lng": -119.015437,
+      "when": "Sat 10 AM–3 PM",
+      "cost": null,
+      "desc": "Themed hands-on sensory play for little ones from Sol Mini Lab.",
+      "link": null,
+      "schedule": {
+        "date": "2026-08-15"
+      },
+      "area": "downtown"
+    },
+    {
+      "id": "ce_mercadito",
+      "name": "Endless Summer Mercadito",
+      "emoji": "🛍️",
+      "category": "Market",
+      "venue": "California Truck lot",
+      "address": "5800 Wible Rd, Bakersfield, CA 93313",
+      "lat": 35.303031,
+      "lng": -119.038856,
+      "when": "Sat 10 AM–2 PM",
+      "cost": null,
+      "desc": "Family- and pet-friendly market with food, drinks, boutiques and crafts.",
+      "link": null,
+      "schedule": {
+        "date": "2026-08-15"
+      },
+      "area": "citywide"
+    },
+    {
+      "id": "ce_skate",
+      "name": "Back-to-School Skate Special",
+      "emoji": "🛼",
+      "category": "Family",
+      "venue": "Rollerama",
+      "address": "1004 34th St, Bakersfield, CA 93301",
+      "lat": 35.390571,
+      "lng": -119.013414,
+      "when": "Sat 11 AM–1:30 PM",
+      "cost": "$3",
+      "desc": "Back-to-school roller skating with music; $3 admission includes skate rental.",
+      "link": null,
+      "schedule": {
+        "date": "2026-08-15"
+      },
+      "area": "downtown"
+    },
+    {
+      "id": "ce_stories",
+      "name": "Stories on the Sidewalk",
+      "emoji": "🎭",
+      "category": "Theater",
+      "venue": "Arts Council of Kern",
+      "address": "1020 18th St, Bakersfield, CA 93301",
+      "lat": 35.37535,
+      "lng": -119.013255,
+      "when": "Sat 11 AM–2 PM",
+      "cost": "$20 / $15 members",
+      "desc": "Immersive short performances bringing notable people and moments from Kern history to life.",
+      "link": "https://kernarts.org/stories-on-the-sidewalk/",
+      "schedule": {
+        "date": "2026-08-15"
+      },
+      "area": "downtown"
+    },
+    {
+      "id": "ce_clippings",
+      "name": "CLIPPINGS Exhibition",
+      "emoji": "🖼️",
+      "category": "Art",
+      "venue": "Arts Council of Kern",
+      "address": "1020 18th St, Bakersfield, CA 93301",
+      "lat": 35.37535,
+      "lng": -119.013255,
+      "when": "On view now",
+      "cost": null,
+      "desc": "160 years of The Bakersfield Californian told through historic front pages.",
+      "link": "https://kernarts.org/clippings/",
+      "schedule": {
+        "ongoing": true
+      },
+      "area": "downtown"
+    },
+    {
+      "id": "ce_jamfest",
+      "name": "Last Call for Summer Jam Fest",
+      "emoji": "🎸",
+      "category": "Music",
+      "venue": "Lengthwise Pub",
+      "address": "2900 Calloway Dr, Bakersfield, CA 93312",
+      "lat": 35.386218,
+      "lng": -119.109813,
+      "when": "Sat 11 AM–10 PM",
+      "cost": "Free (music)",
+      "desc": "Free all-ages summer festival with live music from 12:30 PM plus food and drink specials.",
+      "link": null,
+      "schedule": {
+        "date": "2026-08-15"
+      },
+      "area": "citywide"
+    },
+    {
+      "id": "ce_ballerina",
+      "name": "Ballerina Chicken Paint Class",
+      "emoji": "🎨",
+      "category": "Art",
+      "venue": "Corks & Strokes",
+      "address": "2623 F St, Bakersfield, CA 93301",
+      "lat": 35.383205,
+      "lng": -119.023581,
+      "when": "Sat 1–2:30 PM",
+      "cost": null,
+      "desc": "Guided painting class working the playful Ballerina Chicken design.",
+      "link": "https://tickets.corksandstrokes.com/events/corksstrokes/1315540",
+      "schedule": {
+        "date": "2026-08-15"
+      },
+      "area": "downtown"
+    },
+    {
+      "id": "ce_burritodnd",
+      "name": "Burrito Project: Dungeons & Dragons",
+      "emoji": "🐉",
+      "category": "Games",
+      "venue": "Bakersfield Burrito Project",
+      "address": "1314 Oswell St, Bakersfield, CA 93306",
+      "lat": 35.376245,
+      "lng": -118.950345,
+      "when": "Sat 1–5 PM",
+      "cost": null,
+      "desc": "Community D&D session starting at level 3 — new players welcome.",
+      "link": null,
+      "schedule": {
+        "date": "2026-08-15"
+      },
+      "area": "citywide"
+    },
+    {
+      "id": "ce_soulfood",
+      "name": "The Bakersfield Soul Food Fest",
+      "emoji": "🍗",
+      "category": "Food",
+      "venue": "The Bakersfield Soul Food Fest",
+      "address": "700 S P St, Bakersfield, CA 93307",
+      "lat": 35.348034,
+      "lng": -119.011761,
+      "when": "Sat 3–8 PM",
+      "cost": null,
+      "desc": "Soul food, live entertainment, shopping and local vendors.",
+      "link": "https://www.eventbrite.com/e/the-bakersfield-soul-food-fest-tickets-1985756208274",
+      "schedule": {
+        "date": "2026-08-15"
+      },
+      "area": "citywide"
+    },
+    {
+      "id": "ce_viewmarket",
+      "name": "The View Night Market",
+      "emoji": "🛍️",
+      "category": "Market",
+      "venue": "Ridgeview High School",
+      "address": "8501 Stine Rd, Bakersfield, CA 93313",
+      "lat": 35.27946,
+      "lng": -119.056769,
+      "when": "Sat 5:30–9:30 PM",
+      "cost": null,
+      "desc": "Evening community market — shopping, food and local vendors.",
+      "link": null,
+      "schedule": {
+        "date": "2026-08-15"
+      },
+      "area": "citywide"
+    },
+    {
+      "id": "ce_zoofari",
+      "name": "Ice Cream Zoofari",
+      "emoji": "🍦",
+      "category": "Family",
+      "venue": "CALM Zoo",
+      "address": "10500 Alfred Harrell Hwy, Bakersfield, CA 93306",
+      "lat": 35.431092,
+      "lng": -118.888854,
+      "when": "Sat 5–7:30 PM",
+      "cost": "$12+",
+      "desc": "Build-your-own root beer floats and unlimited frozen treats, an evening at the zoo.",
+      "link": "https://calmzoo.org/events/ice-cream-zoofari/",
+      "schedule": {
+        "date": "2026-08-15"
+      },
+      "area": "citywide"
+    },
+    {
+      "id": "ce_bluesbash",
+      "name": "Legends Blues Bash",
+      "emoji": "🎸",
+      "category": "Music",
+      "venue": "Legends Event Center",
+      "address": "7900 Downing Ave, Bakersfield, CA 93308",
+      "lat": 35.390615,
+      "lng": -119.09221,
+      "when": "Sat 6:30 PM (doors 5:30)",
+      "cost": "$28.52",
+      "desc": "Live blues with The Guy Martin Band and Tracy Peoples & The Tailgate Disciples.",
+      "link": "https://www.eventbrite.com/e/legends-blues-bash-tickets-1991604512710",
+      "schedule": {
+        "date": "2026-08-15"
+      },
+      "area": "citywide"
+    },
+    {
+      "id": "ce_forevermine",
+      "name": "Forever Mine Soul Show",
+      "emoji": "🎤",
+      "category": "Music",
+      "venue": "Jerry's Pizza & Pub",
+      "address": "1817 Chester Ave, Bakersfield, CA 93301",
+      "lat": 35.375446,
+      "lng": -119.018912,
+      "when": "Sat doors 6 PM",
+      "cost": "$9",
+      "desc": "All-ages soul show with Las Lagrimas, Stephanie Soul & Band, and TCB.",
+      "link": null,
+      "schedule": {
+        "date": "2026-08-15"
+      },
+      "area": "downtown"
+    },
+    {
+      "id": "ce_mug",
+      "name": "Build Your Own Mug Class",
+      "emoji": "🎨",
+      "category": "Art",
+      "venue": "Lollipots Ceramics at Otto's",
+      "address": "7401 White Ln, Bakersfield, CA 93309",
+      "lat": 35.31814,
+      "lng": -119.083618,
+      "when": "Sat 6 PM",
+      "cost": "$35",
+      "desc": "Sculpt, personalize and glaze your own ceramic mug.",
+      "link": "https://lollipotsceramics.com/service-page/8-15-26-6pm-build-your-own-mug-class",
+      "schedule": {
+        "date": "2026-08-15"
+      },
+      "area": "citywide"
+    },
+    {
+      "id": "ce_movieclub",
+      "name": "Bakersfield Movie Club",
+      "emoji": "🎬",
+      "category": "Film",
+      "venue": "Regal Edwards Bakersfield",
+      "address": "9000 Ming Ave, Bakersfield, CA 93311",
+      "lat": 35.3372,
+      "lng": -119.108,
+      "when": "Sat 6:25 PM",
+      "cost": null,
+      "desc": "Group screening followed by discussion at Applebee's — the club's first meetup.",
+      "link": null,
+      "schedule": {
+        "date": "2026-08-15"
+      },
+      "area": "citywide"
+    },
+    {
+      "id": "ce_dinnerdet",
+      "name": "The Dinner Detective: The Hollywood Hit",
+      "emoji": "🕵️",
+      "category": "Food",
+      "venue": "Hodel's Country Dining",
+      "address": "5917 Knudsen Dr, Bakersfield, CA 93308",
+      "lat": 35.3888,
+      "lng": -119.0507,
+      "when": "Sat 6–9 PM",
+      "cost": null,
+      "desc": "Interactive murder mystery with a hidden actor and a multi-course buffet.",
+      "link": "https://www.thedinnerdetective.com/bakersfield/murder-mystery-tickets-showtimes/",
+      "schedule": {
+        "date": "2026-08-15"
+      },
+      "area": "citywide"
+    },
+    {
+      "id": "ce_bluey",
+      "name": "Bluey at Drip House",
+      "emoji": "🐶",
+      "category": "Family",
+      "venue": "Drip House Coffee Co.",
+      "address": "Drip House Coffee Co., Bakersfield, CA",
+      "lat": 35.335,
+      "lng": -119.105,
+      "when": "Sat 7–8:30 PM",
+      "cost": "$12.51",
+      "desc": "Bluey-themed family experience out on the coffee-shop patio.",
+      "link": null,
+      "schedule": {
+        "date": "2026-08-15"
+      },
+      "area": "citywide"
+    },
+    {
+      "id": "ce_delia",
+      "name": "Chris D'Elia",
+      "emoji": "🎤",
+      "category": "Comedy",
+      "venue": "The Well Comedy Club",
+      "address": "The Well Comedy Club, Bakersfield, CA",
+      "lat": 35.3562,
+      "lng": -119.0421,
+      "when": "Sat 7 & 9:30 PM",
+      "cost": null,
+      "desc": "Stand-up from Chris D'Elia, two shows the same night (18+).",
+      "link": "https://thewellcomedyclub.com/events/141151",
+      "schedule": {
+        "date": "2026-08-15"
+      },
+      "area": "citywide"
+    },
+    {
+      "id": "ce_sunshine",
+      "name": "Hello Sunshine Paint Class",
+      "emoji": "🎨",
+      "category": "Art",
+      "venue": "Corks & Strokes",
+      "address": "2623 F St, Bakersfield, CA 93301",
+      "lat": 35.383205,
+      "lng": -119.023581,
+      "when": "Sat 7–9 PM",
+      "cost": null,
+      "desc": "Guided painting of a sunflower-and-gnome design.",
+      "link": "https://tickets.corksandstrokes.com/events/corksstrokes/2128302",
+      "schedule": {
+        "date": "2026-08-15"
+      },
+      "area": "downtown"
+    },
+    {
+      "id": "ce_fireflies",
+      "name": "Fireflies (stage play)",
+      "emoji": "🎭",
+      "category": "Theater",
+      "venue": "Bakersfield Community Theatre",
+      "address": "2400 S Chester Ave, Bakersfield, CA 93304",
+      "lat": 35.33334,
+      "lng": -119.014706,
+      "when": "Sat 7:30 PM · thru Sun",
+      "cost": "$22–27",
+      "desc": "Matthew Barber's play, presented by Bakersfield Community Theatre; runs through Sunday's 2 PM close.",
+      "link": "https://simpletix.com/e/fireflies-tickets-223894",
+      "schedule": {
+        "date": "2026-08-15"
+      },
+      "area": "citywide"
+    },
+    {
+      "id": "ce_perseids",
+      "name": "Stargazing Hike: Perseids Meteor Shower",
+      "emoji": "🔭",
+      "category": "Nature",
+      "venue": "Wind Wolves Preserve",
+      "address": "16019 Maricopa Hwy, Bakersfield, CA 93311",
+      "lat": 35.03,
+      "lng": -119.16,
+      "when": "Sat 7:30–9:30 PM",
+      "cost": null,
+      "desc": "Guided 1.2-mile night hike timed to the Perseid meteor shower; reservations required.",
+      "link": "https://secure.qgiv.com/for/windwolvespreserveevents/event/wwp-stargazing-hike-08-15-26",
+      "schedule": {
+        "date": "2026-08-15"
+      },
+      "area": "citywide"
+    },
+    {
+      "id": "ce_candipop",
+      "name": "Candipop 2000s Night",
+      "emoji": "🌃",
+      "category": "Nightlife",
+      "venue": "Uruapan Night Club",
+      "address": "Uruapan Night Club, Bakersfield, CA",
+      "lat": 35.372,
+      "lng": -119.021,
+      "when": "Sat 9 PM–2 AM",
+      "cost": null,
+      "desc": "2000s-themed nightlife party presented by Hollywood Nightlife.",
+      "link": "https://www.eventbrite.com/e/candipop-2000s-night-uruapan-in-bakersfield-saturday-august-15th-tickets-1996428072106",
+      "schedule": {
+        "date": "2026-08-15"
+      },
+      "area": "downtown"
+    },
+    {
+      "id": "ce_audiowalk",
+      "name": "Audiobook Walk at Lake Ming",
+      "emoji": "🎧",
+      "category": "Fitness",
+      "venue": "Lake Ming",
+      "address": "13375 Lake Ming Rd, Bakersfield, CA 93306",
+      "lat": 35.431477,
+      "lng": -118.868207,
+      "when": "Sun 6:15 AM",
+      "cost": null,
+      "desc": "Two-mile community walk around Lake Ming with a shared audiobook.",
+      "link": null,
+      "schedule": {
+        "date": "2026-08-16"
+      },
+      "area": "citywide"
+    },
+    {
+      "id": "ce_oldfriend",
+      "name": "Old Friend: Sunday Funday",
+      "emoji": "🎵",
+      "category": "Music",
+      "venue": "Jerry's Pizza & Pub",
+      "address": "1817 Chester Ave, Bakersfield, CA 93301",
+      "lat": 35.375446,
+      "lng": -119.018912,
+      "when": "Sun 11:30 AM–2:30 PM",
+      "cost": "Free",
+      "desc": "All-ages Sunday afternoon live music from Old Friend.",
+      "link": null,
+      "schedule": {
+        "date": "2026-08-16"
+      },
+      "area": "downtown"
+    },
+    {
+      "id": "ce_reptiles",
+      "name": "Reptiles Hands-On Experience",
+      "emoji": "🦎",
+      "category": "Family",
+      "venue": "Kern River Parkway Nature Center",
+      "address": "Kern River Parkway Nature Center, Bakersfield, CA",
+      "lat": 35.372,
+      "lng": -119.076,
+      "when": "Sun 2 PM",
+      "cost": null,
+      "desc": "Interactive reptile presentation with Doug Lemmons, the Snake Wrangler.",
+      "link": null,
+      "schedule": {
+        "date": "2026-08-16"
+      },
+      "area": "citywide"
+    },
+    {
+      "id": "ce_fanhalen",
+      "name": "Fan Halen at Temblor",
+      "emoji": "🎸",
+      "category": "Music",
+      "venue": "Temblor Brewing Co.",
+      "address": "3200 Buck Owens Blvd, Bakersfield, CA 93308",
+      "lat": 35.388851,
+      "lng": -119.042214,
+      "when": "Sun 7:30 PM",
+      "cost": null,
+      "desc": "Live set from Van Halen tribute band Fan Halen.",
+      "link": null,
+      "schedule": {
+        "date": "2026-08-16"
+      },
+      "area": "citywide"
+    },
+    {
+      "id": "ce_paintbestie",
+      "name": "Paint Your Bestie",
+      "emoji": "🎨",
+      "category": "Art",
+      "venue": "Jerry's Pizza & Pub",
+      "address": "1817 Chester Ave, Bakersfield, CA 93301",
+      "lat": 35.375446,
+      "lng": -119.018912,
+      "when": "Mon 6:30 PM",
+      "cost": "$10",
+      "desc": "Paint-your-best-friend night with two canvases, supplies and a photo booth; RSVP.",
+      "link": null,
+      "schedule": {
+        "date": "2026-08-17"
+      },
+      "area": "downtown"
+    },
+    {
+      "id": "ce_kidsbook",
+      "name": "Kids Book Joint Grand Opening",
+      "emoji": "📚",
+      "category": "Family",
+      "venue": "Kids Book Joint",
+      "address": "2210 Chester Ave, Bakersfield, CA 93301",
+      "lat": 35.379266,
+      "lng": -119.01869,
+      "when": "Tue 9 AM",
+      "cost": null,
+      "desc": "Grand opening and ribbon cutting with the Kern County Asian Chamber of Commerce.",
+      "link": null,
+      "schedule": {
+        "date": "2026-08-18"
+      },
+      "area": "downtown"
+    },
+    {
+      "id": "ce_plantbingo",
+      "name": "Plant Bingo",
+      "emoji": "🪴",
+      "category": "Games",
+      "venue": "Jerry's Pizza & Pub",
+      "address": "1817 Chester Ave, Bakersfield, CA 93301",
+      "lat": 35.375446,
+      "lng": -119.018912,
+      "when": "Tue 6 PM (doors 5)",
+      "cost": "$25",
+      "desc": "Plant-themed bingo with food, drinks and vendors; RSVP.",
+      "link": null,
+      "schedule": {
+        "date": "2026-08-18"
+      },
+      "area": "downtown"
+    },
+    {
+      "id": "ce_iphonephoto",
+      "name": "Take Better Photos on iPhone",
+      "emoji": "📱",
+      "category": "Workshop",
+      "venue": "Apple, Valley Plaza",
+      "address": "2701 Ming Ave, Bakersfield, CA 93304",
+      "lat": 35.337364,
+      "lng": -119.03571,
+      "when": "Wed 12–1 PM",
+      "cost": "Free",
+      "desc": "Apple in-store workshop on shooting sharper, better iPhone photos.",
+      "link": "https://www.apple.com/today/event/workshop-photos-on-iphone/7487569108301873152/",
+      "schedule": {
+        "date": "2026-08-19"
+      },
+      "area": "citywide"
+    },
+    {
+      "id": "ce_kidscrafty",
+      "name": "Kids Get Crafty",
+      "emoji": "🧸",
+      "category": "Family",
+      "venue": "Beale Memorial Library",
+      "address": "701 Truxtun Ave, Bakersfield, CA 93301",
+      "lat": 35.372711,
+      "lng": -119.010085,
+      "when": "Thursdays 4–5 PM",
+      "cost": null,
+      "desc": "A new kid-friendly art or craft project every week.",
+      "link": null,
+      "schedule": {
+        "weekday": 4
+      },
+      "area": "downtown"
+    },
+    {
+      "id": "ce_chess",
+      "name": "Chess Club",
+      "emoji": "♟️",
+      "category": "Games",
+      "venue": "Temblor Brewing Co.",
+      "address": "3200 Buck Owens Blvd, Bakersfield, CA 93308",
+      "lat": 35.388851,
+      "lng": -119.042214,
+      "when": "Thursdays 5 PM",
+      "cost": null,
+      "desc": "Weekly community chess — casual and competitive players both welcome.",
+      "link": null,
+      "schedule": {
+        "weekday": 4
+      },
+      "area": "citywide"
+    },
+    {
+      "id": "ce_cruise",
+      "name": "Cruise Night",
+      "emoji": "🚗",
+      "category": "Cars",
+      "venue": "Chuy's Baja Grill",
+      "address": "Chuy's Baja Grill, Bakersfield, CA",
+      "lat": 35.3548,
+      "lng": -119.0586,
+      "when": "Thursdays 6 PM",
+      "cost": null,
+      "desc": "Weekly car show and cruise night with DJs.",
+      "link": null,
+      "schedule": {
+        "weekday": 4
+      },
+      "area": "citywide"
+    },
+    {
+      "id": "ce_openmic",
+      "name": "Open Mic Night",
+      "emoji": "🎤",
+      "category": "Comedy",
+      "venue": "The Well Comedy Club",
+      "address": "The Well Comedy Club, Bakersfield, CA",
+      "lat": 35.3562,
+      "lng": -119.0421,
+      "when": "Thursdays 7 PM (signup 6)",
+      "cost": "Free",
+      "desc": "Free weekly comedy open mic — locals and visiting comics can sign up.",
+      "link": null,
+      "schedule": {
+        "weekday": 4
+      },
+      "area": "citywide"
+    },
+    {
+      "id": "ce_soulful",
+      "name": "Soulful Steps Line Dancing",
+      "emoji": "💃",
+      "category": "Dance",
+      "venue": "Pampas Village",
+      "address": "3740 Sillect Ave, Bakersfield, CA 93308",
+      "lat": 35.393132,
+      "lng": -119.035718,
+      "when": "Thursdays 6–7 PM",
+      "cost": "$15",
+      "desc": "18+ line-dancing class covering new, old and trending routines.",
+      "link": null,
+      "schedule": {
+        "weekday": 4
+      },
+      "area": "citywide"
+    },
+    {
+      "id": "ce_bluedoor",
+      "name": "The Blue Door Speakeasy",
+      "emoji": "🎵",
+      "category": "Music",
+      "venue": "nX Annex",
+      "address": "616 18th St, Bakersfield, CA 93301",
+      "lat": 35.375332,
+      "lng": -119.008732,
+      "when": "Thursdays 7 PM (signup 6:15)",
+      "cost": null,
+      "desc": "Weekly open mic for musicians and poets.",
+      "link": null,
+      "schedule": {
+        "weekday": 4
+      },
+      "area": "downtown"
+    },
+    {
+      "id": "ce_linedance_th",
+      "name": "Line Dancing at Barrel House",
+      "emoji": "💃",
+      "category": "Dance",
+      "venue": "BarrelHouse Bakersfield",
+      "address": "4200 Resnik Ct, Bakersfield, CA 93313",
+      "lat": 35.306,
+      "lng": -119.063,
+      "when": "Thursdays 6:30–9:30 PM",
+      "cost": "Free",
+      "desc": "Free all-ages line dancing with Line Dance Bako.",
+      "link": null,
+      "schedule": {
+        "weekday": 4
+      },
+      "area": "citywide"
+    },
+    {
+      "id": "ce_legacyrun",
+      "name": "Legacy Run Club",
+      "emoji": "🏃",
+      "category": "Fitness",
+      "venue": "lululemon Riverwalk",
+      "address": "9000 Ming Ave, Bakersfield, CA 93311",
+      "lat": 35.3372,
+      "lng": -119.1069,
+      "when": "Thursdays 7 PM",
+      "cost": null,
+      "desc": "Weekly 3-mile community run from lululemon Riverwalk.",
+      "link": null,
+      "schedule": {
+        "weekday": 4
+      },
+      "area": "citywide"
+    },
+    {
+      "id": "ce_mahjongg",
+      "name": "Sundale Mah Jongg Fridays",
+      "emoji": "🀄",
+      "category": "Games",
+      "venue": "Sundale Country Club",
+      "address": "6218 Sundale Ave, Bakersfield, CA 93309",
+      "lat": 35.340029,
+      "lng": -119.067153,
+      "when": "Fridays 12–4 PM",
+      "cost": null,
+      "desc": "Friday-afternoon Mah Jongg — newcomers and experienced players welcome.",
+      "link": null,
+      "schedule": {
+        "weekday": 5
+      },
+      "area": "citywide"
+    },
+    {
+      "id": "ce_writeworkshop",
+      "name": "Creative Writing Workshop",
+      "emoji": "✍️",
+      "category": "Literary",
+      "venue": "Beale Memorial Library",
+      "address": "701 Truxtun Ave, Bakersfield, CA 93301",
+      "lat": 35.372711,
+      "lng": -119.010085,
+      "when": "Fridays 4:30–5:30 PM",
+      "cost": null,
+      "desc": "Informal, idea-generating workshop for writers of any background.",
+      "link": null,
+      "schedule": {
+        "weekday": 5
+      },
+      "area": "downtown"
+    },
+    {
+      "id": "ce_formfridays",
+      "name": "Form Fridays",
+      "emoji": "🎨",
+      "category": "Art",
+      "venue": "Art with Heart",
+      "address": "2021 Chester Ave, Bakersfield, CA 93301",
+      "lat": 35.377625,
+      "lng": -119.018896,
+      "when": "Fridays 5:30–7 PM",
+      "cost": "$10",
+      "desc": "18+ drop-in art-making and hangout for young adults.",
+      "link": null,
+      "schedule": {
+        "weekday": 5
+      },
+      "area": "downtown"
+    },
+    {
+      "id": "ce_fnm",
+      "name": "Friday Night Magic",
+      "emoji": "🃏",
+      "category": "Games",
+      "venue": "Bakersfield Esports Center",
+      "address": "Bakersfield Esports Center, Bakersfield, CA",
+      "lat": 35.354,
+      "lng": -119.047,
+      "when": "Fridays 6:30 PM",
+      "cost": null,
+      "desc": "Weekly Magic: The Gathering meetup.",
+      "link": null,
+      "schedule": {
+        "weekday": 5
+      },
+      "area": "citywide"
+    },
+    {
+      "id": "ce_grangedance",
+      "name": "Friday Night Dancing at the Grange",
+      "emoji": "💃",
+      "category": "Dance",
+      "venue": "Fairfax Grange",
+      "address": "Fairfax Rd, Bakersfield, CA 93306",
+      "lat": 35.3735,
+      "lng": -118.943,
+      "when": "Fridays 7–9 PM",
+      "cost": "$10",
+      "desc": "Weekly community social dancing at Fairfax Grange.",
+      "link": null,
+      "schedule": {
+        "weekday": 5
+      },
+      "area": "citywide"
+    },
+    {
+      "id": "ce_fstmarket",
+      "name": "F Street Farmers Market",
+      "emoji": "🥕",
+      "category": "Market",
+      "venue": "In Your Wildest Dreams (lot)",
+      "address": "2819 F St, Bakersfield, CA 93301",
+      "lat": 35.385505,
+      "lng": -119.023895,
+      "when": "Saturdays 7:45 AM–12 PM",
+      "cost": null,
+      "desc": "Weekly Saturday farmers market in the downtown lot.",
+      "link": null,
+      "schedule": {
+        "weekday": 6
+      },
+      "area": "downtown"
+    },
+    {
+      "id": "ce_pasala_sat",
+      "name": "PASALA Pickup Soccer",
+      "emoji": "⚽",
+      "category": "Sports",
+      "venue": "Mondavi Park",
+      "address": "Mondavi Park, Bakersfield, CA",
+      "lat": 35.363172,
+      "lng": -119.104692,
+      "when": "Saturdays 8:30–10:45 AM",
+      "cost": "Free",
+      "desc": "Free community pickup soccer games.",
+      "link": null,
+      "schedule": {
+        "weekday": 6
+      },
+      "area": "citywide"
+    },
+    {
+      "id": "ce_riverlakesmkt",
+      "name": "Riverlakes Farmers Market",
+      "emoji": "🥕",
+      "category": "Market",
+      "venue": "Riverlakes Farmers Market",
+      "address": "Riverlakes Farmers Market, Bakersfield, CA",
+      "lat": 35.39361,
+      "lng": -119.095207,
+      "when": "Saturdays 9 AM–1 PM",
+      "cost": null,
+      "desc": "Weekly Saturday farmers market.",
+      "link": null,
+      "schedule": {
+        "weekday": 6
+      },
+      "area": "citywide"
+    },
+    {
+      "id": "ce_pilates",
+      "name": "Mat Pilates Moai",
+      "emoji": "🧘",
+      "category": "Fitness",
+      "venue": "nX Annex",
+      "address": "616 18th St, Bakersfield, CA 93301",
+      "lat": 35.375332,
+      "lng": -119.008732,
+      "when": "Saturdays 10–11 AM",
+      "cost": null,
+      "desc": "Weekly mat Pilates — strength, balance, flexibility and mindful movement.",
+      "link": null,
+      "schedule": {
+        "weekday": 6
+      },
+      "area": "downtown"
+    },
+    {
+      "id": "ce_bluegrass",
+      "name": "Bluegrass at Dagny's",
+      "emoji": "🎵",
+      "category": "Music",
+      "venue": "Dagny's Coffee Co.",
+      "address": "1600 20th St, Bakersfield, CA 93301",
+      "lat": 35.377343,
+      "lng": -119.020231,
+      "when": "Saturdays 2–4 PM",
+      "cost": null,
+      "desc": "Live bluegrass every Saturday afternoon.",
+      "link": null,
+      "schedule": {
+        "weekday": 6
+      },
+      "area": "downtown"
+    },
+    {
+      "id": "ce_hagginmkt",
+      "name": "Haggin Oaks Farmers Market",
+      "emoji": "🥕",
+      "category": "Market",
+      "venue": "Haggin Oaks Farmers Market",
+      "address": "8800 Ming Ave, Bakersfield, CA 93311",
+      "lat": 35.340656,
+      "lng": -119.100925,
+      "when": "Sundays 9 AM–2 PM",
+      "cost": null,
+      "desc": "Weekly farmers market — produce, food vendors and artisans.",
+      "link": null,
+      "schedule": {
+        "weekday": 0
+      },
+      "area": "citywide"
+    },
+    {
+      "id": "ce_carscoffee",
+      "name": "Cars & Coffee",
+      "emoji": "🚗",
+      "category": "Cars",
+      "venue": "The Coffee Bean & Tea Leaf",
+      "address": "4615 Buena Vista Rd, Bakersfield, CA 93311",
+      "lat": 35.313154,
+      "lng": -119.128144,
+      "when": "Sundays 7:30–10 AM",
+      "cost": null,
+      "desc": "Morning car meetup open to all makes and models.",
+      "link": null,
+      "schedule": {
+        "weekday": 0
+      },
+      "area": "citywide"
+    },
+    {
+      "id": "ce_ukulele",
+      "name": "Bakersfield Ukulele Club",
+      "emoji": "🎵",
+      "category": "Music",
+      "venue": "Beale Memorial Library",
+      "address": "701 Truxtun Ave, Bakersfield, CA 93301",
+      "lat": 35.372711,
+      "lng": -119.010085,
+      "when": "Mondays 5 PM",
+      "cost": null,
+      "desc": "Ages 12+ ukulele meetup — bring an instrument and jam.",
+      "link": null,
+      "schedule": {
+        "weekday": 1
+      },
+      "area": "downtown"
+    },
+    {
+      "id": "ce_motown",
+      "name": "Motown Mondays",
+      "emoji": "🎵",
+      "category": "Music",
+      "venue": "Jerry's Pizza & Pub",
+      "address": "1817 Chester Ave, Bakersfield, CA 93301",
+      "lat": 35.375446,
+      "lng": -119.018912,
+      "when": "Mondays 6–10 PM",
+      "cost": null,
+      "desc": "Weekly Motown night with Kev King.",
+      "link": null,
+      "schedule": {
+        "weekday": 1
+      },
+      "area": "downtown"
+    },
+    {
+      "id": "ce_pasala_mon",
+      "name": "PASALA Pickup Soccer",
+      "emoji": "⚽",
+      "category": "Sports",
+      "venue": "Bakersfield Sports Village",
+      "address": "Bakersfield Sports Village, Bakersfield, CA",
+      "lat": 35.27209,
+      "lng": -119.076938,
+      "when": "Mondays 6–9:40 PM",
+      "cost": "$8",
+      "desc": "Community pickup soccer at the Sports Village.",
+      "link": null,
+      "schedule": {
+        "weekday": 1
+      },
+      "area": "citywide"
+    },
+    {
+      "id": "ce_linedance_mon",
+      "name": "Line Dancing at Barrel House",
+      "emoji": "💃",
+      "category": "Dance",
+      "venue": "BarrelHouse Bakersfield",
+      "address": "4200 Resnik Ct, Bakersfield, CA 93313",
+      "lat": 35.306,
+      "lng": -119.063,
+      "when": "Mondays 6:30–8:30 PM",
+      "cost": "$10",
+      "desc": "All-ages line dancing with Line Dance Bako.",
+      "link": null,
+      "schedule": {
+        "weekday": 1
+      },
+      "area": "citywide"
+    },
+    {
+      "id": "ce_jazzorch",
+      "name": "Bakersfield Jazz Orchestra",
+      "emoji": "🎷",
+      "category": "Music",
+      "venue": "Crusader Brewing",
+      "address": "Crusader Brewing, Bakersfield, CA",
+      "lat": 35.363,
+      "lng": -119.043,
+      "when": "1st & 3rd Mondays 7–9 PM",
+      "cost": "Free",
+      "desc": "Free live big-band jazz with local musicians and vocalists.",
+      "link": "https://crusaderbrewing.com/events/bakersfield-jazz-orchestra-3/",
+      "schedule": {
+        "weekday": 1,
+        "weeks": [
+          1,
+          3
+        ]
+      },
+      "area": "citywide"
+    },
+    {
+      "id": "ce_bingobeer",
+      "name": "Bingo & Beer",
+      "emoji": "🎲",
+      "category": "Games",
+      "venue": "Temblor Brewing Co.",
+      "address": "3200 Buck Owens Blvd, Bakersfield, CA 93308",
+      "lat": 35.388851,
+      "lng": -119.042214,
+      "when": "Mondays 7 PM",
+      "cost": null,
+      "desc": "Weekly bingo night at Temblor.",
+      "link": null,
+      "schedule": {
+        "weekday": 1
+      },
+      "area": "citywide"
+    },
+    {
+      "id": "ce_dnd",
+      "name": "Dungeons & Dragons Meetup",
+      "emoji": "🐉",
+      "category": "Games",
+      "venue": "Bakersfield Esports Center",
+      "address": "Bakersfield Esports Center, Bakersfield, CA",
+      "lat": 35.354,
+      "lng": -119.047,
+      "when": "Mondays 7 PM",
+      "cost": null,
+      "desc": "Weekly community Dungeons & Dragons.",
+      "link": null,
+      "schedule": {
+        "weekday": 1
+      },
+      "area": "citywide"
+    },
+    {
+      "id": "ce_jazzwork",
+      "name": "Bakersfield Jazz Workshop",
+      "emoji": "🎷",
+      "category": "Music",
+      "venue": "Centro Cali Brewing",
+      "address": "716 19th St, Bakersfield, CA 93301",
+      "lat": 35.376275,
+      "lng": -119.009585,
+      "when": "Tuesdays 6:30–9:30 PM",
+      "cost": null,
+      "desc": "Weekly community jazz workshop.",
+      "link": null,
+      "schedule": {
+        "weekday": 2
+      },
+      "area": "downtown"
+    },
+    {
+      "id": "ce_trivia",
+      "name": "Pub Trivia",
+      "emoji": "🧠",
+      "category": "Games",
+      "venue": "Temblor Brewing Co.",
+      "address": "3200 Buck Owens Blvd, Bakersfield, CA 93308",
+      "lat": 35.388851,
+      "lng": -119.042214,
+      "when": "Tuesdays 7 PM",
+      "cost": null,
+      "desc": "Weekly trivia night.",
+      "link": null,
+      "schedule": {
+        "weekday": 2
+      },
+      "area": "citywide"
+    },
+    {
+      "id": "ce_gamenight",
+      "name": "Family Game Night",
+      "emoji": "🎲",
+      "category": "Family",
+      "venue": "Temblor Brewing Co.",
+      "address": "3200 Buck Owens Blvd, Bakersfield, CA 93308",
+      "lat": 35.388851,
+      "lng": -119.042214,
+      "when": "Wednesdays 4 PM",
+      "cost": null,
+      "desc": "Weekly family-friendly game night.",
+      "link": null,
+      "schedule": {
+        "weekday": 3
+      },
+      "area": "citywide"
+    },
+    {
+      "id": "ce_cornhole",
+      "name": "Cornhole Tournament",
+      "emoji": "🌽",
+      "category": "Sports",
+      "venue": "Temblor Brewing Co.",
+      "address": "3200 Buck Owens Blvd, Bakersfield, CA 93308",
+      "lat": 35.388851,
+      "lng": -119.042214,
+      "when": "Wednesdays 5:30 PM",
+      "cost": null,
+      "desc": "Weekly cornhole tournament.",
+      "link": null,
+      "schedule": {
+        "weekday": 3
+      },
+      "area": "citywide"
+    },
+    {
+      "id": "ce_western",
+      "name": "Western Wednesdays",
+      "emoji": "🤠",
+      "category": "Dance",
+      "venue": "Fairfax Grange",
+      "address": "Fairfax Rd, Bakersfield, CA 93306",
+      "lat": 35.3735,
+      "lng": -118.943,
+      "when": "Wednesdays 6 PM (doors 5:40)",
+      "cost": null,
+      "desc": "Weekly Western two-step lessons — basics, etiquette and drills.",
+      "link": null,
+      "schedule": {
+        "weekday": 3
+      },
+      "area": "citywide"
+    },
+    {
+      "id": "ce_barrelbingo",
+      "name": "Bingo Night at BarrelHouse",
+      "emoji": "🎲",
+      "category": "Games",
+      "venue": "BarrelHouse Bakersfield",
+      "address": "4200 Resnik Ct, Bakersfield, CA 93313",
+      "lat": 35.306,
+      "lng": -119.063,
+      "when": "Wednesdays 6 PM",
+      "cost": "Free",
+      "desc": "Free weekly bingo night.",
+      "link": null,
+      "schedule": {
+        "weekday": 3
+      },
+      "area": "citywide"
+    },
+    {
+      "id": "ce_mixxedfit",
+      "name": "MixxedFit Dance Fitness",
+      "emoji": "💪",
+      "category": "Fitness",
+      "venue": "My Dance & Fitness Studio",
+      "address": "4001 Union Ave, Bakersfield, CA 93305",
+      "lat": 35.395688,
+      "lng": -119.002965,
+      "when": "Wednesdays 7–8 PM",
+      "cost": "$7",
+      "desc": "High-energy weekly dance-fitness class.",
+      "link": null,
+      "schedule": {
+        "weekday": 3
+      },
+      "area": "citywide"
+    },
+    {
+      "id": "ce_emokaraoke",
+      "name": "Emo Karaoke",
+      "emoji": "🎤",
+      "category": "Nightlife",
+      "venue": "Jerry's Pizza & Pub",
+      "address": "1817 Chester Ave, Bakersfield, CA 93301",
+      "lat": 35.375446,
+      "lng": -119.018912,
+      "when": "Wednesdays 7 PM–midnight",
+      "cost": null,
+      "desc": "Weekly emo karaoke night.",
+      "link": null,
+      "schedule": {
+        "weekday": 3
+      },
+      "area": "downtown"
+    },
+    {
+      "id": "ce_pasala_wed",
+      "name": "PASALA Pickup Soccer",
+      "emoji": "⚽",
+      "category": "Sports",
+      "venue": "Saunders Park",
+      "address": "Saunders Park, Bakersfield, CA",
+      "lat": 35.3627,
+      "lng": -119.041169,
+      "when": "Wednesdays 7:30–9:30 PM",
+      "cost": "Free",
+      "desc": "Free community pickup soccer games.",
+      "link": null,
+      "schedule": {
+        "weekday": 3
+      },
+      "area": "citywide"
+    },
+    {
+      "id": "ce_roosterbingo",
+      "name": "Bingo + Live Music (Vince Galindo)",
+      "emoji": "🎵",
+      "category": "Music",
+      "venue": "Rooster's Honky Tonk",
+      "address": "Rooster's Honky Tonk, Bakersfield, CA",
+      "lat": 35.354,
+      "lng": -119.047,
+      "when": "Wednesdays 8 PM",
+      "cost": null,
+      "desc": "Weekly bingo paired with live music.",
+      "link": null,
+      "schedule": {
+        "weekday": 3
+      },
+      "area": "citywide"
+    },
+    {
+      "id": "ce_tikiclub",
+      "name": "Tiki-Ko Mug Club",
+      "emoji": "🍹",
+      "category": "Nightlife",
+      "venue": "Tiki-Ko",
+      "address": "1417 18th St, Bakersfield, CA 93301",
+      "lat": 35.375201,
+      "lng": -119.017897,
+      "when": "Wednesdays",
+      "cost": null,
+      "desc": "Bring your favorite tiki mug for drink discounts.",
+      "link": null,
+      "schedule": {
+        "weekday": 3
+      },
+      "area": "downtown"
     }
   ]
 }

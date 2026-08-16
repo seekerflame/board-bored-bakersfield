@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Submit an event — Board Bored</title>
+<meta name="description" content="Add your Bakersfield event to the free Board Bored map — free, no account, no fee.">
+<meta property="og:title" content="Submit your event — Board Bored Bakersfield">
+<meta property="og:description" content="Get your Bakersfield event on the free local map. No account, no fee — takes a minute.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://seekerflame.github.io/board-bored-bakersfield/first-friday/submit-event.html">
+<meta property="og:image" content="https://seekerflame.github.io/board-bored-bakersfield/first-friday/share.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,600&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#141116;--pap:#faf7f2;--card:#fffdfa;--acc:#ca421a;--acc2:#167f68;--acc3:#c98a2c;--line:#948d88;--mut:#777069;
+    --display:"Fraunces",ui-serif,Georgia,serif;--body:"Figtree",-apple-system,"Helvetica Neue",Arial,sans-serif;
+    --ease:cubic-bezier(.16,1,.3,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  ::selection{background:var(--acc3);color:var(--ink)}
+  body{font-family:var(--body);background:var(--pap);color:var(--ink);min-height:100dvh;
+    background-image:radial-gradient(circle at 1px 1px,#14111609 1px,transparent 0);background-size:22px 22px;
+    -webkit-font-smoothing:antialiased;padding:20px 16px 48px;line-height:1.5}
+  .wrap{width:100%;max-width:540px;margin:0 auto}
+  header{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:12px}
+  .mark{font-family:var(--display);font-size:13px;letter-spacing:2.5px;font-weight:700;font-style:italic;
+    text-transform:uppercase;color:var(--acc);text-decoration:none}
+  .back{font-size:13px;font-weight:700;color:var(--acc2);text-decoration:none;white-space:nowrap}
+  .back:hover{text-decoration:underline}
+  h1{font-family:var(--display);font-weight:600;font-size:clamp(28px,7.5vw,38px);line-height:1.04;letter-spacing:-.3px;margin-bottom:6px}
+  .tag{color:var(--mut);font-size:15px;line-height:1.5;margin-bottom:16px;max-width:42ch}
+  .notice{background:#fff8ee;border:1.5px solid #f0dcb8;border-radius:14px;padding:12px 14px;font-size:13.5px;
+    line-height:1.55;margin-bottom:18px;color:#4a443e}
+  .notice b{color:var(--ink)}
+  form{background:var(--card);border:1.5px solid #14111617;border-radius:18px;padding:18px}
+  label{display:block;font-size:11px;font-weight:800;color:var(--mut);text-transform:uppercase;letter-spacing:.5px;margin:14px 0 5px}
+  label:first-of-type{margin-top:0}
+  .req{color:var(--acc)}
+  input,textarea,select{width:100%;font:inherit;font-size:16px;padding:12px;border:1.5px solid #14111726;
+    border-radius:11px;background:#fffdfa;color:var(--ink)}
+  input:focus,textarea:focus,select:focus{outline:2.5px solid var(--acc3);outline-offset:1px;border-color:var(--acc3)}
+  textarea{min-height:64px;resize:vertical}
+  .row{display:flex;gap:10px}.row>div{flex:1}
+  .seg{display:flex;gap:6px;margin-top:5px}
+  .seg button{flex:1;appearance:none;font:inherit;font-weight:700;font-size:13.5px;border:1.5px solid #14111726;
+    background:#fffdfa;color:var(--ink);border-radius:11px;padding:11px 6px;cursor:pointer;transition:all .13s}
+  .seg button.on{background:var(--ink);color:#fffaf5;border-color:var(--ink)}
+  .when-one,.when-week{margin-top:0}
+  .btn{appearance:none;border:0;cursor:pointer;font:inherit;font-weight:700;font-size:16px;border-radius:13px;
+    padding:15px;width:100%;margin-top:18px;color:#fffaf5;background:var(--ink);transition:transform .15s var(--ease),background .15s}
+  .btn:hover{background:#28222c}.btn:active{transform:scale(.985)}.btn:disabled{opacity:.6;cursor:default}
+  .hint{font-size:12.5px;color:var(--mut);margin-top:9px;line-height:1.5}
+  .status{font-size:14px;font-weight:700;margin-top:10px;min-height:18px}
+  .status.err{color:#b3261e}.status.ok{color:var(--acc2)}
+  .success{display:none;text-align:center;padding:34px 12px}
+  .success .big{font-size:46px;margin-bottom:10px}
+  .success h2{font-family:var(--display);font-weight:600;font-size:24px;margin-bottom:8px}
+  .success p{color:var(--mut);font-size:14.5px;line-height:1.55;max-width:34ch;margin:0 auto 18px}
+  .success .row2{display:flex;gap:10px;max-width:360px;margin:0 auto}
+  .success .row2 a{flex:1;text-align:center;text-decoration:none;font-weight:700;font-size:14px;border-radius:12px;padding:13px;
+    border:1.5px solid var(--ink);color:var(--ink)}
+  .success .row2 a.solid{background:var(--ink);color:#fffaf5;border-color:var(--ink)}
+  footer{margin-top:24px;text-align:center;font-family:var(--display);font-style:italic;font-size:13px;color:var(--mut);line-height:1.8}
+  footer a{color:var(--acc2);font-weight:600;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a class="mark" href="./">● Board Bored</a>
+    <a class="back" href="./">← Back to the map</a>
+  </header>
+  <h1>Put your event on the map</h1>
+  <p class="tag">Free. No account, no fee. We add confirmed events to the live Bakersfield board — usually same day.</p>
+  <div class="notice">📅 This is for <b>anything happening around Bakersfield</b> — a show, market, class, meetup, pop-up, fundraiser. It lands on the same map as First Friday, so people find you when they're looking for something to do.</div>
+
+  <form id="form">
+    <label for="evName">Event name <span class="req">*</span></label>
+    <input id="evName" required placeholder="Last Call Summer Jam Fest">
+
+    <label for="evCat">Category</label>
+    <select id="evCat">
+      <option>Music</option><option>Market</option><option>Art</option><option>Theater</option>
+      <option>Comedy</option><option>Family</option><option>Food</option><option>Fitness</option>
+      <option>Dance</option><option>Games</option><option>Nightlife</option><option>Film</option>
+      <option>Cars</option><option>Nature</option><option>Sports</option><option>Workshop</option>
+      <option>Literary</option><option>Other</option>
+    </select>
+
+    <label>When <span class="req">*</span></label>
+    <div class="seg" id="whenSeg">
+      <button type="button" id="segOne" class="on">One day</button>
+      <button type="button" id="segWeek">Repeats weekly</button>
+    </div>
+    <div class="when-one" id="whenOne">
+      <label for="evDate">Date <span class="req">*</span></label>
+      <input id="evDate" type="date">
+    </div>
+    <div class="when-week" id="whenWeek" style="display:none">
+      <label for="evWeekday">Which day, every week? <span class="req">*</span></label>
+      <select id="evWeekday">
+        <option value="">Pick a day…</option>
+        <option value="1">Every Monday</option><option value="2">Every Tuesday</option>
+        <option value="3">Every Wednesday</option><option value="4">Every Thursday</option>
+        <option value="5">Every Friday</option><option value="6">Every Saturday</option>
+        <option value="0">Every Sunday</option>
+      </select>
+    </div>
+
+    <div class="row">
+      <div><label for="evStart">Start time</label><input id="evStart" type="time"></div>
+      <div><label for="evEnd">End time</label><input id="evEnd" type="time"></div>
+    </div>
+
+    <label for="evVenue">Venue name <span class="req">*</span></label>
+    <input id="evVenue" required placeholder="Lengthwise Pub">
+    <label for="evAddr">Address <span class="req">*</span></label>
+    <input id="evAddr" required placeholder="2900 Calloway Dr, Bakersfield, CA">
+    <div class="hint" style="margin-top:5px">We use the address to drop your pin + build the “Directions” button.</div>
+
+    <label for="evCost">Cost</label>
+    <input id="evCost" placeholder="Free · $10 · $22–27">
+
+    <label for="evDesc">One-line description <span class="req">*</span></label>
+    <textarea id="evDesc" required placeholder="Free all-ages summer festival with live music from 12:30 PM."></textarea>
+
+    <label for="evLink">Tickets / info link</label>
+    <input id="evLink" type="url" placeholder="https://...">
+    <label for="evIg">Instagram (optional)</label>
+    <input id="evIg" placeholder="@handle">
+
+    <label for="evContact">Your name + contact <span class="req">*</span></label>
+    <input id="evContact" required placeholder="Name · phone or email (not shown publicly)">
+
+    <button class="btn" type="submit">Send it in →</button>
+    <div class="hint">Confirmed events go on the live map, usually same day. We may text/email to confirm details.</div>
+    <div class="status" id="status" role="status" aria-live="polite"></div>
+  </form>
+
+  <div class="success" id="success">
+    <div class="big">🎉</div>
+    <h2>Got it — thank you!</h2>
+    <p>We'll review it and add it to the live Bakersfield map, usually same day.</p>
+    <div class="row2">
+      <a class="solid" href="./">See the map</a>
+      <a href="submit-event.html">Add another</a>
+    </div>
+  </div>
+
+  <footer>
+    © 2026 Board Bored · made in Bakersfield<br>
+    <a href="./">← Back to the map</a> · <a id="mailFoot" href="#">boardquestionmark@gmail.com</a>
+  </footer>
+</div>
+
+<script>
+(function(){
+  var $=function(id){return document.getElementById(id)};
+  var FORMSPREE_ENDPOINT="https://formspree.io/f/mdaqpjkb";
+  var CONTACT_EMAIL="boardquestionmark@gmail.com";
+  $("mailFoot").href="mailto:"+CONTACT_EMAIL;$("mailFoot").textContent=CONTACT_EMAIL;
+
+  // when segmented control
+  var mode="one";
+  function setMode(m){
+    mode=m;
+    $("segOne").classList.toggle("on",m==="one");
+    $("segWeek").classList.toggle("on",m==="week");
+    $("whenOne").style.display=m==="one"?"block":"none";
+    $("whenWeek").style.display=m==="week"?"block":"none";
+  }
+  $("segOne").onclick=function(){setMode("one");};
+  $("segWeek").onclick=function(){setMode("week");};
+
+  var WD=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+  function fmtTime(t){ if(!t)return""; var p=t.split(":"),h=+p[0],ap=h>=12?"pm":"am"; h=h%12; if(h===0)h=12;
+    return h+(p[1]!=="00"?":"+p[1]:"")+ap; }
+
+  function showSuccess(){ $("form").style.display="none"; $("success").style.display="block";
+    window.scrollTo({top:0,behavior:"smooth"}); }
+
+  function mailFallback(subject,lines){
+    var body=lines.map(function(l){return l[0]+": "+(l[1]||"—");}).join("\n");
+    location.href="mailto:"+CONTACT_EMAIL+"?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(body);
+  }
+
+  $("form").addEventListener("submit",function(e){
+    e.preventDefault();
+    var st=$("status");st.className="status";st.textContent="";
+    // when
+    var whenStr,whenPayload;
+    if(mode==="one"){
+      if(!$("evDate").value){st.className="status err";st.textContent="Pick the event date.";return;}
+      whenPayload="date "+$("evDate").value;
+      whenStr=$("evDate").value;
+    } else {
+      if(!$("evWeekday").value){st.className="status err";st.textContent="Pick which day it repeats.";return;}
+      whenPayload="every "+WD[+$("evWeekday").value];
+      whenStr=whenPayload;
+    }
+    var t=[fmtTime($("evStart").value),fmtTime($("evEnd").value)].filter(Boolean).join("–");
+    var payload={
+      _subject:"Event submission — Board Bored",
+      type:"event",
+      name:$("evName").value.trim(),
+      category:$("evCat").value,
+      when:whenPayload+(t?" · "+t:""),
+      venue:$("evVenue").value.trim(),
+      address:$("evAddr").value.trim(),
+      cost:$("evCost").value.trim(),
+      description:$("evDesc").value.trim(),
+      link:$("evLink").value.trim(),
+      instagram:$("evIg").value.trim(),
+      contact:$("evContact").value.trim()
+    };
+    if(!payload.name||!payload.venue||!payload.address||!payload.description||!payload.contact){
+      st.className="status err";st.textContent="Please fill in the required fields (marked *).";return;}
+    var btn=$("form").querySelector(".btn");btn.disabled=true;st.textContent="Sending…";
+    fetch(FORMSPREE_ENDPOINT,{method:"POST",headers:{"Accept":"application/json","Content-Type":"application/json"},
+      body:JSON.stringify(payload)})
+      .then(function(r){ if(r.ok){showSuccess();}
+        else{st.className="status err";st.textContent="Couldn't send — try again, or email "+CONTACT_EMAIL+".";btn.disabled=false;} })
+      .catch(function(){ // network/endpoint down → fall back to a pre-filled email so the submission still lands
+        mailFallback(payload._subject,[["Event",payload.name],["Category",payload.category],["When",payload.when],
+          ["Venue",payload.venue],["Address",payload.address],["Cost",payload.cost],
+          ["Description",payload.description],["Link",payload.link],["Instagram",payload.instagram],
+          ["Contact",payload.contact]]);
+        showSuccess();
+      });
+  });
+})();
+</script>
+</body>
+</html>
