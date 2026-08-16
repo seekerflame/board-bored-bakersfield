@@ -210,6 +210,7 @@
     <div class="secsub">Real events happening today and the days ahead — all of Bako. Tap one for tickets or directions. <a href="calendar.html" style="color:var(--acc2);font-weight:700;text-decoration:none;white-space:nowrap">📆 See the calendar →</a></div>
     <div class="xlink" id="ffTeaser" style="display:none"></div>
     <div class="list" style="padding-top:12px">
+      <div class="chips" id="winChips"></div>
       <div class="chips" id="chips"></div>
       <div class="count" id="evCount"></div>
       <div id="events"></div>
@@ -401,11 +402,23 @@
       return "<b>"+(e.emoji||"📍")+" "+e.name+"</b><br>"+e.when+"<br><span style='color:#777069'>"+e.venue+"</span>"+
              "<div class='pop-links'>"+l+"</div>";
     }
-    function paint(cat){
+    var curCat=null, curWin="all";
+    function sameDay(a,b){return a&&b&&a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate();}
+    var _wd=today.getDay(), satD=null, sunD=null;
+    if(_wd===0){ sunD=new Date(today); } else { satD=new Date(today); satD.setDate(today.getDate()+(6-_wd)); sunD=new Date(satD); sunD.setDate(satD.getDate()+1); }
+    function inWin(x){
+      if(curWin==="all")return true;
+      var e=x.e,eff=x.eff;
+      if(curWin==="tonight")return sameDay(eff,today)&&(!e.start||e.start>="16:00"||(e.end&&e.end<e.start));
+      if(curWin==="weekend")return sameDay(eff,satD)||sameDay(eff,sunD);
+      return true;
+    }
+    function paint(){
       eventLayer.clearLayers();
       var box=$("events");box.innerHTML="";
-      var list=upcoming.filter(function(x){return !cat||x.e.category===cat;});
-      $("evCount").textContent=list.length+" event"+(list.length===1?"":"s")+(cat?" · "+cat:" this week & ahead");
+      var list=upcoming.filter(function(x){return inWin(x)&&(!curCat||x.e.category===curCat);});
+      var wl=curWin==="tonight"?" tonight":curWin==="weekend"?" this weekend":(curCat?" · "+curCat:" this week & ahead");
+      $("evCount").textContent=list.length+" event"+(list.length===1?"":"s")+wl;
       var lastLabel=null;
       list.forEach(function(x){
         var e=x.e, lbl=dayLabel(x.eff,e);
@@ -437,20 +450,35 @@
           markers["e:"+e.id]=L.marker([e.lat,e.lng],{icon:icon,zIndexOffset:500}).addTo(eventLayer).bindPopup(eventPopup(e));
         }
       });
-      if(!list.length){box.innerHTML='<div class="notice" style="padding:6px 2px">No events in this category right now — tap “All” to see everything.</div>';}
+      if(!list.length){box.innerHTML='<div class="notice" style="padding:6px 2px">Nothing in this filter right now — tap "All".</div>';}
     }
+    var winBox=$("winChips");
+    function mkWin(label,val){
+      var c2=document.createElement("button");c2.type="button";c2.className="chip";c2.textContent=label;
+      c2.addEventListener("click",function(){
+        Array.prototype.forEach.call(winBox.children,function(n){n.classList.remove("on")});
+        c2.classList.add("on"); curWin=val; paint();
+      });
+      return c2;
+    }
+    winBox.appendChild(mkWin("🌙 Tonight","tonight"));
+    winBox.appendChild(mkWin("🎉 This weekend","weekend"));
+    winBox.appendChild(mkWin("All","all"));
     var chipBox=$("chips");
     function mkChip(label,val){
       var c2=document.createElement("button");c2.type="button";c2.className="chip";c2.textContent=label;
       c2.addEventListener("click",function(){
         Array.prototype.forEach.call(chipBox.children,function(n){n.classList.remove("on")});
-        c2.classList.add("on"); paint(val);
+        c2.classList.add("on"); curCat=val; paint();
       });
       return c2;
     }
     if(cats.length){ chipBox.appendChild(mkChip("All",null)); cats.forEach(function(cat){chipBox.appendChild(mkChip(cat,cat));}); }
     chipBox.firstChild&&chipBox.firstChild.classList.add("on");
-    paint(null);
+    var wantWin=(new URLSearchParams(location.search).get("when")||"").toLowerCase();
+    if(wantWin==="tonight"||wantWin==="weekend")curWin=wantWin;
+    Array.prototype.forEach.call(winBox.children,function(n){var t=n.textContent;n.classList.toggle("on",(t.indexOf("Tonight")>=0&&curWin==="tonight")||(t.indexOf("weekend")>=0&&curWin==="weekend")||(t==="All"&&curWin==="all"));});
+    paint();
 
     // First Friday teaser in the "now" container
     if(evd&&evd>=today){

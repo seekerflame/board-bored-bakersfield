@@ -94,7 +94,9 @@
   <div class="sub">Every event with real dates + times. Tap a day to see what's on — add any one straight to your Google Calendar.</div>
 
   <div class="toolbar">
-    <a class="gcal" id="dlAll" download="board-bored-bakersfield.ics" href="#">📥 Add all to my calendar (.ics)</a>
+    <a href="#" id="calTonight">🌙 Tonight</a>
+    <a href="#" id="calWeekend">🎉 This weekend</a>
+    <a class="gcal" id="dlAll" download="board-bored-bakersfield.ics" href="#">📥 Add all (.ics)</a>
     <a href="./">🗺️ Live map</a>
   </div>
 
@@ -249,6 +251,11 @@
     if(guard<60){var pv2=ym(pick.getFullYear(),pick.getMonth());
       if(pv2>=MINYM&&pv2<=MAXYM){curY=pick.getFullYear();curM=pick.getMonth();}
       selectDay(pick);}
+
+    var _wd=today.getDay(),satD=null,sunD=null;
+    if(_wd===0){sunD=new Date(today);}else{satD=new Date(today);satD.setDate(today.getDate()+(6-_wd));sunD=new Date(satD);sunD.setDate(satD.getDate()+1);}
+    $("calTonight").addEventListener("click",function(ev){ev.preventDefault();curY=today.getFullYear();curM=today.getMonth();selKey=null;selectDay(today);});
+    $("calWeekend").addEventListener("click",function(ev){ev.preventDefault();var t=satD||sunD;curY=t.getFullYear();curM=t.getMonth();selKey=null;selectDay(t);});
   }).catch(function(){$("months").innerHTML='<div class="empty">Couldn\'t load the calendar.</div>';});
 })();
 </script>
