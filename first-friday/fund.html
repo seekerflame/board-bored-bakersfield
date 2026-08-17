@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Where the money goes — Board Bored First Friday</title>
+<meta property="og:title" content="Where the money goes — Board Bored">
+<meta property="og:description" content="What it costs to close the street for First Friday, who's chipping in, and where every dollar goes. Public, to the cent.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://seekerflame.github.io/board-bored-bakersfield/first-friday/fund.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500;1,9..144,600;1,9..144,700&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#141116;--pap:#faf7f2;--card:#fffdfa;--acc:#ca421a;--acc2:#167f68;--acc3:#c98a2c;--line:#948d88;--mut:#777069;
+    --display:"Fraunces",ui-serif,Georgia,serif;
+    --body:"Figtree",-apple-system,"Helvetica Neue",Arial,sans-serif;
+    --ease:cubic-bezier(.16,1,.3,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  ::selection{background:var(--acc3);color:var(--ink)}
+  body{font-family:var(--body);background:var(--pap);color:var(--ink);
+    background-image:radial-gradient(circle at 1px 1px,#14111609 1px,transparent 0);background-size:22px 22px;
+    -webkit-font-smoothing:antialiased}
+  .wrap{max-width:600px;margin:0 auto;padding:0 18px}
+  header{padding:18px 18px 6px;display:flex;align-items:baseline;justify-content:space-between;gap:10px;max-width:600px;margin:0 auto}
+  .mark{font-family:var(--display);font-size:13px;letter-spacing:2.5px;font-weight:700;font-style:italic;
+    text-transform:uppercase;color:var(--acc);text-decoration:none}
+  .badge{font-size:11.5px;font-weight:800;letter-spacing:.4px;padding:6px 12px;border-radius:999px;
+    background:var(--acc2);color:#fffaf5;white-space:nowrap;box-shadow:0 2px 6px #167f683d}
+
+  .hero{padding:22px 0 6px}
+  .hero h1{font-family:var(--display);font-weight:600;font-size:34px;line-height:1.05;letter-spacing:-.5px}
+  .hero p{font-size:15.5px;color:var(--mut);margin-top:10px;line-height:1.5}
+  .hero p b{color:var(--ink)}
+
+  .raised{background:var(--card);border:1.5px solid #14111617;border-radius:16px;padding:20px;margin:18px 0;
+    box-shadow:0 4px 16px -10px #14111733}
+  .raised .big{font-family:var(--display);font-weight:700;font-size:40px;letter-spacing:-1px;color:var(--acc2);line-height:1}
+  .raised .big small{font-size:17px;color:var(--mut);font-weight:500;font-family:var(--body);letter-spacing:0}
+  .raised .lab{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--mut);margin-bottom:6px}
+  .bar{height:10px;border-radius:999px;background:#14111612;margin:14px 0 8px;overflow:hidden}
+  .bar span{display:block;height:100%;background:linear-gradient(90deg,var(--acc2),var(--acc3));border-radius:999px;transition:width .6s var(--ease)}
+  .raised .sub{font-size:13px;color:var(--mut)}
+  .raised .sub b{color:var(--ink)}
+
+  .sechead{font-family:var(--display);font-weight:600;font-size:22px;letter-spacing:-.2px;margin:26px 0 3px}
+  .secsub{font-size:13.5px;color:var(--mut);line-height:1.45;margin-bottom:14px}
+
+  .cost{background:var(--card);border:1.5px solid #14111617;border-radius:14px;overflow:hidden}
+  .cost .row{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border-bottom:1px solid #14111610}
+  .cost .row:last-child{border-bottom:0}
+  .cost .emo{font-size:20px;line-height:1.2;flex:none}
+  .cost .body{flex:1}
+  .cost .body .t{font-weight:700;font-size:14.5px}
+  .cost .body .d{font-size:12.5px;color:var(--mut);margin-top:2px;line-height:1.4}
+  .cost .amt{font-family:var(--display);font-weight:600;font-size:15px;white-space:nowrap;color:var(--ink)}
+  .cost .amt small{display:block;font-family:var(--body);font-size:10px;font-weight:800;text-transform:uppercase;
+    letter-spacing:.5px;color:var(--mut);text-align:right;margin-top:2px}
+
+  .principle{background:linear-gradient(180deg,#fff6ea,var(--card));border:1.5px solid #c98a2c55;border-radius:14px;
+    padding:16px 18px;margin:16px 0;font-size:14px;line-height:1.55;color:var(--ink)}
+  .principle b{color:var(--acc)}
+
+  .sponsors .empty{background:var(--card);border:1.5px dashed #14111726;border-radius:14px;padding:22px 18px;text-align:center}
+  .sponsors .empty .t{font-family:var(--display);font-style:italic;font-size:16px;color:var(--ink)}
+  .sponsors .empty .d{font-size:13px;color:var(--mut);margin-top:6px;line-height:1.5}
+  .srow{display:flex;align-items:center;gap:12px;background:var(--card);border:1.5px solid #14111617;border-radius:12px;
+    padding:12px 14px;margin-bottom:8px}
+  .srow .rk{font-family:var(--display);font-weight:700;font-size:16px;color:var(--acc3);width:22px}
+  .srow .nm{font-weight:700;font-size:14.5px;flex:1}
+  .srow .tier{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--acc2);
+    border:1.5px solid #167f6844;border-radius:999px;padding:3px 9px}
+
+  .cta{display:block;text-align:center;background:var(--ink);color:#fffaf5;text-decoration:none;font-weight:700;
+    font-size:16px;border-radius:14px;padding:17px;margin:20px 0 8px;transition:transform .15s var(--ease),background .15s}
+  .cta:hover{background:#28222c}.cta:active{transform:scale(.985)}
+  .fine{font-size:12px;color:var(--mut);text-align:center;line-height:1.5;margin-bottom:8px}
+  .backlink{display:inline-flex;align-items:center;gap:5px;margin:14px 0 6px;font-weight:700;color:var(--acc2);
+    text-decoration:none;font-size:14px}
+  .backlink:hover{text-decoration:underline}
+  footer{text-align:center;font-family:var(--display);font-style:italic;font-size:13px;color:var(--mut);
+    padding:14px 18px 44px;line-height:1.8}
+  footer a{color:var(--acc2);font-weight:600;text-decoration:none}
+  a:focus-visible{outline:2.5px solid var(--acc3);outline-offset:2px;border-radius:4px}
+</style>
+</head>
+<body>
+<header>
+  <a class="mark" href="index.html">◈ Board Bored</a>
+  <span class="badge">Public ledger</span>
+</header>
+
+<div class="wrap">
+  <div class="hero">
+    <h1>Where the money goes.</h1>
+    <p>First Friday isn't free to put on — the street has to be closed, insured, and barricaded before anyone sets up a table. Storefronts chip in to cover it, and <b>every dollar is public, to the cent.</b> No cuts, no black box.</p>
+  </div>
+
+  <div class="raised">
+    <div class="lab">Raised for <span id="evName">the next First Friday</span></div>
+    <div class="big">$<span id="raised">0</span> <small>of ~$<span id="goal">1,400</span> to light up the night</small></div>
+    <div class="bar"><span id="barFill" style="width:0%"></span></div>
+    <div class="sub"><b id="sponsorCount">0</b> of 10 founding sponsors · <span id="honest">honest zero — no shop has paid yet, and we'll show it the moment one does</span></div>
+  </div>
+
+  <div class="sechead">What one night actually costs</div>
+  <div class="secsub">Real line items for closing 19th &amp; Eye St, from the City of Bakersfield's own permit rules (Municipal Code §12.44.031). Amounts marked <em>est.</em> are the last published fee; <em>city quote</em> means the City sets it case-by-case and we publish the invoice when it lands.</div>
+  <div class="cost">
+    <div class="row"><span class="emo">📄</span><div class="body"><div class="t">Street-closure permit</div><div class="d">City of Bakersfield downtown-promotions / encroachment permit, filed 20+ days out.</div></div><div class="amt">~$269<small>est.</small></div></div>
+    <div class="row"><span class="emo">🛡️</span><div class="body"><div class="t">$1M liability insurance</div><div class="d">Policy naming the City as additional insured — required to close a public street.</div></div><div class="amt">TBD<small>city quote</small></div></div>
+    <div class="row"><span class="emo">🚧</span><div class="body"><div class="t">Barricades &amp; traffic control</div><div class="d">Cost-recovery for barricades and any required staffing, billed by the City.</div></div><div class="amt">TBD<small>city quote</small></div></div>
+    <div class="row"><span class="emo">🍫</span><div class="body"><div class="t">Free treats for the block</div><div class="d">The part that makes it a party, not a permit — funded on purpose, not skimmed.</div></div><div class="amt">our goal<small>community</small></div></div>
+  </div>
+
+  <div class="principle"><b>The promise:</b> when a shop sponsors, the money goes to the line items above — permit, insurance, barricades, treats — and the receipts land right here. If we ever raise more than a night costs, the surplus rolls to the next First Friday, in public.</div>
+
+  <div class="sechead">Who's chipping in</div>
+  <div class="secsub">The shops funding the free night. Updated from the live ledger.</div>
+  <div class="sponsors" id="sponsors">
+    <div class="empty"><div class="t">The founding wall is still empty.</div><div class="d">Be the first storefront on it. Founding sponsors lock their rate for life and get top billing here and on the map.</div></div>
+  </div>
+
+  <a class="cta" href="https://board-bored-shop-intake.ai.studio" target="_blank" rel="noopener">💛 Become a founding sponsor</a>
+  <div class="fine">Vendors and artists are always free. Only storefronts that want promotion pay — and it funds the night for everyone.</div>
+
+  <a class="backlink" href="index.html">← Back to the live map</a>
+</div>
+
+<footer>
+  © 2026 Board Bored · made in Bakersfield<br>
+  <a href="mailto:boardquestionmark@gmail.com">boardquestionmark@gmail.com</a>
+</footer>
+
+<script>
+(function(){
+  var $=function(id){return document.getElementById(id)};
+  // Sponsor state — honest, straight from the live ledger. Empty = $0, and we say so.
+  fetch("../data/leaderboard.json").then(function(r){return r.json()}).then(function(d){
+    var rows=(((d.boards||{}).sponsors||{}).rows)||[];
+    var total=rows.reduce(function(a,s){return a+(+s.amount||0)},0);
+    $("raised").textContent=total.toLocaleString();
+    $("sponsorCount").textContent=rows.length;
+    var goal=1400;
+    $("barFill").style.width=Math.min(100,Math.round(total/goal*100))+"%";
+    if(rows.length){
+      var html="";
+      rows.slice(0,10).forEach(function(s,i){
+        html+='<div class="srow"><span class="rk">'+(i+1)+'</span><span class="nm">'+
+          (s.name||"A local shop")+'</span>'+(s.tier?'<span class="tier">'+s.tier+'</span>':'')+'</div>';
+      });
+      $("sponsors").innerHTML=html;
+      $("honest").textContent="every dollar shown is a real, collected sponsorship";
+    }
+  }).catch(function(){});
+  // Event name from the board
+  fetch("../data/board.json").then(function(r){return r.json()}).then(function(d){
+    var ev=(d.events||[]).filter(function(e){return e.slug==="first-friday"})[0];
+    if(ev&&ev.date){
+      var p=ev.date.split("-"),dt=new Date(+p[0],+p[1]-1,+p[2]);
+      $("evName").textContent=dt.toLocaleDateString(undefined,{month:"long",day:"numeric"})+" First Friday";
+    }
+  }).catch(function(){});
+})();
+</script>
+</body>
+</html>
