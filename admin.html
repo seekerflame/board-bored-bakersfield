@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Board Bored — Admin</title>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="anonymous">
 <style>
   :root{--ink:#141116;--pap:#faf7f2;--card:#fff;--acc:#ca421a;--acc2:#167f68;--line:#948d88;--mut:#777069;--warn:#b3261e;}
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -206,10 +206,12 @@
 <div class="status wrap" id="status" role="status" aria-live="polite"></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="anonymous"></script>
+<script src="lib/safe.js"></script>
 <script>
 (function(){
   var $=function(id){return document.getElementById(id)};
+  var esc=BBSafe.esc;
   var EMO=["☕","🎨","🏛️","📻","👗","🛍️","🍽️","🌮","🍦","🍺","🎸","📚","💈","🎭","📷","🧵","🕯️","🌱","🎁","🧁"];
   var DRAFT_KEY="bb_draft_v1", SET_KEY="bb_settings_v1";
   var DATA=null, chosen="☕", editingId=null, map=null, draftPin=null;
@@ -398,8 +400,8 @@
     $("n").textContent=vs.length;
     vs.forEach(function(v){
       var r=document.createElement("div");r.className="vrow";
-      r.innerHTML='<span class="emo">'+(v.emoji||"📍")+'</span>'+
-        '<span class="nm">'+v.name+'<span class="c">'+(v.category||"")+(v.hours?" · "+v.hours:"")+'</span></span>';
+      r.innerHTML='<span class="emo">'+esc(v.emoji||"📍")+'</span>'+
+        '<span class="nm">'+esc(v.name)+'<span class="c">'+esc(v.category||"")+(v.hours?" · "+esc(v.hours):"")+'</span></span>';
       var edit=document.createElement("button");edit.className="pill";edit.textContent="Edit";
       edit.onclick=function(){startEdit(v.id);};
       r.appendChild(edit);box.appendChild(r);
@@ -527,12 +529,12 @@
       var r=document.createElement("div");r.className="vrow";
       var st=(s.status||"open").toLowerCase();
       var who, badge;
-      if(st==="confirmed"&&s.vendor){who=s.vendor.name;badge=s.vendor.emoji||"✅";}
+      if(st==="confirmed"&&s.vendor){who=esc(s.vendor.name);badge=esc(s.vendor.emoji||"✅");}
       else if(st==="pending"){who="— pending, not settled —";badge="🟡";}
       else if(st==="closed"){who="— closed this month —";badge="⬜";}
       else {who="— open, first come first served —";badge="🟢";}
       r.innerHTML='<span class="emo">'+badge+'</span>'+
-        '<span class="nm">'+s.label+'<span class="c">'+who+'</span></span>';
+        '<span class="nm">'+esc(s.label)+'<span class="c">'+who+'</span></span>';
       var edit=document.createElement("button");edit.className="pill";edit.textContent="Edit";
       edit.onclick=function(){startEditSpot(s.id);};
       r.appendChild(edit);box.appendChild(r);
@@ -647,7 +649,7 @@
     pp.forEach(function(p){
       var r=document.createElement("div");r.className="vrow";
       r.innerHTML='<span class="emo">🅿️</span>'+
-        '<span class="nm">'+p.label+(p.note?'<span class="c">'+p.note+'</span>':'')+'</span>';
+        '<span class="nm">'+esc(p.label)+(p.note?'<span class="c">'+esc(p.note)+'</span>':'')+'</span>';
       var edit=document.createElement("button");edit.className="pill";edit.textContent="Edit";
       edit.onclick=function(){startEditPk(p.id);};
       r.appendChild(edit);box.appendChild(r);
