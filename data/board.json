@@ -3169,8 +3169,8 @@
       "category": "Nightlife",
       "venue": "Crusader Brewing Company",
       "address": "5880 District Blvd Ste 18, Bakersfield, CA 93313",
-      "lat": null,
-      "lng": null,
+      "lat": 35.3106,
+      "lng": -119.0723,
       "when": "Every Tuesday · 7pm",
       "cost": "Free",
       "desc": "Weekly King Trivia night at this veteran-owned craft brewery in southwest Bakersfield.",
@@ -3180,7 +3180,8 @@
       },
       "area": "citywide",
       "start": "19:00",
-      "end": null
+      "end": null,
+      "geo_approx": true
     },
     {
       "id": "ce_bmoa_firstfri",
@@ -3272,8 +3273,8 @@
       "category": "Family",
       "venue": "Murray Family Farms",
       "address": "6700 General Beale Rd, Bakersfield, CA 93307",
-      "lat": null,
-      "lng": null,
+      "lat": 35.284,
+      "lng": -118.836,
       "when": "Oct 1 – Oct 31 · daily",
       "cost": null,
       "desc": "Bakersfield's marquee fall festival with 50,000+ pumpkins, corn maze, wagon rides, sunflowers and kids' attractions.",
@@ -3283,7 +3284,8 @@
       },
       "area": "citywide",
       "start": null,
-      "end": null
+      "end": null,
+      "geo_approx": true
     },
     {
       "id": "ce_banducci_pumpkin",
@@ -3292,8 +3294,8 @@
       "category": "Family",
       "venue": "Banducci Family Pumpkin Patch",
       "address": "10747 Taft Hwy, Bakersfield, CA 93311",
-      "lat": null,
-      "lng": null,
+      "lat": 35.2828,
+      "lng": -119.105,
       "when": "Throughout October",
       "cost": null,
       "desc": "Family pumpkin patch with a corn maze, pony rides, snacks and picnic area on Taft Highway.",
@@ -3303,7 +3305,8 @@
       },
       "area": "citywide",
       "start": null,
-      "end": null
+      "end": null,
+      "geo_approx": true
     },
     {
       "id": "ce_cherry_acres_pumpkin",
@@ -3312,8 +3315,8 @@
       "category": "Family",
       "venue": "Cherry Acres",
       "address": "4011 Wegis Ave, Bakersfield, CA 93314",
-      "lat": null,
-      "lng": null,
+      "lat": 35.3882,
+      "lng": -119.1558,
       "when": "Throughout October",
       "cost": null,
       "desc": "Northwest Bakersfield pumpkin patch and fall farm activities for families.",
@@ -3323,7 +3326,8 @@
       },
       "area": "citywide",
       "start": null,
-      "end": null
+      "end": null,
+      "geo_approx": true
     },
     {
       "id": "ce_boo_zoo",
@@ -3352,8 +3356,8 @@
       "category": "Festival",
       "venue": "Halloween Town",
       "address": "6328 E Brundage Ln, Bakersfield, CA 93307",
-      "lat": null,
-      "lng": null,
+      "lat": 35.3528,
+      "lng": -118.9558,
       "when": "Throughout October · evenings",
       "cost": null,
       "desc": "Seasonal Halloween attraction with a haunted experience, pumpkin patch and family activities all October.",
@@ -3363,7 +3367,8 @@
       },
       "area": "citywide",
       "start": null,
-      "end": null
+      "end": null,
+      "geo_approx": true
     },
     {
       "id": "ce_ovation_jlp",
