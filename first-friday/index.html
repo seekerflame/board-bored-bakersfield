@@ -231,7 +231,8 @@
       <a href="calendar.html">📆 Calendar</a>
       <a id="ffAddCal" href="#" target="_blank" rel="noopener">📅 Add to your calendar</a>
       <a href="about.html">ℹ️ Vendor info</a>
-      <a href="submit-event.html">➕ Submit an event</a>
+      <a href="submit-event.html">➕ Host an event</a>
+      <a href="for-planners.html">🤝 For planners</a>
       <a href="fund.html">💛 Where the money goes</a>
     </div>
     <div class="list" style="padding-top:12px">
@@ -255,6 +256,7 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="../lib/cal.js"></script>
+<script src="../lib/api.js"></script>
 <script>
 (function(){
   var $=function(id){return document.getElementById(id)};
@@ -319,8 +321,25 @@
     return btn;
   }
   function fmtTime(hhmm){var p=hhmm.split(":"),h=+p[0];var ap=h>=12?"pm":"am";h=h%12;if(h===0)h=12;return h+(p[1]!=="00"?":"+p[1]:"")+ap;}
+  function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+  function socialLinks(e){
+    var s=e.socials||{},o="";
+    if(e.website)o+='<a href="'+esc(e.website)+'" target="_blank" rel="noopener">🌐 Website</a>';
+    if(s.instagram)o+='<a href="https://instagram.com/'+encodeURIComponent(s.instagram)+'" target="_blank" rel="noopener">📸 IG</a>';
+    if(s.facebook)o+='<a href="'+(/^https?:/i.test(s.facebook)?esc(s.facebook):'https://facebook.com/'+encodeURIComponent(s.facebook))+'" target="_blank" rel="noopener">📘 FB</a>';
+    if(s.tiktok)o+='<a href="https://tiktok.com/@'+encodeURIComponent(s.tiktok)+'" target="_blank" rel="noopener">🎵 TikTok</a>';
+    if(s.x)o+='<a href="https://x.com/'+encodeURIComponent(s.x)+'" target="_blank" rel="noopener">✖ X</a>';
+    if(s.youtube)o+='<a href="'+esc(s.youtube)+'" target="_blank" rel="noopener">▶️ YouTube</a>';
+    return o;
+  }
 
-  fetch("../data/board.json").then(function(r){return r.json()}).then(function(d){
+  fetch("../data/board.json").then(function(r){return r.json()}).then(function(bd){
+    return (window.bbApi&&bbApi.getLiveEvents?bbApi.getLiveEvents():Promise.resolve([])).then(function(live){
+      if(live&&live.length){var seen={};(bd.city_events||[]).forEach(function(e){seen[e.id]=1;});
+        live.forEach(function(e){if(e&&!seen[e.id]){(bd.city_events||(bd.city_events=[])).push(e);}});}
+      return bd;
+    });
+  }).then(function(d){
     var email=(d.board&&d.board.contact)||"boardquestionmark@gmail.com";
     var ev=(d.events||[]).filter(function(e){return e.slug==="first-friday"})[0]
          ||(d.events||[]).filter(function(e){return e.slug===d.featured})[0]
@@ -437,11 +456,13 @@
           '<span class="nm">'+e.name+'</span>'+tag+'</div>'+
           '<div class="when2">'+e.when+(isRecurring(e)&&!e.cost?' · every week':'')+'</div>'+
           '<div class="venue2">'+e.venue+(e.area==="downtown"?' · downtown':'')+'</div>'+
+          (e.host?'<div class="venue2">👤 Hosted by '+esc(e.host)+'</div>':"")+
           (e.desc?'<div class="note">'+e.desc+'</div>':"");
         var linksEl=document.createElement("div");linksEl.className="links";
         var lh=""; if(e.link)lh+='<a href="'+e.link+'" target="_blank" rel="noopener">🎟️ Tickets / info</a>';
         lh+='<a href="'+dirUrl(e.address)+'" target="_blank" rel="noopener">🧭 Directions</a>';
         if(window.bbCal)lh+='<a href="'+bbCal.gcal(e)+'" target="_blank" rel="noopener">📅 Add</a>';
+        lh+=socialLinks(e);
         linksEl.innerHTML=lh; linksEl.appendChild(shareLink(e.id,e.name,e.category));
         el.appendChild(linksEl);
         el.addEventListener("click",function(evt){if(evt.target.closest("a,button"))return;panTo("e:"+e.id);});

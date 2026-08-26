@@ -140,8 +140,20 @@
 
     <label for="evLink">Tickets / info link</label>
     <input id="evLink" type="url" placeholder="https://...">
-    <label for="evIg">Instagram (optional)</label>
-    <input id="evIg" placeholder="@handle">
+
+    <label for="evHost">Who's hosting? <span style="font-size:11px;font-weight:700;color:var(--acc2);letter-spacing:.3px">SHOWN PUBLICLY</span></label>
+    <input id="evHost" placeholder="Your name, org, or venue — e.g. Dagny's Coffee">
+    <label for="evWeb">Website (optional)</label>
+    <input id="evWeb" type="url" placeholder="https://yoursite.com">
+    <div class="row">
+      <div><label for="evIg">Instagram</label><input id="evIg" placeholder="@handle"></div>
+      <div><label for="evFb">Facebook</label><input id="evFb" placeholder="@page or link"></div>
+    </div>
+    <div class="row">
+      <div><label for="evTk">TikTok</label><input id="evTk" placeholder="@handle"></div>
+      <div><label for="evX">X / Twitter</label><input id="evX" placeholder="@handle"></div>
+    </div>
+    <div class="hint" style="margin-top:6px">Your links show right on your event card so people can follow, buy tickets, and find you.</div>
 
     <label for="evContact">Your name + contact <span class="req">*</span></label>
     <input id="evContact" required placeholder="Name · phone or email (not shown publicly)">
@@ -155,7 +167,7 @@
   <div class="success" id="success">
     <div class="big">🎉</div>
     <h2>Got it — thank you!</h2>
-    <p>We'll review it and add it to the live Bakersfield map, usually same day.</p>
+    <p id="successMsg">We'll review it and add it to the live Bakersfield map, usually same day.</p>
     <div class="row2">
       <a class="solid" href="./">See the map</a>
       <a href="submit-event.html">Add another</a>
@@ -168,10 +180,10 @@
   </footer>
 </div>
 
+<script src="../lib/api.js"></script>
 <script>
 (function(){
   var $=function(id){return document.getElementById(id)};
-  var FORMSPREE_ENDPOINT="https://formspree.io/f/mdaqpjkb";
   var CONTACT_EMAIL="boardquestionmark@gmail.com";
   $("mailFoot").href="mailto:"+CONTACT_EMAIL;$("mailFoot").textContent=CONTACT_EMAIL;
 
@@ -191,58 +203,53 @@
   function fmtTime(t){ if(!t)return""; var p=t.split(":"),h=+p[0],ap=h>=12?"pm":"am"; h=h%12; if(h===0)h=12;
     return h+(p[1]!=="00"?":"+p[1]:"")+ap; }
 
-  function showSuccess(){ $("form").style.display="none"; $("success").style.display="block";
+  function showSuccess(msg){ if(msg)$("successMsg").textContent=msg;
+    $("form").style.display="none"; $("success").style.display="block";
     window.scrollTo({top:0,behavior:"smooth"}); }
-
-  function mailFallback(subject,lines){
-    var body=lines.map(function(l){return l[0]+": "+(l[1]||"—");}).join("\n");
-    location.href="mailto:"+CONTACT_EMAIL+"?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(body);
-  }
 
   $("form").addEventListener("submit",function(e){
     e.preventDefault();
     var st=$("status");st.className="status";st.textContent="";
-    // when
-    var whenStr,whenPayload;
-    if(mode==="one"){
-      if(!$("evDate").value){st.className="status err";st.textContent="Pick the event date.";return;}
-      whenPayload="date "+$("evDate").value;
-      whenStr=$("evDate").value;
-    } else {
-      if(!$("evWeekday").value){st.className="status err";st.textContent="Pick which day it repeats.";return;}
-      whenPayload="every "+WD[+$("evWeekday").value];
-      whenStr=whenPayload;
-    }
-    var t=[fmtTime($("evStart").value),fmtTime($("evEnd").value)].filter(Boolean).join("–");
+    // build the payload in the Board Bored API schema (products/board-bored-api/schema.mjs)
     var payload={
-      _subject:"Event submission — Board Bored",
-      type:"event",
       name:$("evName").value.trim(),
       category:$("evCat").value,
-      when:whenPayload+(t?" · "+t:""),
       venue:$("evVenue").value.trim(),
       address:$("evAddr").value.trim(),
       cost:$("evCost").value.trim(),
-      permit:$("evPermit").value,
-      description:$("evDesc").value.trim(),
+      desc:$("evDesc").value.trim(),
       link:$("evLink").value.trim(),
+      host:$("evHost").value.trim(),
+      website:$("evWeb").value.trim(),
       instagram:$("evIg").value.trim(),
-      contact:$("evContact").value.trim()
+      facebook:$("evFb").value.trim(),
+      tiktok:$("evTk").value.trim(),
+      x:$("evX").value.trim(),
+      start:$("evStart").value,
+      end:$("evEnd").value,
+      // permit answer rides along on the private contact line for our review
+      contact:$("evContact").value.trim()+($("evPermit").value?" · Permit: "+$("evPermit").value:"")
     };
-    if(!payload.name||!payload.venue||!payload.address||!payload.description||!payload.contact||!payload.permit){
+    if(mode==="one"){
+      if(!$("evDate").value){st.className="status err";st.textContent="Pick the event date.";return;}
+      payload.date=$("evDate").value;
+    } else {
+      if(!$("evWeekday").value){st.className="status err";st.textContent="Pick which day it repeats.";return;}
+      payload.recurring=true; payload.weekday=+$("evWeekday").value;
+    }
+    if(!payload.name||!payload.venue||!payload.address||!payload.desc||$("evContact").value.trim()===""||!$("evPermit").value){
       st.className="status err";st.textContent="Please fill in the required fields (marked *), including the permit question.";return;}
     var btn=$("form").querySelector(".btn");btn.disabled=true;st.textContent="Sending…";
-    fetch(FORMSPREE_ENDPOINT,{method:"POST",headers:{"Accept":"application/json","Content-Type":"application/json"},
-      body:JSON.stringify(payload)})
-      .then(function(r){ if(r.ok){showSuccess();}
-        else{st.className="status err";st.textContent="Couldn't send — try again, or email "+CONTACT_EMAIL+".";btn.disabled=false;} })
-      .catch(function(){ // network/endpoint down → fall back to a pre-filled email so the submission still lands
-        mailFallback(payload._subject,[["Event",payload.name],["Category",payload.category],["When",payload.when],
-          ["Venue",payload.venue],["Address",payload.address],["Cost",payload.cost],["Permit",payload.permit],
-          ["Description",payload.description],["Link",payload.link],["Instagram",payload.instagram],
-          ["Contact",payload.contact]]);
-        showSuccess();
-      });
+    // bbApi.submit → our own API (products/board-bored-api). If it's unreachable OR
+    // not deployed yet, it falls back to your email app — no third-party form, no data loss.
+    bbApi.submit(payload).then(function(res){
+      if(res&&res.ok){ showSuccess(res.message); }
+      else { st.className="status err";
+        st.textContent=(res&&res.errors)?res.errors.join(" · "):"Couldn't send — email "+CONTACT_EMAIL+".";
+        btn.disabled=false; }
+    }).catch(function(){
+      st.className="status err";st.textContent="Couldn't send — email "+CONTACT_EMAIL+".";btn.disabled=false;
+    });
   });
 })();
 </script>

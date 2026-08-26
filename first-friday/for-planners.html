@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>For event planners — Board Bored</title>
+<meta name="description" content="Bakersfield event planners: upload once, we promote you on the live map — and we all promote local together. Free.">
+<meta property="og:title" content="Partner with Board Bored — Bakersfield">
+<meta property="og:description" content="Upload your events once, get on the live map, and promote local together. Trusted planners publish instantly.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://seekerflame.github.io/board-bored-bakersfield/first-friday/for-planners.html">
+<meta property="og:image" content="https://seekerflame.github.io/board-bored-bakersfield/first-friday/share.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,600&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#141116;--pap:#faf7f2;--card:#fffdfa;--acc:#ca421a;--acc2:#167f68;--acc3:#c98a2c;--line:#948d88;--mut:#777069;
+    --display:"Fraunces",ui-serif,Georgia,serif;--body:"Figtree",-apple-system,"Helvetica Neue",Arial,sans-serif;
+    --ease:cubic-bezier(.16,1,.3,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  ::selection{background:var(--acc3);color:var(--ink)}
+  body{font-family:var(--body);background:var(--pap);color:var(--ink);min-height:100dvh;
+    background-image:radial-gradient(circle at 1px 1px,#14111609 1px,transparent 0);background-size:22px 22px;
+    -webkit-font-smoothing:antialiased;padding:20px 16px 48px;line-height:1.5}
+  .wrap{width:100%;max-width:560px;margin:0 auto}
+  header{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:12px}
+  .mark{font-family:var(--display);font-size:13px;letter-spacing:2.5px;font-weight:700;font-style:italic;
+    text-transform:uppercase;color:var(--acc);text-decoration:none}
+  .back{font-size:13px;font-weight:700;color:var(--acc2);text-decoration:none;white-space:nowrap}
+  .back:hover{text-decoration:underline}
+  h1{font-family:var(--display);font-weight:600;font-size:clamp(28px,7.5vw,40px);line-height:1.04;letter-spacing:-.3px;margin-bottom:8px}
+  .tag{color:var(--mut);font-size:15.5px;line-height:1.55;margin-bottom:20px;max-width:46ch}
+  .deal{display:grid;gap:10px;margin-bottom:22px}
+  .deal .step{background:var(--card);border:1.5px solid #14111617;border-radius:14px;padding:13px 15px;display:flex;gap:12px;align-items:flex-start}
+  .deal .num{font-family:var(--display);font-weight:700;font-size:19px;color:var(--acc);line-height:1.2;min-width:24px}
+  .deal .st{font-size:14.5px;line-height:1.5}.deal .st b{color:var(--ink)}
+  .together{background:#eef6f2;border:1.5px solid #b9ddce;border-radius:16px;padding:16px 18px;margin-bottom:22px}
+  .together h3{font-family:var(--display);font-weight:600;font-size:18px;margin-bottom:6px;color:var(--acc2)}
+  .together p{font-size:14px;line-height:1.6;color:#3f4a44}
+  h2.sec{font-family:var(--display);font-weight:600;font-size:22px;margin:6px 0 12px}
+  form{background:var(--card);border:1.5px solid #14111617;border-radius:18px;padding:18px}
+  label{display:block;font-size:11px;font-weight:800;color:var(--mut);text-transform:uppercase;letter-spacing:.5px;margin:14px 0 5px}
+  label:first-of-type{margin-top:0}
+  .req{color:var(--acc)}
+  input,textarea,select{width:100%;font:inherit;font-size:16px;padding:12px;border:1.5px solid #14111726;
+    border-radius:11px;background:#fffdfa;color:var(--ink)}
+  input:focus,textarea:focus,select:focus{outline:2.5px solid var(--acc3);outline-offset:1px;border-color:var(--acc3)}
+  textarea{min-height:72px;resize:vertical}
+  .row{display:flex;gap:10px}.row>div{flex:1}
+  .btn{appearance:none;border:0;cursor:pointer;font:inherit;font-weight:700;font-size:16px;border-radius:13px;
+    padding:15px;width:100%;margin-top:18px;color:#fffaf5;background:var(--ink);transition:transform .15s var(--ease),background .15s}
+  .btn:hover{background:#28222c}.btn:active{transform:scale(.985)}.btn:disabled{opacity:.6;cursor:default}
+  .hint{font-size:12.5px;color:var(--mut);margin-top:9px;line-height:1.5}
+  .status{font-size:14px;font-weight:700;margin-top:10px;min-height:18px}
+  .status.err{color:#b3261e}.status.ok{color:var(--acc2)}
+  .success{display:none;text-align:center;padding:34px 12px}
+  .success .big{font-size:46px;margin-bottom:10px}
+  .success h2{font-family:var(--display);font-weight:600;font-size:24px;margin-bottom:8px}
+  .success p{color:var(--mut);font-size:14.5px;line-height:1.55;max-width:36ch;margin:0 auto 18px}
+  .success .row2{display:flex;gap:10px;max-width:380px;margin:0 auto}
+  .success .row2 a{flex:1;text-align:center;text-decoration:none;font-weight:700;font-size:14px;border-radius:12px;padding:13px;
+    border:1.5px solid var(--ink);color:var(--ink)}
+  .success .row2 a.solid{background:var(--ink);color:#fffaf5;border-color:var(--ink)}
+  .alt{text-align:center;font-size:14px;color:var(--mut);margin-top:18px}
+  .alt a{color:var(--acc2);font-weight:700;text-decoration:none}
+  footer{margin-top:24px;text-align:center;font-family:var(--display);font-style:italic;font-size:13px;color:var(--mut);line-height:1.8}
+  footer a{color:var(--acc2);font-weight:600;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a class="mark" href="../">● Board Bored</a>
+    <a class="back" href="./">← Back to the map</a>
+  </header>
+
+  <h1>Promote local — together</h1>
+  <p class="tag">You run events in Bakersfield. We run the map everyone checks to find something to do. Let's put them together — free — so your crowd and ours become one crowd.</p>
+
+  <div class="deal">
+    <div class="step"><div class="num">1</div><div class="st"><b>Upload once.</b> Send us your events — one at a time, or a whole season. We format, pin, and post them to the live map.</div></div>
+    <div class="step"><div class="num">2</div><div class="st"><b>Get your own lane.</b> Once you're a trusted planner, your events publish <b>instantly</b> — no waiting on review. One login, works from anywhere.</div></div>
+    <div class="step"><div class="num">3</div><div class="st"><b>We cross-promote.</b> Your website + socials ride on every event card. We feature you in Tonight / This-weekend, calendars, and share cards.</div></div>
+  </div>
+
+  <div class="together">
+    <h3>Why together beats alone</h3>
+    <p>Every event you add makes the whole board more worth checking — and a board more people check makes your event easier to find. A rising local scene lifts every host on it. No fee, no exclusivity, no catch.</p>
+  </div>
+
+  <h2 class="sec">Become a partner</h2>
+  <form id="form">
+    <label for="pOrg">Your org / venue / name <span class="req">*</span></label>
+    <input id="pOrg" required placeholder="e.g. Dagny's Coffee, or Jane Doe Presents">
+
+    <label for="pAbout">What do you put on? <span class="req">*</span></label>
+    <textarea id="pAbout" required placeholder="Weekly open-mic nights, monthly art markets, live music on weekends…"></textarea>
+
+    <div class="row">
+      <div>
+        <label for="pCadence">How often?</label>
+        <select id="pCadence">
+          <option value="">Pick one…</option>
+          <option>A few times a year</option>
+          <option>Monthly</option>
+          <option>A few times a month</option>
+          <option>Weekly</option>
+          <option>Multiple times a week</option>
+        </select>
+      </div>
+      <div>
+        <label for="pWeb">Website</label>
+        <input id="pWeb" type="url" placeholder="https://…">
+      </div>
+    </div>
+
+    <label for="pSocials">Socials (Instagram, Facebook, TikTok…)</label>
+    <input id="pSocials" placeholder="@yourhandle, facebook.com/you, …">
+
+    <label for="pContact">Best contact <span class="req">*</span></label>
+    <input id="pContact" required placeholder="Name · phone or email (not shown publicly)">
+
+    <button class="btn" type="submit">Let's promote local together →</button>
+    <div class="hint">We'll reach out to set up your co-promo lane. Want to just add one event right now? <a href="submit-event.html" style="color:var(--acc2);font-weight:700">Post a single event →</a></div>
+    <div class="status" id="status" role="status" aria-live="polite"></div>
+  </form>
+
+  <div class="success" id="success">
+    <div class="big">🤝</div>
+    <h2>Welcome to the board.</h2>
+    <p id="successMsg">Thanks — we'll reach out to set up your co-promo lane so your events publish instantly.</p>
+    <div class="row2">
+      <a class="solid" href="./">See the map</a>
+      <a href="submit-event.html">Add an event now</a>
+    </div>
+  </div>
+
+  <footer>
+    © 2026 Board Bored · made in Bakersfield<br>
+    <a href="./">← Back to the map</a> · <a id="mailFoot" href="#">boardquestionmark@gmail.com</a>
+  </footer>
+</div>
+
+<script src="../lib/api.js"></script>
+<script>
+(function(){
+  var $=function(id){return document.getElementById(id)};
+  var CONTACT_EMAIL="boardquestionmark@gmail.com";
+  $("mailFoot").href="mailto:"+CONTACT_EMAIL;$("mailFoot").textContent=CONTACT_EMAIL;
+
+  function showSuccess(msg){ if(msg)$("successMsg").textContent=msg;
+    $("form").style.display="none"; $("success").style.display="block";
+    window.scrollTo({top:0,behavior:"smooth"}); }
+
+  $("form").addEventListener("submit",function(e){
+    e.preventDefault();
+    var st=$("status");st.className="status";st.textContent="";
+    var payload={
+      org:$("pOrg").value.trim(),
+      about:$("pAbout").value.trim(),
+      cadence:$("pCadence").value,
+      website:$("pWeb").value.trim(),
+      socials:$("pSocials").value.trim(),
+      contact:$("pContact").value.trim()
+    };
+    if(!payload.org||!payload.about||!payload.contact){
+      st.className="status err";st.textContent="Please fill in the required fields (marked *).";return;}
+    var btn=$("form").querySelector(".btn");btn.disabled=true;st.textContent="Sending…";
+    // bbApi.planner → our own API; falls back to your email app if it's not reachable.
+    bbApi.planner(payload).then(function(res){
+      if(res&&res.ok){ showSuccess(res.message); }
+      else { st.className="status err";
+        st.textContent=(res&&res.errors)?res.errors.join(" · "):"Couldn't send — email "+CONTACT_EMAIL+".";
+        btn.disabled=false; }
+    }).catch(function(){
+      st.className="status err";st.textContent="Couldn't send — email "+CONTACT_EMAIL+".";btn.disabled=false;
+    });
+  });
+})();
+</script>
+</body>
+</html>

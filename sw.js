@@ -10,7 +10,7 @@
  * Paths are relative to this file's scope, so the same code works at the domain
  * root locally and under /board-bored-bakersfield/ on GitHub Pages.
  */
-var VERSION = "bb-v8";
+var VERSION = "bb-v9";
 var SHELL = VERSION + "-shell";
 
 // Resolved relative to the SW scope — correct under any subpath.
@@ -18,6 +18,7 @@ var PRECACHE = [
   "./",
   "first-friday/",
   "first-friday/about.html",
+  "first-friday/for-planners.html",
   "first-friday/submit-event.html",
   "first-friday/calendar.html",
   "first-friday/fund.html",
@@ -30,6 +31,7 @@ var PRECACHE = [
   "lib/pwa.js",
   "lib/qrcode.js",
   "lib/cal.js",
+  "lib/api.js",
   "data/board.json",
   "icons/icon-192.png",
   "icons/icon-512.png",
