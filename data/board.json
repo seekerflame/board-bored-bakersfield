@@ -4,8 +4,8 @@
     "name": "Board Bored",
     "tagline": "The free local board. Events, open shops, and the people behind them. No apps, no ads, no cuts.",
     "contact": "boardquestionmark@gmail.com",
-    "events_source": "The Bakersfield Guy — Issue #57 (Aug 20, 2026)",
-    "events_updated": "2026-08-23"
+    "events_source": "The Bakersfield Guy #57 + Board Bored research sweep (downtown, venues, community)",
+    "events_updated": "2026-08-26"
   },
   "featured": "first-friday",
   "events": [
@@ -2274,6 +2274,1196 @@
       },
       "area": "citywide",
       "start": "07:00"
+    },
+    {
+      "id": "ce_dagnys_openmic",
+      "name": "First Friday Open Mic at Dagny's",
+      "emoji": "🎤",
+      "category": "Community",
+      "venue": "Dagny's Coffee Co.",
+      "address": "1600 20th St, Bakersfield, CA 93301",
+      "lat": 35.3742,
+      "lng": -119.02,
+      "when": "First Friday monthly · 6pm (sign-up 5:50pm)",
+      "cost": "Free",
+      "desc": "Kern Poetry's long-running open mic for original poems and songs, with a featured poet to start the night.",
+      "link": "https://kernpoetry.com/first-friday/",
+      "schedule": {
+        "weekday": 5,
+        "weeks": [
+          1
+        ]
+      },
+      "area": "downtown",
+      "start": "18:00",
+      "end": null
+    },
+    {
+      "id": "ce_prairiefire_thursdays",
+      "name": "Live Music at Prairie Fire Rooftop",
+      "emoji": "🌇",
+      "category": "Nightlife",
+      "venue": "Prairie Fire, The Padre Hotel",
+      "address": "1702 18th St, Bakersfield, CA 93301",
+      "lat": 35.3719,
+      "lng": -119.0206,
+      "when": "Every Thursday · 6–9pm",
+      "cost": "Free",
+      "desc": "Local artists play the Padre Hotel's rooftop lounge with cocktails, fire pits and downtown skyline views.",
+      "link": "https://www.thepadrehotel.com/menu/prairie-fire",
+      "schedule": {
+        "weekday": 4
+      },
+      "area": "downtown",
+      "start": "18:00",
+      "end": "21:00"
+    },
+    {
+      "id": "ce_sandrinis_livemusic",
+      "name": "Live Music at Sandrini's",
+      "emoji": "🎸",
+      "category": "Music",
+      "venue": "Sandrini's Public House",
+      "address": "1918 Eye St, Bakersfield, CA 93301",
+      "lat": 35.373,
+      "lng": -119.0195,
+      "when": "Every Friday & Saturday · evenings",
+      "cost": "Free",
+      "desc": "Downtown pub and live-music mainstay hosting local bands every Friday and Saturday night.",
+      "link": "https://www.facebook.com/sandrinisbar/",
+      "schedule": {
+        "ongoing": true
+      },
+      "area": "downtown",
+      "start": null,
+      "end": null
+    },
+    {
+      "id": "ce_sandrinis_trivia",
+      "name": "Trivia Night at Sandrini's",
+      "emoji": "🧠",
+      "category": "Community",
+      "venue": "Sandrini's Public House",
+      "address": "1918 Eye St, Bakersfield, CA 93301",
+      "lat": 35.373,
+      "lng": -119.0195,
+      "when": "Every Tuesday · evening",
+      "cost": "Free",
+      "desc": "Weekly pub trivia at the heart-of-downtown Italian public house.",
+      "link": "https://www.facebook.com/sandrinisbar/",
+      "schedule": {
+        "weekday": 2
+      },
+      "area": "downtown",
+      "start": null,
+      "end": null
+    },
+    {
+      "id": "ce_bmoa_artworks2026",
+      "name": "ArtWorks 2026: Becoming",
+      "emoji": "🖼️",
+      "category": "Art",
+      "venue": "Bakersfield Museum of Art",
+      "address": "1930 R St, Bakersfield, CA 93301",
+      "lat": 35.3711,
+      "lng": -119.014,
+      "when": "On view now · through Sep 6",
+      "cost": null,
+      "desc": "Annual juried exhibition showcasing work by fifteen Kern County high school junior and senior artists.",
+      "link": "https://www.bmoa.org/exhibits/artworks-2026-becoming",
+      "schedule": {
+        "ongoing": true
+      },
+      "area": "downtown",
+      "start": null,
+      "end": null
+    },
+    {
+      "id": "ce_bmoa_chicanovisions",
+      "name": "Chicano Visions: The Legacy of Los Four",
+      "emoji": "🎨",
+      "category": "Art",
+      "venue": "Bakersfield Museum of Art",
+      "address": "1930 R St, Bakersfield, CA 93301",
+      "lat": 35.3711,
+      "lng": -119.014,
+      "when": "Sep 24 – Jan 2 · on view",
+      "cost": null,
+      "desc": "Major fall exhibition tracing the legacy of the pioneering Chicano art collective Los Four.",
+      "link": "https://www.bmoa.org/current",
+      "schedule": {
+        "ongoing": true
+      },
+      "area": "downtown",
+      "start": null,
+      "end": null
+    },
+    {
+      "id": "ce_fox_mariachi",
+      "name": "Leyendas del Mariachi USA — Mi Historia Tour",
+      "emoji": "🎺",
+      "category": "Music",
+      "venue": "Historic Bakersfield Fox Theater",
+      "address": "2001 H St, Bakersfield, CA 93301",
+      "lat": 35.3736,
+      "lng": -119.0224,
+      "when": "Fri Sep 4 · 8pm",
+      "cost": null,
+      "desc": "Touring showcase of legendary mariachi performers at the historic Fox Theater.",
+      "link": "https://www.bakersfieldlive.com/",
+      "schedule": {
+        "date": "2026-09-04"
+      },
+      "area": "downtown",
+      "start": "20:00",
+      "end": null
+    },
+    {
+      "id": "ce_fox_maxamini",
+      "name": "Max Amini Live",
+      "emoji": "🎙️",
+      "category": "Theater",
+      "venue": "Historic Bakersfield Fox Theater",
+      "address": "2001 H St, Bakersfield, CA 93301",
+      "lat": 35.3736,
+      "lng": -119.0224,
+      "when": "Sat Sep 12 · 8pm",
+      "cost": null,
+      "desc": "Stand-up comedy from Iranian-American comedian Max Amini.",
+      "link": "https://www.bakersfieldlive.com/",
+      "schedule": {
+        "date": "2026-09-12"
+      },
+      "area": "downtown",
+      "start": "20:00",
+      "end": null
+    },
+    {
+      "id": "ce_fox_claywalker",
+      "name": "Clay Walker: Doin' What I Love Tour",
+      "emoji": "🤠",
+      "category": "Music",
+      "venue": "Historic Bakersfield Fox Theater",
+      "address": "2001 H St, Bakersfield, CA 93301",
+      "lat": 35.3736,
+      "lng": -119.0224,
+      "when": "Sun Sep 13 · 8pm",
+      "cost": null,
+      "desc": "Country hitmaker Clay Walker headlines the Fox Theater on his Doin' What I Love Tour.",
+      "link": "https://www.bakersfieldlive.com/",
+      "schedule": {
+        "date": "2026-09-13"
+      },
+      "area": "downtown",
+      "start": "20:00",
+      "end": null
+    },
+    {
+      "id": "ce_fox_menitrust",
+      "name": "Men I Trust",
+      "emoji": "🎶",
+      "category": "Music",
+      "venue": "Historic Bakersfield Fox Theater",
+      "address": "2001 H St, Bakersfield, CA 93301",
+      "lat": 35.3736,
+      "lng": -119.0224,
+      "when": "Wed Sep 23 · 8pm (doors 7pm)",
+      "cost": null,
+      "desc": "Canadian dream-pop band Men I Trust with special guest Evan Wright.",
+      "link": "https://www.bakersfieldlive.com/",
+      "schedule": {
+        "date": "2026-09-23"
+      },
+      "area": "downtown",
+      "start": "20:00",
+      "end": null
+    },
+    {
+      "id": "ce_fox_feimster",
+      "name": "Fortune Feimster: Taking Care of Biscuits",
+      "emoji": "😂",
+      "category": "Theater",
+      "venue": "Historic Bakersfield Fox Theater",
+      "address": "2001 H St, Bakersfield, CA 93301",
+      "lat": 35.3736,
+      "lng": -119.0224,
+      "when": "Sun Oct 18 · 5pm",
+      "cost": null,
+      "desc": "Comedian Fortune Feimster brings her Taking Care of Biscuits comedy tour to the Fox.",
+      "link": "https://www.bakersfieldlive.com/",
+      "schedule": {
+        "date": "2026-10-18"
+      },
+      "area": "downtown",
+      "start": "17:00",
+      "end": null
+    },
+    {
+      "id": "ce_fox_switchfoot",
+      "name": "Switchfoot — Forever Now Tour",
+      "emoji": "🎸",
+      "category": "Music",
+      "venue": "Historic Bakersfield Fox Theater",
+      "address": "2001 H St, Bakersfield, CA 93301",
+      "lat": 35.3736,
+      "lng": -119.0224,
+      "when": "Wed Oct 21 · 7:30pm (doors 6:30pm)",
+      "cost": null,
+      "desc": "Rock band Switchfoot with special guest Anberlin on the Forever Now Tour.",
+      "link": "https://www.bakersfieldlive.com/",
+      "schedule": {
+        "date": "2026-10-21"
+      },
+      "area": "downtown",
+      "start": "19:30",
+      "end": null
+    },
+    {
+      "id": "ce_fox_henrycho",
+      "name": "Henry Cho: The Empty Nest Tour",
+      "emoji": "🎙️",
+      "category": "Theater",
+      "venue": "Historic Bakersfield Fox Theater",
+      "address": "2001 H St, Bakersfield, CA 93301",
+      "lat": 35.3736,
+      "lng": -119.0224,
+      "when": "Fri Oct 23 · 8pm (doors 7pm)",
+      "cost": null,
+      "desc": "Clean-comedy veteran Henry Cho performs his Empty Nest Tour.",
+      "link": "https://www.bakersfieldlive.com/",
+      "schedule": {
+        "date": "2026-10-23"
+      },
+      "area": "downtown",
+      "start": "20:00",
+      "end": null
+    },
+    {
+      "id": "ce_fox_armisen",
+      "name": "Fred Armisen: Comedy for Musicians",
+      "emoji": "🥁",
+      "category": "Theater",
+      "venue": "Historic Bakersfield Fox Theater",
+      "address": "2001 H St, Bakersfield, CA 93301",
+      "lat": 35.3736,
+      "lng": -119.0224,
+      "when": "Sat Oct 24 · 8pm",
+      "cost": null,
+      "desc": "Fred Armisen's 'Comedy for Musicians But Everyone Is Welcome' show at the Fox.",
+      "link": "https://www.bakersfieldlive.com/",
+      "schedule": {
+        "date": "2026-10-24"
+      },
+      "area": "downtown",
+      "start": "20:00",
+      "end": null
+    },
+    {
+      "id": "ce_nile_talibkweli",
+      "name": "Talib Kweli — One Night Only",
+      "emoji": "🎤",
+      "category": "Music",
+      "venue": "The Nile Theater",
+      "address": "1721 19th St, Bakersfield, CA 93301",
+      "lat": 35.3728,
+      "lng": -119.021,
+      "when": "Sat Sep 5 · 8pm",
+      "cost": "$50",
+      "desc": "Hip-hop icon Talib Kweli performs a one-night-only Bakersfield show at the Nile.",
+      "link": "https://www.bakersfieldlive.com/",
+      "schedule": {
+        "date": "2026-09-05"
+      },
+      "area": "downtown",
+      "start": "20:00",
+      "end": null
+    },
+    {
+      "id": "ce_nile_justinwillman",
+      "name": "Justin Willman: One for the Ages",
+      "emoji": "🪄",
+      "category": "Theater",
+      "venue": "The Nile Theater",
+      "address": "1721 19th St, Bakersfield, CA 93301",
+      "lat": 35.3728,
+      "lng": -119.021,
+      "when": "Thu Sep 10 · 8pm",
+      "cost": null,
+      "desc": "Magician and 'Magic for Humans' host Justin Willman brings his One for the Ages tour to the Nile.",
+      "link": "https://www.bakersfieldlive.com/",
+      "schedule": {
+        "date": "2026-09-10"
+      },
+      "area": "downtown",
+      "start": "20:00",
+      "end": null
+    },
+    {
+      "id": "ce_nile_boobaytekla",
+      "name": "Boobay & Tekla Comedy Tour",
+      "emoji": "😄",
+      "category": "Theater",
+      "venue": "The Nile Theater",
+      "address": "1721 19th St, Bakersfield, CA 93301",
+      "lat": 35.3728,
+      "lng": -119.021,
+      "when": "Sat Oct 17 · 7pm (doors 6pm)",
+      "cost": null,
+      "desc": "Filipino comedy stars Boobay and Tekla perform live at the Nile Theater.",
+      "link": "https://www.bakersfieldlive.com/",
+      "schedule": {
+        "date": "2026-10-17"
+      },
+      "area": "downtown",
+      "start": "19:00",
+      "end": null
+    },
+    {
+      "id": "ce_nile_vanhalenhalloween",
+      "name": "A Van Halen Halloween Celebration",
+      "emoji": "🎃",
+      "category": "Music",
+      "venue": "The Nile Theater",
+      "address": "1721 19th St, Bakersfield, CA 93301",
+      "lat": 35.3728,
+      "lng": -119.021,
+      "when": "Sat Oct 24 · 8pm (doors 7pm)",
+      "cost": "$75",
+      "desc": "A Van Halen tribute celebration and Halloween costume contest at the Nile.",
+      "link": "https://www.bakersfieldlive.com/",
+      "schedule": {
+        "date": "2026-10-24"
+      },
+      "area": "downtown",
+      "start": "20:00",
+      "end": null
+    },
+    {
+      "id": "ce_condors_homeopener",
+      "name": "Bakersfield Condors Home Opener vs. Calgary",
+      "emoji": "🏒",
+      "category": "Sports",
+      "venue": "Mechanics Bank Arena",
+      "address": "1001 Truxtun Ave, Bakersfield, CA 93301",
+      "lat": 35.369,
+      "lng": -119.0224,
+      "when": "Sat Oct 17 · evening",
+      "cost": null,
+      "desc": "AHL hockey home opener as the Bakersfield Condors host the Calgary Wranglers.",
+      "link": "https://www.bakersfieldcondors.com/",
+      "schedule": {
+        "date": "2026-10-17"
+      },
+      "area": "downtown",
+      "start": null,
+      "end": null
+    },
+    {
+      "id": "ce_condors_abbotsford",
+      "name": "Bakersfield Condors vs. Abbotsford Canucks",
+      "emoji": "🏒",
+      "category": "Sports",
+      "venue": "Mechanics Bank Arena",
+      "address": "1001 Truxtun Ave, Bakersfield, CA 93301",
+      "lat": 35.369,
+      "lng": -119.0224,
+      "when": "Fri Oct 30 · evening",
+      "cost": null,
+      "desc": "The Condors take on the Abbotsford Canucks in downtown Bakersfield.",
+      "link": "https://www.bakersfieldcondors.com/",
+      "schedule": {
+        "date": "2026-10-30"
+      },
+      "area": "downtown",
+      "start": null,
+      "end": null
+    },
+    {
+      "id": "ce_bottleshock_livemusic",
+      "name": "Live Music & Events at BottleShock",
+      "emoji": "🍷",
+      "category": "Nightlife",
+      "venue": "BottleShock Wine & Brew",
+      "address": "1002 19th St, Bakersfield, CA 93301",
+      "lat": 35.3727,
+      "lng": -119.0262,
+      "when": "Weekly · check calendar",
+      "cost": null,
+      "desc": "Downtown wine-and-brew spot with an 8,000-sq-ft patio hosting live music, paint and comedy nights.",
+      "link": "https://bottleshockwineandbrew.com/events/",
+      "schedule": {
+        "ongoing": true
+      },
+      "area": "downtown",
+      "start": null,
+      "end": null
+    },
+    {
+      "id": "ce_stars_dinnertheatre",
+      "name": "Stars at The Fillbrandt — Dinner Theatre",
+      "emoji": "🎭",
+      "category": "Theater",
+      "venue": "Stars Theatre Restaurant",
+      "address": "1931 Chester Ave, Bakersfield, CA 93301",
+      "lat": 35.3733,
+      "lng": -119.0182,
+      "when": "Ongoing · select show weekends (verify dates)",
+      "cost": null,
+      "desc": "Downtown dinner theatre pairing Broadway-style musicals with table service by Bakersfield Music Theatre.",
+      "link": "https://bmtstars.com/",
+      "schedule": {
+        "ongoing": true
+      },
+      "area": "downtown",
+      "start": null,
+      "end": null,
+      "allday": true
+    },
+    {
+      "id": "ce_temblor_livemusic",
+      "name": "Live Music at Temblor Brewing",
+      "emoji": "🍺",
+      "category": "Music",
+      "venue": "Temblor Brewing Company",
+      "address": "3200 Buck Owens Blvd, Bakersfield, CA 93308",
+      "lat": null,
+      "lng": null,
+      "when": "Every Friday & Saturday · evenings",
+      "cost": null,
+      "desc": "Craft brewery and 500-capacity music venue hosting live local and touring acts most weekends.",
+      "link": "https://temblorbrewing.com/events/",
+      "schedule": {
+        "ongoing": true
+      },
+      "area": "citywide",
+      "start": null,
+      "end": null
+    },
+    {
+      "id": "ce_temblor_kaonashi",
+      "name": "Kaonashi at Temblor",
+      "emoji": "🎸",
+      "category": "Music",
+      "venue": "Temblor Brewing Company",
+      "address": "3200 Buck Owens Blvd, Bakersfield, CA 93308",
+      "lat": null,
+      "lng": null,
+      "when": "Fri Oct 2 · evening",
+      "cost": null,
+      "desc": "Mathcore band Kaonashi headlines Temblor Brewing's music venue.",
+      "link": "https://temblorbrewing.com/events/",
+      "schedule": {
+        "date": "2026-10-02"
+      },
+      "area": "citywide",
+      "start": null,
+      "end": null
+    },
+    {
+      "id": "ce_viaarte_chalkfest",
+      "name": "Via Arté Italian Street Painting Festival",
+      "emoji": "🖌️",
+      "category": "Festival",
+      "venue": "The Marketplace (presented by BMoA)",
+      "address": "9000 Ming Ave, Bakersfield, CA 93311",
+      "lat": null,
+      "lng": null,
+      "when": "Sat–Sun Oct 17–18",
+      "cost": "Free",
+      "desc": "Bakersfield Museum of Art's chalk festival where artists create temporary pastel works on the pavement.",
+      "link": "https://www.viaartebakersfield.com/",
+      "schedule": {
+        "date": "2026-10-17"
+      },
+      "area": "citywide",
+      "start": null,
+      "end": null
+    },
+    {
+      "id": "ce_fair_ernest",
+      "name": "ERNEST at the Kern County Fair",
+      "emoji": "🎸",
+      "category": "Music",
+      "venue": "Budweiser Pavilion, Kern County Fairgrounds",
+      "address": "1142 South P St, Bakersfield, CA 93307",
+      "lat": null,
+      "lng": null,
+      "when": "Wed Sep 23 · 8pm",
+      "cost": "Free with fair admission",
+      "desc": "Country hitmaker ERNEST opens the fair's Hard Rock Casino Tejon concert series on opening night.",
+      "link": "https://www.kerncountyfair.com/events/kc-fair/concerts",
+      "schedule": {
+        "date": "2026-09-23"
+      },
+      "area": "citywide",
+      "start": "20:00",
+      "end": null
+    },
+    {
+      "id": "ce_fair_collectivesoul",
+      "name": "Collective Soul at the Kern County Fair",
+      "emoji": "🎤",
+      "category": "Music",
+      "venue": "Budweiser Pavilion, Kern County Fairgrounds",
+      "address": "1142 South P St, Bakersfield, CA 93307",
+      "lat": null,
+      "lng": null,
+      "when": "Thu Sep 24 · 8pm",
+      "cost": "Free with fair admission",
+      "desc": "'90s rock mainstays Collective Soul headline the fair's second concert night.",
+      "link": "https://www.kerncountyfair.com/events/kc-fair/concerts",
+      "schedule": {
+        "date": "2026-09-24"
+      },
+      "area": "citywide",
+      "start": "20:00",
+      "end": null
+    },
+    {
+      "id": "ce_fair_bnl",
+      "name": "Barenaked Ladies at the Kern County Fair",
+      "emoji": "🎶",
+      "category": "Music",
+      "venue": "Budweiser Pavilion, Kern County Fairgrounds",
+      "address": "1142 South P St, Bakersfield, CA 93307",
+      "lat": null,
+      "lng": null,
+      "when": "Fri Sep 25 · 8pm",
+      "cost": "Free with fair admission",
+      "desc": "Canadian alt-rock favorites Barenaked Ladies play the fair's Budweiser Pavilion.",
+      "link": "https://www.kerncountyfair.com/events/kc-fair/concerts",
+      "schedule": {
+        "date": "2026-09-25"
+      },
+      "area": "citywide",
+      "start": "20:00",
+      "end": null
+    },
+    {
+      "id": "ce_fair_ezequielpena",
+      "name": "Ezequiel Peña at the Kern County Fair",
+      "emoji": "🎺",
+      "category": "Music",
+      "venue": "Budweiser Pavilion, Kern County Fairgrounds",
+      "address": "1142 South P St, Bakersfield, CA 93307",
+      "lat": null,
+      "lng": null,
+      "when": "Sun Sep 27 · 8pm",
+      "cost": "Free with fair admission",
+      "desc": "Regional Mexican ranchera star Ezequiel Peña performs a fair concert night.",
+      "link": "https://www.kerncountyfair.com/events/kc-fair/concerts",
+      "schedule": {
+        "date": "2026-09-27"
+      },
+      "area": "citywide",
+      "start": "20:00",
+      "end": null
+    },
+    {
+      "id": "ce_fair_gretchenwilson",
+      "name": "Gretchen Wilson at the Kern County Fair",
+      "emoji": "🤠",
+      "category": "Music",
+      "venue": "Budweiser Pavilion, Kern County Fairgrounds",
+      "address": "1142 South P St, Bakersfield, CA 93307",
+      "lat": null,
+      "lng": null,
+      "when": "Mon Sep 28 · 8pm",
+      "cost": "Free with fair admission",
+      "desc": "'Redneck Woman' country singer Gretchen Wilson takes the fair stage.",
+      "link": "https://www.kerncountyfair.com/events/kc-fair/concerts",
+      "schedule": {
+        "date": "2026-09-28"
+      },
+      "area": "citywide",
+      "start": "20:00",
+      "end": null
+    },
+    {
+      "id": "ce_fair_carlypearce",
+      "name": "Carly Pearce at the Kern County Fair",
+      "emoji": "🎙️",
+      "category": "Music",
+      "venue": "Budweiser Pavilion, Kern County Fairgrounds",
+      "address": "1142 South P St, Bakersfield, CA 93307",
+      "lat": null,
+      "lng": null,
+      "when": "Wed Sep 30 · 8pm",
+      "cost": "Free with fair admission",
+      "desc": "Grammy-winning country artist Carly Pearce headlines a fair concert night.",
+      "link": "https://www.kerncountyfair.com/events/kc-fair/concerts",
+      "schedule": {
+        "date": "2026-09-30"
+      },
+      "area": "citywide",
+      "start": "20:00",
+      "end": null
+    },
+    {
+      "id": "ce_fair_daughtry",
+      "name": "Daughtry at the Kern County Fair",
+      "emoji": "🎸",
+      "category": "Music",
+      "venue": "Budweiser Pavilion, Kern County Fairgrounds",
+      "address": "1142 South P St, Bakersfield, CA 93307",
+      "lat": null,
+      "lng": null,
+      "when": "Thu Oct 1 · 8pm",
+      "cost": "Free with fair admission",
+      "desc": "Multi-platinum rock band Daughtry brings arena anthems to the fair's Budweiser Pavilion.",
+      "link": "https://www.kerncountyfair.com/events/kc-fair/concerts",
+      "schedule": {
+        "date": "2026-10-01"
+      },
+      "area": "citywide",
+      "start": "20:00",
+      "end": null
+    },
+    {
+      "id": "ce_fair_90srewind",
+      "name": "'90s Rewind: Sugarhill Gang, Naughty by Nature & C+C Music Factory",
+      "emoji": "📻",
+      "category": "Music",
+      "venue": "Budweiser Pavilion, Kern County Fairgrounds",
+      "address": "1142 South P St, Bakersfield, CA 93307",
+      "lat": null,
+      "lng": null,
+      "when": "Fri Oct 2 · 8pm",
+      "cost": "Free with fair admission",
+      "desc": "A '90s hip-hop and dance throwback with Naughty by Nature, The Sugarhill Gang, and C+C Music Factory.",
+      "link": "https://www.kerncountyfair.com/events/kc-fair/concerts",
+      "schedule": {
+        "date": "2026-10-02"
+      },
+      "area": "citywide",
+      "start": "20:00",
+      "end": null
+    },
+    {
+      "id": "ce_fair_joenichols",
+      "name": "Joe Nichols at the Kern County Fair",
+      "emoji": "🎻",
+      "category": "Music",
+      "venue": "Budweiser Pavilion, Kern County Fairgrounds",
+      "address": "1142 South P St, Bakersfield, CA 93307",
+      "lat": null,
+      "lng": null,
+      "when": "Sat Oct 3 · 8pm",
+      "cost": "Free with fair admission",
+      "desc": "Country traditionalist Joe Nichols performs on the fair's final Saturday.",
+      "link": "https://www.kerncountyfair.com/events/kc-fair/concerts",
+      "schedule": {
+        "date": "2026-10-03"
+      },
+      "area": "citywide",
+      "start": "20:00",
+      "end": null
+    },
+    {
+      "id": "ce_fuerzaregida",
+      "name": "Fuerza Regida: This Is Our Dream Tour",
+      "emoji": "🎶",
+      "category": "Music",
+      "venue": "Mechanics Bank Arena",
+      "address": "1001 Truxtun Ave, Bakersfield, CA 93301",
+      "lat": null,
+      "lng": null,
+      "when": "Sat Oct 24 · 8:30pm",
+      "cost": null,
+      "desc": "Chart-topping corridos and regional Mexican act Fuerza Regida headlines the downtown arena.",
+      "link": "https://www.axs.com/events/1543868/fuerza-regida-tickets",
+      "schedule": {
+        "date": "2026-10-24"
+      },
+      "area": "downtown",
+      "start": "20:30",
+      "end": null
+    },
+    {
+      "id": "ce_disneyonice",
+      "name": "Disney On Ice: Find Your Hero",
+      "emoji": "⛸️",
+      "category": "Family",
+      "venue": "Mechanics Bank Arena",
+      "address": "1001 Truxtun Ave, Bakersfield, CA 93301",
+      "lat": null,
+      "lng": null,
+      "when": "Fri Oct 9 · 7pm (multiple performances)",
+      "cost": null,
+      "desc": "Disney characters take the ice in a family skating spectacular at the downtown arena.",
+      "link": "https://www.dignityhealtharena.com/events-tickets/",
+      "schedule": {
+        "date": "2026-10-09"
+      },
+      "area": "downtown",
+      "start": "19:00",
+      "end": null
+    },
+    {
+      "id": "ce_bso_tradition",
+      "name": "Bakersfield Symphony: Music from Tradition",
+      "emoji": "🎻",
+      "category": "Music",
+      "venue": "Mechanics Bank Theater",
+      "address": "1001 Truxtun Ave, Bakersfield, CA 93301",
+      "lat": null,
+      "lng": null,
+      "when": "Sat Oct 3 · 6:30pm",
+      "cost": null,
+      "desc": "The symphony performs Bartok, Dvorak and Ligeti with violinist Jackson Snead on Sarasate's Zigeunerweisen.",
+      "link": "https://www.bsonow.org/calendar",
+      "schedule": {
+        "date": "2026-10-03"
+      },
+      "area": "downtown",
+      "start": "18:30",
+      "end": null
+    },
+    {
+      "id": "ce_greekfoodfest",
+      "name": "St. George Bakersfield Greek Food Festival",
+      "emoji": "🥙",
+      "category": "Food",
+      "venue": "St. George Greek Orthodox Church",
+      "address": "401 Truxtun Ave, Bakersfield, CA 93301",
+      "lat": null,
+      "lng": null,
+      "when": "Fri–Sun Oct 9–11",
+      "cost": "Free admission",
+      "desc": "Annual celebration of Greek culture with authentic food, pastries, music, and dancing.",
+      "link": "https://www.bakersfieldgreekfoodfestival.org/",
+      "schedule": {
+        "date": "2026-10-09"
+      },
+      "area": "citywide",
+      "start": null,
+      "end": null
+    },
+    {
+      "id": "ce_bc_ventura",
+      "name": "Bakersfield College Football vs. Ventura (Heroes Night)",
+      "emoji": "🏈",
+      "category": "Sports",
+      "venue": "Memorial Stadium, Bakersfield College",
+      "address": "1801 Panorama Dr, Bakersfield, CA 93305",
+      "lat": null,
+      "lng": null,
+      "when": "Sat Sep 12",
+      "cost": null,
+      "desc": "The Renegades host Ventura College on Heroes Night during their 100th football season.",
+      "link": "https://www.gogades.com/sports/fball/2026-27/schedule",
+      "schedule": {
+        "date": "2026-09-12"
+      },
+      "area": "citywide",
+      "start": null,
+      "end": null
+    },
+    {
+      "id": "ce_bc_fullerton",
+      "name": "Bakersfield College Football vs. Fullerton (Homecoming)",
+      "emoji": "🏈",
+      "category": "Sports",
+      "venue": "Memorial Stadium, Bakersfield College",
+      "address": "1801 Panorama Dr, Bakersfield, CA 93305",
+      "lat": null,
+      "lng": null,
+      "when": "Sat Oct 17",
+      "cost": null,
+      "desc": "Renegades homecoming game against Fullerton College at Memorial Stadium.",
+      "link": "https://www.gogades.com/sports/fball/2026-27/schedule",
+      "schedule": {
+        "date": "2026-10-17"
+      },
+      "area": "citywide",
+      "start": null,
+      "end": null
+    },
+    {
+      "id": "ce_csub_volleyball",
+      "name": "CSUB Volleyball Home Opener vs. Weber State",
+      "emoji": "🏐",
+      "category": "Sports",
+      "venue": "Icardo Center, CSU Bakersfield",
+      "address": "9001 Stockdale Hwy, Bakersfield, CA 93311",
+      "lat": null,
+      "lng": null,
+      "when": "Fri Sep 4 · 6pm",
+      "cost": null,
+      "desc": "The Roadrunners open their home volleyball slate against Weber State with a rally-towel giveaway.",
+      "link": "https://gorunners.com/sports/womens-volleyball/schedule",
+      "schedule": {
+        "date": "2026-09-04"
+      },
+      "area": "citywide",
+      "start": "18:00",
+      "end": null
+    },
+    {
+      "id": "ce_jlb_oktoberfest",
+      "name": "Junior League Oktoberfest: Brews for Books",
+      "emoji": "🍻",
+      "category": "Community",
+      "venue": "Junior League of Bakersfield Community Center",
+      "address": "1928 19th St, Bakersfield, CA 93301",
+      "lat": null,
+      "lng": null,
+      "when": "Early October · evening (verify date)",
+      "cost": null,
+      "desc": "Annual fundraiser with a beer garden, yard games, themed food, and costume contest benefiting literacy.",
+      "link": "https://www.jlbakersfield.org/oktoberfest",
+      "schedule": {
+        "ongoing": true
+      },
+      "area": "downtown",
+      "start": null,
+      "end": null
+    },
+    {
+      "id": "ce_foodtrucks_fair",
+      "name": "Food Trucks at the Fairgrounds",
+      "emoji": "🚚",
+      "category": "Food",
+      "venue": "Kern County Fairgrounds",
+      "address": "1142 S P Street, Bakersfield, CA 93307",
+      "lat": null,
+      "lng": null,
+      "when": "3rd Thursday monthly · evening (Sep 17, Oct 15)",
+      "cost": "Free entry",
+      "desc": "Monthly gathering of local food trucks in one spot for a family-friendly food night.",
+      "link": "https://kerncountyfamily.com/PublicCalendarDetail/1349/Food-Trucks-at-the-Fairgrounds",
+      "schedule": {
+        "weekday": 4,
+        "weeks": [
+          3
+        ]
+      },
+      "area": "citywide",
+      "start": null,
+      "end": null
+    },
+    {
+      "id": "ce_temblor_trivia",
+      "name": "Pub Trivia at Temblor Brewing",
+      "emoji": "🧠",
+      "category": "Nightlife",
+      "venue": "Temblor Brewing Company",
+      "address": "3200 Buck Owens Blvd Ste 200, Bakersfield, CA 93308",
+      "lat": null,
+      "lng": null,
+      "when": "Every Tuesday · 7–9pm",
+      "cost": "Free",
+      "desc": "Free all-ages pub trivia with prizes for winning teams at this craft brewery gastropub.",
+      "link": "https://temblorbrewing.com/events/pub-trivia-tuesday-at-temblor-brewing/",
+      "schedule": {
+        "weekday": 2
+      },
+      "area": "citywide",
+      "start": "19:00",
+      "end": "21:00"
+    },
+    {
+      "id": "ce_crusader_trivia",
+      "name": "King Trivia at Crusader Brewing",
+      "emoji": "👑",
+      "category": "Nightlife",
+      "venue": "Crusader Brewing Company",
+      "address": "5880 District Blvd Ste 18, Bakersfield, CA 93313",
+      "lat": null,
+      "lng": null,
+      "when": "Every Tuesday · 7pm",
+      "cost": "Free",
+      "desc": "Weekly King Trivia night at this veteran-owned craft brewery in southwest Bakersfield.",
+      "link": "https://crusaderbrewing.com/events/king-trivia/",
+      "schedule": {
+        "weekday": 2
+      },
+      "area": "citywide",
+      "start": "19:00",
+      "end": null
+    },
+    {
+      "id": "ce_bmoa_firstfri",
+      "name": "Bakersfield Museum of Art First Friday",
+      "emoji": "🖼️",
+      "category": "Art",
+      "venue": "Bakersfield Museum of Art",
+      "address": "1930 R Street, Bakersfield, CA 93301",
+      "lat": null,
+      "lng": null,
+      "when": "First Friday monthly · free admission, open late to 8pm",
+      "cost": "Free",
+      "desc": "The museum offers complimentary admission and extended hours every first Friday as part of downtown's arts night.",
+      "link": "https://www.bmoa.org/events",
+      "schedule": {
+        "weekday": 5,
+        "weeks": [
+          1
+        ]
+      },
+      "area": "downtown",
+      "start": "20:00",
+      "end": null
+    },
+    {
+      "id": "ce_beale_storytime",
+      "name": "Storytime & Stay-and-Play at Beale Library",
+      "emoji": "📚",
+      "category": "Family",
+      "venue": "Beale Memorial Library",
+      "address": "701 Truxtun Ave, Bakersfield, CA 93301",
+      "lat": null,
+      "lng": null,
+      "when": "Wednesdays · storytime & Stay-and-Play",
+      "cost": "Free",
+      "desc": "Free weekly children's storytime and play program at the county's main downtown library.",
+      "link": "https://kerncountylibrary.org/",
+      "schedule": {
+        "weekday": 3
+      },
+      "area": "downtown",
+      "start": null,
+      "end": null
+    },
+    {
+      "id": "ce_villagefest",
+      "name": "30th Annual VillageFest",
+      "emoji": "🍺",
+      "category": "Festival",
+      "venue": "Kern County Museum",
+      "address": "3801 Chester Ave, Bakersfield, CA 93301",
+      "lat": null,
+      "lng": null,
+      "when": "Sat Sep 12 · 6–10pm",
+      "cost": null,
+      "desc": "Bakersfield's longest-running beer, wine, food and music festival with samples from 30+ local restaurants.",
+      "link": "https://www.bakersfieldvillagefest.com/",
+      "schedule": {
+        "date": "2026-09-12"
+      },
+      "area": "citywide",
+      "start": "18:00",
+      "end": "22:00"
+    },
+    {
+      "id": "ce_kern_fair",
+      "name": "Kern County Fair 2026",
+      "emoji": "🎡",
+      "category": "Festival",
+      "venue": "Kern County Fairgrounds",
+      "address": "1142 S P Street, Bakersfield, CA 93307",
+      "lat": null,
+      "lng": null,
+      "when": "Sep 23 – Oct 4 · daily",
+      "cost": null,
+      "desc": "The 110th annual 12-day county fair with carnival rides, concerts, livestock, food and exhibits.",
+      "link": "https://www.kerncountyfair.com/",
+      "schedule": {
+        "ongoing": true
+      },
+      "area": "citywide",
+      "start": null,
+      "end": null
+    },
+    {
+      "id": "ce_murray_pumpkin",
+      "name": "Murray Family Farms Pumpkin Patch & Fall Harvest Festival",
+      "emoji": "🎃",
+      "category": "Family",
+      "venue": "Murray Family Farms",
+      "address": "6700 General Beale Rd, Bakersfield, CA 93307",
+      "lat": null,
+      "lng": null,
+      "when": "Oct 1 – Oct 31 · daily",
+      "cost": null,
+      "desc": "Bakersfield's marquee fall festival with 50,000+ pumpkins, corn maze, wagon rides, sunflowers and kids' attractions.",
+      "link": "https://www.murrayfamilyfarms.org/pumpkin-patch",
+      "schedule": {
+        "ongoing": true
+      },
+      "area": "citywide",
+      "start": null,
+      "end": null
+    },
+    {
+      "id": "ce_banducci_pumpkin",
+      "name": "Banducci Family Pumpkin Patch",
+      "emoji": "🎃",
+      "category": "Family",
+      "venue": "Banducci Family Pumpkin Patch",
+      "address": "10747 Taft Hwy, Bakersfield, CA 93311",
+      "lat": null,
+      "lng": null,
+      "when": "Throughout October",
+      "cost": null,
+      "desc": "Family pumpkin patch with a corn maze, pony rides, snacks and picnic area on Taft Highway.",
+      "link": "https://www.turnto23.com/news/in-your-neighborhood/bakersfield/banduccis-family-pumpkin-patch",
+      "schedule": {
+        "ongoing": true
+      },
+      "area": "citywide",
+      "start": null,
+      "end": null
+    },
+    {
+      "id": "ce_cherry_acres_pumpkin",
+      "name": "Cherry Acres Pumpkin Patch",
+      "emoji": "🍂",
+      "category": "Family",
+      "venue": "Cherry Acres",
+      "address": "4011 Wegis Ave, Bakersfield, CA 93314",
+      "lat": null,
+      "lng": null,
+      "when": "Throughout October",
+      "cost": null,
+      "desc": "Northwest Bakersfield pumpkin patch and fall farm activities for families.",
+      "link": "https://www.cherry-acres.com/",
+      "schedule": {
+        "ongoing": true
+      },
+      "area": "citywide",
+      "start": null,
+      "end": null
+    },
+    {
+      "id": "ce_boo_zoo",
+      "name": "Boo at the Zoo (CALM)",
+      "emoji": "🦉",
+      "category": "Family",
+      "venue": "California Living Museum (CALM Zoo)",
+      "address": "10500 Alfred Harrell Hwy, Bakersfield, CA 93306",
+      "lat": null,
+      "lng": null,
+      "when": "Oct 16–20 · 9am–4pm",
+      "cost": "$12 adults, $5 kids 3–12",
+      "desc": "Family Halloween event at the zoo with costume trick-or-treating, games, crafts and animals receiving pumpkin treats.",
+      "link": "https://calmzoo.org/events/",
+      "schedule": {
+        "ongoing": true
+      },
+      "area": "citywide",
+      "start": "09:00",
+      "end": "16:00"
+    },
+    {
+      "id": "ce_halloween_town",
+      "name": "Bakersfield Halloween Town",
+      "emoji": "👻",
+      "category": "Festival",
+      "venue": "Halloween Town",
+      "address": "6328 E Brundage Ln, Bakersfield, CA 93307",
+      "lat": null,
+      "lng": null,
+      "when": "Throughout October · evenings",
+      "cost": null,
+      "desc": "Seasonal Halloween attraction with a haunted experience, pumpkin patch and family activities all October.",
+      "link": "https://www.kget.com/news/local-news/2025-halloween-events-bakersfield-kern-county/",
+      "schedule": {
+        "ongoing": true
+      },
+      "area": "citywide",
+      "start": null,
+      "end": null
+    },
+    {
+      "id": "ce_ovation_jlp",
+      "name": "Jagged Little Pill – The Ovation Theatre",
+      "emoji": "🎭",
+      "category": "Theater",
+      "venue": "The Ovation Theatre",
+      "address": "1622 19th St, Bakersfield, CA 93301",
+      "lat": null,
+      "lng": null,
+      "when": "Oct 9 – Nov 1 · select showtimes",
+      "cost": null,
+      "desc": "Alanis Morissette's Tony-winning rock musical staged by Bakersfield's downtown repertory theatre.",
+      "link": "https://theovationtheatre.com/shows/",
+      "schedule": {
+        "ongoing": true
+      },
+      "area": "downtown",
+      "start": null,
+      "end": null
+    },
+    {
+      "id": "ce_judgment_5k",
+      "name": "Judgment Day Half Marathon, 10K & 5K Run/Walk",
+      "emoji": "🏃",
+      "category": "Fitness",
+      "venue": "Bakersfield (see race site)",
+      "address": "Bakersfield, CA 93309",
+      "lat": null,
+      "lng": null,
+      "when": "Sun Oct 4 · morning",
+      "cost": null,
+      "desc": "Fall road race weekend offering a half marathon, 10K and 5K run/walk for all levels.",
+      "link": "https://runsignup.com/Race/CA/Bakersfield/JudgmentDayHalfMarathon",
+      "schedule": {
+        "date": "2026-10-04"
+      },
+      "area": "citywide",
+      "start": null,
+      "end": null
+    },
+    {
+      "id": "ce_lakeevans_tri",
+      "name": "Lake Evans Triathlon, 5K & 10K",
+      "emoji": "🏊",
+      "category": "Fitness",
+      "venue": "Hart Memorial Park (Lake Evans)",
+      "address": "Alfred Harrell Hwy, Bakersfield, CA 93306",
+      "lat": null,
+      "lng": null,
+      "when": "Sun Oct 18 · morning",
+      "cost": null,
+      "desc": "Community triathlon at Hart Park's Lake Evans with standalone 5K and 10K run options.",
+      "link": "https://www.trisignup.com/Race/CA/Bakersfield/LakeEvansTriathlon",
+      "schedule": {
+        "date": "2026-10-18"
+      },
+      "area": "citywide",
+      "start": null,
+      "end": null
+    },
+    {
+      "id": "ce_monstermash_5k",
+      "name": "Bakersfield Monster Mash Dash 5K",
+      "emoji": "🧟",
+      "category": "Fitness",
+      "venue": "Bakersfield (see race site)",
+      "address": "Bakersfield, CA 93301",
+      "lat": null,
+      "lng": null,
+      "when": "Sun Oct 25 · morning",
+      "cost": null,
+      "desc": "Halloween-themed 5K run/walk with costumes and fall festivities.",
+      "link": "https://www.findtherun.com/races/bakersfield-ca/5K",
+      "schedule": {
+        "date": "2026-10-25"
+      },
+      "area": "citywide",
+      "start": null,
+      "end": null
+    },
+    {
+      "id": "ce_diamuertos_run",
+      "name": "Dia de los Muertos Half Marathon & 5K Run/Walk",
+      "emoji": "💀",
+      "category": "Community",
+      "venue": "Yokuts Park",
+      "address": "4200 Empire Dr, Bakersfield, CA 93309",
+      "lat": null,
+      "lng": null,
+      "when": "Sat Oct 24 · from 7:45am",
+      "cost": null,
+      "desc": "Day-of-the-Dead race with folklorico dancing, live music, a colorful altar, tacos and pan dulce.",
+      "link": "https://runsignup.com/Race/CA/Bakersfield/DIADELOSMUERTOS5KRUNWALKBAKERSFIELD",
+      "schedule": {
+        "date": "2026-10-24"
+      },
+      "area": "citywide",
+      "start": "07:45",
+      "end": null
     }
   ],
   "city_events_archive": [
