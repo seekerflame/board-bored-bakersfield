@@ -1022,6 +1022,18 @@
           "note": "Latin American plates + seafood, dinner till midnight right on the corridor. Patio Club (21+) goes till 1:30am.",
           "instagram": "zamalatinamericancuisine",
           "website": "zamalatinamericancuisine.com"
+        },
+        {
+          "id": "biz_008",
+          "name": "Art with Heart",
+          "emoji": "🎨",
+          "category": "Gallery & Studio",
+          "lat": 35.377625,
+          "lng": -119.018896,
+          "address": "2021 Chester Ave, Bakersfield, CA 93301",
+          "note": "Art gallery & studio, runs Form Fridays drop-in classes. Interested in First Friday — confirm night-of hours with Nick.",
+          "instagram": "",
+          "website": ""
         }
       ],
       "record": {
