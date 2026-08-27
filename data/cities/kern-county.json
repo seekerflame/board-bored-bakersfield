@@ -1,0 +1,16 @@
+{
+  "_readme": "Config for tools/ingest_events.js. This is the pilot city — Kern County is deliberately the test case for the multi-city franchise plan in AUDIT.md §5. A new city is a new file like this one plus a new --board-json target; no code changes.",
+  "name": "Bakersfield",
+  "stateCode": "CA",
+  "ticketmasterCity": "Bakersfield",
+  "boardJsonPath": "data/board.json",
+  "bbox": { "minLat": 34.7, "maxLat": 36.1, "minLng": -120.3, "maxLng": -118.0 },
+  "sources": [
+    { "type": "ticketmaster" },
+    { "type": "meetup" },
+    {
+      "type": "ics",
+      "feeds": []
+    }
+  ]
+}
