@@ -112,10 +112,12 @@
   </footer>
 </div>
 
+<script src="../lib/safe.js"></script>
 <script src="../lib/cal.js"></script>
 <script>
 (function(){
   var $=function(id){return document.getElementById(id)};
+  var esc=BBSafe.esc, safeUrl=BBSafe.safeUrl;
   var MON=["January","February","March","April","May","June","July","August","September","October","November","December"];
   var MOS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
   var DOWL=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
@@ -153,9 +155,9 @@
     if(ongoing.length){
       var ob=$("onview");ob.style.display="block";
       ob.innerHTML='<b>🖼️ On view now:</b> '+ongoing.map(function(e){
-        return (e.emoji?e.emoji+" ":"")+e.name+(e.venue?' <span style="color:var(--mut)">· '+e.venue+'</span>':"");
+        return (e.emoji?esc(e.emoji)+" ":"")+esc(e.name)+(e.venue?' <span style="color:var(--mut)">· '+esc(e.venue)+'</span>':"");
       }).join(" &nbsp;·&nbsp; ")+'<div style="margin-top:8px">'+ongoing.map(function(e){
-        return '<a href="'+bbCal.gcal(e)+'" target="_blank" rel="noopener">＋ Add to calendar</a>';
+        return '<a href="'+safeUrl(bbCal.gcal(e))+'" target="_blank" rel="noopener">＋ Add to calendar</a>';
       }).join("")+'</div>';
     }
 
@@ -177,10 +179,10 @@
       evs.forEach(function(e){
         var tm=e.allday||!e.start?"All day":bbCal.pretty(e.start)+(e.end?"–"+bbCal.pretty(e.end):"");
         var el=document.createElement("div");el.className="ev";
-        var links='<a class="gcal" href="'+bbCal.gcal(e,D)+'" target="_blank" rel="noopener">＋ Google Calendar</a>';
+        var links='<a class="gcal" href="'+safeUrl(bbCal.gcal(e,D))+'" target="_blank" rel="noopener">＋ Google Calendar</a>';
         if(e.address)links+='<a href="https://www.google.com/maps/dir/?api=1&destination='+encodeURIComponent(e.address)+'" target="_blank" rel="noopener">🧭 Directions</a>';
-        if(e.link)links+='<a href="'+e.link+'" target="_blank" rel="noopener">Info</a>';
-        el.innerHTML='<div class="top"><span class="tm">'+tm+'</span><span class="nm">'+(e.emoji?e.emoji+" ":"")+e.name+'</span>'+(e.flagship?'<span class="ff">Flagship</span>':"")+'</div>'+(e.venue?'<div class="venue">'+e.venue+'</div>':"")+(e.desc?'<div class="desc">'+e.desc+'</div>':"")+'<div class="links">'+links+'</div>';
+        if(e.link)links+='<a href="'+safeUrl(e.link)+'" target="_blank" rel="noopener">Info</a>';
+        el.innerHTML='<div class="top"><span class="tm">'+tm+'</span><span class="nm">'+(e.emoji?esc(e.emoji)+" ":"")+esc(e.name)+'</span>'+(e.flagship?'<span class="ff">Flagship</span>':"")+'</div>'+(e.venue?'<div class="venue">'+esc(e.venue)+'</div>':"")+(e.desc?'<div class="desc">'+esc(e.desc)+'</div>':"")+'<div class="links">'+links+'</div>';
         panel.appendChild(el);
       });
       return panel;

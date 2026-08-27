@@ -2,16 +2,35 @@ name: Deploy Pages
 on:
   push:
     branches: [main]
+  pull_request:
   workflow_dispatch:
 permissions:
   contents: read
   pages: write
   id-token: write
 concurrency:
-  group: pages
+  # Per-ref so a PR validation run never cancels an in-flight main deploy.
+  group: pages-${{ github.ref }}
   cancel-in-progress: true
 jobs:
+  # Gate: a malformed board.json (bad JSON, swapped lat/lng, a "javascript:"
+  # link) or a broken core module fails here BEFORE anything deploys.
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Validate board.json
+        run: node tools/validate-board.js
+      - name: Unit tests (sanitizer + offline queue)
+        run: node tools/test.js
+
   deploy:
+    needs: validate
+    # Only publish from main; PRs run validate only.
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     environment:
       name: github-pages

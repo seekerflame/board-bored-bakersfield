@@ -85,9 +85,11 @@
   </footer>
 </div>
 
+<script src="lib/safe.js"></script>
 <script>
 (function(){
   var $=function(id){return document.getElementById(id)};
+  var esc=BBSafe.esc;
 
   function fmtDate(iso){
     var p=iso.split("-"); if(p.length!==3)return iso;
@@ -114,7 +116,7 @@
     entries.forEach(function(e){
       var el=document.createElement("div");el.className="tl-item"+(e.upcoming?" upcoming":"");
       el.innerHTML='<div class="tl-date">'+fmtDate(e.date)+(e.upcoming?" · next up":"")+'</div>'+
-        '<div class="tl-note">'+e.note+'</div>';
+        '<div class="tl-note">'+esc(e.note)+'</div>';
       box.appendChild(el);
     });
 
@@ -148,7 +150,7 @@
         var inner=document.createElement("div");inner.className="tlinner";
         groups[mk].forEach(function(e){
           var el=document.createElement("div");el.className="tl-item";
-          el.innerHTML='<div class="tl-date">'+fmtDate(e.date)+'</div><div class="tl-note">'+e.note+'</div>';
+          el.innerHTML='<div class="tl-date">'+fmtDate(e.date)+'</div><div class="tl-note">'+esc(e.note)+'</div>';
           inner.appendChild(el);
         });
         det.appendChild(inner);cb.appendChild(det);
