@@ -68,6 +68,7 @@
   .alt a{color:var(--acc2);font-weight:700;text-decoration:none}
   footer{margin-top:24px;text-align:center;font-family:var(--display);font-style:italic;font-size:13px;color:var(--mut);line-height:1.8}
   footer a{color:var(--acc2);font-weight:600;text-decoration:none}
+  .hp{position:absolute;left:-9999px;top:-9999px;height:0;width:0;overflow:hidden}
 </style>
 </head>
 <body>
@@ -93,6 +94,8 @@
 
   <h2 class="sec">Become a partner</h2>
   <form id="form">
+    <div class="hp" aria-hidden="true"><label for="pWebsite2">Leave this field blank</label>
+      <input id="pWebsite2" name="website2" tabindex="-1" autocomplete="off"></div>
     <label for="pOrg">Your org / venue / name <span class="req">*</span></label>
     <input id="pOrg" required placeholder="e.g. Dagny's Coffee, or Jane Doe Presents">
 
@@ -159,6 +162,7 @@
     e.preventDefault();
     var st=$("status");st.className="status";st.textContent="";
     var payload={
+      hp:$("pWebsite2").value,
       org:$("pOrg").value.trim(),
       about:$("pAbout").value.trim(),
       cadence:$("pCadence").value,

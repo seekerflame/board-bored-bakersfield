@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>What to see in Kern? — Board Bored</title>
+<meta name="description" content="Tell us what you want to see happen in Kern County — we organize it.">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#ca421a">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<style>
+  :root{--ink:#141116;--pap:#faf7f2;--card:#fff;--acc:#ca421a;--acc2:#167f68;--line:#948d88;--mut:#5a5450;}
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  body{font-family:-apple-system,"Helvetica Neue",Arial,sans-serif;background:var(--pap);color:var(--ink);
+    min-height:100dvh;padding:20px 16px 40px}
+  .wrap{width:100%;max-width:520px;margin:0 auto}
+  .mark{font-size:13px;letter-spacing:4px;font-weight:900;text-transform:uppercase;color:var(--acc);text-decoration:none}
+  h1{font-size:clamp(26px,7vw,32px);line-height:1.05;letter-spacing:-.5px;margin:10px 0 8px}
+  .tag{color:var(--mut);font-size:15px;line-height:1.5;margin-bottom:16px}
+  .card{background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:18px;margin-bottom:14px}
+  label{display:block;font-size:11px;font-weight:800;color:var(--mut);text-transform:uppercase;letter-spacing:.5px;margin:16px 0 6px}
+  label:first-of-type{margin-top:0}
+  input,textarea{width:100%;font:inherit;font-size:16px;padding:14px;border:1.5px solid var(--line);
+    border-radius:11px;background:#fffdfa}
+  input:focus,textarea:focus{outline:2px solid var(--acc);border-color:var(--acc)}
+  textarea{min-height:120px;resize:vertical}
+  .btn{appearance:none;border:0;cursor:pointer;font:inherit;font-weight:800;font-size:17px;border-radius:14px;
+    padding:16px;width:100%;margin-top:18px;color:#fff;background:var(--acc);min-height:52px}
+  .btn:disabled{opacity:.6;cursor:default}
+  .status{font-size:14px;font-weight:700;margin-top:10px;min-height:18px}
+  .status.err{color:#b3261e}
+  .success{display:none;text-align:center;padding:26px 10px}
+  .success .big{font-size:48px;margin-bottom:8px}
+  .hp{position:absolute;left:-9999px;top:-9999px;height:0;width:0;overflow:hidden}
+  footer{margin-top:22px;text-align:center;font-size:12px;color:var(--mut);line-height:1.7}
+  footer a{color:var(--acc2);font-weight:700;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="mark" href="./">● Board Bored</a>
+  <h1>💡 What to see in Kern?</h1>
+  <p class="tag">Tell us what you'd love to see happen around Kern County — an event, a business, a kind of night out that's missing. We read every one of these.</p>
+
+  <form id="formIdea" class="card" novalidate>
+    <div class="hp" aria-hidden="true"><label for="idWebsite2">Leave this field blank</label>
+      <input id="idWebsite2" name="website2" tabindex="-1" autocomplete="off"></div>
+
+    <label for="idText">I'd love to see…</label>
+    <textarea id="idText" placeholder="A night market downtown, a board game cafe, more all-ages shows…" required></textarea>
+
+    <label for="idContact">Want us to follow up? Leave a contact (optional)</label>
+    <input id="idContact" type="text" inputmode="email" placeholder="Phone, email, or @instagram" autocomplete="off">
+
+    <button class="btn" type="submit" id="idSend">Send</button>
+    <div class="status" id="idStatus"></div>
+  </form>
+
+  <div class="success" id="idDone">
+    <div class="big">💡</div>
+    <h1>Got it — thank you.</h1>
+    <p class="tag">We read every idea before we plan what's next.</p>
+  </div>
+
+  <footer>
+    Board Bored · <a href="./">Back to the map</a>
+  </footer>
+</div>
+
+<script src="lib/pwa.js"></script>
+<script src="lib/api.js"></script>
+<script>
+(function(){
+  var $ = function(id){ return document.getElementById(id); };
+  var API_ENDPOINT = (window.bbApi && bbApi.API_BASE ? bbApi.API_BASE : "") + "/api/feedback";
+  var CONTACT_EMAIL = "boardquestionmark@gmail.com";
+
+  function mailFallback(text){
+    location.href = "mailto:" + CONTACT_EMAIL + "?subject=" + encodeURIComponent("What I want to see in Kern") +
+      "&body=" + encodeURIComponent(text);
+  }
+
+  $("formIdea").addEventListener("submit", function(e){
+    e.preventDefault();
+    var st = $("idStatus");
+    var text = $("idText").value.trim();
+    if (!text) { st.className = "status err"; st.textContent = "Tell us what you'd love to see — even one line."; return; }
+
+    var payload = {
+      hp: $("idWebsite2").value,
+      role: "idea",
+      what_to_fix: text,
+      contact: $("idContact").value.trim(),
+    };
+
+    $("idSend").disabled = true;
+    st.className = "status"; st.textContent = "Sending…";
+
+    var onSent = function(){
+      $("formIdea").style.display = "none";
+      $("idDone").style.display = "block";
+    };
+    var onQueued = function(){
+      $("formIdea").style.display = "none";
+      $("idDone").style.display = "block";
+      $("idDone").querySelector(".tag").textContent = "Saved — you're offline, we'll send it the moment you're back on.";
+    };
+    var onFail = function(){
+      $("idSend").disabled = false;
+      st.className = "status err";
+      st.textContent = "Couldn't send — try again, or email " + CONTACT_EMAIL + " directly.";
+      mailFallback(text + (payload.contact ? "\n\nContact: " + payload.contact : ""));
+    };
+
+    if (window.BB && window.BB.submit) {
+      window.BB.submit(API_ENDPOINT, payload).then(function(res){
+        if (res.queued) onQueued();
+        else if (res.ok) onSent();
+        else onFail();
+      });
+    } else {
+      fetch(API_ENDPOINT, {
+        method: "POST",
+        headers: { "Accept": "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      }).then(function(r){ if (r.ok) onSent(); else onFail(); }).catch(onFail);
+    }
+  });
+})();
+</script>
+</body>
+</html>

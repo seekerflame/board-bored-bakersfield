@@ -106,7 +106,7 @@
       <div class="t">Get your shop<br>on the map</div>
       <div class="s">Storefront or sidewalk spot</div>
     </a>
-    <a class="card" id="ideaCta" href="mailto:boardquestionmark@gmail.com?subject=What%20I%20want%20to%20see%20in%20Kern&body=I%27d%20love%20to%20see%E2%80%A6">
+    <a class="card" id="ideaCta" href="idea.html">
       <div class="ico">💡</div>
       <div class="t">What to see<br>in Kern?</div>
       <div class="s">Tell us · we organize it</div>
@@ -173,7 +173,6 @@
       } else {b.classList.add("past");b.textContent="Next one soon — check back";}
     }
 
-    $("ideaCta").href="mailto:"+email+"?subject="+encodeURIComponent("What I want to see in Kern")+"&body="+encodeURIComponent("I'd love to see…\n");
     $("mailFoot").href="mailto:"+email; $("mailFoot").textContent=email;
   }).catch(function(){ $("badge").textContent="—"; });
 

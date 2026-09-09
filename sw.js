@@ -10,7 +10,7 @@
  * Paths are relative to this file's scope, so the same code works at the domain
  * root locally and under /board-bored-bakersfield/ on GitHub Pages.
  */
-var VERSION = "bb-v12";
+var VERSION = "bb-v13";
 var SHELL = VERSION + "-shell";
 
 // Resolved relative to the SW scope — correct under any subpath.
@@ -26,6 +26,7 @@ var PRECACHE = [
   "first-friday/share.png",
   "first-friday/qr.png",
   "feedback.html",
+  "idea.html",
   "vendor-signup.html",
   "admin-queue.html",
   "index.html",

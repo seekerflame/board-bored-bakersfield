@@ -66,6 +66,7 @@
   .success .row2 a.solid{background:var(--ink);color:#fffaf5;border-color:var(--ink)}
   footer{margin-top:24px;text-align:center;font-family:var(--display);font-style:italic;font-size:13px;color:var(--mut);line-height:1.8}
   footer a{color:var(--acc2);font-weight:600;text-decoration:none}
+  .hp{position:absolute;left:-9999px;top:-9999px;height:0;width:0;overflow:hidden}
 </style>
 </head>
 <body>
@@ -79,6 +80,8 @@
   <div class="notice">📅 This is for <b>anything happening around Bakersfield</b> — a show, market, class, meetup, pop-up, fundraiser. It lands on the same map as First Friday, so people find you when they're looking for something to do.</div>
 
   <form id="form">
+    <div class="hp" aria-hidden="true"><label for="evWebsite2">Leave this field blank</label>
+      <input id="evWebsite2" name="website2" tabindex="-1" autocomplete="off"></div>
     <label for="evName">Event name <span class="req">*</span></label>
     <input id="evName" required placeholder="Last Call Summer Jam Fest">
 
@@ -276,6 +279,7 @@
     var st=$("status");st.className="status";st.textContent="";
     // build the payload in the Board Bored API schema (products/board-bored-api/schema.mjs)
     var payload={
+      hp:$("evWebsite2").value,
       name:$("evName").value.trim(),
       category:$("evCat").value,
       venue:$("evVenue").value.trim(),
