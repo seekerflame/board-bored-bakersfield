@@ -3070,6 +3070,46 @@
       "area": "downtown",
       "start": "17:00",
       "end": "19:00"
+    },
+    {
+      "id": "ce_csub_volunteerfair",
+      "name": "CSUB Volunteer Fair",
+      "emoji": "🤝",
+      "category": "Community",
+      "venue": "Runner Café Quad, CSU Bakersfield",
+      "address": "9001 Stockdale Hwy, Bakersfield, CA 93311",
+      "lat": 35.348627,
+      "lng": -119.104882,
+      "when": "Wed 11 AM–1 PM",
+      "cost": "Free",
+      "desc": "Non-profit organizations share info about volunteer opportunities.",
+      "link": null,
+      "schedule": {
+        "date": "2026-09-09"
+      },
+      "area": "southwest",
+      "start": "11:00",
+      "end": "13:00"
+    },
+    {
+      "id": "ce_condors_preseason_sj",
+      "name": "Bakersfield Condors Preseason vs. San Jose Barracuda",
+      "emoji": "🏒",
+      "category": "Sports",
+      "venue": "Dignity Health Arena",
+      "address": "1001 Truxtun Ave, Bakersfield, CA 93301",
+      "lat": 35.3747,
+      "lng": -119.0224,
+      "when": "Fri 6:30 PM",
+      "cost": null,
+      "desc": "AHL preseason home game — first look at the 2026-27 Condors roster.",
+      "link": null,
+      "schedule": {
+        "date": "2026-09-25"
+      },
+      "area": "downtown",
+      "start": "18:30",
+      "end": null
     }
   ],
   "city_events_archive": [
