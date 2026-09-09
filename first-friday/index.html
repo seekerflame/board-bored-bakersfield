@@ -148,6 +148,9 @@
   .v .tag{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--acc3-text);
     border:1.5px solid #c98a2c55;border-radius:999px;padding:3px 9px;margin-left:auto;white-space:nowrap}
   .v .tag.cost{color:var(--acc2);border-color:#167f6844}
+  .v .dealbadge{margin-top:8px;font-size:14px;font-weight:800;color:#2a1d05;background:var(--acc3);
+    border-radius:10px;padding:7px 11px;display:inline-block}
+  .v .dealacts{font-weight:600;opacity:.85}
   .notice{max-width:600px;margin:0 auto;padding:0 18px 4px;font-size:15px;color:var(--mut)}
   .sechead{max-width:600px;margin:20px auto 2px;padding:0 18px;font-family:var(--display);font-weight:600;
     font-size:24px;letter-spacing:-.2px;color:var(--ink);line-height:1.15}
@@ -333,6 +336,7 @@
     });
   })();
 
+  if(window.bbApi&&bbApi.track)bbApi.track("view",{source:"hub"});
   var map, markers={};
   var qs=new URLSearchParams(location.search);
   var highlightId=qs.get("highlight");
@@ -393,6 +397,17 @@
   }
   function fmtTime(hhmm){var p=hhmm.split(":"),h=+p[0];var ap=h>=12?"pm":"am";h=h%12;if(h===0)h=12;return h+(p[1]!=="00"?":"+p[1]:"")+ap;}
   function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+  function dealBadge(ev){
+    if(!ev.deal||ev.deal.type==="free")return"";
+    var d=ev.deal,label;
+    if(d.type==="first_n_free")label="🎟 First "+d.cap+" free"+(d.reward?": "+esc(d.reward):"");
+    else if(d.type==="percent_off")label=d.percent+"% off"+(d.on?" "+esc(d.on):"");
+    else if(d.type==="bogo")label="🎁 BOGO"+(d.item?": "+esc(d.item):"");
+    else if(d.type==="free_item")label="🎁 Free "+esc(d.item||"item");
+    else return"";
+    var acts=(ev.actionItems||[]).map(function(a){return esc(a.label||a.type);}).join(" · ");
+    return '<div class="dealbadge">'+label+(acts?' <span class="dealacts">— '+acts+'</span>':'')+'</div>';
+  }
   function socialLinks(e){
     var s=e.socials||{},o="";
     if(e.website)o+='<a href="'+esc(e.website)+'" target="_blank" rel="noopener">🌐 Website</a>';
@@ -528,6 +543,7 @@
           Array.prototype.forEach.call(row.children,function(n){n.classList.remove("on");});
           if(!nowSel)btn.classList.add("on");
           if(curDay){curWin="all";Array.prototype.forEach.call(winBox.children,function(n){n.classList.remove("on");});}
+          if(window.bbApi&&bbApi.track)bbApi.track("find_day",{source:"weekstrip"});
           paint();
         };}(ymd,b));
         row.appendChild(b);
@@ -580,6 +596,7 @@
           '<div class="when2">'+e.when+(isRecurring(e)&&!e.cost?' · every week':'')+'</div>'+
           '<div class="venue2">'+e.venue+(e.area==="downtown"?' · downtown':'')+'</div>'+
           (e.host?'<div class="venue2">👤 Hosted by '+esc(e.host)+'</div>':"")+
+          dealBadge(e)+
           (e.desc?'<div class="note">'+e.desc+'</div>':"");
         var linksEl=document.createElement("div");linksEl.className="links";
         var lh=""; if(e.link)lh+='<a href="'+e.link+'" target="_blank" rel="noopener">🎟️ Tickets / info</a>';
@@ -588,7 +605,9 @@
         lh+=socialLinks(e);
         linksEl.innerHTML=lh; linksEl.appendChild(shareLink(e.id,e.name,e.category));
         el.appendChild(linksEl);
-        el.addEventListener("click",function(evt){if(evt.target.closest("a,button"))return;panTo("e:"+e.id);});
+        el.addEventListener("click",function(evt){if(evt.target.closest("a,button"))return;
+          if(e.deal&&window.bbApi&&bbApi.track)bbApi.track("deal_view",{dealId:e.id});
+          panTo("e:"+e.id);});
         box.appendChild(el);
         if(highlightId===e.id)el.classList.add("highlighted");
         if(typeof e.lat==="number"&&typeof e.lng==="number"){
@@ -605,6 +624,7 @@
         Array.prototype.forEach.call(winBox.children,function(n){n.classList.remove("on")});
         c2.classList.add("on"); curWin=val; curDay=null;
         Array.prototype.forEach.call($("weekRow").children,function(n){n.classList.remove("on")});
+        if(window.bbApi&&bbApi.track)bbApi.track("find_day",{source:"window:"+val});
         paint();
       });
       return c2;
