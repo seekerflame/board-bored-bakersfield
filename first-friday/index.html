@@ -22,6 +22,9 @@
 <style>
   :root{
     --ink:#141116;--pap:#faf7f2;--card:#fffdfa;--acc:#ca421a;--acc2:#167f68;--acc3:#c98a2c;--acc3-text:#8a5c14;--line:#948d88;--mut:#5a5450;
+    --solid-dark:#141116; /* fixed — "selected/active" pills stay a dark bar +
+      light text in BOTH themes; --ink itself flips to light in dark mode, so
+      anything using --ink for this purpose would go invisible there */
     --display:"Fraunces",ui-serif,Georgia,serif;
     --body:"Figtree",-apple-system,"Helvetica Neue",Arial,sans-serif;
     --ease:cubic-bezier(.16,1,.3,1);
@@ -29,7 +32,13 @@
   /* --mut and --acc3-text are WCAG-AA verified (>=4.5:1) against both --pap
      and --card — see products/board-bored-api's platform-build notes for the
      computed ratios. --acc3 (gold, 2.75:1) stays DECORATIVE ONLY — never text. */
-  html.high-contrast{--ink:#000;--pap:#fff;--card:#fff;--mut:#1a1a1a;--line:#000}
+  /* Real dark mode — background/text swap plus brightened accents (the
+     light-mode --acc/--acc2 drop to 3.8:1 on a dark background, below AA;
+     these bright variants hold 5.5-5.8:1, verified). --acc3 (gold) already
+     clears AA against dark unbrightened (6.4:1) so it's untouched. */
+  html.dark{--ink:#faf7f2;--pap:#141116;--card:#201c22;--mut:#a89f9a;--line:#3a3540;
+    --acc:#e8622f;--acc2:#2ba088;--acc3-text:#e8c07a}
+  html.dark .leaflet-tile{filter:brightness(.75) invert(.92) hue-rotate(180deg) saturate(1.1)}
   /* This stylesheet uses absolute px font-sizes throughout (matches the rest
      of the site) — a root font-size change wouldn't cascade to them. `zoom`
      genuinely scales the whole rendered page (Chrome/Safari/Edge always;
@@ -49,7 +58,7 @@
   .a11ybar{display:flex;gap:6px;align-items:center}
   .a11ybtn{font:inherit;font-size:13px;font-weight:800;color:var(--ink);background:var(--card);
     border:1.5px solid #14111630;border-radius:10px;padding:8px 10px;cursor:pointer;min-height:40px;min-width:40px}
-  .a11ybtn.on{background:var(--ink);color:#fffaf5;border-color:var(--ink)}
+  .a11ybtn.on{background:var(--solid-dark);color:#fffaf5;border-color:var(--solid-dark)}
   .badge{font-size:14px;font-weight:800;letter-spacing:.2px;padding:9px 14px;border-radius:999px;
     background:var(--acc);color:#fffaf5;white-space:nowrap;box-shadow:0 2px 6px #ca421a3d}
   .badge.future{background:var(--acc2);box-shadow:0 2px 6px #167f683d}
@@ -57,11 +66,12 @@
 
   /* container switcher — the live map hosts two neat containers */
   .tabs{max-width:600px;margin:8px auto 0;padding:0 18px;display:flex;gap:8px}
-  .tabs .tab{flex:1;appearance:none;font:inherit;font-family:var(--body);font-weight:800;font-size:16px;cursor:pointer;min-height:48px;
-    border:1.5px solid #14111620;background:var(--card);color:var(--ink);border-radius:13px;padding:12px 8px;transition:all .15s}
+  .tabs{flex-wrap:wrap}
+  .tabs .tab{flex:1 1 30%;min-width:104px;appearance:none;font:inherit;font-family:var(--body);font-weight:800;font-size:14.5px;cursor:pointer;min-height:48px;
+    border:1.5px solid #14111620;background:var(--card);color:var(--ink);border-radius:13px;padding:10px 6px;transition:all .15s}
   .tabs .tab:hover{border-color:var(--acc3)}
-  .tabs .tab.on{background:var(--ink);color:#fffaf5;border-color:var(--ink)}
-  .tabs .tab small{display:block;font-size:13px;font-weight:600;opacity:.85;margin-top:2px;letter-spacing:.2px}
+  .tabs .tab.on{background:var(--solid-dark);color:#fffaf5;border-color:var(--solid-dark)}
+  .tabs .tab small{display:block;font-size:11.5px;font-weight:600;opacity:.85;margin-top:2px;letter-spacing:.1px}
 
   /* ---- ON NOW rail: real time-of-day, not just "upcoming" ---- */
   .nowrail{max-width:600px;margin:14px auto 0;padding:0 18px}
@@ -85,9 +95,12 @@
     font:inherit;background:var(--card);border:1.5px solid #14111622;border-radius:14px;cursor:pointer;padding:6px 4px;gap:1px}
   .daybtn .wd{font-size:11.5px;font-weight:700;color:var(--mut);text-transform:uppercase}
   .daybtn .dn{font-size:17px;font-weight:800;color:var(--ink);font-family:var(--display)}
-  .daybtn.on{background:var(--ink);border-color:var(--ink)}
+  .daybtn.on{background:var(--solid-dark);border-color:var(--solid-dark)}
   .daybtn.on .wd,.daybtn.on .dn{color:#fffaf5}
   .daybtn.today{border-color:var(--acc)}
+  .seenext{display:block;width:calc(100% - 36px);margin:2px 18px 0;font:inherit;font-weight:700;font-size:15px;
+    color:var(--acc2);background:none;border:none;text-align:left;cursor:pointer;padding:8px 0;min-height:40px}
+  .seenext:hover{text-decoration:underline}
 
   #map{height:50vh;min-height:320px;width:100%;z-index:1;border-top:1px solid #14111614;border-bottom:1px solid #14111614;margin-top:12px}
   .pinmoji{font-size:22px;line-height:1;width:40px;height:40px;border-radius:50%;
@@ -166,7 +179,7 @@
   .chip{flex:0 0 auto;font-size:15px;font-weight:700;color:var(--ink);border:1.5px solid #14111620;background:var(--card);
     min-height:44px;border-radius:999px;padding:10px 16px;cursor:pointer;white-space:nowrap;transition:all .13s;font:inherit;font-weight:700}
   .chip:hover{border-color:var(--acc3)}
-  .chip.on{background:var(--ink);color:#fffaf5;border-color:var(--ink)}
+  .chip.on{background:var(--solid-dark);color:#fffaf5;border-color:var(--solid-dark)}
   .v.highlighted{outline:2.5px solid var(--acc);outline-offset:2px}
 
   /* cross-link banners between the two containers */
@@ -189,7 +202,7 @@
     text-decoration:none;font-size:16px;cursor:pointer;background:none;border:none;font-family:var(--body)}
   .backlink:hover{text-decoration:underline}
 
-  .cta{display:block;text-align:center;background:var(--ink);color:#fffaf5;text-decoration:none;font-weight:700;
+  .cta{display:block;text-align:center;background:var(--solid-dark);color:#fffaf5;text-decoration:none;font-weight:700;
     font-size:18px;border-radius:14px;padding:18px;margin:20px 0 10px;min-height:48px;transition:transform .15s var(--ease),background .15s}
   .cta:hover{background:#28222c}
   .cta:active{transform:scale(.985)}
@@ -204,11 +217,11 @@
   footer{text-align:center;font-family:var(--display);font-style:italic;font-size:15px;color:var(--mut);
     padding:10px 18px 40px;line-height:1.8}
   footer a{color:var(--acc2);font-weight:600;text-decoration:none}
-  .toast{position:fixed;left:50%;bottom:22px;translate:-50% 0;background:var(--ink);color:#fffaf5;padding:12px 20px;
+  .toast{position:fixed;left:50%;bottom:22px;translate:-50% 0;background:var(--solid-dark);color:#fffaf5;padding:12px 20px;
     border-radius:999px;font-size:16px;font-weight:600;opacity:0;transition:.3s var(--ease);pointer-events:none;z-index:99;
     box-shadow:0 8px 24px -8px #14111680}
   .toast.on{opacity:1;translate:-50% -8px}
-  .skiplink{position:absolute;left:-9999px;top:auto;background:var(--ink);color:#fffaf5;padding:11px 18px;
+  .skiplink{position:absolute;left:-9999px;top:auto;background:var(--solid-dark);color:#fffaf5;padding:11px 18px;
     border-radius:0 0 10px 0;font-weight:700;font-size:13px;text-decoration:none;z-index:100}
   .skiplink:focus{left:0;top:0}
 
@@ -227,7 +240,7 @@
   <a class="mark" href="../">● Board Bored</a>
   <div class="a11ybar">
     <button class="a11ybtn" id="a11yText" type="button" title="Bigger text" aria-label="Toggle bigger text">Aa+</button>
-    <button class="a11ybtn" id="a11yContrast" type="button" title="High contrast" aria-label="Toggle high contrast">◐</button>
+    <button class="a11ybtn" id="a11yContrast" type="button" title="Dark mode" aria-label="Toggle dark mode">🌙</button>
   </div>
   <span class="badge" id="badge">…</span>
 </header>
@@ -238,7 +251,8 @@
 </div>
 
 <div class="tabs" id="tabs">
-  <button class="tab on" id="tabNow" type="button">🔥 Happening now<small>all of Bako, this week</small></button>
+  <button class="tab on" id="tabNow" type="button">🔥 Happening now<small>one-time & specials</small></button>
+  <button class="tab" id="tabWeekly" type="button">🔁 Weekly<small>every week, on repeat</small></button>
   <button class="tab" id="tabFF" type="button">🎨 First Friday<small>the flagship night</small></button>
 </div>
 
@@ -261,9 +275,10 @@
   <!-- ===== Container A: Happening now (all of Bako) ===== -->
   <section class="container" id="c-now">
     <div class="sechead">📅 What's on around Bakersfield</div>
-    <div class="secsub">Real events happening today and the days ahead — all of Bako. Tap one for tickets or directions. <a href="calendar.html" style="color:var(--acc2);font-weight:700;text-decoration:none;white-space:nowrap">📆 See the calendar →</a></div>
+    <div class="secsub">One-time events and specials, all of Bako. For the weekly regulars, tap 🔁 Weekly above. <a href="calendar.html" style="color:var(--acc2);font-weight:700;text-decoration:none;white-space:nowrap">📆 See the calendar →</a></div>
     <div class="xlink" id="ffTeaser" style="display:none"></div>
     <div class="weekstrip"><div class="weekstrip-row" id="weekRow"></div></div>
+    <button class="seenext" id="seeNext" type="button">→ See what's coming up this week</button>
     <div class="list" style="padding-top:12px">
       <div class="chips" id="winChips"></div>
       <div class="chips" id="chips"></div>
@@ -275,6 +290,18 @@
         <button id="share" type="button">📣 Share</button>
         <a href="../print.html">🖨️ Paper map</a>
       </div>
+    </div>
+  </section>
+
+  <!-- ===== Container C: Weekly Regulars (recurring only, browsable by day) ===== -->
+  <section class="container" id="c-weekly" style="display:none">
+    <div class="sechead">🔁 Every week in Bakersfield</div>
+    <div class="secsub">The regulars — trivia nights, farmers markets, open mics. Same day, every week.</div>
+    <div class="list" style="padding-top:12px">
+      <div class="chips" id="weeklyChips"></div>
+      <div class="count" id="weeklyCount"></div>
+      <div id="weeklyEvents"></div>
+      <a class="cta submit" href="submit-event.html">➕ Add your weekly thing — free</a>
     </div>
   </section>
 
@@ -319,20 +346,20 @@
   function toast(m){var t=$("toast");t.textContent=m;t.classList.add("on");
     clearTimeout(t._);t._=setTimeout(function(){t.classList.remove("on")},2000);}
 
-  // ---- accessibility toggles (bigger text / high contrast) — persisted, apply instantly ----
+  // ---- accessibility toggles (bigger text / dark mode) — persisted, apply instantly ----
   (function(){
     var root=document.documentElement;
     try{
       if(localStorage.getItem("bb_text_lg")==="1"){root.classList.add("text-lg");$("a11yText").classList.add("on");}
-      if(localStorage.getItem("bb_contrast")==="1"){root.classList.add("high-contrast");$("a11yContrast").classList.add("on");}
+      if(localStorage.getItem("bb_dark")==="1"){root.classList.add("dark");$("a11yContrast").classList.add("on");}
     }catch(e){}
     $("a11yText").addEventListener("click",function(){
       var on=root.classList.toggle("text-lg");this.classList.toggle("on",on);
       try{localStorage.setItem("bb_text_lg",on?"1":"0");}catch(e){}
     });
     $("a11yContrast").addEventListener("click",function(){
-      var on=root.classList.toggle("high-contrast");this.classList.toggle("on",on);
-      try{localStorage.setItem("bb_contrast",on?"1":"0");}catch(e){}
+      var on=root.classList.toggle("dark");this.classList.toggle("on",on);
+      try{localStorage.setItem("bb_dark",on?"1":"0");}catch(e){}
     });
   })();
 
@@ -491,7 +518,11 @@
     });
 
     // ---- citywide happenings ----
-    var upcoming=cityEvents.map(function(e){var eff=effDate(e);return eff?{e:e,eff:eff}:null;})
+    // One-time specials + ongoing exhibits ONLY — recurring weeklies live in
+    // their own "🔁 Weekly" tab so a handful of one-off events don't get
+    // buried under 30+ regulars that repeat every single week.
+    var upcoming=cityEvents.filter(function(e){return !isRecurring(e);})
+      .map(function(e){var eff=effDate(e);return eff?{e:e,eff:eff}:null;})
       .filter(function(x){return x&&x.eff>=today;});
     upcoming.sort(function(a,b){
       var ao=a.e.schedule&&a.e.schedule.ongoing?0:1, bo=b.e.schedule&&b.e.schedule.ongoing?0:1;
@@ -499,6 +530,63 @@
     });
     var weekCt=upcoming.filter(function(x){return Math.round((x.eff-today)/86400000)<7&&!(x.e.schedule&&x.e.schedule.ongoing);}).length;
     var cats=[]; upcoming.forEach(function(x){if(cats.indexOf(x.e.category)<0)cats.push(x.e.category);}); cats.sort();
+
+    // ---- 🔁 Weekly regulars: recurring events, browsable by day-of-week ----
+    var weeklyEvents=cityEvents.filter(isRecurring);
+    var WEEKLY_WD=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+    var weeklyCurCat=null;
+    function paintWeekly(){
+      var box=$("weeklyEvents"); box.innerHTML="";
+      var list=weeklyEvents.filter(function(e){return !weeklyCurCat||e.category===weeklyCurCat;})
+        .slice().sort(function(a,b){
+          var wa=a.schedule.weekday,wb=b.schedule.weekday;
+          if(wa!==wb)return wa-wb;
+          return (a.start||"99:99").localeCompare(b.start||"99:99");
+        });
+      $("weeklyCount").textContent=list.length+" weekly "+(list.length===1?"regular":"regulars")+(weeklyCurCat?" · "+weeklyCurCat:"");
+      var lastWd=null;
+      list.forEach(function(e){
+        if(e.schedule.weekday!==lastWd){
+          var h=document.createElement("div");h.className="dayhead";
+          h.textContent="Every "+WEEKLY_WD[e.schedule.weekday];
+          box.appendChild(h); lastWd=e.schedule.weekday;
+        }
+        var el=document.createElement("div");el.className="v";
+        el.innerHTML='<div class="top"><span class="emo">'+(e.emoji||"📍")+'</span><span class="nm">'+esc(e.name)+'</span>'+
+          (e.cost?'<span class="tag cost">'+esc(e.cost)+'</span>':'<span class="tag">Weekly</span>')+'</div>'+
+          '<div class="when2">'+esc(e.when)+'</div>'+
+          '<div class="venue2">'+esc(e.venue)+(e.area==="downtown"?' · downtown':'')+'</div>'+
+          (e.host?'<div class="venue2">👤 Hosted by '+esc(e.host)+'</div>':"")+
+          dealBadge(e)+
+          (e.desc?'<div class="note">'+esc(e.desc)+'</div>':"");
+        var linksEl=document.createElement("div");linksEl.className="links";
+        var lh=""; if(e.link)lh+='<a href="'+e.link+'" target="_blank" rel="noopener">🎟️ Tickets / info</a>';
+        lh+='<a href="'+dirUrl(e.address)+'" target="_blank" rel="noopener">🧭 Directions</a>';
+        lh+=socialLinks(e);
+        linksEl.innerHTML=lh; el.appendChild(linksEl);
+        el.addEventListener("click",function(evt){if(evt.target.closest("a,button"))return;
+          if(e.deal&&window.bbApi&&bbApi.track)bbApi.track("deal_view",{dealId:e.id});
+        });
+        box.appendChild(el);
+      });
+      if(!list.length)box.innerHTML='<div class="notice" style="padding:6px 2px">Nothing in this category — tap "All".</div>';
+    }
+    (function(){
+      var wcats=[]; weeklyEvents.forEach(function(e){if(wcats.indexOf(e.category)<0)wcats.push(e.category);}); wcats.sort();
+      var box=$("weeklyChips");
+      function mkWChip(label,val){
+        var c=document.createElement("button");c.type="button";c.className="chip";c.textContent=label;
+        c.addEventListener("click",function(){
+          Array.prototype.forEach.call(box.children,function(n){n.classList.remove("on");});
+          c.classList.add("on"); weeklyCurCat=val; paintWeekly();
+        });
+        return c;
+      }
+      box.appendChild(mkWChip("All",null));
+      wcats.forEach(function(cat){box.appendChild(mkWChip(cat,cat));});
+      box.firstChild&&box.firstChild.classList.add("on");
+    })();
+    paintWeekly();
 
     if(ss.length){$("legOpen").style.display="flex";$("legPend").style.display="flex";$("legHeld").style.display="flex";}
 
@@ -525,9 +613,14 @@
       });
     }
 
-    // ---- calendar week-strip: 2-tap to any day this week ----
-    var curDay=null; // ISO "YYYY-MM-DD" when a specific day is selected, else null
+    // ---- calendar week-strip: defaults to TODAY (no sideways scroll needed
+    // to see something useful); "See what's coming up" is the one-tap escape
+    // hatch to the full week instead of hunting for the "All" chip. ----
     function ymdOf(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+    var curDay=ymdOf(today); // default: today. null = "all week" (via the seeNext button or a window chip)
+    function updateSeeNext(){
+      $("seeNext").textContent=curDay?"→ See what's coming up this week":"← Back to today";
+    }
     function renderWeekStrip(){
       var row=$("weekRow"); row.innerHTML="";
       var WD=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
@@ -535,7 +628,7 @@
         var d=new Date(today);d.setDate(today.getDate()+i);
         var ymd=ymdOf(d);
         var b=document.createElement("button");b.type="button";
-        b.className="daybtn"+(i===0?" today":"");
+        b.className="daybtn"+(i===0?" today":"")+(ymd===curDay?" on":"");
         b.innerHTML='<span class="wd">'+(i===0?"Today":WD[d.getDay()])+'</span><span class="dn">'+d.getDate()+'</span>';
         b.addEventListener("click",function(dayYmd,btn){return function(){
           var nowSel=curDay===dayYmd;
@@ -544,20 +637,33 @@
           if(!nowSel)btn.classList.add("on");
           if(curDay){curWin="all";Array.prototype.forEach.call(winBox.children,function(n){n.classList.remove("on");});}
           if(window.bbApi&&bbApi.track)bbApi.track("find_day",{source:"weekstrip"});
-          paint();
+          updateSeeNext(); paint();
         };}(ymd,b));
         row.appendChild(b);
       }
     }
+    $("seeNext").addEventListener("click",function(){
+      if(curDay){
+        curDay=null; curWin="all";
+        Array.prototype.forEach.call(winBox.children,function(n){n.classList.remove("on");});
+        Array.prototype.forEach.call($("weekRow").children,function(n){n.classList.remove("on");});
+      } else {
+        curDay=ymdOf(today);
+        Array.prototype.forEach.call($("weekRow").children,function(n,i){n.classList.toggle("on",i===0);});
+      }
+      if(window.bbApi&&bbApi.track)bbApi.track("find_day",{source:"seenext"});
+      updateSeeNext(); paint();
+    });
     renderNowRail();
     setInterval(renderNowRail,60000); // keep "right now" honest if the tab stays open
     renderWeekStrip();
+    updateSeeNext();
 
     // ---- agenda + event pins ----
     function eventPopup(e){
       var l=""; if(e.link)l+='<a href="'+e.link+'" target="_blank" rel="noopener">Tickets / info</a>';
       l+='<a href="'+dirUrl(e.address)+'" target="_blank" rel="noopener">Directions</a>';
-      return "<b>"+(e.emoji||"📍")+" "+e.name+"</b><br>"+e.when+"<br><span style='color:#5a5450'>"+e.venue+"</span>"+
+      return "<b>"+(e.emoji||"📍")+" "+e.name+"</b><br>"+e.when+"<br><span style='color:var(--mut)'>"+e.venue+"</span>"+
              "<div class='pop-links'>"+l+"</div>";
     }
     var curCat=null, curWin="all";
@@ -625,7 +731,7 @@
         c2.classList.add("on"); curWin=val; curDay=null;
         Array.prototype.forEach.call($("weekRow").children,function(n){n.classList.remove("on")});
         if(window.bbApi&&bbApi.track)bbApi.track("find_day",{source:"window:"+val});
-        paint();
+        updateSeeNext(); paint();
       });
       return c2;
     }
@@ -752,12 +858,13 @@
     }
     $("boothToggle").addEventListener("click",function(){setBooths(!boothsOn);});
 
-    // ---- the two-container switcher ----
+    // ---- the three-container switcher ----
     var view="now";
     function applyLayers(v){
       [eventLayer,storefrontLayer,spotLayer,parkingLayer,ffDecor].forEach(function(g){if(map.hasLayer(g))map.removeLayer(g);});
       if(v==="now"){ eventLayer.addTo(map); }
-      else { ffDecor.addTo(map); storefrontLayer.addTo(map); parkingLayer.addTo(map); if(boothsOn)spotLayer.addTo(map); }
+      else if(v==="ff"){ ffDecor.addTo(map); storefrontLayer.addTo(map); parkingLayer.addTo(map); if(boothsOn)spotLayer.addTo(map); }
+      // "weekly" shows no map — it's a pure browse-by-day list (see showView)
     }
     function setBadge(v){
       var b=$("badge"); b.className="badge";
@@ -766,20 +873,26 @@
         else if(evd&&evd>today){b.classList.add("future");
           b.textContent=evd.toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric"})+" · "+(ev.hours||"");}
         else{b.classList.add("past");b.textContent="Next one soon";}
+      } else if(v==="weekly"){
+        b.textContent="🔁 "+weeklyEvents.length+" regulars";
       } else {
         b.textContent="🔥 "+weekCt+" this week";
       }
     }
     function showView(v,opts){
       view=v;
-      $("tabNow").classList.toggle("on",v==="now"); $("tabFF").classList.toggle("on",v==="ff");
-      $("c-now").style.display=v==="now"?"block":"none"; $("c-ff").style.display=v==="ff"?"block":"none";
+      $("tabNow").classList.toggle("on",v==="now"); $("tabWeekly").classList.toggle("on",v==="weekly"); $("tabFF").classList.toggle("on",v==="ff");
+      $("c-now").style.display=v==="now"?"block":"none";
+      $("c-weekly").style.display=v==="weekly"?"block":"none";
+      $("c-ff").style.display=v==="ff"?"block":"none";
+      $("map").style.display=v==="weekly"?"none":"block";
       $("legendNow").style.display=v==="now"?"flex":"none"; $("legendFF").style.display=v==="ff"?"flex":"none";
-      document.title=(v==="ff"?ev.name:"What's on in Bakersfield")+" — Board Bored";
+      document.title=(v==="ff"?ev.name:v==="weekly"?"Weekly regulars":"What's on in Bakersfield")+" — Board Bored";
       setBadge(v); applyLayers(v);
-      if(!(opts&&opts.noFit)){ v==="now"?fitNow():fitFF(); }
+      if(!(opts&&opts.noFit)&&v!=="weekly"){ v==="now"?fitNow():fitFF(); }
     }
     $("tabNow").addEventListener("click",function(){showView("now");});
+    $("tabWeekly").addEventListener("click",function(){showView("weekly");});
     $("tabFF").addEventListener("click",function(){showView("ff");});
     $("backToNow").addEventListener("click",function(){showView("now");window.scrollTo({top:0,behavior:"smooth"});});
 

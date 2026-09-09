@@ -107,9 +107,8 @@
     <div class="privacy">
       <b>What happens to this:</b> your answers are read by the people who run the event and are used
       to plan the next one. <b>Nothing here goes on the public map.</b> If you don't tick the follow-up
-      box we never ask for and never store a way to contact you. Submissions are handled by
-      <a href="https://formspree.io/legal/privacy-policy/" target="_blank" rel="noopener">Formspree</a>.
-      Any contact details are deleted within 90 days. Want yours removed sooner? Email
+      box we never ask for and never store a way to contact you. This form goes straight to our own
+      server — no third-party form service. Want your details removed? Email
       <a href="mailto:boardquestionmark@gmail.com">boardquestionmark@gmail.com</a> — no reason needed.
     </div>
   </form>
@@ -128,10 +127,14 @@
 </div>
 
 <script src="lib/pwa.js"></script>
+<script src="lib/api.js"></script>
 <script>
 (function(){
   var $ = function(id){ return document.getElementById(id); };
-  var FORMSPREE_ENDPOINT = "https://formspree.io/f/mdaqpjkb";
+  // Owned API (products/board-bored-api) — same backend as submit-event.html
+  // and for-planners.html. Falls back through lib/pwa.js's offline queue if
+  // unreachable (saved locally, sent the moment the device is back online).
+  var API_ENDPOINT = (window.bbApi && bbApi.API_BASE ? bbApi.API_BASE : "") + "/api/feedback";
   var CONTACT_EMAIL = "boardquestionmark@gmail.com";
 
   // Same attribution capture as vendor-signup.html — a QR on a vendor's table
@@ -198,20 +201,21 @@
       return;
     }
 
+    // Only ever populated when the box is ticked. Unticked means we do not
+    // collect it at all, rather than collecting it and promising not to use it.
+    var contactLine = "";
+    if (wantsReply) {
+      var nm = $("fbName").value.trim(), ct = $("fbContact").value.trim();
+      contactLine = (nm ? nm + " · " : "") + ct;
+    }
     var payload = {
-      _subject: "First Friday feedback",
-      type: "feedback",
-      referred_by: REF.ref,
-      source: REF.src,
+      ref: REF.ref,
+      src: REF.src,
       vibe: vibe || "",
       role: who || "",
       what_worked: best,
       what_to_fix: fix,
-      // Only ever populated when the box is ticked. Unticked means we do not
-      // collect it at all, rather than collecting it and promising not to use it.
-      contact_consent: wantsReply ? "yes" : "no",
-      contact: wantsReply ? $("fbContact").value.trim() : "",
-      name: wantsReply ? $("fbName").value.trim() : ""
+      contact: contactLine
     };
 
     $("fbSend").disabled = true;
@@ -239,13 +243,13 @@
     };
 
     if (window.BB && window.BB.submit) {
-      window.BB.submit(FORMSPREE_ENDPOINT, payload).then(function(res){
+      window.BB.submit(API_ENDPOINT, payload).then(function(res){
         if (res.queued) onQueued();
         else if (res.ok) onSent();
         else onFail();
       });
     } else {
-      fetch(FORMSPREE_ENDPOINT, {
+      fetch(API_ENDPOINT, {
         method: "POST",
         headers: { "Accept": "application/json", "Content-Type": "application/json" },
         body: JSON.stringify(payload)
