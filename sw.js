@@ -27,6 +27,7 @@ var PRECACHE = [
   "first-friday/qr.png",
   "feedback.html",
   "vendor-signup.html",
+  "admin-queue.html",
   "index.html",
   "manifest.webmanifest",
   "lib/pwa.js",

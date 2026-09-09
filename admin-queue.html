@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Review queue — Board Bored Admin</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+  :root{--ink:#141116;--pap:#faf7f2;--card:#fff;--acc:#ca421a;--acc2:#167f68;--line:#948d88;--mut:#5a5450;
+    --body:-apple-system,"Helvetica Neue",Arial,sans-serif;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--body);background:var(--pap);color:var(--ink);min-height:100dvh;padding:16px 14px 60px;font-size:16px;line-height:1.5}
+  .wrap{max-width:640px;margin:0 auto}
+  h1{font-size:22px;font-weight:800;margin-bottom:4px}
+  .sub{color:var(--mut);font-size:14px;margin-bottom:16px}
+  .gate{background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:18px;margin-bottom:16px}
+  .gate label{display:block;font-size:12px;font-weight:800;color:var(--mut);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px}
+  input,textarea,select{width:100%;font:inherit;font-size:16px;padding:11px;border:1.5px solid var(--line);border-radius:10px;background:#fffdfa}
+  .btn{appearance:none;border:0;cursor:pointer;font:inherit;font-weight:700;font-size:15px;border-radius:11px;
+    padding:12px 16px;min-height:44px;color:#fff;background:var(--ink)}
+  .btn.acc{background:var(--acc)} .btn.acc2{background:var(--acc2)}
+  .btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--ink)}
+  .btn:disabled{opacity:.5;cursor:default}
+  .row{display:flex;gap:8px;flex-wrap:wrap}
+  .section{margin-top:26px}
+  .section h2{font-size:17px;font-weight:800;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+  .count{font-size:13px;font-weight:700;color:#fff;background:var(--acc);border-radius:999px;padding:2px 9px}
+  .empty{color:var(--mut);font-size:14px;padding:10px 2px}
+  .card{background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:10px}
+  .card .nm{font-weight:800;font-size:16px}
+  .card .meta{font-size:13.5px;color:var(--mut);margin-top:3px}
+  .card .desc{font-size:14px;margin-top:6px;line-height:1.5}
+  .card .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+  .tag{font-size:11.5px;font-weight:700;background:#fff3e6;color:#8a5c14;border-radius:999px;padding:3px 9px}
+  .tag.act{background:#e4f2ee;color:#0f5c4b}
+  .editrow{display:none;margin-top:10px;gap:8px;flex-direction:column}
+  .editrow.on{display:flex}
+  .editrow input{font-size:14px;padding:8px 10px}
+  .actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+  .status{font-size:13.5px;font-weight:700;margin-top:8px;min-height:16px}
+  .status.ok{color:var(--acc2)} .status.err{color:#b3261e}
+  .metrics{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .metric{background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:12px 14px}
+  .metric .n{font-size:22px;font-weight:800}
+  .metric .l{font-size:12px;color:var(--mut);font-weight:700;text-transform:uppercase}
+  .tokenbox{background:#f5f5f0;border:1px dashed var(--line);border-radius:10px;padding:10px;font-size:13px;
+    font-family:monospace;word-break:break-all;margin-top:8px}
+  code{font-family:monospace;font-size:13px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>📋 Review queue</h1>
+  <div class="sub">Board Bored — pending events, planner applications, metrics. Works from anywhere.</div>
+
+  <div class="gate" id="gate">
+    <label for="secret">Admin secret</label>
+    <input id="secret" type="password" placeholder="paste your ADMIN_SECRET" autocomplete="off">
+    <div class="row" style="margin-top:10px">
+      <button class="btn" id="unlock" style="flex:1">Unlock</button>
+    </div>
+    <div class="status" id="gateStatus"></div>
+  </div>
+
+  <div id="app" style="display:none">
+    <div class="section">
+      <h2>🟡 Pending events <span class="count" id="pendCount">0</span></h2>
+      <div id="pendList"></div>
+    </div>
+    <div class="section">
+      <h2>🤝 Planner applications <span class="count" id="planCount">0</span></h2>
+      <div id="planList"></div>
+    </div>
+    <div class="section">
+      <h2>📊 Metrics</h2>
+      <div class="metrics" id="metrics"></div>
+    </div>
+    <div class="section">
+      <h2>🗄️ Housekeeping</h2>
+      <button class="btn ghost" id="archiveBtn">Archive expired one-time events</button>
+      <div class="status" id="archiveStatus"></div>
+    </div>
+    <div class="row" style="margin-top:20px">
+      <button class="btn ghost" id="refresh" style="flex:1">↻ Refresh</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var $=function(id){return document.getElementById(id)};
+  // Reads the same deployed API URL the public site uses (lib/api.js), so
+  // there is exactly one place this ever needs to change.
+  var API_BASE="https://board-bored-api-240816253301.us-central1.run.app";
+  var secret="";
+
+  function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+  function api(path,opts){
+    opts=opts||{};
+    return fetch(API_BASE+path,{
+      method:opts.method||"GET",
+      headers:Object.assign({"Authorization":"Bearer "+secret},opts.body?{"Content-Type":"application/json"}:{}),
+      body:opts.body?JSON.stringify(opts.body):undefined
+    }).then(function(r){return r.json().then(function(j){return {status:r.status,body:j};});});
+  }
+
+  function dealTag(ev){
+    if(!ev.deal||ev.deal.type==="free")return"";
+    var d=ev.deal,label=d.type==="first_n_free"?("First "+d.cap+" free: "+d.reward)
+      :d.type==="percent_off"?(d.percent+"% off "+(d.on||""))
+      :d.type==="bogo"?("BOGO: "+d.item)
+      :d.type==="free_item"?("Free "+d.item):d.type;
+    return '<span class="tag">🎟 '+esc(label)+'</span>';
+  }
+  function actionTags(ev){
+    if(!ev.actionItems||!ev.actionItems.length)return"";
+    return ev.actionItems.map(function(a){return '<span class="tag act">✓ '+esc(a.label||a.type)+'</span>';}).join("");
+  }
+
+  function renderPending(list){
+    $("pendCount").textContent=list.length;
+    var box=$("pendList"); box.innerHTML="";
+    if(!list.length){box.innerHTML='<div class="empty">Nothing waiting — you\'re caught up.</div>';return;}
+    list.forEach(function(ev){
+      var el=document.createElement("div"); el.className="card";
+      el.innerHTML=
+        '<div class="nm">'+(ev.emoji||"📍")+' '+esc(ev.name)+'</div>'+
+        '<div class="meta">'+esc(ev.when||"")+' · '+esc(ev.venue||"")+(ev.area==="downtown"?" · downtown":"")+'</div>'+
+        '<div class="meta">'+esc(ev.address||"")+'</div>'+
+        (ev.host?'<div class="meta">👤 '+esc(ev.host)+'</div>':"")+
+        (ev.desc?'<div class="desc">'+esc(ev.desc)+'</div>':"")+
+        (ev._private&&ev._private.contact?'<div class="meta">📞 '+esc(ev._private.contact)+' (private)</div>':"")+
+        '<div class="meta">source: '+esc(ev.source||"self-serve")+' · id: <code>'+esc(ev.id)+'</code></div>'+
+        '<div class="tags">'+dealTag(ev)+actionTags(ev)+'</div>'+
+        '<div class="editrow" id="edit-'+ev.id+'">'+
+          '<input data-f="name" placeholder="Name" value="'+esc(ev.name)+'">'+
+          '<input data-f="venue" placeholder="Venue" value="'+esc(ev.venue||"")+'">'+
+          '<input data-f="desc" placeholder="Description" value="'+esc(ev.desc||"")+'">'+
+        '</div>'+
+        '<div class="actions">'+
+          '<button class="btn acc2" data-act="approve">✅ Approve</button>'+
+          '<button class="btn ghost" data-act="edit">✏️ Fix a typo</button>'+
+          '<button class="btn ghost" data-act="reject">❌ Reject</button>'+
+        '</div>'+
+        '<div class="status" id="st-'+ev.id+'"></div>';
+      var st=el.querySelector("#st-"+ev.id);
+      el.querySelector('[data-act="edit"]').addEventListener("click",function(){
+        el.querySelector("#edit-"+ev.id).classList.toggle("on");
+      });
+      el.querySelector('[data-act="approve"]').addEventListener("click",function(){
+        var editBox=el.querySelector("#edit-"+ev.id);
+        var go=function(){
+          api("/api/approve",{method:"POST",body:{id:ev.id}}).then(function(r){
+            if(r.body.ok){st.className="status ok";st.textContent="Approved — live on the map.";loadAll();}
+            else{st.className="status err";st.textContent=r.body.error||"failed";}
+          });
+        };
+        if(editBox.classList.contains("on")){
+          var patch={};
+          editBox.querySelectorAll("input").forEach(function(i){if(i.value.trim()!==(""+ (ev[i.dataset.f]||"")))patch[i.dataset.f]=i.value.trim();});
+          if(Object.keys(patch).length){
+            api("/api/edit-event",{method:"POST",body:{id:ev.id,patch:patch}}).then(go);
+          } else go();
+        } else go();
+      });
+      el.querySelector('[data-act="reject"]').addEventListener("click",function(){
+        if(!confirm("Reject \""+ev.name+"\"?"))return;
+        api("/api/reject",{method:"POST",body:{id:ev.id}}).then(function(r){
+          if(r.body.ok){st.className="status ok";st.textContent="Rejected.";loadAll();}
+          else{st.className="status err";st.textContent=r.body.error||"failed";}
+        });
+      });
+      box.appendChild(el);
+    });
+  }
+
+  function renderPlanners(list){
+    $("planCount").textContent=list.length;
+    var box=$("planList"); box.innerHTML="";
+    if(!list.length){box.innerHTML='<div class="empty">No applications yet.</div>';return;}
+    list.forEach(function(p,i){
+      var el=document.createElement("div"); el.className="card";
+      el.innerHTML=
+        '<div class="nm">'+esc(p.org)+'</div>'+
+        '<div class="meta">'+esc(p.contact)+(p.cadence?" · "+esc(p.cadence):"")+'</div>'+
+        (p.website?'<div class="meta">🌐 '+esc(p.website)+'</div>':"")+
+        (p.socials?'<div class="meta">📱 '+esc(p.socials)+'</div>':"")+
+        (p.about?'<div class="desc">'+esc(p.about)+'</div>':"")+
+        '<div class="actions"><button class="btn acc" data-i="'+i+'">🔑 Issue trusted-planner token</button></div>'+
+        '<div class="tokenbox" id="tok-'+i+'" style="display:none"></div>';
+      el.querySelector("button").addEventListener("click",function(){
+        var name=prompt('Exact planner name (must match what they\'ll submit with) —',p.org);
+        if(!name)return;
+        api("/api/issue-token",{method:"POST",body:{planner:name}}).then(function(r){
+          var tb=el.querySelector("#tok-"+i);
+          tb.style.display="block";
+          tb.textContent=r.body.ok?("Token for "+r.body.planner+":\n"+r.body.token):(r.body.error||"failed");
+        });
+      });
+      box.appendChild(el);
+    });
+  }
+
+  function renderMetrics(m){
+    var box=$("metrics"); box.innerHTML="";
+    var rows=[
+      ["Total events",m.total],["Unique sessions",m.uniqueSessions],
+      ["Views",m.byType.view||0],["Found a day",m.byType.find_day||0],
+      ["Deal views",m.byType.deal_view||0],["Check-ins",m.byType.checkin||0],
+      ["Submits",m.byType.submit||0],["Plan rate",(m.funnel.plan_rate*100).toFixed(0)+"%"],
+    ];
+    rows.forEach(function(r){
+      var d=document.createElement("div"); d.className="metric";
+      d.innerHTML='<div class="n">'+esc(r[1])+'</div><div class="l">'+esc(r[0])+'</div>';
+      box.appendChild(d);
+    });
+  }
+
+  function loadAll(){
+    Promise.all([
+      api("/api/pending"), api("/api/planners"), api("/api/metrics"),
+    ]).then(function(rs){
+      var pend=rs[0], plan=rs[1], met=rs[2];
+      if(pend.status===401||plan.status===401||met.status===401){
+        $("gateStatus").className="status err"; $("gateStatus").textContent="Wrong secret.";
+        $("app").style.display="none"; $("gate").style.display="block";
+        return;
+      }
+      renderPending(pend.body.pending||[]);
+      renderPlanners(plan.body.planners||[]);
+      renderMetrics(met.body.metrics||{total:0,uniqueSessions:0,byType:{},funnel:{}});
+    });
+  }
+
+  $("unlock").addEventListener("click",function(){
+    secret=$("secret").value.trim();
+    if(!secret)return;
+    try{localStorage.setItem("bb_admin_secret",secret);}catch(e){}
+    $("gate").style.display="none"; $("app").style.display="block";
+    loadAll();
+  });
+  $("refresh").addEventListener("click",loadAll);
+  $("archiveBtn").addEventListener("click",function(){
+    api("/api/archive-expired",{method:"POST",body:{}}).then(function(r){
+      var st=$("archiveStatus");
+      if(r.body.ok){st.className="status ok";st.textContent=r.body.archivedCount+" event(s) archived.";loadAll();}
+      else{st.className="status err";st.textContent=r.body.error||"failed";}
+    });
+  });
+
+  try{
+    var saved=localStorage.getItem("bb_admin_secret");
+    if(saved){$("secret").value=saved;secret=saved;$("gate").style.display="none";$("app").style.display="block";loadAll();}
+  }catch(e){}
+})();
+</script>
+</body>
+</html>
