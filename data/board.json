@@ -1843,6 +1843,26 @@
       },
       "area": "citywide",
       "start": "07:00"
+    },
+    {
+      "id": "ce_vendorsvibessoundsocial",
+      "name": "Vendors & Vibes x Sound Social",
+      "emoji": "🤝",
+      "category": "Community",
+      "venue": "Arts Council of Kern",
+      "address": "1020 18th St, Bakersfield, CA 93301",
+      "lat": 35.3753496,
+      "lng": -119.0132551,
+      "when": "Wed 5–7 PM",
+      "cost": null,
+      "desc": "An evening of networking, coffee, matcha, music, and good people, featuring Café Cariño. Come meet somebody new, support local, and have a great time.",
+      "link": null,
+      "schedule": {
+        "date": "2026-09-09"
+      },
+      "area": "downtown",
+      "start": "17:00",
+      "end": "19:00"
     }
   ],
   "city_events_archive": [
