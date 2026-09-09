@@ -21,32 +21,73 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500;1,9..144,600;1,9..144,700&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
-    --ink:#141116;--pap:#faf7f2;--card:#fffdfa;--acc:#ca421a;--acc2:#167f68;--acc3:#c98a2c;--line:#948d88;--mut:#777069;
+    --ink:#141116;--pap:#faf7f2;--card:#fffdfa;--acc:#ca421a;--acc2:#167f68;--acc3:#c98a2c;--acc3-text:#8a5c14;--line:#948d88;--mut:#5a5450;
     --display:"Fraunces",ui-serif,Georgia,serif;
     --body:"Figtree",-apple-system,"Helvetica Neue",Arial,sans-serif;
     --ease:cubic-bezier(.16,1,.3,1);
   }
+  /* --mut and --acc3-text are WCAG-AA verified (>=4.5:1) against both --pap
+     and --card — see products/board-bored-api's platform-build notes for the
+     computed ratios. --acc3 (gold, 2.75:1) stays DECORATIVE ONLY — never text. */
+  html.high-contrast{--ink:#000;--pap:#fff;--card:#fff;--mut:#1a1a1a;--line:#000}
+  /* This stylesheet uses absolute px font-sizes throughout (matches the rest
+     of the site) — a root font-size change wouldn't cascade to them. `zoom`
+     genuinely scales the whole rendered page (Chrome/Safari/Edge always;
+     Firefox 126+). Native pinch/Ctrl-zoom (never blocked by this page's
+     viewport meta) remains the universal fallback for older Firefox. */
+  html.text-lg{zoom:1.22}
+  html.text-xl{zoom:1.45}
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
   ::selection{background:var(--acc3);color:var(--ink)}
   html{scroll-behavior:smooth}
-  body{font-family:var(--body);background:var(--pap);color:var(--ink);
+  body{font-family:var(--body);background:var(--pap);color:var(--ink);font-size:16px;
     background-image:radial-gradient(circle at 1px 1px, #14111609 1px, transparent 0);
     background-size:22px 22px;-webkit-font-smoothing:antialiased}
   header{padding:18px 18px 6px;display:flex;align-items:baseline;justify-content:space-between;gap:10px}
-  .mark{font-family:var(--display);font-size:13px;letter-spacing:2.5px;font-weight:700;font-style:italic;
+  .mark{font-family:var(--display);font-size:14px;letter-spacing:2.5px;font-weight:700;font-style:italic;
     text-transform:uppercase;color:var(--acc);text-decoration:none}
-  .badge{font-size:11.5px;font-weight:800;letter-spacing:.4px;padding:6px 12px;border-radius:999px;
+  .a11ybar{display:flex;gap:6px;align-items:center}
+  .a11ybtn{font:inherit;font-size:13px;font-weight:800;color:var(--ink);background:var(--card);
+    border:1.5px solid #14111630;border-radius:10px;padding:8px 10px;cursor:pointer;min-height:40px;min-width:40px}
+  .a11ybtn.on{background:var(--ink);color:#fffaf5;border-color:var(--ink)}
+  .badge{font-size:14px;font-weight:800;letter-spacing:.2px;padding:9px 14px;border-radius:999px;
     background:var(--acc);color:#fffaf5;white-space:nowrap;box-shadow:0 2px 6px #ca421a3d}
   .badge.future{background:var(--acc2);box-shadow:0 2px 6px #167f683d}
   .badge.past{background:var(--mut);box-shadow:none}
 
   /* container switcher — the live map hosts two neat containers */
   .tabs{max-width:600px;margin:8px auto 0;padding:0 18px;display:flex;gap:8px}
-  .tabs .tab{flex:1;appearance:none;font:inherit;font-family:var(--body);font-weight:800;font-size:14px;cursor:pointer;
+  .tabs .tab{flex:1;appearance:none;font:inherit;font-family:var(--body);font-weight:800;font-size:16px;cursor:pointer;min-height:48px;
     border:1.5px solid #14111620;background:var(--card);color:var(--ink);border-radius:13px;padding:12px 8px;transition:all .15s}
   .tabs .tab:hover{border-color:var(--acc3)}
   .tabs .tab.on{background:var(--ink);color:#fffaf5;border-color:var(--ink)}
-  .tabs .tab small{display:block;font-size:10.5px;font-weight:600;opacity:.7;margin-top:2px;letter-spacing:.2px}
+  .tabs .tab small{display:block;font-size:13px;font-weight:600;opacity:.85;margin-top:2px;letter-spacing:.2px}
+
+  /* ---- ON NOW rail: real time-of-day, not just "upcoming" ---- */
+  .nowrail{max-width:600px;margin:14px auto 0;padding:0 18px}
+  .nowrail-head{display:flex;align-items:center;gap:8px;font-family:var(--display);font-weight:700;
+    font-size:17px;color:var(--acc);margin-bottom:8px}
+  .nowrail-head .dotlive{width:10px;height:10px;border-radius:50%;background:var(--acc);
+    box-shadow:0 0 0 0 #ca421a80;animation:bbpulse 1.6s infinite}
+  @keyframes bbpulse{0%{box-shadow:0 0 0 0 #ca421a55}70%{box-shadow:0 0 0 8px #ca421a00}100%{box-shadow:0 0 0 0 #ca421a00}}
+  .nowrow{display:flex;gap:10px;overflow-x:auto;padding:2px 2px 6px;-webkit-overflow-scrolling:touch}
+  .nowcard{flex:0 0 auto;width:200px;background:var(--card);border:2px solid var(--acc);border-radius:16px;
+    padding:12px 14px;cursor:pointer}
+  .nowcard .nm{font-weight:800;font-size:15px;line-height:1.25}
+  .nowcard .ve{font-size:13.5px;color:var(--mut);margin-top:3px}
+  .nowcard .liveflag{font-size:12px;font-weight:800;color:var(--acc);text-transform:uppercase;letter-spacing:.4px}
+  .nownone{font-size:14.5px;color:var(--mut);padding:4px 0 2px}
+
+  /* ---- calendar week-strip: 2-tap to any day this week ---- */
+  .weekstrip{max-width:600px;margin:14px auto 0;padding:0 18px}
+  .weekstrip-row{display:flex;gap:6px;overflow-x:auto;padding:2px 2px 4px;-webkit-overflow-scrolling:touch}
+  .daybtn{flex:0 0 auto;min-width:52px;min-height:56px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    font:inherit;background:var(--card);border:1.5px solid #14111622;border-radius:14px;cursor:pointer;padding:6px 4px;gap:1px}
+  .daybtn .wd{font-size:11.5px;font-weight:700;color:var(--mut);text-transform:uppercase}
+  .daybtn .dn{font-size:17px;font-weight:800;color:var(--ink);font-family:var(--display)}
+  .daybtn.on{background:var(--ink);border-color:var(--ink)}
+  .daybtn.on .wd,.daybtn.on .dn{color:#fffaf5}
+  .daybtn.today{border-color:var(--acc)}
 
   #map{height:50vh;min-height:320px;width:100%;z-index:1;border-top:1px solid #14111614;border-bottom:1px solid #14111614;margin-top:12px}
   .pinmoji{font-size:22px;line-height:1;width:40px;height:40px;border-radius:50%;
@@ -70,7 +111,7 @@
 
   /* legend */
   .legend{max-width:600px;margin:12px auto 0;padding:0 18px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;
-    font-size:11.5px;font-weight:600;color:var(--mut);line-height:1.3}
+    font-size:14px;font-weight:600;color:var(--mut);line-height:1.3}
   .legend .k{display:flex;align-items:center;gap:5px}
   .legend .sw{width:10px;height:10px;border-radius:1.5px;border:1px solid;box-sizing:border-box;display:inline-block}
   .legend .sw.open{background:#e4f2ee;border-color:#167f68}
@@ -78,48 +119,49 @@
   .legend .sw.held{background:#167f68;border-color:#0f5c4b}
   .legend .dot{width:11px;height:11px;border-radius:50%;border:2px solid var(--acc2);background:var(--card);display:inline-block}
   .legend .dot.store{border-color:var(--acc3)}
-  .legend button.boothbtn{font:inherit;font-weight:700;font-size:11.5px;color:var(--acc2);background:var(--card);
-    border:1.5px solid #167f6844;border-radius:999px;padding:4px 10px;cursor:pointer}
+  .legend button.boothbtn{font:inherit;font-weight:700;font-size:14px;color:var(--acc2);background:var(--card);
+    min-height:40px;border:1.5px solid #167f6844;border-radius:999px;padding:8px 14px;cursor:pointer}
   .legend button.boothbtn.on{background:var(--acc2);color:#fffaf5;border-color:var(--acc2)}
 
   .list{max-width:600px;margin:0 auto;padding:14px 18px 30px}
-  .count{font-family:var(--display);font-style:italic;font-size:13px;font-weight:600;color:var(--acc2);letter-spacing:.2px;margin:6px 2px 12px}
-  .v{background:var(--card);border:1.5px solid #14111617;border-radius:14px;padding:12px 14px;margin-bottom:9px;cursor:pointer;
+  .count{font-family:var(--display);font-style:italic;font-size:15px;font-weight:600;color:var(--acc2);letter-spacing:.2px;margin:6px 2px 12px}
+  .v{background:var(--card);border:1.5px solid #14111617;border-radius:14px;padding:14px 15px;margin-bottom:10px;cursor:pointer;
     transition:transform .15s var(--ease),box-shadow .15s var(--ease),border-color .15s}
   .v:hover{border-color:var(--acc3);box-shadow:0 4px 16px -6px #14111633}
   .v:active{transform:scale(.99)}
   .v .top{display:flex;align-items:center;gap:9px}
-  .v .emo{font-size:19px;opacity:.85}
-  .v .nm{font-weight:700;font-size:15px;letter-spacing:-.1px;flex:1;font-family:var(--body)}
-  .v .cat{font-size:10px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.5px}
-  .v .addr{font-size:12.5px;color:var(--mut);margin-top:4px}
-  .v .hrs{font-size:12.5px;color:var(--ink);font-weight:700;margin-top:2px}
-  .v .note{font-size:13px;color:#4a443e;margin-top:5px;line-height:1.45}
-  .v .links{margin-top:8px;display:flex;gap:6px;flex-wrap:wrap}
-  .v .links a,.v .links button{font-size:11.5px;font-weight:700;color:var(--acc2);text-decoration:none;border:1.5px solid #14111622;
-    border-radius:999px;padding:5px 11px;background:var(--card);font:inherit;cursor:pointer;transition:border-color .15s,background .15s}
+  .v .emo{font-size:22px;opacity:.85}
+  .v .nm{font-weight:700;font-size:17px;letter-spacing:-.1px;flex:1;font-family:var(--body)}
+  .v .cat{font-size:13px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.5px}
+  .v .addr{font-size:14.5px;color:var(--mut);margin-top:4px}
+  .v .hrs{font-size:14.5px;color:var(--ink);font-weight:700;margin-top:2px}
+  .v .note{font-size:15px;color:#33302f;margin-top:6px;line-height:1.5}
+  .v .links{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .v .links a,.v .links button{font-size:14px;font-weight:700;color:var(--acc2);text-decoration:none;border:1.5px solid #14111622;
+    min-height:40px;display:inline-flex;align-items:center;
+    border-radius:999px;padding:8px 14px;background:var(--card);font:inherit;cursor:pointer;transition:border-color .15s,background .15s}
   .v .links a:hover,.v .links button:hover{border-color:var(--acc2);background:#167f680d}
   .v.open{border-style:dashed}
-  .v .openflag{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--acc2)}
-  .v .when2{font-size:12.5px;color:var(--ink);font-weight:700;margin-top:3px}
-  .v .venue2{font-size:12.5px;color:var(--mut);margin-top:2px}
-  .v .tag{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--acc3);
-    border:1.5px solid #c98a2c55;border-radius:999px;padding:2px 7px;margin-left:auto;white-space:nowrap}
+  .v .openflag{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--acc2)}
+  .v .when2{font-size:15px;color:var(--ink);font-weight:700;margin-top:4px}
+  .v .venue2{font-size:14.5px;color:var(--mut);margin-top:2px}
+  .v .tag{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--acc3-text);
+    border:1.5px solid #c98a2c55;border-radius:999px;padding:3px 9px;margin-left:auto;white-space:nowrap}
   .v .tag.cost{color:var(--acc2);border-color:#167f6844}
-  .notice{max-width:600px;margin:0 auto;padding:0 18px 4px;font-size:13.5px;color:var(--mut)}
+  .notice{max-width:600px;margin:0 auto;padding:0 18px 4px;font-size:15px;color:var(--mut)}
   .sechead{max-width:600px;margin:20px auto 2px;padding:0 18px;font-family:var(--display);font-weight:600;
-    font-size:23px;letter-spacing:-.2px;color:var(--ink);line-height:1.1}
-  .secsub{max-width:600px;margin:0 auto;padding:0 18px;font-size:13.5px;color:var(--mut);line-height:1.45}
+    font-size:24px;letter-spacing:-.2px;color:var(--ink);line-height:1.15}
+  .secsub{max-width:600px;margin:0 auto;padding:0 18px;font-size:15.5px;color:var(--mut);line-height:1.5}
   .subhead{max-width:600px;margin:22px auto 0;padding:0 18px;font-family:var(--display);font-style:italic;
-    font-size:14px;font-weight:600;color:var(--acc2);letter-spacing:.2px}
-  .dayhead{font-family:var(--display);font-weight:700;font-size:15px;color:var(--ink);letter-spacing:-.1px;
-    margin:16px 2px 8px;display:flex;align-items:baseline;gap:8px}
+    font-size:16px;font-weight:600;color:var(--acc2);letter-spacing:.2px}
+  .dayhead{font-family:var(--display);font-weight:700;font-size:18px;color:var(--ink);letter-spacing:-.1px;
+    margin:18px 2px 9px;display:flex;align-items:baseline;gap:8px}
   .dayhead.today{color:var(--acc)}
-  .dayhead small{font-family:var(--body);font-size:11px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.5px}
-  .chips{display:flex;gap:7px;overflow-x:auto;padding:4px 2px 8px;margin:0 -2px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .dayhead small{font-family:var(--body);font-size:13px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.5px}
+  .chips{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 8px;margin:0 -2px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
   .chips::-webkit-scrollbar{display:none}
-  .chip{flex:0 0 auto;font-size:12px;font-weight:700;color:var(--ink);border:1.5px solid #14111620;background:var(--card);
-    border-radius:999px;padding:6px 12px;cursor:pointer;white-space:nowrap;transition:all .13s;font:inherit;font-weight:700}
+  .chip{flex:0 0 auto;font-size:15px;font-weight:700;color:var(--ink);border:1.5px solid #14111620;background:var(--card);
+    min-height:44px;border-radius:999px;padding:10px 16px;cursor:pointer;white-space:nowrap;transition:all .13s;font:inherit;font-weight:700}
   .chip:hover{border-color:var(--acc3)}
   .chip.on{background:var(--ink);color:#fffaf5;border-color:var(--ink)}
   .v.highlighted{outline:2.5px solid var(--acc);outline-offset:2px}
@@ -128,39 +170,39 @@
   .xlink{max-width:600px;margin:10px auto 0;padding:0 18px}
   .xlink a{display:flex;align-items:center;justify-content:space-between;gap:10px;text-decoration:none;cursor:pointer;
     background:linear-gradient(180deg,#fff6ea,var(--card));border:1.5px solid #c98a2c55;border-radius:14px;
-    padding:12px 15px;color:var(--ink);transition:border-color .15s}
+    padding:13px 16px;color:var(--ink);transition:border-color .15s}
   .xlink a:hover{border-color:var(--acc3)}
-  .xlink .t{font-weight:800;font-size:14px}
-  .xlink .t small{display:block;font-weight:600;color:var(--mut);font-size:12px;margin-top:2px}
-  .xlink .go{font-weight:800;color:var(--acc);font-size:13px;white-space:nowrap}
+  .xlink .t{font-weight:800;font-size:16px}
+  .xlink .t small{display:block;font-weight:600;color:var(--mut);font-size:14px;margin-top:2px}
+  .xlink .go{font-weight:800;color:var(--acc);font-size:15px;white-space:nowrap}
 
   .fflinks{max-width:600px;margin:12px auto 0;padding:0 18px;display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center}
-  .fflinks a,.fflinks button{font:inherit;font-size:13px;font-weight:700;color:var(--acc2);text-decoration:none;cursor:pointer;
-    display:inline-flex;align-items:center;gap:5px;border:1.5px solid #14111618;border-radius:999px;padding:7px 13px;
+  .fflinks a,.fflinks button{font:inherit;font-size:15px;font-weight:700;color:var(--acc2);text-decoration:none;cursor:pointer;
+    display:inline-flex;align-items:center;gap:5px;min-height:44px;border:1.5px solid #14111618;border-radius:999px;padding:9px 15px;
     background:var(--card);transition:border-color .15s,background .15s}
   .fflinks a:hover,.fflinks button:hover{border-color:var(--acc2);background:#167f680d}
   .fflinks button.on{background:var(--acc2);color:#fffaf5;border-color:var(--acc2)}
   .backlink{display:inline-flex;align-items:center;gap:5px;margin-top:16px;font-weight:700;color:var(--acc2);
-    text-decoration:none;font-size:14px;cursor:pointer;background:none;border:none;font-family:var(--body)}
+    text-decoration:none;font-size:16px;cursor:pointer;background:none;border:none;font-family:var(--body)}
   .backlink:hover{text-decoration:underline}
 
   .cta{display:block;text-align:center;background:var(--ink);color:#fffaf5;text-decoration:none;font-weight:700;
-    font-size:16px;border-radius:14px;padding:17px;margin:20px 0 10px;transition:transform .15s var(--ease),background .15s}
+    font-size:18px;border-radius:14px;padding:18px;margin:20px 0 10px;min-height:48px;transition:transform .15s var(--ease),background .15s}
   .cta:hover{background:#28222c}
   .cta:active{transform:scale(.985)}
   .cta.submit{background:var(--acc)}
   .cta.submit:hover{background:#b23a17}
   .rowbtn{display:flex;gap:10px}
   .rowbtn button,.rowbtn a{flex:1;appearance:none;text-align:center;text-decoration:none;border:1.5px solid var(--ink);
-    background:transparent;color:var(--ink);font:inherit;font-weight:700;font-size:14.5px;border-radius:12px;padding:14px;
+    background:transparent;color:var(--ink);font:inherit;font-weight:700;font-size:16px;border-radius:12px;padding:14px;min-height:48px;
     cursor:pointer;transition:background .15s,transform .15s var(--ease)}
   .rowbtn button:hover,.rowbtn a:hover{background:#14111610}
   .rowbtn button:active,.rowbtn a:active{transform:scale(.98)}
-  footer{text-align:center;font-family:var(--display);font-style:italic;font-size:13px;color:var(--mut);
+  footer{text-align:center;font-family:var(--display);font-style:italic;font-size:15px;color:var(--mut);
     padding:10px 18px 40px;line-height:1.8}
   footer a{color:var(--acc2);font-weight:600;text-decoration:none}
   .toast{position:fixed;left:50%;bottom:22px;translate:-50% 0;background:var(--ink);color:#fffaf5;padding:12px 20px;
-    border-radius:999px;font-size:14px;font-weight:600;opacity:0;transition:.3s var(--ease);pointer-events:none;z-index:99;
+    border-radius:999px;font-size:16px;font-weight:600;opacity:0;transition:.3s var(--ease);pointer-events:none;z-index:99;
     box-shadow:0 8px 24px -8px #14111680}
   .toast.on{opacity:1;translate:-50% -8px}
   .skiplink{position:absolute;left:-9999px;top:auto;background:var(--ink);color:#fffaf5;padding:11px 18px;
@@ -170,18 +212,27 @@
   .leaflet-container{background:var(--pap);font-family:var(--body)}
   .leaflet-control-zoom a{box-shadow:0 3px 10px #14111633!important;background:var(--card)!important;color:var(--ink)!important;border-color:#14111617!important}
   .leaflet-popup-content-wrapper{background:var(--card)!important;border-radius:14px!important;box-shadow:0 12px 32px -10px #14111655!important}
-  .leaflet-popup-content{font-family:var(--body);font-size:13.5px;line-height:1.5;color:var(--ink)}
-  .leaflet-popup-content b{font-family:var(--display);font-weight:600;font-size:15px}
+  .leaflet-popup-content{font-family:var(--body);font-size:15px;line-height:1.55;color:var(--ink)}
+  .leaflet-popup-content b{font-family:var(--display);font-weight:600;font-size:17px}
   .leaflet-popup-content .pop-links{margin-top:6px;display:flex;gap:8px}
-  .leaflet-popup-content .pop-links a{color:var(--acc2);font-weight:700;text-decoration:none}
+  .leaflet-popup-content .pop-links a{color:var(--acc2);font-weight:700;text-decoration:none;font-size:14px}
   .leaflet-popup-tip{background:var(--card)!important}
 </style>
 </head>
 <body>
 <header>
   <a class="mark" href="../">● Board Bored</a>
+  <div class="a11ybar">
+    <button class="a11ybtn" id="a11yText" type="button" title="Bigger text" aria-label="Toggle bigger text">Aa+</button>
+    <button class="a11ybtn" id="a11yContrast" type="button" title="High contrast" aria-label="Toggle high contrast">◐</button>
+  </div>
   <span class="badge" id="badge">…</span>
 </header>
+
+<div class="nowrail" id="nowRail" style="display:none">
+  <div class="nowrail-head"><span class="dotlive"></span>Happening right now</div>
+  <div class="nowrow" id="nowRow"></div>
+</div>
 
 <div class="tabs" id="tabs">
   <button class="tab on" id="tabNow" type="button">🔥 Happening now<small>all of Bako, this week</small></button>
@@ -209,6 +260,7 @@
     <div class="sechead">📅 What's on around Bakersfield</div>
     <div class="secsub">Real events happening today and the days ahead — all of Bako. Tap one for tickets or directions. <a href="calendar.html" style="color:var(--acc2);font-weight:700;text-decoration:none;white-space:nowrap">📆 See the calendar →</a></div>
     <div class="xlink" id="ffTeaser" style="display:none"></div>
+    <div class="weekstrip"><div class="weekstrip-row" id="weekRow"></div></div>
     <div class="list" style="padding-top:12px">
       <div class="chips" id="winChips"></div>
       <div class="chips" id="chips"></div>
@@ -257,11 +309,30 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="../lib/cal.js"></script>
 <script src="../lib/api.js"></script>
+<script src="../lib/occ.js"></script>
 <script>
 (function(){
   var $=function(id){return document.getElementById(id)};
   function toast(m){var t=$("toast");t.textContent=m;t.classList.add("on");
     clearTimeout(t._);t._=setTimeout(function(){t.classList.remove("on")},2000);}
+
+  // ---- accessibility toggles (bigger text / high contrast) — persisted, apply instantly ----
+  (function(){
+    var root=document.documentElement;
+    try{
+      if(localStorage.getItem("bb_text_lg")==="1"){root.classList.add("text-lg");$("a11yText").classList.add("on");}
+      if(localStorage.getItem("bb_contrast")==="1"){root.classList.add("high-contrast");$("a11yContrast").classList.add("on");}
+    }catch(e){}
+    $("a11yText").addEventListener("click",function(){
+      var on=root.classList.toggle("text-lg");this.classList.toggle("on",on);
+      try{localStorage.setItem("bb_text_lg",on?"1":"0");}catch(e){}
+    });
+    $("a11yContrast").addEventListener("click",function(){
+      var on=root.classList.toggle("high-contrast");this.classList.toggle("on",on);
+      try{localStorage.setItem("bb_contrast",on?"1":"0");}catch(e){}
+    });
+  })();
+
   var map, markers={};
   var qs=new URLSearchParams(location.search);
   var highlightId=qs.get("highlight");
@@ -416,11 +487,61 @@
 
     if(ss.length){$("legOpen").style.display="flex";$("legPend").style.display="flex";$("legHeld").style.display="flex";}
 
+    // ---- ON NOW rail: real time-of-day, not just "upcoming" ----
+    function renderNowRail(){
+      if(!window.bbOcc)return;
+      var ctx=bbOcc.pacificClock();
+      var onNow=cityEvents.filter(function(e){return bbOcc.isOnNow(e,ctx);});
+      var rail=$("nowRail"), row=$("nowRow");
+      if(!onNow.length){rail.style.display="none";return;}
+      rail.style.display="block"; row.innerHTML="";
+      onNow.slice(0,12).forEach(function(e){
+        var c=document.createElement("div");c.className="nowcard";
+        c.innerHTML='<div class="liveflag">🔴 Live now</div><div class="nm">'+(e.emoji||"📍")+' '+esc(e.name)+'</div>'+
+          '<div class="ve">'+esc(e.venue)+'</div>';
+        c.addEventListener("click",function(){
+          if(view!=="now")showView("now",{noFit:true});
+          var card=document.getElementById("card-e-"+e.id);
+          if(card){card.scrollIntoView({behavior:"smooth",block:"center"});card.classList.add("highlighted");
+            setTimeout(function(){card.classList.remove("highlighted");},2200);}
+          else if(typeof e.lat==="number")panTo("e:"+e.id);
+        });
+        row.appendChild(c);
+      });
+    }
+
+    // ---- calendar week-strip: 2-tap to any day this week ----
+    var curDay=null; // ISO "YYYY-MM-DD" when a specific day is selected, else null
+    function ymdOf(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+    function renderWeekStrip(){
+      var row=$("weekRow"); row.innerHTML="";
+      var WD=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+      for(var i=0;i<7;i++){
+        var d=new Date(today);d.setDate(today.getDate()+i);
+        var ymd=ymdOf(d);
+        var b=document.createElement("button");b.type="button";
+        b.className="daybtn"+(i===0?" today":"");
+        b.innerHTML='<span class="wd">'+(i===0?"Today":WD[d.getDay()])+'</span><span class="dn">'+d.getDate()+'</span>';
+        b.addEventListener("click",function(dayYmd,btn){return function(){
+          var nowSel=curDay===dayYmd;
+          curDay=nowSel?null:dayYmd;
+          Array.prototype.forEach.call(row.children,function(n){n.classList.remove("on");});
+          if(!nowSel)btn.classList.add("on");
+          if(curDay){curWin="all";Array.prototype.forEach.call(winBox.children,function(n){n.classList.remove("on");});}
+          paint();
+        };}(ymd,b));
+        row.appendChild(b);
+      }
+    }
+    renderNowRail();
+    setInterval(renderNowRail,60000); // keep "right now" honest if the tab stays open
+    renderWeekStrip();
+
     // ---- agenda + event pins ----
     function eventPopup(e){
       var l=""; if(e.link)l+='<a href="'+e.link+'" target="_blank" rel="noopener">Tickets / info</a>';
       l+='<a href="'+dirUrl(e.address)+'" target="_blank" rel="noopener">Directions</a>';
-      return "<b>"+(e.emoji||"📍")+" "+e.name+"</b><br>"+e.when+"<br><span style='color:#777069'>"+e.venue+"</span>"+
+      return "<b>"+(e.emoji||"📍")+" "+e.name+"</b><br>"+e.when+"<br><span style='color:#5a5450'>"+e.venue+"</span>"+
              "<div class='pop-links'>"+l+"</div>";
     }
     var curCat=null, curWin="all";
@@ -428,8 +549,9 @@
     var _wd=today.getDay(), satD=null, sunD=null;
     if(_wd===0){ sunD=new Date(today); } else { satD=new Date(today); satD.setDate(today.getDate()+(6-_wd)); sunD=new Date(satD); sunD.setDate(satD.getDate()+1); }
     function inWin(x){
-      if(curWin==="all")return true;
       var e=x.e,eff=x.eff;
+      if(curDay)return ymdOf(eff)===curDay;
+      if(curWin==="all")return true;
       if(curWin==="tonight")return sameDay(eff,today)&&(!e.start||e.start>="16:00"||(e.end&&e.end<e.start));
       if(curWin==="weekend")return sameDay(eff,satD)||sameDay(eff,sunD);
       return true;
@@ -438,7 +560,8 @@
       eventLayer.clearLayers();
       var box=$("events");box.innerHTML="";
       var list=upcoming.filter(function(x){return inWin(x)&&(!curCat||x.e.category===curCat);});
-      var wl=curWin==="tonight"?" tonight":curWin==="weekend"?" this weekend":(curCat?" · "+curCat:" this week & ahead");
+      var wl=curDay?" on "+(new Date(curDay+"T00:00:00")).toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric"})
+        :curWin==="tonight"?" tonight":curWin==="weekend"?" this weekend":(curCat?" · "+curCat:" this week & ahead");
       $("evCount").textContent=list.length+" event"+(list.length===1?"":"s")+wl;
       var lastLabel=null;
       list.forEach(function(x){
@@ -480,7 +603,9 @@
       var c2=document.createElement("button");c2.type="button";c2.className="chip";c2.textContent=label;
       c2.addEventListener("click",function(){
         Array.prototype.forEach.call(winBox.children,function(n){n.classList.remove("on")});
-        c2.classList.add("on"); curWin=val; paint();
+        c2.classList.add("on"); curWin=val; curDay=null;
+        Array.prototype.forEach.call($("weekRow").children,function(n){n.classList.remove("on")});
+        paint();
       });
       return c2;
     }
