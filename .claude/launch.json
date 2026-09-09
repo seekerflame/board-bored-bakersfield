@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "bbk-live",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [".claude/no_cache_server.py", "8910"],
+      "port": 8910
+    }
+  ]
+}
