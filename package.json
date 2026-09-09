@@ -1,0 +1,11 @@
+{
+  "name": "board-bored-bakersfield",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Board Bored — the free local events + open-shops map. Static PWA; no build step.",
+  "scripts": {
+    "validate": "node tools/validate-board.js",
+    "test": "node tools/test.js && node tools/validate-board.js"
+  },
+  "license": "SEE LICENSE IN LICENSE"
+}

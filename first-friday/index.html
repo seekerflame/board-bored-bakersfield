@@ -15,7 +15,7 @@
 <meta name="twitter:title" content="Board Bored — What's on in Bakersfield">
 <meta name="twitter:description" content="Everything happening around Bakersfield this week, plus First Friday — one free live map.">
 <meta name="twitter:image" content="https://seekerflame.github.io/board-bored-bakersfield/first-friday/share.png">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="anonymous">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500;1,9..144,600;1,9..144,700&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -336,13 +336,15 @@
 </footer>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="anonymous"></script>
+<script src="../lib/safe.js"></script>
 <script src="../lib/cal.js"></script>
 <script src="../lib/api.js"></script>
 <script src="../lib/occ.js"></script>
 <script>
 (function(){
   var $=function(id){return document.getElementById(id)};
+  var esc=BBSafe.esc, safeUrl=BBSafe.safeUrl;
   function toast(m){var t=$("toast");t.textContent=m;t.classList.add("on");
     clearTimeout(t._);t._=setTimeout(function(){t.classList.remove("on")},2000);}
 
@@ -403,11 +405,12 @@
   }
   var STATE_LABEL={open:"Open",pending:"Pending",held:"Taken",closed:"Closed"};
   function seatPopup(s,st){
-    if(st==="held"&&s.vendor)return "<b>"+(s.vendor.emoji||"")+" "+(s.vendor.name||s.label)+"</b><br>"+s.label+
-      (s.vendor.category?" · "+s.vendor.category:"");
-    if(st==="pending")return "<b>"+s.label+"</b><br>Pending — someone's asked for this one";
-    if(st==="closed")return "<b>"+s.label+"</b><br>Not available this month";
-    return "<b>"+s.label+"</b><br>Open — claim it on the signup page";
+    var lbl=esc(s.label);
+    if(st==="held"&&s.vendor)return "<b>"+esc(s.vendor.emoji||"")+" "+esc(s.vendor.name||s.label)+"</b><br>"+lbl+
+      (s.vendor.category?" · "+esc(s.vendor.category):"");
+    if(st==="pending")return "<b>"+lbl+"</b><br>Pending — someone's asked for this one";
+    if(st==="closed")return "<b>"+lbl+"</b><br>Not available this month";
+    return "<b>"+lbl+"</b><br>Open — claim it on the signup page";
   }
   function dirUrl(addr){return "https://www.google.com/maps/dir/?api=1&destination="+encodeURIComponent(addr);}
   function shareLink(id,name,extra){
@@ -423,7 +426,6 @@
     return btn;
   }
   function fmtTime(hhmm){var p=hhmm.split(":"),h=+p[0];var ap=h>=12?"pm":"am";h=h%12;if(h===0)h=12;return h+(p[1]!=="00"?":"+p[1]:"")+ap;}
-  function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
   function dealBadge(ev){
     if(!ev.deal||ev.deal.type==="free")return"";
     var d=ev.deal,label;
@@ -498,13 +500,13 @@
     }
     (corridor&&corridor.intersections||[]).forEach(function(x){
       L.circleMarker([x.lat,x.lng],{radius:4,color:"#c98a2c",weight:2.5,fillColor:"#fffdfa",fillOpacity:1,opacity:.85})
-        .addTo(ffDecor).bindPopup("<b>🚦 "+x.label+"</b><br>"+(x.note||"Prime corner — high foot traffic"));
+        .addTo(ffDecor).bindPopup("<b>🚦 "+esc(x.label)+"</b><br>"+(x.note?esc(x.note):"Prime corner — high foot traffic"));
     });
 
     vs.forEach(function(v){
       var icon=L.divIcon({html:'<div class="pinmoji">'+(v.emoji||"📍")+'</div>',className:"",iconSize:[40,40],iconAnchor:[20,20]});
       markers["v:"+v.id]=L.marker([v.lat,v.lng],{icon:icon,zIndexOffset:1000}).addTo(storefrontLayer)
-        .bindPopup("<b>"+(v.emoji||"")+" "+v.name+"</b><br>"+(v.hours||"")+"<br>"+(v.address||""));
+        .bindPopup("<b>"+esc(v.emoji||"")+" "+esc(v.name)+"</b><br>"+esc(v.hours||"")+"<br>"+esc(v.address||""));
     });
     ss.forEach(function(s){
       var st=seatState(s);
@@ -514,7 +516,7 @@
     pk.forEach(function(p){
       var icon=L.divIcon({html:'<div class="parkmoji">🅿️</div>',className:"",iconSize:[18,18],iconAnchor:[9,14]});
       L.marker([p.lat,p.lng],{icon:icon}).addTo(parkingLayer)
-        .bindPopup("<b>🅿️ "+(p.label||"Parking")+"</b>"+(p.note?"<br>"+p.note:""));
+        .bindPopup("<b>🅿️ "+esc(p.label||"Parking")+"</b>"+(p.note?"<br>"+esc(p.note):""));
     });
 
     // ---- citywide happenings ----
@@ -661,9 +663,9 @@
 
     // ---- agenda + event pins ----
     function eventPopup(e){
-      var l=""; if(e.link)l+='<a href="'+e.link+'" target="_blank" rel="noopener">Tickets / info</a>';
-      l+='<a href="'+dirUrl(e.address)+'" target="_blank" rel="noopener">Directions</a>';
-      return "<b>"+(e.emoji||"📍")+" "+e.name+"</b><br>"+e.when+"<br><span style='color:var(--mut)'>"+e.venue+"</span>"+
+      var l=""; if(e.link)l+='<a href="'+safeUrl(e.link)+'" target="_blank" rel="noopener">Tickets / info</a>';
+      l+='<a href="'+safeUrl(dirUrl(e.address))+'" target="_blank" rel="noopener">Directions</a>';
+      return "<b>"+esc(e.emoji||"📍")+" "+esc(e.name)+"</b><br>"+esc(e.when)+"<br><span style='color:var(--mut)'>"+esc(e.venue)+"</span>"+
              "<div class='pop-links'>"+l+"</div>";
     }
     var curCat=null, curWin="all";
@@ -696,19 +698,18 @@
           box.appendChild(h);lastLabel=lbl;
         }
         var el=document.createElement("div");el.className="v";el.id="card-e-"+e.id;
-        var tag=e.cost?'<span class="tag cost">'+e.cost+'</span>':(isRecurring(e)?'<span class="tag">Weekly</span>':"");
-        el.innerHTML='<div class="top"><span class="emo">'+(e.emoji||"📍")+'</span>'+
-          '<span class="nm">'+e.name+'</span>'+tag+'</div>'+
-          '<div class="when2">'+e.when+(isRecurring(e)&&!e.cost?' · every week':'')+'</div>'+
-          '<div class="venue2">'+e.venue+(e.area==="downtown"?' · downtown':'')+'</div>'+
+        var tag=e.cost?'<span class="tag cost">'+esc(e.cost)+'</span>':(isRecurring(e)?'<span class="tag">Weekly</span>':"");
+        el.innerHTML='<div class="top"><span class="emo">'+esc(e.emoji||"📍")+'</span>'+
+          '<span class="nm">'+esc(e.name)+'</span>'+tag+'</div>'+
+          '<div class="when2">'+esc(e.when)+(isRecurring(e)&&!e.cost?' · every week':'')+'</div>'+
+          '<div class="venue2">'+esc(e.venue)+(e.area==="downtown"?' · downtown':'')+'</div>'+
           (e.host?'<div class="venue2">👤 Hosted by '+esc(e.host)+'</div>':"")+
           dealBadge(e)+
-          (e.desc?'<div class="note">'+e.desc+'</div>':"");
+          (e.desc?'<div class="note">'+esc(e.desc)+'</div>':"");
         var linksEl=document.createElement("div");linksEl.className="links";
-        var lh=""; if(e.link)lh+='<a href="'+e.link+'" target="_blank" rel="noopener">🎟️ Tickets / info</a>';
-        lh+='<a href="'+dirUrl(e.address)+'" target="_blank" rel="noopener">🧭 Directions</a>';
-        if(window.bbCal)lh+='<a href="'+bbCal.gcal(e)+'" target="_blank" rel="noopener">📅 Add</a>';
-        lh+=socialLinks(e);
+        var lh=""; if(e.link)lh+='<a href="'+safeUrl(e.link)+'" target="_blank" rel="noopener">🎟️ Tickets / info</a>';
+        lh+='<a href="'+safeUrl(dirUrl(e.address))+'" target="_blank" rel="noopener">🧭 Directions</a>';
+        if(window.bbCal)lh+='<a href="'+safeUrl(bbCal.gcal(e))+'" target="_blank" rel="noopener">📅 Add</a>';
         linksEl.innerHTML=lh; linksEl.appendChild(shareLink(e.id,e.name,e.category));
         el.appendChild(linksEl);
         el.addEventListener("click",function(evt){if(evt.target.closest("a,button"))return;
@@ -779,16 +780,16 @@
       var el=document.createElement("div");el.className="v";el.id="card-v-"+v.id;
       var links="";
       if(v.instagram){var ig=v.instagram.indexOf("http")===0?v.instagram:"https://instagram.com/"+v.instagram.replace("@","");
-        links+='<a href="'+ig+'" target="_blank" rel="noopener">Instagram</a>';}
+        links+='<a href="'+safeUrl(ig)+'" target="_blank" rel="noopener">Instagram</a>';}
       if(v.website){var w=v.website.indexOf("http")===0?v.website:"https://"+v.website;
-        links+='<a href="'+w+'" target="_blank" rel="noopener">Website</a>';}
+        links+='<a href="'+safeUrl(w)+'" target="_blank" rel="noopener">Website</a>';}
       if(v.address&&v.address.indexOf("verify")===-1){
-        links+='<a href="'+dirUrl(v.address)+'" target="_blank" rel="noopener">Directions</a>';}
-      el.innerHTML='<div class="top"><span class="emo">'+(v.emoji||"📍")+'</span>'+
-        '<span class="nm">'+v.name+'</span><span class="cat">'+(v.category||"")+'</span></div>'+
-        (v.address?'<div class="addr">'+v.address+'</div>':"")+
-        (v.hours?'<div class="hrs">'+v.hours+' '+openBadge(v)+'</div>':"")+
-        (v.note?'<div class="note">'+v.note+'</div>':"");
+        links+='<a href="'+safeUrl(dirUrl(v.address))+'" target="_blank" rel="noopener">Directions</a>';}
+      el.innerHTML='<div class="top"><span class="emo">'+esc(v.emoji||"📍")+'</span>'+
+        '<span class="nm">'+esc(v.name)+'</span><span class="cat">'+esc(v.category||"")+'</span></div>'+
+        (v.address?'<div class="addr">'+esc(v.address)+'</div>':"")+
+        (v.hours?'<div class="hrs">'+esc(v.hours)+' '+openBadge(v)+'</div>':"")+
+        (v.note?'<div class="note">'+esc(v.note)+'</div>':"");
       var linksEl=document.createElement("div");linksEl.className="links";linksEl.innerHTML=links;
       linksEl.appendChild(shareLink(v.id,v.name,v.category));
       el.appendChild(linksEl);
@@ -814,17 +815,17 @@
                    :st==="closed"?"Not available this month."
                    :'First come, first served — sidewalk only, streets stay open. <a href="../vendor-signup.html">Claim this spot →</a>';
           el.innerHTML='<div class="top"><span class="emo"><span class="seat '+st+'" style="display:inline-block"></span></span>'+
-            '<span class="nm">'+s.label+'</span><span class="openflag">'+STATE_LABEL[st]+'</span></div>'+
+            '<span class="nm">'+esc(s.label)+'</span><span class="openflag">'+STATE_LABEL[st]+'</span></div>'+
             '<div class="note">'+blurb+'</div>';
         } else {
           var v=s.vendor;var links="";
           if(v.instagram){var ig=v.instagram.indexOf("http")===0?v.instagram:"https://instagram.com/"+v.instagram.replace("@","");
-            links+='<a href="'+ig+'" target="_blank" rel="noopener">Instagram</a>';}
+            links+='<a href="'+safeUrl(ig)+'" target="_blank" rel="noopener">Instagram</a>';}
           if(v.website){var w=v.website.indexOf("http")===0?v.website:"https://"+v.website;
-            links+='<a href="'+w+'" target="_blank" rel="noopener">Website</a>';}
-          el.innerHTML='<div class="top"><span class="emo">'+(v.emoji||"📍")+'</span>'+
-            '<span class="nm">'+v.name+'</span><span class="cat">'+(v.category||"")+'</span></div>'+
-            '<div class="addr">'+s.label+'</div>'+(v.note?'<div class="note">'+v.note+'</div>':"");
+            links+='<a href="'+safeUrl(w)+'" target="_blank" rel="noopener">Website</a>';}
+          el.innerHTML='<div class="top"><span class="emo">'+esc(v.emoji||"📍")+'</span>'+
+            '<span class="nm">'+esc(v.name)+'</span><span class="cat">'+esc(v.category||"")+'</span></div>'+
+            '<div class="addr">'+esc(s.label)+'</div>'+(v.note?'<div class="note">'+esc(v.note)+'</div>':"");
           var linksEl=document.createElement("div");linksEl.className="links";linksEl.innerHTML=links;
           linksEl.appendChild(shareLink(s.id,v.name,s.label));el.appendChild(linksEl);
         }

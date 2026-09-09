@@ -1,0 +1,53 @@
+name: Auto-ingest events
+
+# Runs the repeatable event pipeline (tools/ingest_events.js) on a schedule
+# and commits directly to main if — and only if — the result still passes
+# tools/validate-board.js. No branches, no bundles, no manual merge later:
+# this IS the fix for how the codebase-audit-bzdjqf branch went stale and
+# needed a hand merge. See PROCESS.md for the reasoning.
+on:
+  schedule:
+    - cron: "0 14 * * 1"  # Monday 7am Pacific (14:00 UTC) — weekly, matches
+                            # how often new events are realistically posted
+  workflow_dispatch:        # manual "run it now" button in the Actions tab
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ingest
+  cancel-in-progress: false  # never abandon a partially-written commit
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Run the ingester
+        env:
+          TICKETMASTER_API_KEY: ${{ secrets.TICKETMASTER_API_KEY }}
+          MEETUP_ACCESS_TOKEN: ${{ secrets.MEETUP_ACCESS_TOKEN }}
+        run: node tools/ingest_events.js --city data/cities/kern-county.json
+
+      - name: Validate (belt-and-suspenders — the ingester already gates itself)
+        run: node tools/validate-board.js
+
+      - name: Commit + push if board.json changed
+        run: |
+          if git diff --quiet -- data/board.json; then
+            echo "No new events this run."
+            exit 0
+          fi
+          git config user.name "board-bored-ingest-bot"
+          git config user.email "actions@github.com"
+          git add data/board.json
+          git commit -m "Auto-ingest: new events from $(node -e "console.log(require('./data/cities/kern-county.json').sources.map(s=>s.type).join(', '))")
+
+          Automated, unattended run — see .github/workflows/ingest.yml.
+          Every event here already passed tools/validate-board.js before
+          this commit was made (the ingester writes nothing otherwise)."
+          git push
