@@ -1826,6 +1826,27 @@
       "allday": true
     },
     {
+      "id": "ce_legacyrunclubsat",
+      "name": "Legacy Run Club (Saturday)",
+      "emoji": "🏃",
+      "category": "Fitness",
+      "venue": "lululemon River Walk",
+      "address": "lululemon River Walk, Bakersfield, CA",
+      "lat": 35.3372,
+      "lng": -119.1069,
+      "when": "Sat 7 AM",
+      "cost": "Free",
+      "desc": "Saturday-morning community run — giveaways, pre-run stretches, ice baths.",
+      "link": "https://www.instagram.com/p/DcO2Z53J1Yn/",
+      "schedule": {
+        "weekday": 6
+      },
+      "area": "citywide",
+      "start": "07:00"
+    }
+  ],
+  "city_events_archive": [
+    {
       "id": "ce_csubwomenssoccer",
       "name": "CSUB Women's Soccer vs. Idaho State",
       "emoji": "⚽",
@@ -2256,27 +2277,6 @@
       "lat": 35.375357,
       "lng": -119.015528
     },
-    {
-      "id": "ce_legacyrunclubsat",
-      "name": "Legacy Run Club (Saturday)",
-      "emoji": "🏃",
-      "category": "Fitness",
-      "venue": "lululemon River Walk",
-      "address": "lululemon River Walk, Bakersfield, CA",
-      "lat": 35.3372,
-      "lng": -119.1069,
-      "when": "Sat 7 AM",
-      "cost": "Free",
-      "desc": "Saturday-morning community run — giveaways, pre-run stretches, ice baths.",
-      "link": "https://www.instagram.com/p/DcO2Z53J1Yn/",
-      "schedule": {
-        "weekday": 6
-      },
-      "area": "citywide",
-      "start": "07:00"
-    }
-  ],
-  "city_events_archive": [
     {
       "id": "arch_001",
       "name": "DBA Business Vitality Series",
