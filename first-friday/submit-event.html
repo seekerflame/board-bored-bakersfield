@@ -155,7 +155,40 @@
     </div>
     <div class="hint" style="margin-top:6px">Your links show right on your event card so people can follow, buy tickets, and find you.</div>
 
-    <label for="evContact">Your name + contact <span class="req">*</span></label>
+    <label for="evDealType">Got a deal for people who show up? <span style="font-weight:600;color:var(--mut);text-transform:none;letter-spacing:0">(optional — free either way)</span></label>
+    <select id="evDealType">
+      <option value="">No deal — just list the event</option>
+      <option value="first_n_free">First N people get something free</option>
+      <option value="percent_off">% off</option>
+      <option value="bogo">Buy one, get one</option>
+      <option value="free_item">A free item for anyone who comes</option>
+    </select>
+    <div id="dealFields" style="display:none">
+      <div class="row" id="dealRowCapReward" style="display:none;margin-top:10px">
+        <div><label for="dealCap">How many?</label><input id="dealCap" type="number" min="1" placeholder="100"></div>
+        <div><label for="dealReward">Free what?</label><input id="dealReward" placeholder="a coffee"></div>
+      </div>
+      <div class="row" id="dealRowPercent" style="display:none;margin-top:10px">
+        <div><label for="dealPercent">% off</label><input id="dealPercent" type="number" min="1" max="100" placeholder="20"></div>
+        <div><label for="dealOn">Off what?</label><input id="dealOn" placeholder="your order"></div>
+      </div>
+      <div id="dealRowItem" style="display:none;margin-top:10px">
+        <label for="dealItem">Item</label><input id="dealItem" placeholder="a taco">
+      </div>
+      <label for="dealTerms" style="margin-top:10px">Terms (optional)</label>
+      <input id="dealTerms" placeholder="21+, dine-in only, one per person…">
+    </div>
+
+    <label style="margin-top:14px">Want people to do something for it? <span style="font-weight:600;color:var(--mut);text-transform:none;letter-spacing:0">(optional)</span></label>
+    <div class="hint" style="margin-top:0 0 6px">Check any that apply — shown right on your event card.</div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-top:6px">
+      <label style="display:flex;align-items:center;gap:8px;font-size:14.5px;font-weight:500;color:var(--ink);text-transform:none;letter-spacing:0"><input type="checkbox" id="actFollowUs" style="width:20px;height:20px"> Follow Board Bored</label>
+      <label style="display:flex;align-items:center;gap:8px;font-size:14.5px;font-weight:500;color:var(--ink);text-transform:none;letter-spacing:0"><input type="checkbox" id="actFollowThem" style="width:20px;height:20px"> Follow us on Instagram</label>
+      <label style="display:flex;align-items:center;gap:8px;font-size:14.5px;font-weight:500;color:var(--ink);text-transform:none;letter-spacing:0"><input type="checkbox" id="actRepost" style="width:20px;height:20px"> Repost our story</label>
+      <label style="display:flex;align-items:center;gap:8px;font-size:14.5px;font-weight:500;color:var(--ink);text-transform:none;letter-spacing:0"><input type="checkbox" id="actTag" style="width:20px;height:20px"> Tag 2 friends</label>
+    </div>
+
+    <label for="evContact" style="margin-top:14px">Your name + contact <span class="req">*</span></label>
     <input id="evContact" required placeholder="Name · phone or email (not shown publicly)">
 
     <button class="btn" type="submit">Send it in →</button>
@@ -199,6 +232,37 @@
   $("segOne").onclick=function(){setMode("one");};
   $("segWeek").onclick=function(){setMode("week");};
 
+  // ---- deal-type field toggling ----
+  function updateDealFields(){
+    var t=$("evDealType").value;
+    $("dealFields").style.display=t?"block":"none";
+    $("dealRowCapReward").style.display=t==="first_n_free"?"flex":"none";
+    $("dealRowPercent").style.display=t==="percent_off"?"flex":"none";
+    $("dealRowItem").style.display=(t==="bogo"||t==="free_item")?"block":"none";
+    $("dealItem").placeholder=t==="bogo"?"a taco":"a coffee";
+  }
+  $("evDealType").addEventListener("change",updateDealFields);
+  updateDealFields();
+
+  function buildDeal(){
+    var t=$("evDealType").value;
+    if(!t)return undefined;
+    var terms=$("dealTerms").value.trim();
+    var d={type:t}; if(terms)d.terms=terms;
+    if(t==="first_n_free"){ d.cap=$("dealCap").value||100; d.reward=$("dealReward").value.trim()||"a free item"; }
+    else if(t==="percent_off"){ d.percent=$("dealPercent").value||10; d.on=$("dealOn").value.trim()||"your order"; }
+    else if(t==="bogo"||t==="free_item"){ d.item=$("dealItem").value.trim()||"item"; }
+    return d;
+  }
+  function buildActionItems(){
+    var items=[];
+    if($("actFollowUs").checked)items.push("follow_us");
+    if($("actFollowThem").checked)items.push("follow_them");
+    if($("actRepost").checked)items.push("repost_story");
+    if($("actTag").checked)items.push("tag_friends");
+    return items;
+  }
+
   var WD=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
   function fmtTime(t){ if(!t)return""; var p=t.split(":"),h=+p[0],ap=h>=12?"pm":"am"; h=h%12; if(h===0)h=12;
     return h+(p[1]!=="00"?":"+p[1]:"")+ap; }
@@ -227,6 +291,8 @@
       x:$("evX").value.trim(),
       start:$("evStart").value,
       end:$("evEnd").value,
+      deal:buildDeal(),
+      actionItems:buildActionItems(),
       // permit answer rides along on the private contact line for our review
       contact:$("evContact").value.trim()+($("evPermit").value?" · Permit: "+$("evPermit").value:"")
     };
