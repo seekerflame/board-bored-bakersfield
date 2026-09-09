@@ -19,6 +19,7 @@ var PRECACHE = [
   "first-friday/",
   "first-friday/about.html",
   "first-friday/for-planners.html",
+  "first-friday/for-business.html",
   "first-friday/submit-event.html",
   "first-friday/calendar.html",
   "first-friday/fund.html",
