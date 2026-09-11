@@ -3036,10 +3036,10 @@
       "name": "Thursday Night Social Poker",
       "emoji": "♠️",
       "category": "Community",
-      "venue": null,
-      "address": null,
-      "lat": null,
-      "lng": null,
+      "venue": "Firehouse Rosedale Station",
+      "address": "2905 Calloway Dr, Bakersfield, CA 93312",
+      "lat": 35.386981,
+      "lng": -119.110017,
       "when": "Thu 6:30 PM",
       "cost": null,
       "desc": "Local social poker league at Firehouse Rosedale Station — non-gambling, prize-based play.",
@@ -3047,7 +3047,7 @@
       "schedule": {
         "weekday": 4
       },
-      "area": null,
+      "area": "citywide",
       "start": "18:30",
       "end": null
     },
@@ -3056,10 +3056,10 @@
       "name": "Monday Night Social Poker",
       "emoji": "♠️",
       "category": "Community",
-      "venue": null,
-      "address": null,
-      "lat": null,
-      "lng": null,
+      "venue": "Firehouse Southwest Station",
+      "address": "7701 White Ln, Bakersfield, CA 93309",
+      "lat": 35.318148,
+      "lng": -119.086852,
       "when": "Mon 6:30 PM",
       "cost": null,
       "desc": "Local social poker league at Firehouse Southwest Station — non-gambling, prize-based play.",
@@ -3067,7 +3067,7 @@
       "schedule": {
         "weekday": 1
       },
-      "area": null,
+      "area": "citywide",
       "start": "18:30",
       "end": null
     },
@@ -3076,10 +3076,10 @@
       "name": "Boxing at the Bluffs",
       "emoji": "🥊",
       "category": "Fitness",
-      "venue": null,
-      "address": null,
-      "lat": null,
-      "lng": null,
+      "venue": "The Bluffs (Panorama Park)",
+      "address": "950 Panorama Dr, Bakersfield, CA 93305",
+      "lat": 35.409002,
+      "lng": -118.984155,
       "when": "Fri 5 AM",
       "cost": "Free",
       "desc": "Free outdoor boxing-inspired community workout at The Bluffs. No experience required.",
@@ -3087,7 +3087,7 @@
       "schedule": {
         "weekday": 5
       },
-      "area": null,
+      "area": "citywide",
       "start": "05:00",
       "end": null
     }
@@ -3218,10 +3218,10 @@
       "name": "Sip & Bedazzle Night",
       "emoji": "✨",
       "category": "Nightlife",
-      "venue": null,
-      "address": null,
-      "lat": null,
-      "lng": null,
+      "venue": "Wine Me Up",
+      "address": "3900 Coffee Rd, Bakersfield, CA 93308",
+      "lat": 35.39426,
+      "lng": -119.092307,
       "when": "Wed 6-8 PM",
       "cost": null,
       "desc": "Evening bedazzling activity at Wine Me Up.",
@@ -3229,7 +3229,7 @@
       "schedule": {
         "date": "2026-09-09"
       },
-      "area": null,
+      "area": "citywide",
       "start": "18:00",
       "end": "20:00"
     },
@@ -3239,9 +3239,9 @@
       "emoji": "🤝",
       "category": "Community",
       "venue": "Motor City Lexus",
-      "address": "Motor City Lexus, Bakersfield, CA",
-      "lat": null,
-      "lng": null,
+      "address": "5101 Gasoline Alley, Bakersfield, CA 93313",
+      "lat": 35.307096,
+      "lng": -119.035608,
       "when": "Tue 5:30-7:30 PM",
       "cost": null,
       "desc": "Networking event with local professionals, entrepreneurs, vendors, refreshments and raffle prizes.",
@@ -3260,8 +3260,8 @@
       "category": "Dining",
       "venue": "Gosford Walmart",
       "address": "5075 Gosford Rd, Bakersfield, CA",
-      "lat": null,
-      "lng": null,
+      "lat": 35.30861,
+      "lng": -119.095406,
       "when": "Tue 11 AM",
       "cost": null,
       "desc": "Dirt Dog's Bakersfield grand opening — first 100 guests get a free L.A. Street Dog.",
@@ -3298,10 +3298,10 @@
       "name": "Lil Vada: Labor Day Weekend",
       "emoji": "🎤",
       "category": "Nightlife",
-      "venue": null,
-      "address": null,
-      "lat": null,
-      "lng": null,
+      "venue": "Uruapan Night Club",
+      "address": "1200 E Truxtun Ave, Bakersfield, CA",
+      "lat": 35.373314,
+      "lng": -118.985651,
       "when": "Sun 9 PM",
       "cost": null,
       "desc": "Labor Day Weekend nightclub event at Uruapan Night Club, live performance by rapper Lil Vada.",
@@ -3309,7 +3309,7 @@
       "schedule": {
         "date": "2026-09-06"
       },
-      "area": null,
+      "area": "citywide",
       "start": "21:00",
       "end": null
     },
@@ -3334,34 +3334,14 @@
       "end": null
     },
     {
-      "id": "ce0906_haggingmarket_special",
-      "name": "Haggin Oaks Farmers Market",
-      "emoji": "🥕",
-      "category": "Market",
-      "venue": null,
-      "address": null,
-      "lat": null,
-      "lng": null,
-      "when": "Sun 9 AM-2 PM",
-      "cost": null,
-      "desc": "Weekly Sunday farmers market at 8800 Ming Ave.",
-      "link": null,
-      "schedule": {
-        "date": "2026-09-06"
-      },
-      "area": null,
-      "start": "09:00",
-      "end": "14:00"
-    },
-    {
       "id": "ce0905_marketattejon",
       "name": "The Market at Tejon",
       "emoji": "🛍️",
       "category": "Market",
       "venue": "The Outlets at Tejon",
-      "address": null,
-      "lat": null,
-      "lng": null,
+      "address": "Outlets at Tejon Pkwy, Arvin, CA 93203",
+      "lat": 34.985318,
+      "lng": -118.940207,
       "when": "Sat",
       "cost": null,
       "desc": "Community market featuring local vendors, fresh finds and community activities.",
@@ -3369,7 +3349,7 @@
       "schedule": {
         "date": "2026-09-05"
       },
-      "area": null,
+      "area": "regional",
       "start": null,
       "end": null
     },
@@ -3380,8 +3360,8 @@
       "category": "Community",
       "venue": "Bakersfield Sports Arena",
       "address": "5807 Cottonwood Rd, Bakersfield, CA",
-      "lat": null,
-      "lng": null,
+      "lat": 35.299004,
+      "lng": -118.98549,
       "when": "Sat",
       "cost": null,
       "desc": "Bull riding and regional Mexican music — Los Farmerz, Banda Culiacancito, Los Grandes de Tijuana and more.",
@@ -3398,10 +3378,10 @@
       "name": "Celebrate Your Person: Date Night After Hours",
       "emoji": "🍽️",
       "category": "Dining",
-      "venue": null,
-      "address": null,
-      "lat": null,
-      "lng": null,
+      "venue": "Magnolia Kitchen",
+      "address": "9701 Rosedale Hwy, Bakersfield, CA 93312",
+      "lat": 35.38295,
+      "lng": -119.110189,
       "when": "Sat 8:30 PM",
       "cost": null,
       "desc": "Reservation-only date night at Magnolia Kitchen — 3-course dinner, unlimited mocktails, conversation game.",
@@ -3409,7 +3389,7 @@
       "schedule": {
         "date": "2026-09-05"
       },
-      "area": null,
+      "area": "citywide",
       "start": "20:30",
       "end": null
     },
@@ -3418,10 +3398,10 @@
       "name": "Sky Zone GLOW Party",
       "emoji": "🟢",
       "category": "Nightlife",
-      "venue": null,
-      "address": null,
-      "lat": null,
-      "lng": null,
+      "venue": "Sky Zone Bakersfield",
+      "address": "3500 Stine Rd, Bakersfield, CA 93309",
+      "lat": 35.323287,
+      "lng": -119.05657,
       "when": "Sat 8-10 PM",
       "cost": null,
       "desc": "Sky Zone Bakersfield's first GLOW party — neon nighttime jump session.",
@@ -3429,7 +3409,7 @@
       "schedule": {
         "date": "2026-09-05"
       },
-      "area": null,
+      "area": "citywide",
       "start": "20:00",
       "end": "22:00"
     },
@@ -3498,10 +3478,10 @@
       "name": "Brunch With Your Bestie",
       "emoji": "🥞",
       "category": "Family",
-      "venue": null,
-      "address": null,
-      "lat": null,
-      "lng": null,
+      "venue": "California Truck Center",
+      "address": "5800 Wible Rd, Bakersfield, CA",
+      "lat": 35.302479,
+      "lng": -119.038856,
       "when": "Sat 10 AM-2 PM",
       "cost": null,
       "desc": "Family-friendly event at California Truck Center (5800 Wible Rd) with local vendors, food, flower bar, photo ops, DJ and petting zoo.",
@@ -3509,7 +3489,7 @@
       "schedule": {
         "date": "2026-09-05"
       },
-      "area": null,
+      "area": "citywide",
       "start": "10:00",
       "end": "14:00"
     },
@@ -3520,8 +3500,8 @@
       "category": "Market",
       "venue": "The Lot",
       "address": "7500 Rosedale Hwy, Bakersfield, CA",
-      "lat": null,
-      "lng": null,
+      "lat": 35.383472,
+      "lng": -119.086277,
       "when": "Sat 7 AM-12 PM",
       "cost": null,
       "desc": "Trunk-style swap meet — clothing, home goods, vintage finds, toys, antiques, collectibles.",
@@ -3538,10 +3518,10 @@
       "name": "BOLO",
       "emoji": "🎧",
       "category": "Nightlife",
-      "venue": null,
-      "address": null,
-      "lat": null,
-      "lng": null,
+      "venue": "Paradise Palace",
+      "address": "1430 Weedpatch Hwy, Bakersfield, CA 93307",
+      "lat": 35.351665,
+      "lng": -118.913616,
       "when": "Fri 8 PM",
       "cost": null,
       "desc": "18+ electronic dance event at Paradise Palace featuring Juos, Swave, Phaze B2B Datteguy, DJ Regulator and Marco B.",
@@ -3549,7 +3529,7 @@
       "schedule": {
         "date": "2026-09-04"
       },
-      "area": null,
+      "area": "citywide",
       "start": "20:00",
       "end": null
     },
