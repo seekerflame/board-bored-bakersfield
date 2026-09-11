@@ -4,7 +4,7 @@
     "name": "Board Bored",
     "tagline": "The free local board. Events, open shops, and the people behind them. No apps, no ads, no cuts.",
     "contact": "boardquestionmark@gmail.com",
-    "events_source": "The Bakersfield Guy #57 + Board Bored research sweep (downtown, venues, community)",
+    "events_source": "The Bakersfield Guy #57 + research sweep + Sept 3-9 week-of-events (pasted) + Board Bored research sweep",
     "events_updated": "2026-09-09"
   },
   "featured": "first-friday",
@@ -1980,26 +1980,6 @@
       "end": null
     },
     {
-      "id": "ce_fox_mariachi",
-      "name": "Leyendas del Mariachi USA — Mi Historia Tour",
-      "emoji": "🎺",
-      "category": "Music",
-      "venue": "Historic Bakersfield Fox Theater",
-      "address": "2001 H St, Bakersfield, CA 93301",
-      "lat": 35.3736,
-      "lng": -119.0224,
-      "when": "Fri Sep 4 · 8pm",
-      "cost": null,
-      "desc": "Touring showcase of legendary mariachi performers at the historic Fox Theater.",
-      "link": "https://www.bakersfieldlive.com/",
-      "schedule": {
-        "date": "2026-09-04"
-      },
-      "area": "downtown",
-      "start": "20:00",
-      "end": null
-    },
-    {
       "id": "ce_fox_maxamini",
       "name": "Max Amini Live",
       "emoji": "🎙️",
@@ -2134,26 +2114,6 @@
       "link": "https://www.bakersfieldlive.com/",
       "schedule": {
         "date": "2026-10-24"
-      },
-      "area": "downtown",
-      "start": "20:00",
-      "end": null
-    },
-    {
-      "id": "ce_nile_talibkweli",
-      "name": "Talib Kweli — One Night Only",
-      "emoji": "🎤",
-      "category": "Music",
-      "venue": "The Nile Theater",
-      "address": "1721 19th St, Bakersfield, CA 93301",
-      "lat": 35.3728,
-      "lng": -119.021,
-      "when": "Sat Sep 5 · 8pm",
-      "cost": "$50",
-      "desc": "Hip-hop icon Talib Kweli performs a one-night-only Bakersfield show at the Nile.",
-      "link": "https://www.bakersfieldlive.com/",
-      "schedule": {
-        "date": "2026-09-05"
       },
       "area": "downtown",
       "start": "20:00",
@@ -2661,26 +2621,6 @@
       "end": null
     },
     {
-      "id": "ce_csub_volleyball",
-      "name": "CSUB Volleyball Home Opener vs. Weber State",
-      "emoji": "🏐",
-      "category": "Sports",
-      "venue": "Icardo Center, CSU Bakersfield",
-      "address": "9001 Stockdale Hwy, Bakersfield, CA 93311",
-      "lat": 35.3496,
-      "lng": -119.1035,
-      "when": "Fri Sep 4 · 6pm",
-      "cost": null,
-      "desc": "The Roadrunners open their home volleyball slate against Weber State with a rally-towel giveaway.",
-      "link": "https://gorunners.com/sports/womens-volleyball/schedule",
-      "schedule": {
-        "date": "2026-09-04"
-      },
-      "area": "citywide",
-      "start": "18:00",
-      "end": null
-    },
-    {
       "id": "ce_jlb_oktoberfest",
       "name": "Junior League Oktoberfest: Brews for Books",
       "emoji": "🍻",
@@ -3052,6 +2992,168 @@
       "end": null
     },
     {
+      "id": "ce_condors_preseason_sj",
+      "name": "Bakersfield Condors Preseason vs. San Jose Barracuda",
+      "emoji": "🏒",
+      "category": "Sports",
+      "venue": "Dignity Health Arena",
+      "address": "1001 Truxtun Ave, Bakersfield, CA 93301",
+      "lat": 35.3747,
+      "lng": -119.0224,
+      "when": "Fri 6:30 PM",
+      "cost": null,
+      "desc": "AHL preseason home game — first look at the 2026-27 Condors roster.",
+      "link": null,
+      "schedule": {
+        "date": "2026-09-25"
+      },
+      "area": "downtown",
+      "start": "18:30",
+      "end": null
+    },
+    {
+      "id": "ce_temblor_karaoke",
+      "name": "Karaoke Night",
+      "emoji": "🎤",
+      "category": "Nightlife",
+      "venue": "Temblor Brewing Co.",
+      "address": "3200 Buck Owens Blvd, Bakersfield, CA 93308",
+      "lat": 35.388851,
+      "lng": -119.042214,
+      "when": "Thu 6-9 PM",
+      "cost": null,
+      "desc": "Thursday night karaoke.",
+      "link": null,
+      "schedule": {
+        "weekday": 4
+      },
+      "area": "citywide",
+      "start": "18:00",
+      "end": "21:00"
+    },
+    {
+      "id": "ce_poker_thu_rosedale",
+      "name": "Thursday Night Social Poker",
+      "emoji": "♠️",
+      "category": "Community",
+      "venue": null,
+      "address": null,
+      "lat": null,
+      "lng": null,
+      "when": "Thu 6:30 PM",
+      "cost": null,
+      "desc": "Local social poker league at Firehouse Rosedale Station — non-gambling, prize-based play.",
+      "link": null,
+      "schedule": {
+        "weekday": 4
+      },
+      "area": null,
+      "start": "18:30",
+      "end": null
+    },
+    {
+      "id": "ce_poker_mon_southwest",
+      "name": "Monday Night Social Poker",
+      "emoji": "♠️",
+      "category": "Community",
+      "venue": null,
+      "address": null,
+      "lat": null,
+      "lng": null,
+      "when": "Mon 6:30 PM",
+      "cost": null,
+      "desc": "Local social poker league at Firehouse Southwest Station — non-gambling, prize-based play.",
+      "link": null,
+      "schedule": {
+        "weekday": 1
+      },
+      "area": null,
+      "start": "18:30",
+      "end": null
+    },
+    {
+      "id": "ce_boxingbluffs",
+      "name": "Boxing at the Bluffs",
+      "emoji": "🥊",
+      "category": "Fitness",
+      "venue": null,
+      "address": null,
+      "lat": null,
+      "lng": null,
+      "when": "Fri 5 AM",
+      "cost": "Free",
+      "desc": "Free outdoor boxing-inspired community workout at The Bluffs. No experience required.",
+      "link": null,
+      "schedule": {
+        "weekday": 5
+      },
+      "area": null,
+      "start": "05:00",
+      "end": null
+    }
+  ],
+  "city_events_archive": [
+    {
+      "id": "ce_fox_mariachi",
+      "name": "Leyendas del Mariachi USA — Mi Historia Tour",
+      "emoji": "🎺",
+      "category": "Music",
+      "venue": "Historic Bakersfield Fox Theater",
+      "address": "2001 H St, Bakersfield, CA 93301",
+      "lat": 35.3736,
+      "lng": -119.0224,
+      "when": "Fri Sep 4 · 8pm",
+      "cost": null,
+      "desc": "Touring showcase of legendary mariachi performers at the historic Fox Theater.",
+      "link": "https://www.bakersfieldlive.com/",
+      "schedule": {
+        "date": "2026-09-04"
+      },
+      "area": "downtown",
+      "start": "20:00",
+      "end": null
+    },
+    {
+      "id": "ce_nile_talibkweli",
+      "name": "Talib Kweli — One Night Only",
+      "emoji": "🎤",
+      "category": "Music",
+      "venue": "The Nile Theater",
+      "address": "1721 19th St, Bakersfield, CA 93301",
+      "lat": 35.3728,
+      "lng": -119.021,
+      "when": "Sat Sep 5 · 8pm",
+      "cost": "$50",
+      "desc": "Hip-hop icon Talib Kweli performs a one-night-only Bakersfield show at the Nile.",
+      "link": "https://www.bakersfieldlive.com/",
+      "schedule": {
+        "date": "2026-09-05"
+      },
+      "area": "downtown",
+      "start": "20:00",
+      "end": null
+    },
+    {
+      "id": "ce_csub_volleyball",
+      "name": "CSUB Volleyball Home Opener vs. Weber State",
+      "emoji": "🏐",
+      "category": "Sports",
+      "venue": "Icardo Center, CSU Bakersfield",
+      "address": "9001 Stockdale Hwy, Bakersfield, CA 93311",
+      "lat": 35.3496,
+      "lng": -119.1035,
+      "when": "Fri Sep 4 · 6pm",
+      "cost": null,
+      "desc": "The Roadrunners open their home volleyball slate against Weber State with a rally-towel giveaway.",
+      "link": "https://gorunners.com/sports/womens-volleyball/schedule",
+      "schedule": {
+        "date": "2026-09-04"
+      },
+      "area": "citywide",
+      "start": "18:00",
+      "end": null
+    },
+    {
       "id": "ce_vendorsvibessoundsocial",
       "name": "Vendors & Vibes x Sound Social",
       "emoji": "🤝",
@@ -3092,27 +3194,545 @@
       "end": "13:00"
     },
     {
-      "id": "ce_condors_preseason_sj",
-      "name": "Bakersfield Condors Preseason vs. San Jose Barracuda",
-      "emoji": "🏒",
-      "category": "Sports",
-      "venue": "Dignity Health Arena",
-      "address": "1001 Truxtun Ave, Bakersfield, CA 93301",
-      "lat": 35.3747,
-      "lng": -119.0224,
-      "when": "Fri 6:30 PM",
-      "cost": null,
-      "desc": "AHL preseason home game — first look at the 2026-27 Condors roster.",
+      "id": "ce0909_sipburn",
+      "name": "Sip & Burn Party",
+      "emoji": "🤠",
+      "category": "Workshop",
+      "venue": null,
+      "address": null,
+      "lat": null,
+      "lng": null,
+      "when": "Wed 5 PM",
+      "cost": "$65",
+      "desc": "Western hat customization workshop at 18th St Collections — hat, accessories, burning tools, two drinks. $65.",
       "link": null,
       "schedule": {
-        "date": "2026-09-25"
+        "date": "2026-09-09"
+      },
+      "area": null,
+      "start": "17:00",
+      "end": null
+    },
+    {
+      "id": "ce0909_westernwed_fairfax",
+      "name": "Sip & Bedazzle Night",
+      "emoji": "✨",
+      "category": "Nightlife",
+      "venue": null,
+      "address": null,
+      "lat": null,
+      "lng": null,
+      "when": "Wed 6-8 PM",
+      "cost": null,
+      "desc": "Evening bedazzling activity at Wine Me Up.",
+      "link": null,
+      "schedule": {
+        "date": "2026-09-09"
+      },
+      "area": null,
+      "start": "18:00",
+      "end": "20:00"
+    },
+    {
+      "id": "ce0908_kcbcmixer",
+      "name": "Kern County Black Chamber Business Mixer & Expo",
+      "emoji": "🤝",
+      "category": "Community",
+      "venue": "Motor City Lexus",
+      "address": "Motor City Lexus, Bakersfield, CA",
+      "lat": null,
+      "lng": null,
+      "when": "Tue 5:30-7:30 PM",
+      "cost": null,
+      "desc": "Networking event with local professionals, entrepreneurs, vendors, refreshments and raffle prizes.",
+      "link": null,
+      "schedule": {
+        "date": "2026-09-08"
+      },
+      "area": "citywide",
+      "start": "17:30",
+      "end": "19:30"
+    },
+    {
+      "id": "ce0908_dirtdog",
+      "name": "Dirt Dog Grand Opening",
+      "emoji": "🌭",
+      "category": "Dining",
+      "venue": "Gosford Walmart",
+      "address": "5075 Gosford Rd, Bakersfield, CA",
+      "lat": null,
+      "lng": null,
+      "when": "Tue 11 AM",
+      "cost": null,
+      "desc": "Dirt Dog's Bakersfield grand opening — first 100 guests get a free L.A. Street Dog.",
+      "link": null,
+      "schedule": {
+        "date": "2026-09-08"
+      },
+      "area": "southwest",
+      "start": "11:00",
+      "end": null
+    },
+    {
+      "id": "ce0907_bloomingbbq",
+      "name": "Blooming Mamas Labor Day BBQ",
+      "emoji": "🍔",
+      "category": "Community",
+      "venue": null,
+      "address": null,
+      "lat": null,
+      "lng": null,
+      "when": "Mon 12-3 PM",
+      "cost": null,
+      "desc": "Labor Day get-together and BBQ for local parents and families.",
+      "link": null,
+      "schedule": {
+        "date": "2026-09-07"
+      },
+      "area": null,
+      "start": "12:00",
+      "end": "15:00"
+    },
+    {
+      "id": "ce0906_lilvada",
+      "name": "Lil Vada: Labor Day Weekend",
+      "emoji": "🎤",
+      "category": "Nightlife",
+      "venue": null,
+      "address": null,
+      "lat": null,
+      "lng": null,
+      "when": "Sun 9 PM",
+      "cost": null,
+      "desc": "Labor Day Weekend nightclub event at Uruapan Night Club, live performance by rapper Lil Vada.",
+      "link": null,
+      "schedule": {
+        "date": "2026-09-06"
+      },
+      "area": null,
+      "start": "21:00",
+      "end": null
+    },
+    {
+      "id": "ce0906_comefromaway_matinee",
+      "name": "Come From Away — Matinee",
+      "emoji": "🎭",
+      "category": "Theater",
+      "venue": "The Ovation Theatre",
+      "address": "1622 19th St, Bakersfield, CA 93301",
+      "lat": 35.376314,
+      "lng": -119.020366,
+      "when": "Sun 2 PM",
+      "cost": null,
+      "desc": "Sunday matinee performance during opening weekend.",
+      "link": null,
+      "schedule": {
+        "date": "2026-09-06"
+      },
+      "area": "downtown",
+      "start": "14:00",
+      "end": null
+    },
+    {
+      "id": "ce0906_haggingmarket_special",
+      "name": "Haggin Oaks Farmers Market",
+      "emoji": "🥕",
+      "category": "Market",
+      "venue": null,
+      "address": null,
+      "lat": null,
+      "lng": null,
+      "when": "Sun 9 AM-2 PM",
+      "cost": null,
+      "desc": "Weekly Sunday farmers market at 8800 Ming Ave.",
+      "link": null,
+      "schedule": {
+        "date": "2026-09-06"
+      },
+      "area": null,
+      "start": "09:00",
+      "end": "14:00"
+    },
+    {
+      "id": "ce0905_marketattejon",
+      "name": "The Market at Tejon",
+      "emoji": "🛍️",
+      "category": "Market",
+      "venue": "The Outlets at Tejon",
+      "address": null,
+      "lat": null,
+      "lng": null,
+      "when": "Sat",
+      "cost": null,
+      "desc": "Community market featuring local vendors, fresh finds and community activities.",
+      "link": null,
+      "schedule": {
+        "date": "2026-09-05"
+      },
+      "area": null,
+      "start": null,
+      "end": null
+    },
+    {
+      "id": "ce0905_jaripeobaile",
+      "name": "Jaripeo Baile",
+      "emoji": "🤠",
+      "category": "Community",
+      "venue": "Bakersfield Sports Arena",
+      "address": "5807 Cottonwood Rd, Bakersfield, CA",
+      "lat": null,
+      "lng": null,
+      "when": "Sat",
+      "cost": null,
+      "desc": "Bull riding and regional Mexican music — Los Farmerz, Banda Culiacancito, Los Grandes de Tijuana and more.",
+      "link": null,
+      "schedule": {
+        "date": "2026-09-05"
+      },
+      "area": "citywide",
+      "start": null,
+      "end": null
+    },
+    {
+      "id": "ce0905_dateNightAfterHours",
+      "name": "Celebrate Your Person: Date Night After Hours",
+      "emoji": "🍽️",
+      "category": "Dining",
+      "venue": null,
+      "address": null,
+      "lat": null,
+      "lng": null,
+      "when": "Sat 8:30 PM",
+      "cost": null,
+      "desc": "Reservation-only date night at Magnolia Kitchen — 3-course dinner, unlimited mocktails, conversation game.",
+      "link": null,
+      "schedule": {
+        "date": "2026-09-05"
+      },
+      "area": null,
+      "start": "20:30",
+      "end": null
+    },
+    {
+      "id": "ce0905_skyzoneglow",
+      "name": "Sky Zone GLOW Party",
+      "emoji": "🟢",
+      "category": "Nightlife",
+      "venue": null,
+      "address": null,
+      "lat": null,
+      "lng": null,
+      "when": "Sat 8-10 PM",
+      "cost": null,
+      "desc": "Sky Zone Bakersfield's first GLOW party — neon nighttime jump session.",
+      "link": null,
+      "schedule": {
+        "date": "2026-09-05"
+      },
+      "area": null,
+      "start": "20:00",
+      "end": "22:00"
+    },
+    {
+      "id": "ce0905_comefromaway_sat",
+      "name": "Come From Away",
+      "emoji": "🎭",
+      "category": "Theater",
+      "venue": "The Ovation Theatre",
+      "address": "1622 19th St, Bakersfield, CA 93301",
+      "lat": 35.376314,
+      "lng": -119.020366,
+      "when": "Sat 7:30 PM",
+      "cost": null,
+      "desc": "Saturday performance during opening weekend.",
+      "link": null,
+      "schedule": {
+        "date": "2026-09-05"
+      },
+      "area": "downtown",
+      "start": "19:30",
+      "end": null
+    },
+    {
+      "id": "ce0905_talibkweli_nile",
+      "name": "Talib Kweli",
+      "emoji": "🎤",
+      "category": "Music",
+      "venue": "The Nile Theater",
+      "address": "1721 19th St, Bakersfield, CA 93301",
+      "lat": 35.3728,
+      "lng": -119.021,
+      "when": "Sat, doors 7 PM / show 8 PM",
+      "cost": null,
+      "desc": "One-night-only Bakersfield performance from the acclaimed hip-hop artist.",
+      "link": null,
+      "schedule": {
+        "date": "2026-09-05"
+      },
+      "area": "downtown",
+      "start": "20:00",
+      "end": null
+    },
+    {
+      "id": "ce0905_csubvolleyball_wk2",
+      "name": "CSUB Women's Volleyball vs. Weber State (Game 2)",
+      "emoji": "🏐",
+      "category": "Sports",
+      "venue": "Icardo Center, CSU Bakersfield",
+      "address": "9001 Stockdale Hwy, Bakersfield, CA 93311",
+      "lat": 35.3496,
+      "lng": -119.1035,
+      "when": "Sat 6 PM",
+      "cost": null,
+      "desc": "Second Roadrunners home match of the weekend series against Weber State.",
+      "link": null,
+      "schedule": {
+        "date": "2026-09-05"
+      },
+      "area": "citywide",
+      "start": "18:00",
+      "end": null
+    },
+    {
+      "id": "ce0905_brunchbestie",
+      "name": "Brunch With Your Bestie",
+      "emoji": "🥞",
+      "category": "Family",
+      "venue": null,
+      "address": null,
+      "lat": null,
+      "lng": null,
+      "when": "Sat 10 AM-2 PM",
+      "cost": null,
+      "desc": "Family-friendly event at California Truck Center (5800 Wible Rd) with local vendors, food, flower bar, photo ops, DJ and petting zoo.",
+      "link": null,
+      "schedule": {
+        "date": "2026-09-05"
+      },
+      "area": null,
+      "start": "10:00",
+      "end": "14:00"
+    },
+    {
+      "id": "ce0905_junkintrunk",
+      "name": "Junk in Your Trunk Swap Meet",
+      "emoji": "🧺",
+      "category": "Market",
+      "venue": "The Lot",
+      "address": "7500 Rosedale Hwy, Bakersfield, CA",
+      "lat": null,
+      "lng": null,
+      "when": "Sat 7 AM-12 PM",
+      "cost": null,
+      "desc": "Trunk-style swap meet — clothing, home goods, vintage finds, toys, antiques, collectibles.",
+      "link": null,
+      "schedule": {
+        "date": "2026-09-05"
+      },
+      "area": "citywide",
+      "start": "07:00",
+      "end": "12:00"
+    },
+    {
+      "id": "ce0904_bolo",
+      "name": "BOLO",
+      "emoji": "🎧",
+      "category": "Nightlife",
+      "venue": null,
+      "address": null,
+      "lat": null,
+      "lng": null,
+      "when": "Fri 8 PM",
+      "cost": null,
+      "desc": "18+ electronic dance event at Paradise Palace featuring Juos, Swave, Phaze B2B Datteguy, DJ Regulator and Marco B.",
+      "link": null,
+      "schedule": {
+        "date": "2026-09-04"
+      },
+      "area": null,
+      "start": "20:00",
+      "end": null
+    },
+    {
+      "id": "ce0904_moviesmoana",
+      "name": "Movies in the Park: Moana 2",
+      "emoji": "🎬",
+      "category": "Family",
+      "venue": "Saunders Park",
+      "address": "Saunders Park, Bakersfield, CA",
+      "lat": 35.3627,
+      "lng": -119.041169,
+      "when": "Fri, dusk",
+      "cost": "Free",
+      "desc": "Free outdoor screening. Bring blankets, chairs and picnic gear.",
+      "link": null,
+      "schedule": {
+        "date": "2026-09-04"
+      },
+      "area": "citywide",
+      "start": null,
+      "end": null
+    },
+    {
+      "id": "ce0904_emonighttour",
+      "name": "The Emo Night Tour",
+      "emoji": "🎤",
+      "category": "Music",
+      "venue": "Legends Lounge & Event Center",
+      "address": "7900 Downing Ave, Bakersfield, CA 93308",
+      "lat": 35.390615,
+      "lng": -119.09221,
+      "when": "Fri 8 PM",
+      "cost": null,
+      "desc": "Touring 21+ Emo Night featuring emo favorites all night.",
+      "link": null,
+      "schedule": {
+        "date": "2026-09-04"
+      },
+      "area": "citywide",
+      "start": "20:00",
+      "end": null
+    },
+    {
+      "id": "ce0904_centralroots",
+      "name": "Central Roots",
+      "emoji": "🎵",
+      "category": "Music",
+      "venue": "Jerry's Pizza & Pub",
+      "address": "1817 Chester Ave, Bakersfield, CA 93301",
+      "lat": 35.375446,
+      "lng": -119.018912,
+      "when": "Fri 8 PM",
+      "cost": "Free",
+      "desc": "Central California reggae group performing for First Friday. No cover, 21+.",
+      "link": null,
+      "schedule": {
+        "date": "2026-09-04"
+      },
+      "area": "downtown",
+      "start": "20:00",
+      "end": null
+    },
+    {
+      "id": "ce0904_comefromaway_open",
+      "name": "Come From Away — Opening Night",
+      "emoji": "🎭",
+      "category": "Theater",
+      "venue": "The Ovation Theatre",
+      "address": "1622 19th St, Bakersfield, CA 93301",
+      "lat": 35.376314,
+      "lng": -119.020366,
+      "when": "Fri 7:30 PM",
+      "cost": null,
+      "desc": "Opening-weekend performance of the musical based on the true story of stranded 9/11 airline passengers.",
+      "link": null,
+      "schedule": {
+        "date": "2026-09-04"
+      },
+      "area": "downtown",
+      "start": "19:30",
+      "end": null
+    },
+    {
+      "id": "ce0904_oldiesnight",
+      "name": "The Oldies Night",
+      "emoji": "🎤",
+      "category": "Music",
+      "venue": "The Nile Theater",
+      "address": "1721 19th St, Bakersfield, CA 93301",
+      "lat": 35.3728,
+      "lng": -119.021,
+      "when": "Fri 8 PM",
+      "cost": null,
+      "desc": "Soul, doo-wop and classic oldies with The Lovelites, Sly Slick & Wicked, Los Yesterdays, Norman Carter and Bo Henderson.",
+      "link": null,
+      "schedule": {
+        "date": "2026-09-04"
+      },
+      "area": "downtown",
+      "start": "20:00",
+      "end": null
+    },
+    {
+      "id": "ce0903_csubsoccer_tamucc",
+      "name": "CSUB Women's Soccer vs. Texas A&M-Corpus Christi",
+      "emoji": "⚽",
+      "category": "Sports",
+      "venue": "CSUB Main Soccer Field",
+      "address": "CSUB Main Soccer Field, Bakersfield, CA",
+      "lat": 35.349389,
+      "lng": -119.103397,
+      "when": "Thu 7 PM",
+      "cost": null,
+      "desc": "Roadrunners home match featuring the annual Rowdy Run and a pom-pom giveaway.",
+      "link": null,
+      "schedule": {
+        "date": "2026-09-03"
+      },
+      "area": "citywide",
+      "start": "19:00",
+      "end": null
+    },
+    {
+      "id": "ce0903_wilburystribute",
+      "name": "Traveling Wilburys Tribute",
+      "emoji": "🎸",
+      "category": "Music",
+      "venue": "Bakersfield Music Hall of Fame",
+      "address": "2230 Q St, Bakersfield, CA 93301",
+      "lat": 35.379381,
+      "lng": -119.010492,
+      "when": "Thu 7 PM",
+      "cost": null,
+      "desc": "Live tribute to the Traveling Wilburys, Tom Petty, George Harrison, Roy Orbison, Bob Dylan and Jeff Lynne.",
+      "link": null,
+      "schedule": {
+        "date": "2026-09-03"
+      },
+      "area": "downtown",
+      "start": "19:00",
+      "end": null
+    },
+    {
+      "id": "ce0903_paintnightrocky",
+      "name": "Paint Night & Rocky Horror Picture Show Watch Party",
+      "emoji": "🎨",
+      "category": "Arts",
+      "venue": "Jerry's Pizza & Pub",
+      "address": "1817 Chester Ave, Bakersfield, CA 93301",
+      "lat": 35.375446,
+      "lng": -119.018912,
+      "when": "Thu 6:30 PM",
+      "cost": "$25",
+      "desc": "Paint night paired with a screening of The Rocky Horror Picture Show. $25 with RSVP.",
+      "link": null,
+      "schedule": {
+        "date": "2026-09-03"
       },
       "area": "downtown",
       "start": "18:30",
       "end": null
-    }
-  ],
-  "city_events_archive": [
+    },
+    {
+      "id": "ce0903_nirvanatribute",
+      "name": "Smells Like Nirvana Tribute Show",
+      "emoji": "🎸",
+      "category": "Music",
+      "venue": "Legends Lounge & Event Center",
+      "address": "7900 Downing Ave, Bakersfield, CA 93308",
+      "lat": 35.390615,
+      "lng": -119.09221,
+      "when": "Thu 7 PM",
+      "cost": null,
+      "desc": "All-ages Nirvana tribute concert with Dead Original and Bad Modem.",
+      "link": null,
+      "schedule": {
+        "date": "2026-09-03"
+      },
+      "area": "citywide",
+      "start": "19:00",
+      "end": null
+    },
     {
       "id": "ce_winebottlepaints",
       "name": "Wine Bottle Paint & Sip: \"Flamingo Fantasy\"",
