@@ -133,6 +133,34 @@ signing up through `submit-event.html` already picks both. The only genuinely mi
 of the four the roadmap asks for ("per city, per art district, per function-event") is city —
 everything else is a filter on data that already exists, not new infrastructure.
 
+### 5b. "Any business, anywhere" — the account layer this actually needs
+
+Today, self-serve is real but stateless: a business fills out `submit-event.html` once,
+it goes to the review queue, it goes live — and that's the whole relationship. There's no
+"my listings" a business can come back and manage, which is the actual blocker on "let any
+business sign up and be part of the community" at scale (one-off submission works; ongoing
+membership doesn't exist yet). Scoped, not started:
+
+1. **Magic-link auth, not passwords.** This audience (small local businesses, once) doesn't
+   want an account system. Reuse the pattern this repo already has twice — the trusted-planner
+   HMAC token (`issuePlannerToken` in `products/board-bored-api/core.mjs`) and the signed
+   check-in QR token — for a `business_token = businessId + "." + HMAC(businessId, ADMIN_SECRET)`
+   emailed as a link. No password DB, no session store, consistent with "stateless where
+   possible" already threaded through this whole backend.
+2. **One new field, not a new table.** Add `businessId` to the event/deal schema
+   (`schema.mjs`). A business's "dashboard" is just `GET /api/events?businessId=X` filtered
+   client-side — reuses `listAll()`, no new storage shape.
+3. **City + district + function are already the filters a business picks at signup** (see 5a)
+   — the account layer doesn't add new categorization, it just lets the SAME categorized
+   listing be edited/renewed instead of resubmitted from scratch.
+4. **Renewal, not re-submission**, is the actual value unlock: a recurring business (a bar
+   with a weekly night) re-upping their listing without filling out the form again, and
+   seeing their own check-in / deal-redemption counts (the `bb_checkins` collection already
+   exists — nothing there is being surfaced to the business that earned them).
+
+This is real design work, not a config flag — flagged here so it's ready to scope precisely
+next time someone's actually building it, instead of getting re-derived from scratch.
+
 ---
 
 ## 6. Organic-growth plan (top priority)
