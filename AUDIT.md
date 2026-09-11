@@ -125,6 +125,14 @@ guards its shape. To go multi-city without forking:
    ships only a `board.json` + share image + QR set. `tools/` can generate the QR codes and
    share cards per city (the generators already exist in `lib/qrcode.js` / the `qr/` tooling).
 
+**Added 2026-09-10 — the other two axes are already built, only "per city" is new work:**
+"Per art district" is already the `area` field every event carries (`downtown` / `citywide` /
+`southwest`, etc.) — it drives the legend and can filter today without any schema change.
+"Per function" (concert vs. market vs. class vs. fitness) is already `category`. Any business
+signing up through `submit-event.html` already picks both. The only genuinely missing axis
+of the four the roadmap asks for ("per city, per art district, per function-event") is city —
+everything else is a filter on data that already exists, not new infrastructure.
+
 ---
 
 ## 6. Organic-growth plan (top priority)

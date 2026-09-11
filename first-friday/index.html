@@ -332,6 +332,7 @@
 <footer>
   <a href="fund.html">💛 Where the money goes</a> · <a href="../feedback.html">How was tonight? →</a><br>
   © 2026 Board Bored · made in Bakersfield<br>
+  Some of these events come from <a href="https://www.thebakersfieldguy.com/" target="_blank" rel="noopener">The Bakersfield Guy</a> — subscribe for their full weekly list.<br>
   <a id="mailFoot" href="#">boardquestionmark@gmail.com</a>
 </footer>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -413,6 +414,17 @@
     return "<b>"+lbl+"</b><br>Open — claim it on the signup page";
   }
   function dirUrl(addr){return "https://www.google.com/maps/dir/?api=1&destination="+encodeURIComponent(addr);}
+  // Recognize known ticketing platforms so a business's own Eventbrite/Ticketmaster
+  // link reads as one, instead of a generic "Tickets / info" — costs nothing, no
+  // new data field, works with whatever URL the submitter already pasted into `link`.
+  function ticketLabel(url){
+    var host=""; try{host=new URL(url,location.href).hostname.replace(/^www\./,"");}catch(e){}
+    if(/(^|\.)eventbrite\./i.test(host))return "🎟️ Get Tickets (Eventbrite)";
+    if(/(^|\.)ticketmaster\./i.test(host))return "🎟️ Get Tickets (Ticketmaster)";
+    if(/(^|\.)tixr\.com$/i.test(host))return "🎟️ Get Tickets (Tixr)";
+    if(/(^|\.)dice\.fm$/i.test(host))return "🎟️ Get Tickets (DICE)";
+    return "🎟️ Tickets / info";
+  }
   function shareLink(id,name,extra){
     var url=location.origin+location.pathname+"?highlight="+encodeURIComponent(id);
     var txt="Find "+name+" on the Board Bored map"+(extra?" — "+extra:"")+".";
@@ -562,8 +574,8 @@
           dealBadge(e)+
           (e.desc?'<div class="note">'+esc(e.desc)+'</div>':"");
         var linksEl=document.createElement("div");linksEl.className="links";
-        var lh=""; if(e.link)lh+='<a href="'+e.link+'" target="_blank" rel="noopener">🎟️ Tickets / info</a>';
-        lh+='<a href="'+dirUrl(e.address)+'" target="_blank" rel="noopener">🧭 Directions</a>';
+        var lh=""; if(e.link)lh+='<a href="'+safeUrl(e.link)+'" target="_blank" rel="noopener">'+ticketLabel(e.link)+'</a>';
+        lh+='<a href="'+safeUrl(dirUrl(e.address))+'" target="_blank" rel="noopener">🧭 Directions</a>';
         lh+=socialLinks(e);
         linksEl.innerHTML=lh; el.appendChild(linksEl);
         el.addEventListener("click",function(evt){if(evt.target.closest("a,button"))return;
@@ -663,7 +675,7 @@
 
     // ---- agenda + event pins ----
     function eventPopup(e){
-      var l=""; if(e.link)l+='<a href="'+safeUrl(e.link)+'" target="_blank" rel="noopener">Tickets / info</a>';
+      var l=""; if(e.link)l+='<a href="'+safeUrl(e.link)+'" target="_blank" rel="noopener">'+ticketLabel(e.link)+'</a>';
       l+='<a href="'+safeUrl(dirUrl(e.address))+'" target="_blank" rel="noopener">Directions</a>';
       return "<b>"+esc(e.emoji||"📍")+" "+esc(e.name)+"</b><br>"+esc(e.when)+"<br><span style='color:var(--mut)'>"+esc(e.venue)+"</span>"+
              "<div class='pop-links'>"+l+"</div>";
@@ -707,7 +719,7 @@
           dealBadge(e)+
           (e.desc?'<div class="note">'+esc(e.desc)+'</div>':"");
         var linksEl=document.createElement("div");linksEl.className="links";
-        var lh=""; if(e.link)lh+='<a href="'+safeUrl(e.link)+'" target="_blank" rel="noopener">🎟️ Tickets / info</a>';
+        var lh=""; if(e.link)lh+='<a href="'+safeUrl(e.link)+'" target="_blank" rel="noopener">'+ticketLabel(e.link)+'</a>';
         lh+='<a href="'+safeUrl(dirUrl(e.address))+'" target="_blank" rel="noopener">🧭 Directions</a>';
         if(window.bbCal)lh+='<a href="'+safeUrl(bbCal.gcal(e))+'" target="_blank" rel="noopener">📅 Add</a>';
         linksEl.innerHTML=lh; linksEl.appendChild(shareLink(e.id,e.name,e.category));

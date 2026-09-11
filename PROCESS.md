@@ -66,6 +66,9 @@ validate-before-write safety net, for free.
 | `ics` (generic iCalendar feeds) | **Live**, tested against a real public feed | Nothing — free, keyless. Add feed URLs to the city config as venues are found to publish one. |
 | `ticketmaster` | Built, key-gated, unit-tested against the documented schema | `TICKETMASTER_API_KEY` repo secret — free signup at developer.ticketmaster.com, no approval wait. |
 | `meetup` | Scaffolded, not wired to a live call | `MEETUP_ACCESS_TOKEN` — Meetup's current API is OAuth-only (their old plain-API-key REST API was retired in 2019), so this needs a human to register an OAuth consumer and complete the auth flow once. See the comment in `tools/ingest/sources/meetup.js`. |
+| `eventbrite` (discovery) | **Dead end, confirmed 2026-09-10** | Not buildable at all — Eventbrite's public API has no search-all-public-events endpoint any more, only management of events *you* organize. Scraping their search pages would be the only workaround and violates their ToS the same way an Instagram crawler would. See "What Board Bored can't add automatically" below. |
+| Eventbrite/Ticketmaster/Tixr/DICE (ticketing, not discovery) | **Live** — this was already free | A business pastes their own Eventbrite/Ticketmaster/etc. link into the `link` field on `submit-event.html` like any other ticket link. `ticketLabel()` in `first-friday/index.html` recognizes the domain and shows "Get Tickets (Eventbrite)" etc. instead of the generic "Tickets / info" — zero new schema, zero new backend. |
+| The Bakersfield Guy newsletter (auto-pull) | **Dead end, confirmed 2026-09-10** | Their site was rebuilt in July; the old numbered-issue URLs (including the #57 we ingested from originally) now 404, the WordPress REST API returns 0 posts, and RSS is empty. Whatever's driving their content now isn't publicly reachable. Content still gets in when Nick pastes an issue directly — see the Sept 3-9 ingest commit — and the site now credits them for it (`first-friday/index.html` footer) instead of silently absorbing their research. |
 | Instagram | **Deliberately not built** | See below. |
 
 Every source is missing-credential-safe: if its key/token isn't set, it logs
@@ -97,3 +100,36 @@ It's also not the highest-leverage way to get the same outcome:
   who know that form exists is a marketing problem, not an engineering one
   — see AUDIT.md §6 (per-entity share pages, JSON-LD) for the actual
   highest-leverage growth moves.
+
+## What Board Bored can't add automatically (and why) — as of 2026-09-10
+
+A standing list, updated as things change rather than re-litigated each time
+someone asks "can we just pull from X":
+
+| Can't add | Why | What would unblock it |
+|---|---|---|
+| Eventbrite as a **discovery** source (auto-find events across Bakersfield) | Their public API has no search-all-events endpoint anymore — only an organizer's own events. Confirmed live 2026-09-10. | Nothing short-of-ToS-violating. Not pursuing. |
+| Meetup as a discovery source | Their plain-API-key REST API was retired in 2019; the current API is OAuth-only. | A human registers an OAuth consumer at meetup.com/api and completes the flow once — `tools/ingest/sources/meetup.js` is already wired for the token, it's just never been set. |
+| Instagram scraping (any account, including ones Nick follows) | Meta's ToS prohibits automated scraping; shipping a "replicable for anyone" crawler would be shipping a ToS-violation tool at scale. | Not pursuing scraping. The legitimate path is Meta's official Graph API for pages Board Bored itself controls — doesn't give blanket access to *other* accounts, so it was never going to be the bulk-discovery mechanism anyway. |
+| Auto-pulling The Bakersfield Guy's newsletter | Their site was rebuilt in July; old issue URLs 404, REST API returns 0 posts, RSS is empty — nothing public to point a scraper at even if we wanted to. | If they ever expose an RSS feed, ICS feed, or stable issue-archive URL again, this becomes a normal `ics`-style source. Until then: Nick pastes an issue, we ingest it and credit them (now live in the footer). |
+| Ticketmaster events | Nothing wrong with it — it's built, tested, and free. It's just off because no key is set. | 2-minute self-serve signup at developer.ticketmaster.com, no approval wait. This is the single highest-leverage unblock on this whole list. |
+| Multiple cities | The codebase is architected for it (AUDIT.md §5 — one `board.json` per city, same shell) but it isn't wired up: map center, the validator's Kern bounding box, and some copy are still hardcoded to Bakersfield. | Real but scoped work, not a config flag. See AUDIT.md §5 for the plan; not started. |
+| A real business "account" (login, self-managed listing, no resubmitting from scratch) | Every submission today is stateless — `submit-event.html` → review queue → live, one-shot. There's no concept of "this business's listings" a returning owner could log back into and edit. | A real auth layer (magic-link email is the obvious fit for a no-password local-business audience) + a `business_id` on events/deals. Scoped design work, not a quick add. |
+| Taking a cut of real money (paid deals, order-ahead) | The `Offer` class hierarchy in `products/board-bored-api/offers.mjs` already has a `PaidDeal` seam, but nothing is wired to an actual payment processor. | Deliberately dormant — the decision from earlier this build was "free forever for listings, take a cut only once money is actually moving through the platform." Wire Stripe/Square when that's the ask, not before. |
+
+## Roadmap — queued, not started
+
+- **Community fruit-tree gleaning.** A map layer (or a sibling site sharing
+  the same shell) where people mark a fruit tree on their property that's
+  producing more than they can use, and volunteer pickers/gleaners claim a
+  pick-up slot — same "submit → review → live" shape as an event, same
+  map/pin rendering `first-friday/index.html` already has, same no-fee
+  self-serve philosophy. The distribution side (where the picked fruit
+  actually goes — food bank, neighbors, a stand) is the part that needs
+  real design, not engineering: likely a `category: "gleaning"` event type
+  with a `yield_estimate` + `contact` field, and a partner relationship with
+  an actual local food-recovery org (Golden Empire Gleaners, mentioned in
+  the same newsletter issue that got ingested 2026-09-10, already does
+  exactly this in Bakersfield — worth reaching out to before building
+  anything, so this doesn't duplicate an org that already has the trust
+  network). Not started; needs that conversation first.
