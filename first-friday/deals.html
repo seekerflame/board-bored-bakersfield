@@ -54,6 +54,8 @@
   try { var q = new URLSearchParams(location.search).get("api"); if (q && /^(localhost|127\.0\.0\.1)$/.test(location.hostname)) API = q.replace(/\/+$/, ""); } catch (e) {}
   var list = document.getElementById("list");
   var sid = ""; try { sid = localStorage.getItem("bb_session") || ""; if (!sid) { sid = "s" + Math.random().toString(36).slice(2, 12); localStorage.setItem("bb_session", sid); } } catch (e) { sid = "s" + Math.random().toString(36).slice(2, 12); }
+  // First-touch share attribution: whoever sent you here gets credit once a shop confirms your code. Never your own link.
+  var myRef = ""; try { var rq = (new URLSearchParams(location.search).get("ref") || "").toLowerCase(); if (/^[a-z0-9_-]{4,24}$/.test(rq) && !localStorage.getItem("bb_ref")) localStorage.setItem("bb_ref", rq); myRef = localStorage.getItem("bb_ref") || ""; } catch (e) {}
   var mine = {}; try { mine = JSON.parse(localStorage.getItem("bb_claims") || "{}"); } catch (e) {}
 
   function el(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; }
@@ -91,7 +93,7 @@
         var msg = el("p", "msg err"); box.appendChild(msg);
         fin.onclick = function () {
           fin.disabled = true;
-          post("/api/claim", { dealId: d.id, unlock: "follow", followed: true, session: sid }).then(function (r) {
+          post("/api/claim", { dealId: d.id, unlock: "follow", followed: true, session: sid, ref: myRef }).then(function (r) {
             if (r.ok) showCode(card, d, r); else { msg.textContent = r.error || (r.errors || []).join(" "); fin.disabled = false; }
           });
         };
@@ -106,7 +108,7 @@
         var em2 = el("p", "msg err"); det.appendChild(em2);
         eb.onclick = function () {
           eb.disabled = true;
-          post("/api/claim", { dealId: d.id, unlock: "email", email: em.value, session: sid }).then(function (r) {
+          post("/api/claim", { dealId: d.id, unlock: "email", email: em.value, session: sid, ref: myRef }).then(function (r) {
             if (r.ok) showCode(card, d, r); else { em2.textContent = r.error || (r.errors || []).join(" "); eb.disabled = false; }
           });
         };
@@ -130,8 +132,27 @@
       list.appendChild(card);
     });
   }
+  if (myRef) fetch(API + "/api/track", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type: "view", ref: myRef, session: sid }) }).catch(function () {});
+  function shareCard() {
+    var link = location.origin + location.pathname + "?ref=" + encodeURIComponent(sid.toLowerCase());
+    var box = el("div", "card"); box.appendChild(el("div", "shop", "Share Board Bored"));
+    box.appendChild(el("p", "sum", "Send this to a friend. When they claim a deal and the shop confirms it at the counter, it counts for you."));
+    var stat = el("p", "small", ""); box.appendChild(stat);
+    var b = el("button", null, "Share with a friend"); box.appendChild(b);
+    var msg = el("p", "small", ""); box.appendChild(msg);
+    b.onclick = function () {
+      var data = { title: "Board Bored Bakersfield", text: "Free local deals and events in Bakersfield:", url: link };
+      if (navigator.share) navigator.share(data).catch(function () {});
+      else if (navigator.clipboard) navigator.clipboard.writeText(link).then(function () { msg.textContent = "Link copied. Paste it to a friend."; }, function () { msg.textContent = link; });
+      else msg.textContent = link;
+    };
+    fetch(API + "/api/referrals?ref=" + encodeURIComponent(sid.toLowerCase()), { cache: "no-store" }).then(function (r) { return r.json(); }).then(function (j) {
+      if (j.ok) stat.textContent = "Friends who claimed a deal: " + j.claimed + ". Confirmed at the counter: " + j.earned + ". Your count is saved; Nick will announce what sharers earn.";
+    }).catch(function () {});
+    return box;
+  }
   fetch(API + "/api/shop-deals", { cache: "no-store" }).then(function (r) { return r.json(); })
-    .then(function (j) { window.__boredIg = j.boredIg; render(j.ok ? j.deals : []); })
+    .then(function (j) { window.__boredIg = j.boredIg; render(j.ok ? j.deals : []); list.appendChild(shareCard()); })
     .catch(function () { list.textContent = ""; list.appendChild(el("p", "err", "Couldn't load deals. Check your connection and refresh.")); });
 })();
 </script>

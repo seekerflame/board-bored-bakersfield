@@ -22,6 +22,9 @@ REQUIRED = ("name", "venue", "date")
 OPTIONAL = ("start", "end", "cost", "link", "address")
 NOT_AN_EVENT = re.compile(r"(?i)\b(season pass|gift card|gift certificate|parking|membership|voucher|donation|merch(andise)?|vip upgrade|"
                           r"ticket protection|add[- ]?on)\b")
+# Job-ad / MLM / get-rich style listings are never auto-published, whatever the voices agree on: a human decides.
+JOBS_REVIEW = re.compile(r"(?i)\b(now hiring|we.re hiring|hiring event|job fair|career fair|job opening|apply now|recruit(?:ing|ment)|"
+                         r"work from home|earn \$|make money|passive income|mlm|network marketing|business opportunity|side hustle)\b")
 MAX_FUTURE_DAYS = 548
 
 
@@ -52,6 +55,8 @@ def gate(c, sources, today, default_venue=None, skip=()):
             return c, ["quote_not_in_source"], stripped
         span, quote = (fz[0], fz[1]), re.sub(r"\s+", " ", fz[2]).strip()  # judge against the page's own words
         c["quote"], c["quote_repaired"] = quote, True
+    if len(re.findall(r"[\u2022\u25aa\u25cf]", quote)) > 1:
+        return c, ["quote_spans_records"], stripped  # two bullets in one quote: name from one, venue/time from the other
     name = c.get("name") or ""
     if not (3 <= len(name) <= 140) or re.search(r"[<>{}]", name):
         fails.append("name_malformed")
@@ -67,18 +72,21 @@ def gate(c, sources, today, default_venue=None, skip=()):
         d = None
         fails.append("date_malformed")
     if d:
-        pool = [t.date for t in find_dates(quote, today)]
-        h = c.get("heading")
-        if d not in pool and h:
-            hs = locate_quote(src, h)
-            if hs and hs[0] <= span[0]:
-                pool += [t.date for t in find_dates(h, today)]
-        if d not in pool:
-            gh = governing_heading(src, span[0], today)
-            if gh:
-                pool.append(gh[1])
-        if d not in pool:
-            fails.append("date_not_in_quote")
+        gh = governing_heading(src, span[0], today)
+        if gh:
+            # The document is organised by weekday headings: the heading above the record is its date. A date found
+            # inside the quote (e.g. the NEXT section's heading swept in by a long window) can never override it.
+            if d != gh[1]:
+                fails.append("date_not_in_quote")
+        else:
+            pool = [t.date for t in find_dates(quote, today)]
+            h = c.get("heading")
+            if d not in pool and h:
+                hs = locate_quote(src, h)
+                if hs and hs[0] <= span[0]:
+                    pool += [t.date for t in find_dates(h, today)]
+            if d not in pool:
+                fails.append("date_not_in_quote")
         if d < today:
             fails.append("past")
         elif (d - today).days > MAX_FUTURE_DAYS:

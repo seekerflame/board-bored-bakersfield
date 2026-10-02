@@ -144,6 +144,31 @@ class Gate(unittest.TestCase):
                  quote="Fake Band Live at Mock Theater October 9 2026 doors 6 pm show 8 pm")
         self.assertNotEqual(tg.gate(c, {"s": card}, TODAY)[1], [], "paraphrase of a 9-line card must not ground")
 
+    def test_next_sections_heading_swept_into_a_window_cannot_change_the_date(self):
+        """Regression (measured, phi4-mini on a real issue): a bullet at the end of SATURDAY was accepted as SUNDAY because the
+        quote window bled across a blank line into the SUNDAY heading."""
+        src = ("FRIDAY, OCTOBER 9\n\u2022 Early Act @ Test Hall (6PM) 1 Fake St.\n\n"
+               "SATURDAY, OCTOBER 10\n\n\u2022 Late Act @ Test Hall (9PM) 1 Fake St. Description here.\n\n"
+               "SUNDAY, OCTOBER 11\n\n\u2022 Sunday Act @ Test Hall (2PM)\n")
+        c = cand(name="Late Act", venue="Test Hall", date="2026-10-11", link=None, cost=None, start="21:00",
+                 quote="Late Act @ Test Hall (9PM) 1 Fake St. Description here. SUNDAY, OCTOBER 11")
+        self.assertIn("date_not_in_quote", tg.gate(c, {"s": src}, TODAY)[1])
+        ok = dict(c, date="2026-10-10", quote="\u2022 Late Act @ Test Hall (9PM) 1 Fake St. Description here.")
+        self.assertEqual(tg.gate(ok, {"s": src}, TODAY)[1], [])
+
+    def test_quote_spanning_two_bullets_is_ambiguous(self):
+        src = ("FRIDAY, OCTOBER 9\nSATURDAY, OCTOBER 10\nSUNDAY, OCTOBER 11\n"
+               "\u2022 Act One @ Test Hall (6PM)\n\u2022 Act Two @ Other Place (9PM)\n")
+        c = cand(name="Act One", venue="Other Place", date="2026-10-11", link=None, cost=None, start="21:00",
+                 quote="\u2022 Act One @ Test Hall (6PM) \u2022 Act Two @ Other Place (9PM)")
+        self.assertIn("quote_spans_records", tg.gate(c, {"s": src}, TODAY)[1])
+
+    def test_fuzzy_prefers_the_tightest_window(self):
+        src = "SATURDAY, OCTOBER 10\n\n\u2022 Late Act @ Test Hall (9PM) 1 Fake St.\n\nSUNDAY, OCTOBER 11\n\n\u2022 Next @ X (1PM)\n"
+        fz = tu.locate_quote_fuzzy(src, "Late Act @ Test Hall 9 PM 1 Fake St. extra")
+        self.assertIsNotNone(fz)
+        self.assertNotIn("SUNDAY", fz[2])
+
     def test_html_entities_in_raw_quote(self):
         src = '"name": "Cults &amp; Classics: Test Film", "startDate": "Oct 12, 2026"'
         c = cand(name="Cults &amp; Classics: Test Film", venue=None, start=None, cost=None, link=None, date="2026-10-12",
@@ -309,6 +334,22 @@ class LLMVoice(unittest.TestCase):
         self.assertEqual(dead.stats["errors"], 1)
 
 
+class Tidy(unittest.TestCase):
+    def test_name_at_venue_split_and_parentheticals_stripped(self):
+        e = llm.tidy_fields({"name": "\u2022 Dirty Signal @ The Mint", "venue": "The Mint (6PM)"})
+        self.assertEqual((e["name"], e["venue"]), ("Dirty Signal", "The Mint"))
+        e = llm.tidy_fields({"name": "Mike Sherm @ Fox", "venue": ""})
+        self.assertEqual((e["name"], e["venue"]), ("Mike Sherm", "Fox"))
+
+    def test_link_residue_removed(self):
+        e = llm.tidy_fields({"name": "Taco Bingo", "venue": "Cherry Acres [https://i.test/p/1](https://i.test/p/1)"})
+        self.assertEqual(e["venue"], "Cherry Acres")
+
+    def test_tidy_cannot_invent(self):
+        e = llm.tidy_fields({"name": "Plain Name", "venue": "Plain Venue"})
+        self.assertEqual((e["name"], e["venue"]), ("Plain Name", "Plain Venue"))
+
+
 # ---------------------------------------------------------------- the desk, composed
 def card_html(title, date, show, venue, tixr):
     return ('<div role="listitem" class="w-dyn-item"><div class="cal-container cal"><div class="day-card"><div class="when"><p class="b-venue">%s</p></div>'
@@ -410,6 +451,15 @@ class DeskComposed(unittest.TestCase):
         res = self.desk({}, autopublish=True).run(TODAY)
         self.assertTrue(res["errors"])
         self.assertEqual(res["published"], 0)
+
+    def test_job_and_mlm_style_listings_never_reach_tier_A(self):
+        pages = site([("Now Hiring: Open House", "October 9, 2026", "8:00 pm", "Test Hall", "https://tix.test/e/7", "Oct 09, 2026"),
+                      ("Passive Income Seminar", "October 10, 2026", "7:00 pm", "Test Hall", "https://tix.test/e/8", "Oct 10, 2026"),
+                      ("Open Mic Night", "October 11, 2026", "7:00 pm", "Test Hall", "https://tix.test/e/9", "Oct 11, 2026")])
+        by = {e["name"]: e for e in self.desk(pages).run(TODAY)["events"]}
+        self.assertEqual((by["Now Hiring: Open House"]["tier"], "jobs_review" in by["Now Hiring: Open House"]["reasons"]), ("B", True))
+        self.assertEqual(by["Passive Income Seminar"]["tier"], "B")
+        self.assertEqual(by["Open Mic Night"]["tier"], "A")
 
     def test_unknown_venue_is_never_tier_A(self):
         pages = site([("Mystery Gig", "October 9, 2026", "8:00 pm", "Unlisted Garage", "https://tix.test/e/9", "Oct 09, 2026")])

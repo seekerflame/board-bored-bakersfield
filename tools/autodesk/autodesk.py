@@ -23,7 +23,7 @@ import adapters  # noqa: E402
 from llm import OllamaVoice  # noqa: E402
 from netfetch import FetchRefused, PoliteFetcher  # noqa: E402
 from textutil import cover, html_to_text  # noqa: E402
-from truthgate import consensus, event_id, gate  # noqa: E402
+from truthgate import JOBS_REVIEW, consensus, event_id, gate  # noqa: E402
 
 HOME = os.path.expanduser("~")
 REPO = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))
@@ -184,6 +184,9 @@ class Desk:
                 ev["venue"], ev["address"] = vinfo.get("name", vk), vinfo.get("address")
                 ev["lat"], ev["lng"], ev["area"] = vinfo.get("lat"), vinfo.get("lng"), vinfo.get("area")
                 ev["category"] = self.category(ev["name"], vinfo)
+            if JOBS_REVIEW.search(ev["name"] or "") or any(JOBS_REVIEW.search(x.get("quote") or "") for x in ev["evidence"]):
+                ev["tier"] = "B"
+                ev["reasons"].append("jobs_review")
             ev["id"] = event_id(ev)
             ev["source"] = src["id"]
         return evs, drops

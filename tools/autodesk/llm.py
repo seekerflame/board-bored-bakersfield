@@ -4,6 +4,7 @@ truthgate decides. Outputs are cached by sha256(model + prompt version + chunk) 
 import hashlib
 import json
 import os
+import re
 import urllib.request
 
 from textutil import find_dates, find_times, heading_date, to_hhmm
@@ -66,6 +67,25 @@ def normalize_date(v, today):
     return d[0].date.isoformat() if d else v or None
 
 
+_MD_LINK = re.compile(r"\[[^\]]*\]\([^)]*\)|\[https?://[^\]]*\]|https?://\S+")
+
+
+def tidy_fields(e):
+    """Formatting hygiene only (no trust): small models write 'Name @ Venue' into the name field, leave '(7PM)' or link
+    residue on the venue, and keep the bullet glyph. The gate still has to ground every resulting value in the page."""
+    name, venue = str(e.get("name") or ""), str(e.get("venue") or "")
+    name = _MD_LINK.sub(" ", name).lstrip("\u2022*- ").strip()
+    if " @ " in name:
+        name, tail = name.split(" @ ", 1)
+        if not venue.strip():
+            venue = tail
+    venue = _MD_LINK.sub(" ", venue)
+    venue = re.sub(r"\s*\([^)]*\)", "", venue)  # '(7PM)', '(Check-in 3:30-4:30PM)', '(According to their website)'
+    e["name"] = re.sub(r"\s+", " ", name).strip(" ,;:-")
+    e["venue"] = re.sub(r"\s+", " ", venue).strip(" ,;:-") or None
+    return e
+
+
 def normalize_time(v):
     v = str(v or "").strip()
     if not v:
@@ -121,6 +141,7 @@ class OllamaVoice:
             for e in self.extract_chunk(chunk, today.isoformat(), url):
                 if isinstance(e, dict):
                     e = dict(e, voice=self.model, family=self.family, source_id=source_id)
+                    tidy_fields(e)
                     e["date"], e["start"], e["end"] = (normalize_date(e.get("date"), today), normalize_time(e.get("start")), normalize_time(e.get("end")))
                     for k in ("start", "end", "cost", "link"):
                         if e.get(k) == "":

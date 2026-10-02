@@ -114,6 +114,7 @@ def allowed_numbers(sheet):
     if sheet.get("offer"):
         nums.add(str(sheet["offer"]["price"]))
     nums.update(re.findall(r"\d+", sheet.get("address") or ""))
+    nums.update(re.findall(r"\d+", sheet.get("name") or ""))
     nums.update(re.findall(r"\d+", " ".join(sheet.get("listings", []))))
     return nums
 
@@ -121,6 +122,7 @@ def allowed_numbers(sheet):
 def verify_draft(text, sheet):
     """Return list of violations; empty list means every number and name traces to the sheet."""
     bad = []
+    text = text.replace("\u2019", "'").replace("\u2018", "'")
     ok_nums = allowed_numbers(sheet)
     for n in re.findall(r"\d[\d,]*(?:\.\d+)?", text):
         if n.replace(",", "").rstrip(".") not in ok_nums:

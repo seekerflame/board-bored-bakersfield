@@ -46,7 +46,8 @@ H24_RE = re.compile(r"(?<![\d:])(?P<h>[01]?\d|2[0-3]):(?P<m>[0-5]\d)(?!\s*(?:[ap
 
 
 def norm(s):
-    s = unicodedata.normalize("NFKD", str(s or "")).encode("ascii", "ignore").decode()
+    s = str(s or "").replace("\u2019", "'").replace("\u2018", "'")  # curly and straight apostrophes must normalise identically
+    s = unicodedata.normalize("NFKD", s).encode("ascii", "ignore").decode()
     s = s.lower().replace("&", " and ")
     s = re.sub(r"[^a-z0-9]+", " ", s)
     return re.sub(r"\s+", " ", s).strip()
@@ -116,20 +117,22 @@ def locate_quote_fuzzy(source, quote, threshold=0.85, max_lines=3):
         if ln.strip():
             lines.append((pos, pos + len(ln), ln))
         pos += len(ln) + 1
-    best = None
-    for i in range(len(lines)):
-        for w in range(1, max_lines + 1):
+    # Tightest window first: a 1-line match beats a 2- or 3-line one even if the longer one scores a hair higher. Extra
+    # lines would let a neighbouring record's date/venue/time leak into the evidence.
+    for w in range(1, max_lines + 1):
+        best = None
+        for i in range(len(lines) - w + 1):
             chunk = lines[i:i + w]
-            if len(chunk) < w:
-                break
             text = "\n".join(c[2] for c in chunk)
             t = _fuzzy_tokens(text)
             if not t or len(t) > 3 * len(q):
                 continue
             score = len(q & t) / len(q)
-            if score >= threshold and (best is None or (score, -w) > (best[0], -best[1])):
-                best = (score, w, chunk[0][0], chunk[-1][1], text)
-    return (best[2], best[3], best[4]) if best else None
+            if score >= threshold and (best is None or score > best[0]):
+                best = (score, chunk[0][0], chunk[-1][1], text)
+        if best:
+            return (best[1], best[2], best[3])
+    return None
 
 
 class DateTok:
