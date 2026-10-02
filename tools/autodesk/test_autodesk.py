@@ -116,6 +116,34 @@ class Gate(unittest.TestCase):
         self.assertIn("venue_not_in_quote", g(c, "Friday, October 9, 2026 Open Mic Night with Fake Band 7:30pm")[1])
         self.assertEqual(g(c, "Friday, October 9, 2026 Open Mic Night with Fake Band 7:30pm", default_venue="Test Hall")[1], [])
 
+    def test_paraphrased_quote_is_repaired_to_the_real_line(self):
+        src = "FRIDAY, OCTOBER 9\n\n\u2022 Open Mic Night with Fake Band @ Test Hall [https://ex.test/e/1] (7:30PM) 1 Fake St. Free comedy.\n\n\u2022 Polka Fest @ Other Place (9PM)\n"
+        src = "SATURDAY, OCTOBER 3\nFRIDAY, OCTOBER 9\nSUNDAY, OCTOBER 11\n" + src
+        c = cand(date="2026-10-09", link=None, cost=None, start="19:30",
+                 quote="Open Mic Night with Fake Band @ Test Hall (07:30 PM) Free comedy night")
+        g2, fails, st = tg.gate(c, {"s": src}, TODAY)
+        self.assertEqual(fails, [])
+        self.assertTrue(g2.get("quote_repaired"))
+        self.assertIn("1 Fake St", g2["quote"], "evidence is the page's own text, not the model's")
+
+    def test_fuzzy_repair_cannot_launder_a_hallucinated_event(self):
+        src = "FRIDAY, OCTOBER 9\n\u2022 Open Mic Night with Fake Band @ Test Hall (7:30PM) 1 Fake St.\n" + "SATURDAY, OCTOBER 10\nSUNDAY, OCTOBER 11\n"
+        # model invents a different venue/name but borrows most words of a real line
+        c = cand(name="Open Mic Night with Fake Band", venue="Imaginary Arena", date="2026-10-09", link=None, cost=None, start="19:30",
+                 quote="Open Mic Night with Fake Band @ Imaginary Arena (7:30PM) 1 Fake St.")
+        g1, f1, _ = tg.gate(c, {"s": src}, TODAY)
+        self.assertNotEqual(f1, [], "a quote that swaps the venue must not ground")
+        self.assertFalse(g1.get("quote_repaired"))
+        c2 = cand(name="Totally Different Show", venue="Test Hall", date="2026-10-09", link=None, cost=None, start="19:30",
+                  quote="Totally Different Show @ Test Hall (7:30PM) 1 Fake St.")
+        self.assertTrue(any(f in ("name_not_in_quote", "quote_not_in_source") for f in tg.gate(c2, {"s": src}, TODAY)[1]))
+
+    def test_fuzzy_never_spans_a_whole_multiline_card(self):
+        card = "October 9, 2026\nOct\nFake Band Live\nDOOR TIME:\n6:00 pm\nSHOW STARTS:\n8:00 pm\nGET TICKETS [https://ex.test/e/1]\nMock Theater\n"
+        c = cand(name="Fake Band Live", venue="Mock Theater", date="2026-10-09", start=None, cost=None, link=None,
+                 quote="Fake Band Live at Mock Theater October 9 2026 doors 6 pm show 8 pm")
+        self.assertNotEqual(tg.gate(c, {"s": card}, TODAY)[1], [], "paraphrase of a 9-line card must not ground")
+
     def test_html_entities_in_raw_quote(self):
         src = '"name": "Cults &amp; Classics: Test Film", "startDate": "Oct 12, 2026"'
         c = cand(name="Cults &amp; Classics: Test Film", venue=None, start=None, cost=None, link=None, date="2026-10-12",

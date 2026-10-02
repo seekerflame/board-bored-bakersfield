@@ -16,7 +16,7 @@ import datetime as dt
 import html
 import re
 
-from textutil import cover, find_dates, find_times, governing_heading, hhmm_to_min, locate_quote, norm, squash, tokens
+from textutil import cover, find_dates, find_times, governing_heading, hhmm_to_min, locate_quote, locate_quote_fuzzy, norm, squash, tokens
 
 REQUIRED = ("name", "venue", "date")
 OPTIONAL = ("start", "end", "cost", "link", "address")
@@ -47,7 +47,11 @@ def gate(c, sources, today, default_venue=None, skip=()):
     quote = re.sub(r"\s+", " ", c.get("quote") or "").strip()
     span = locate_quote(src, quote) or locate_quote(src, html.unescape(quote))
     if span is None:
-        return c, ["quote_not_in_source"], stripped
+        fz = locate_quote_fuzzy(src, quote)
+        if fz is None:
+            return c, ["quote_not_in_source"], stripped
+        span, quote = (fz[0], fz[1]), re.sub(r"\s+", " ", fz[2]).strip()  # judge against the page's own words
+        c["quote"], c["quote_repaired"] = quote, True
     name = c.get("name") or ""
     if not (3 <= len(name) <= 140) or re.search(r"[<>{}]", name):
         fails.append("name_malformed")

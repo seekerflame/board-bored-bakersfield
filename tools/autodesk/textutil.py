@@ -94,6 +94,44 @@ def locate_quote(source, quote):
     return idx[pos], idx[pos + len(q) - 1] + 1
 
 
+def _fuzzy_tokens(text):
+    """Token set for fuzzy line matching. Times and bracketed links are dropped on both sides: models tidy them
+    ('7:30PM' -> '07:30 PM', link omitted) and the gate verifies times and links separately, against the page."""
+    t = re.sub(r"\[https?://[^\]]*\]", " ", text)
+    t = RANGE_RE.sub(" ", t)
+    t = TIME_RE.sub(" ", t)
+    t = H24_RE.sub(" ", t)
+    return set(norm(t).split())
+
+
+def locate_quote_fuzzy(source, quote, threshold=0.85, max_lines=3):
+    """Models paraphrase quotes (drop a link, tidy '6:00' to '06:00', skip a line). Find the 1-3 consecutive real source
+    lines the quote is overwhelmingly made of. Returns (start, end, window_text) or None. The caller then judges the claim
+    against that REAL text; the model's wording is never used as evidence."""
+    q = _fuzzy_tokens(quote)
+    if len(q) < 4:
+        return None
+    lines, pos = [], 0
+    for ln in source.split("\n"):
+        if ln.strip():
+            lines.append((pos, pos + len(ln), ln))
+        pos += len(ln) + 1
+    best = None
+    for i in range(len(lines)):
+        for w in range(1, max_lines + 1):
+            chunk = lines[i:i + w]
+            if len(chunk) < w:
+                break
+            text = "\n".join(c[2] for c in chunk)
+            t = _fuzzy_tokens(text)
+            if not t or len(t) > 3 * len(q):
+                continue
+            score = len(q & t) / len(q)
+            if score >= threshold and (best is None or (score, -w) > (best[0], -best[1])):
+                best = (score, w, chunk[0][0], chunk[-1][1], text)
+    return (best[2], best[3], best[4]) if best else None
+
+
 class DateTok:
     __slots__ = ("date", "start", "end", "has_year", "wd")
 
