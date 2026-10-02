@@ -165,6 +165,34 @@ t("ics parser skips VEVENTs with no DTSTART rather than crashing", function () {
 });
 
 // ---------------------------------------------------------------- ingest/sources/ticketmaster.js
+var autodeskSrc = require("./ingest/sources/autodesk.js");
+t("autodesk source keeps verified events and drops anything violating the contract", function () {
+  var good = { name: "A Show", venue: "Test Hall", address: "1 Fake St", lat: 35.37, lng: -119.02, date: "2030-01-05", start: "20:00", area: "downtown", verified_by: ["struct:card", "struct:jsonld"] };
+  var out = autodeskSrc.parse([
+    good,
+    Object.assign({}, good, { name: "Past", date: "2020-01-01" }),
+    Object.assign({}, good, { name: "One voice", verified_by: ["llm:qwen"] }),
+    Object.assign({}, good, { name: "Pinless", address: null, lat: null, lng: null }),
+    Object.assign({}, good, { name: "Bad time", start: "25:99" }),
+    { venue: "X", date: "2030-01-05" },
+  ], "2026-10-02");
+  assert.strictEqual(out.length, 2);
+  assert.strictEqual(out[0].name, "A Show");
+  assert.strictEqual(out[1].name, "Bad time");
+  assert.strictEqual(out[1].start, null);
+});
+t("autodesk source tolerates a missing or non-array file payload", function () {
+  assert.deepStrictEqual(autodeskSrc.parse(null, "2026-10-02"), []);
+  assert.deepStrictEqual(autodeskSrc.parse({ a: 1 }, "2026-10-02"), []);
+});
+t("normalize.toCityEvent passes start/end/area only when supplied (shape unchanged otherwise)", function () {
+  var base = normalize.toCityEvent({ name: "S", venue: "V", date: "2030-01-05" }, "x");
+  assert.ok(!("start" in base) && !("area" in base) && !("end" in base));
+  var rich = normalize.toCityEvent({ name: "S", venue: "V", date: "2030-01-05", start: "20:00", area: "downtown" }, "x");
+  assert.strictEqual(rich.start, "20:00");
+  assert.strictEqual(rich.area, "downtown");
+});
+
 var ticketmaster = require("./ingest/sources/ticketmaster.js");
 t("ticketmaster.startupCheck rejects unset and placeholder keys", function () {
   assert.strictEqual(ticketmaster.startupCheck(undefined).ok, false);

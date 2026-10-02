@@ -26,8 +26,9 @@ const { findDuplicate } = require("./ingest/dedupe.js");
 const ticketmaster = require("./ingest/sources/ticketmaster.js");
 const meetup = require("./ingest/sources/meetup.js");
 const ics = require("./ingest/sources/ics.js");
+const autodesk = require("./ingest/sources/autodesk.js");
 
-const SOURCES = { ticketmaster, meetup, ics };
+const SOURCES = { ticketmaster, meetup, ics, autodesk };
 
 function parseArgs(argv) {
   const out = { city: "data/cities/kern-county.json", dryRun: false };
@@ -53,6 +54,10 @@ async function runSource(name, cfg, cityConfig) {
   }
   if (name === "meetup") {
     return mod.fetchEvents({ accessToken: process.env.MEETUP_ACCESS_TOKEN });
+  }
+  if (name === "autodesk") {
+    // Events the local truth desk (tools/autodesk) verified and published. Already venue-pinned.
+    return mod.fetchEvents({ file: path.resolve(__dirname, "..", cfg.path || "data/autodesk_events.json") });
   }
   if (name === "ics") {
     const all = [];

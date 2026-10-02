@@ -1,0 +1,32 @@
+{
+  "state_dir": "~/.boardbored/autodesk",
+  "autopublish": false,
+  "min_clean_cycles": 2,
+  "min_families": 2,
+  "min_interval": 10,
+  "llm": {
+    "enabled": false,
+    "host": "http://localhost:11434",
+    "voices": [
+      {"model": "qwen2.5-coder:7b", "family": "llm:qwen"},
+      {"model": "phi4-mini:latest", "family": "llm:phi"}
+    ]
+  },
+  "categories": [
+    ["comedy|stand-?up", "Comedy"],
+    ["cults & classics|film|movie", "Theater"]
+  ],
+  "venues": {
+    "Historic Bakersfield Fox Theater": {"name": "Historic Bakersfield Fox Theater", "address": "2001 H St, Bakersfield, CA 93301", "lat": 35.3736, "lng": -119.0224, "area": "downtown", "default_category": "Music"},
+    "The Nile Theater": {"name": "The Nile Theater", "address": "1721 19th St, Bakersfield, CA 93301", "lat": 35.3728, "lng": -119.021, "area": "downtown", "default_category": "Music"}
+  },
+  "sources": [
+    {
+      "id": "bakersfieldlive",
+      "kind": "foxnile",
+      "calendar_url": "https://www.bakersfieldlive.com/event-calendar",
+      "home_url": "https://www.bakersfieldlive.com/",
+      "untrusted": {"struct:jsonld": ["venue"]}
+    }
+  ]
+}

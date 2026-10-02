@@ -42,6 +42,11 @@ function toCityEvent(raw, sourcePrefix) {
     source: raw.source,
     downtown: raw.downtown != null ? raw.downtown : null,
     schedule: { date: raw.date },
+    // Optional, additive: only present when a source verified them (autodesk does). Sources that
+    // don't supply these produce the exact same object shape as before.
+    ...(raw.start ? { start: raw.start } : {}),
+    ...(raw.end ? { end: raw.end } : {}),
+    ...(raw.area ? { area: raw.area } : {}),
   };
 }
 

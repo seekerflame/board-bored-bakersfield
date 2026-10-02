@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Local deals — Board Bored Bakersfield</title>
+<meta name="description" content="Free deals from Bakersfield shops. Follow the shop and Board Bored on Instagram, show your code at the counter.">
+<style>
+  :root{--ink:#141116;--pap:#faf7f2;--card:#fffdfa;--acc:#b83a14;--acc2:#0f6f5a;--line:#8a837d;--mut:#5e5852;--ok:#0f6f5a;--bad:#a4262c;
+    --body:-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif}
+  @media (prefers-color-scheme:dark){:root{--ink:#f4efe9;--pap:#16130f;--card:#201c17;--acc:#ff8a5c;--acc2:#4fd1b0;--line:#6e665e;--mut:#b9b1a8;--ok:#4fd1b0;--bad:#ff7a80}}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{font-size:18px}
+  body{font-family:var(--body);background:var(--pap);color:var(--ink);line-height:1.5;padding:16px 16px 56px;min-height:100dvh}
+  .wrap{max-width:560px;margin:0 auto}
+  a.back{display:inline-block;min-height:48px;line-height:48px;color:var(--acc2);font-weight:700;text-decoration:none}
+  h1{font-size:1.9rem;line-height:1.1;margin:4px 0 8px}
+  .lead{color:var(--mut);margin-bottom:18px}
+  .card{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px}
+  .shop{font-weight:800;font-size:1.15rem}
+  .badge{display:inline-block;background:var(--acc);color:#fff;font-weight:800;border-radius:999px;padding:4px 12px;margin:6px 0;font-size:.95rem}
+  .sum{margin:6px 0 10px}
+  .free{color:var(--ok);font-weight:700}
+  button,.btn{font:inherit;font-weight:800;min-height:52px;border-radius:14px;border:2px solid var(--ink);background:var(--ink);color:var(--pap);padding:0 18px;cursor:pointer;width:100%;margin-top:10px;display:flex;align-items:center;justify-content:center;text-decoration:none}
+  button.alt,.btn.alt{background:transparent;color:var(--ink)}
+  button[disabled]{opacity:.45;cursor:not-allowed}
+  .steps{margin:10px 0 0;padding:0;list-style:none}
+  .steps li{margin:8px 0}
+  label.chk{display:flex;gap:12px;align-items:flex-start;min-height:48px;margin-top:12px;font-weight:700}
+  label.chk input{width:28px;height:28px;flex:none;margin-top:2px}
+  input[type=email]{font:inherit;width:100%;min-height:52px;border:2px solid var(--line);border-radius:12px;padding:0 14px;background:var(--card);color:var(--ink);margin-top:8px}
+  .code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:3rem;font-weight:800;letter-spacing:.18em;text-align:center;margin:10px 0;padding:14px 0;border:3px dashed var(--acc);border-radius:14px;user-select:all}
+  .msg{margin-top:10px;font-weight:700}
+  .err{color:var(--bad)}
+  .small{font-size:.85rem;color:var(--mut)}
+  details{margin-top:12px}
+  summary{min-height:48px;display:flex;align-items:center;font-weight:700;cursor:pointer}
+  .hp{position:absolute;left:-9999px;opacity:0;height:0;width:0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">&larr; Back to the map</a>
+  <h1>Local deals</h1>
+  <p class="lead">Free to claim. Follow the shop and Board Bored on Instagram, then show your code at the counter. No account, no card.</p>
+  <div id="list" aria-live="polite"><p class="small">Loading deals&hellip;</p></div>
+  <p class="small" style="margin-top:20px">Board Bored never sells your information. Shops pay a small fee only when they confirm a code at their own counter.</p>
+</div>
+<script src="../lib/api.js"></script>
+<script>
+(function () {
+  var API = (window.bbApi && window.bbApi.API_BASE || "").replace(/\/+$/, "");
+  // Local testing only: ?api=http://localhost:8787 is honoured on localhost and nowhere else.
+  try { var q = new URLSearchParams(location.search).get("api"); if (q && /^(localhost|127\.0\.0\.1)$/.test(location.hostname)) API = q.replace(/\/+$/, ""); } catch (e) {}
+  var list = document.getElementById("list");
+  var sid = ""; try { sid = localStorage.getItem("bb_session") || ""; if (!sid) { sid = "s" + Math.random().toString(36).slice(2, 12); localStorage.setItem("bb_session", sid); } } catch (e) { sid = "s" + Math.random().toString(36).slice(2, 12); }
+  var mine = {}; try { mine = JSON.parse(localStorage.getItem("bb_claims") || "{}"); } catch (e) {}
+
+  function el(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; }
+  function ig(handle) { return "https://instagram.com/" + encodeURIComponent(handle); }
+  function post(path, body) {
+    return fetch(API + path, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) })
+      .then(function (r) { return r.json().catch(function () { return { ok: false, error: "Something went wrong. Try again." }; }); })
+      .catch(function () { return { ok: false, error: "No connection. Try again in a moment." }; });
+  }
+  function showCode(card, d, res) {
+    card.textContent = "";
+    card.appendChild(el("div", "shop", d.shop.name));
+    card.appendChild(el("div", "badge", d.badge));
+    card.appendChild(el("div", "code", res.code));
+    card.appendChild(el("p", "sum", res.instructions || "Show this code at the counter."));
+    var until = new Date(res.expiresTs);
+    card.appendChild(el("p", "small", "Good until " + until.toLocaleString([], { weekday: "short", hour: "numeric", minute: "2-digit" }) + ". One use."));
+    mine[d.id] = { code: res.code, expiresTs: res.expiresTs };
+    try { localStorage.setItem("bb_claims", JSON.stringify(mine)); } catch (e) {}
+  }
+  function claimUi(card, d) {
+    var box = el("div"); card.appendChild(box);
+    var go = el("button", null, "Claim this deal"); box.appendChild(go);
+    go.onclick = function () {
+      go.remove();
+      var methods = d.unlock || [];
+      if (methods.indexOf("follow") >= 0) {
+        var a = el("a", "btn alt", "1. Open @" + d.shop.ig + " on Instagram"); a.href = d.links.shopIg; a.target = "_blank"; a.rel = "noopener";
+        var b = el("a", "btn alt", "2. Open @" + (window.__boredIg || "boredboardkern") + " on Instagram"); b.href = d.links.boredIg; b.target = "_blank"; b.rel = "noopener";
+        box.appendChild(a); box.appendChild(b);
+        var lab = el("label", "chk"); var cb = el("input"); cb.type = "checkbox"; cb.setAttribute("aria-label", "I followed both accounts"); lab.appendChild(cb); lab.appendChild(el("span", null, "I followed both accounts"));
+        box.appendChild(lab);
+        var fin = el("button", null, "Get my code"); fin.disabled = true; box.appendChild(fin);
+        cb.onchange = function () { fin.disabled = !cb.checked; };
+        var msg = el("p", "msg err"); box.appendChild(msg);
+        fin.onclick = function () {
+          fin.disabled = true;
+          post("/api/claim", { dealId: d.id, unlock: "follow", followed: true, session: sid }).then(function (r) {
+            if (r.ok) showCode(card, d, r); else { msg.textContent = r.error || (r.errors || []).join(" "); fin.disabled = false; }
+          });
+        };
+      }
+      if (methods.indexOf("email") >= 0) {
+        var det = el("details"); var sm = el("summary", null, methods.indexOf("follow") >= 0 ? "No Instagram? Use your email instead" : "Use your email");
+        det.appendChild(sm);
+        var em = el("input"); em.type = "email"; em.placeholder = "you@example.com"; em.autocomplete = "email"; em.setAttribute("aria-label", "Your email");
+        det.appendChild(em);
+        det.appendChild(el("p", "small", "This adds you to the Board Bored email list. Unsubscribe any time."));
+        var eb = el("button", "alt", "Get my code"); eb.className = "alt"; det.appendChild(eb);
+        var em2 = el("p", "msg err"); det.appendChild(em2);
+        eb.onclick = function () {
+          eb.disabled = true;
+          post("/api/claim", { dealId: d.id, unlock: "email", email: em.value, session: sid }).then(function (r) {
+            if (r.ok) showCode(card, d, r); else { em2.textContent = r.error || (r.errors || []).join(" "); eb.disabled = false; }
+          });
+        };
+        box.appendChild(det);
+      }
+    };
+  }
+  function render(deals) {
+    list.textContent = "";
+    if (!deals.length) { list.appendChild(el("p", "lead", "No deals live right now. Check back soon.")); return; }
+    deals.forEach(function (d) {
+      var card = el("div", "card");
+      card.appendChild(el("div", "shop", d.shop.name));
+      card.appendChild(el("div", "badge", d.badge));
+      card.appendChild(el("p", "sum", d.summary));
+      if (d.terms) card.appendChild(el("p", "small", d.terms));
+      card.appendChild(el("p", "free", d.cost));
+      var have = mine[d.id];
+      if (have && new Date(have.expiresTs) > new Date()) showCode(card, d, { code: have.code, expiresTs: have.expiresTs });
+      else claimUi(card, d);
+      list.appendChild(card);
+    });
+  }
+  fetch(API + "/api/shop-deals", { cache: "no-store" }).then(function (r) { return r.json(); })
+    .then(function (j) { window.__boredIg = j.boredIg; render(j.ok ? j.deals : []); })
+    .catch(function () { list.textContent = ""; list.appendChild(el("p", "err", "Couldn't load deals. Check your connection and refresh.")); });
+})();
+</script>
+</body>
+</html>
