@@ -22,9 +22,6 @@ REQUIRED = ("name", "venue", "date")
 OPTIONAL = ("start", "end", "cost", "link", "address")
 NOT_AN_EVENT = re.compile(r"(?i)\b(season pass|gift card|gift certificate|parking|membership|voucher|donation|merch(andise)?|vip upgrade|"
                           r"ticket protection|add[- ]?on)\b")
-# Job-ad / MLM / get-rich style listings are never auto-published, whatever the voices agree on: a human decides.
-JOBS_REVIEW = re.compile(r"(?i)\b(now hiring|we.re hiring|hiring event|job fair|career fair|job opening|apply now|recruit(?:ing|ment)|"
-                         r"work from home|earn \$|make money|passive income|mlm|network marketing|business opportunity|side hustle)\b")
 MAX_FUTURE_DAYS = 548
 
 

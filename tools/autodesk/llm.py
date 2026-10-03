@@ -106,7 +106,8 @@ class OllamaVoice:
             os.makedirs(cache_dir, exist_ok=True)
 
     def _key(self, chunk, today):
-        return hashlib.sha256(("%s|%s|%s|%s" % (self.model, PROMPT_VERSION, today, chunk)).encode()).hexdigest()
+        # month granularity: the date only disambiguates year-less dates, and a daily key would re-run an unchanged issue every day
+        return hashlib.sha256(("%s|%s|%s|%s" % (self.model, PROMPT_VERSION, str(today)[:7], chunk)).encode()).hexdigest()
 
     def extract_chunk(self, chunk, today, url=""):
         key = self._key(chunk, today)

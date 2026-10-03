@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Your dashboard — Board Bored</title>
+<style>
+  :root{--ink:#141116;--pap:#faf7f2;--card:#fffdfa;--acc2:#0f6f5a;--line:#8a837d;--mut:#5e5852;--bad:#a4262c;--ok:#0f6f5a;--body:-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif}
+  @media (prefers-color-scheme:dark){:root{--ink:#f4efe9;--pap:#16130f;--card:#201c17;--acc2:#4fd1b0;--line:#6e665e;--mut:#b9b1a8;--bad:#ff7a80;--ok:#4fd1b0}}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{font-size:18px}body{font-family:var(--body);background:var(--pap);color:var(--ink);line-height:1.45;padding:16px 16px 56px}
+  .wrap{max-width:680px;margin:0 auto}h1{font-size:1.7rem;margin-bottom:4px}h2{font-size:1.15rem;margin:0 0 8px}
+  .card{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:16px;margin:14px 0}
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.stat b{display:block;font-size:1.6rem}.stat span{font-size:.8rem;color:var(--mut)}
+  .deal{border-top:1px solid var(--line);padding:12px 0}.deal:first-of-type{border-top:0}
+  .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+  button{font:inherit;font-weight:800;min-height:48px;border-radius:12px;border:2px solid var(--ink);background:var(--ink);color:var(--pap);padding:0 16px;cursor:pointer}
+  button.alt{background:transparent;color:var(--ink)}button[disabled]{opacity:.45}
+  input,textarea,select{font:inherit;width:100%;min-height:48px;border:2px solid var(--line);border-radius:12px;padding:8px 12px;background:var(--card);color:var(--ink);margin-top:6px}
+  textarea{min-height:110px}label{display:block;font-weight:800;margin-top:12px}
+  .small{font-size:.85rem;color:var(--mut)}.msg{margin-top:10px;font-weight:700}.err{color:var(--bad)}.ok{color:var(--ok)}
+  pre{white-space:pre-wrap;font:inherit;background:var(--pap);border:1px dashed var(--line);border-radius:10px;padding:10px;margin-top:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1 id="title">Your dashboard</h1>
+  <p class="small" id="who">Open the link Board Bored sent your shop.</p>
+  <div id="out"></div>
+</div>
+<script src="../lib/api.js"></script>
+<script>
+(function () {
+  var API = (window.bbApi && window.bbApi.API_BASE || "").replace(/\/+$/, "");
+  try { var q = new URLSearchParams(location.search).get("api"); if (q && /^(localhost|127\.0\.0\.1)$/.test(location.hostname)) API = q.replace(/\/+$/, ""); } catch (e) {}
+  var tok = "";
+  try { var m = /(?:^#|&)t=([^&]+)/.exec(location.hash); if (m) { tok = decodeURIComponent(m[1]); localStorage.setItem("bb_shop_token", tok); history.replaceState(null, "", location.pathname + location.search); } else tok = localStorage.getItem("bb_shop_token") || ""; } catch (e) {}
+  var out = document.getElementById("out");
+  function el(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; }
+  var usd = function (c) { return "$" + (c / 100).toFixed(2); };
+  function api(path, body) {
+    var o = { headers: { Authorization: "Bearer " + tok, "Content-Type": "application/json" }, cache: "no-store" };
+    if (body) { o.method = "POST"; o.body = JSON.stringify(Object.assign({ shopToken: tok }, body)); }
+    return fetch(API + path, o).then(function (r) { return r.json(); }).catch(function () { return { ok: false, error: "No connection." }; });
+  }
+  function stat(label, value) { var s = el("div", "stat"); s.appendChild(el("b", null, value)); s.appendChild(el("span", null, label)); return s; }
+  function render(d) {
+    out.textContent = ""; var t = d.totals;
+    document.getElementById("title").textContent = d.shop.name; document.getElementById("who").textContent = "Your deals, your customers, your return.";
+    var c1 = el("div", "card"); c1.appendChild(el("h2", null, "How it is going")); var g = el("div", "grid");
+    g.appendChild(stat("claimed", String(t.claims))); g.appendChild(stat("confirmed at your counter", String(t.redeemed)));
+    g.appendChild(stat("customers (" + t.returningCustomers + " came back)", String(t.customers)));
+    g.appendChild(stat("return per $1 in fees", t.roi === null ? "n/a yet" : t.roi + "x"));
+    g.appendChild(stat("sales from deals", usd(t.attributedSalesCents))); g.appendChild(stat("fees", usd(t.feesCents)));
+    c1.appendChild(g);
+    c1.appendChild(el("p", "small", d.note + " Tickets entered on " + Math.round(t.ticketCoverage * 100) + "% of confirmations."));
+    out.appendChild(c1);
+    var c2 = el("div", "card"); c2.appendChild(el("h2", null, "Your deals"));
+    if (!d.deals.length) c2.appendChild(el("p", "small", "No deals yet."));
+    d.deals.forEach(function (x) {
+      var r = el("div", "deal"); r.appendChild(el("b", null, x.title + "  (" + x.status + ")"));
+      r.appendChild(el("p", "small", x.claims + " claimed, " + x.redeemed + " confirmed (" + Math.round(x.redemptionRate * 100) + "%), " + usd(x.attributedSalesCents) + " sales, " + usd(x.feesCents) + " fees" + (x.roi ? ", " + x.roi + "x" : "")));
+      var row = el("div", "row");
+      [["active", "Resume"], ["paused", "Pause"], ["ended", "End"]].forEach(function (a) {
+        if (a[0] === x.status) return; if (x.status === "ended") return;
+        var b = el("button", "alt", a[1]); b.onclick = function () { if (a[0] === "ended" && !confirm("End this deal for good?")) return; b.disabled = true; api("/api/shop-deal-update", { dealId: x.id, status: a[0] }).then(load); }; row.appendChild(b);
+      });
+      r.appendChild(row); c2.appendChild(r);
+    });
+    out.appendChild(c2);
+    var ff = el("div", "card"); ff.appendChild(el("h2", null, "First Friday"));
+    ff.appendChild(el("p", null, "You have paid " + usd(d.firstFriday.yourFeesPaidCents) + " in fees. Board Bored pledges " + usd(d.firstFriday.pledgedByUsCents) + " to First Friday to match it."));
+    out.appendChild(ff);
+    out.appendChild(composer());
+  }
+  function composer() {
+    var c = el("div", "card"); c.appendChild(el("h2", null, "Message your customers"));
+    var cust = el("p", "small", "Loading your list..."); c.appendChild(cust);
+    api("/api/shop-customers").then(function (j) { if (j.ok) cust.textContent = j.counts.email + " customers opted in to email from you. Only people who chose you appear here; if they unsubscribe they vanish at once. No ad platform sees them."; });
+    c.appendChild(el("label", null, "Subject")); var s = el("input"); s.maxLength = 120; c.appendChild(s);
+    c.appendChild(el("label", null, "Message")); var b = el("textarea"); b.maxLength = 1500; c.appendChild(b);
+    var pv = el("pre"); pv.hidden = true; c.appendChild(pv); var msg = el("p", "msg"); c.appendChild(msg);
+    var row = el("div", "row"), prev = el("button", "alt", "Preview"), send = el("button", null, "Send"); send.disabled = true; row.appendChild(prev); row.appendChild(send); c.appendChild(row);
+    function body(dry) { return { channel: "email", subject: s.value, body: b.value, dryRun: dry }; }
+    prev.onclick = function () { api("/api/campaign", body(true)).then(function (j) {
+      if (j.ok) { pv.hidden = false; pv.textContent = "To " + j.audience + " people\n\n" + j.preview.subject + "\n\n" + j.preview.text; msg.className = "msg ok"; msg.textContent = "Board Bored adds the unsubscribe line and your address. You can send one email a week."; send.disabled = false; }
+      else { msg.className = "msg err"; msg.textContent = (j.errors || [j.error]).join(" "); send.disabled = true; } }); };
+    send.onclick = function () { send.disabled = true; api("/api/campaign", body(false)).then(function (j) { msg.className = j.ok ? "msg ok" : "msg err"; msg.textContent = j.ok ? j.message : (j.errors || [j.error]).join(" "); }); };
+    return c;
+  }
+  function load() {
+    if (!tok) return;
+    api("/api/shop-dashboard").then(function (j) { if (j.ok) render(j.dashboard); else { out.textContent = ""; out.appendChild(el("p", "err", "This shop link is not valid. Ask Board Bored for a new one.")); } });
+  }
+  load();
+})();
+</script>
+</body>
+</html>

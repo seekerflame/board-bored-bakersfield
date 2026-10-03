@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Your account — Board Bored</title>
+<style>
+  :root{--ink:#141116;--pap:#faf7f2;--card:#fffdfa;--acc2:#0f6f5a;--line:#8a837d;--mut:#5e5852;--bad:#a4262c;--ok:#0f6f5a;--body:-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif}
+  @media (prefers-color-scheme:dark){:root{--ink:#f4efe9;--pap:#16130f;--card:#201c17;--acc2:#4fd1b0;--line:#6e665e;--mut:#b9b1a8;--bad:#ff7a80;--ok:#4fd1b0}}
+  *{box-sizing:border-box;margin:0;padding:0}html{font-size:18px}
+  body{font-family:var(--body);background:var(--pap);color:var(--ink);line-height:1.5;padding:16px 16px 56px}
+  .wrap{max-width:560px;margin:0 auto}h1{font-size:1.8rem;margin-bottom:6px}h2{font-size:1.1rem;margin-bottom:6px}
+  .card{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:16px;margin:14px 0}
+  input{font:inherit;width:100%;min-height:52px;border:2px solid var(--line);border-radius:12px;padding:0 14px;background:var(--card);color:var(--ink);margin-top:8px}
+  button{font:inherit;font-weight:800;min-height:52px;border-radius:14px;border:2px solid var(--ink);background:var(--ink);color:var(--pap);width:100%;margin-top:10px;cursor:pointer}
+  button.alt{background:transparent;color:var(--ink)}button[disabled]{opacity:.45}
+  label.chk{display:flex;gap:12px;align-items:flex-start;min-height:48px;margin-top:10px;font-weight:600}label.chk input{width:28px;height:28px;flex:none;margin:0}
+  .small{font-size:.85rem;color:var(--mut)}.msg{margin-top:10px;font-weight:700}.err{color:var(--bad)}.ok{color:var(--ok)}
+  .hp{position:absolute;left:-9999px;opacity:0;height:0;width:0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a href="index.html" style="color:var(--acc2);font-weight:700;text-decoration:none;display:inline-block;min-height:48px;line-height:48px">&larr; Back to the map</a>
+  <h1>Your account</h1>
+  <div id="out"></div>
+</div>
+<script src="../lib/api.js"></script>
+<script>
+(function () {
+  var API = (window.bbApi && window.bbApi.API_BASE || "").replace(/\/+$/, "");
+  try { var q = new URLSearchParams(location.search).get("api"); if (q && /^(localhost|127\.0\.0\.1)$/.test(location.hostname)) API = q.replace(/\/+$/, ""); } catch (e) {}
+  var out = document.getElementById("out"), sess = "";
+  function el(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; }
+  function call(path, body) {
+    var o = { headers: { "Content-Type": "application/json" }, cache: "no-store" }; if (sess) o.headers.Authorization = "Bearer " + sess;
+    if (body !== undefined) { o.method = "POST"; o.body = JSON.stringify(body); }
+    return fetch(API + path, o).then(function (r) { return r.json(); }).catch(function () { return { ok: false, error: "No connection." }; });
+  }
+  function signIn() {
+    out.textContent = ""; var c = el("div", "card");
+    c.appendChild(el("p", null, "No password. We email you a link that works once."));
+    var em = el("input"); em.type = "email"; em.placeholder = "you@example.com"; em.autocomplete = "email"; em.setAttribute("aria-label", "Your email"); c.appendChild(em);
+    var hp = el("input", "hp"); hp.tabIndex = -1; hp.setAttribute("aria-hidden", "true"); c.appendChild(hp);
+    var b = el("button", null, "Email me a link"), m = el("p", "msg"); c.appendChild(b); c.appendChild(m);
+    b.onclick = function () { b.disabled = true; call("/api/account-login", { email: em.value, hp: hp.value }).then(function (j) { m.className = j.ok ? "msg ok" : "msg err"; m.textContent = j.message || j.error; if (!j.ok) b.disabled = false; }); };
+    out.appendChild(c);
+  }
+  function show(a) {
+    out.textContent = "";
+    var c = el("div", "card"); c.appendChild(el("h2", null, "Signed in as " + a.account.email));
+    c.appendChild(el("p", "small", "This is everything we hold: your email" + (a.account.phone ? ", a phone number (" + a.account.phone + ", not verified, texting is off)" : "") + ", your choices below, and your deal codes.")); out.appendChild(c);
+    var k = el("div", "card"); k.appendChild(el("h2", null, "Shops you hear from"));
+    if (!a.consents.length) k.appendChild(el("p", "small", "None. A shop can only message you after you tick its box when you claim a deal."));
+    a.consents.forEach(function (x) {
+      var lab = el("label", "chk"), cb = el("input"); cb.type = "checkbox"; cb.checked = x.optIn; cb.setAttribute("aria-label", x.shop + " " + x.channel);
+      cb.onchange = function () { cb.disabled = true; call("/api/consent", { shopId: x.shopId, channel: x.channel, optIn: cb.checked }).then(function () { cb.disabled = false; }); };
+      lab.appendChild(cb); lab.appendChild(el("span", null, x.shop + " by " + x.channel)); k.appendChild(lab);
+    }); out.appendChild(k);
+    var d = el("div", "card"); d.appendChild(el("h2", null, "Your deal codes"));
+    if (!a.claims.length) d.appendChild(el("p", "small", "None yet."));
+    a.claims.forEach(function (x) { d.appendChild(el("p", null, x.code + "  " + x.shop + ": " + x.deal + " (" + x.status + ")")); }); out.appendChild(d);
+    var z = el("div", "card"); z.appendChild(el("h2", null, "Delete my account"));
+    z.appendChild(el("p", "small", "Removes your email, phone and every consent. Shops stop being able to message you right away."));
+    var del = el("button", "alt", "Delete everything"), zm = el("p", "msg"); z.appendChild(del); z.appendChild(zm);
+    del.onclick = function () { if (!confirm("Delete your account and all your choices?")) return; call("/api/account-delete", {}).then(function (j) { if (j.ok) { try { localStorage.removeItem("bb_session_token"); } catch (e) {} sess = ""; signIn(); out.insertBefore(el("p", "msg ok", j.message), out.firstChild); } else { zm.className = "msg err"; zm.textContent = j.error; } }); };
+    out.appendChild(z);
+  }
+  function load() { call("/api/account").then(function (j) { if (j.ok) show(j); else { try { localStorage.removeItem("bb_session_token"); } catch (e) {} signIn(); } }); }
+  try {
+    var m = /(?:^#|&)t=([^&]+)/.exec(location.hash);
+    if (m) { var t = decodeURIComponent(m[1]); history.replaceState(null, "", location.pathname + location.search);
+      call("/api/account-verify", { token: t }).then(function (j) { if (j.ok) { sess = j.session; try { localStorage.setItem("bb_session_token", sess); } catch (e) {} load(); } else { signIn(); out.insertBefore(el("p", "msg err", j.error), out.firstChild); } }); return; }
+    sess = localStorage.getItem("bb_session_token") || "";
+  } catch (e) {}
+  sess ? load() : signIn();
+})();
+</script>
+</body>
+</html>

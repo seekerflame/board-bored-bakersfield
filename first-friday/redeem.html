@@ -31,6 +31,7 @@
   <p class="shop" id="shop"></p>
   <form id="f" autocomplete="off">
     <input id="code" inputmode="text" autocapitalize="characters" maxlength="8" placeholder="ABC123" aria-label="Customer's code">
+    <input id="ticket" inputmode="decimal" maxlength="8" placeholder="Ticket total $ (optional)" aria-label="Ticket total in dollars, optional" style="font-size:1.1rem;letter-spacing:0;text-transform:none;min-height:56px;margin-top:10px">
     <button id="go" type="submit">Confirm code</button>
   </form>
   <div id="out" role="status" aria-live="polite"></div>
@@ -69,10 +70,10 @@
     e.preventDefault(); if (!tok) { say("bad", "Missing shop link", [{ text: REASONS.bad_token }]); return; }
     var c = code.value.trim(); if (!c) return;
     go.disabled = true;
-    fetch(API + "/api/redeem", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ shopToken: tok, code: c }) })
+    fetch(API + "/api/redeem", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ shopToken: tok, code: c, ticketTotal: document.getElementById("ticket").value }) })
       .then(function (r) { return r.json(); })
       .then(function (j) {
-        if (j.ok) { say("ok", "✅ Good: give the deal", [{ text: j.summary }, { text: j.check, cls: "check" }, { text: "Fee for this one: $" + (j.feeCents / 100).toFixed(2) }]); code.value = ""; statement(); }
+        if (j.ok) { say("ok", "✅ Good: give the deal", [{ text: j.summary }, { text: j.check, cls: "check" }, { text: "Fee for this one: $" + (j.feeCents / 100).toFixed(2) }]); code.value = ""; document.getElementById("ticket").value = ""; statement(); }
         else say("bad", "❌ Do not give the deal", [{ text: REASONS[j.reason] || j.error || "Something went wrong." }]);
       })
       .catch(function () { say("bad", "No connection", [{ text: "Try again in a moment. Nothing was confirmed." }]); })

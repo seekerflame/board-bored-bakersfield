@@ -60,8 +60,19 @@
 
   function el(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; }
   function ig(handle) { return "https://instagram.com/" + encodeURIComponent(handle); }
+  var shopQ = ""; try { shopQ = (new URLSearchParams(location.search).get("shop") || "").toLowerCase().replace(/[^a-z0-9-]/g, ""); } catch (e) {}
+  var sessTok = ""; try { sessTok = localStorage.getItem("bb_session_token") || ""; } catch (e) {}
+  // Shop messaging is opt-in per shop, with the exact wording shown, and needs a signed-in account.
+  function optInBox(d) {
+    var wrap = el("div");
+    if (!sessTok) { var a = el("a", "small", "Want deals from " + d.shop.name + " by email? Sign in first."); a.href = "account.html"; wrap.appendChild(a); return { node: wrap, checked: function () { return false; } }; }
+    var lab = el("label", "chk"), cb = el("input"); cb.type = "checkbox"; cb.setAttribute("aria-label", "Email me deals from " + d.shop.name);
+    lab.appendChild(cb); lab.appendChild(el("span", null, "Email me deals from " + d.shop.name + " (they will see my email address and can message me; I can unsubscribe any time)."));
+    wrap.appendChild(lab); return { node: wrap, checked: function () { return cb.checked; } };
+  }
   function post(path, body) {
-    return fetch(API + path, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) })
+    var hdr = { "Content-Type": "application/json" }; if (sessTok) hdr.Authorization = "Bearer " + sessTok;
+    return fetch(API + path, { method: "POST", headers: hdr, body: JSON.stringify(body) })
       .then(function (r) { return r.json().catch(function () { return { ok: false, error: "Something went wrong. Try again." }; }); })
       .catch(function () { return { ok: false, error: "No connection. Try again in a moment." }; });
   }
@@ -77,7 +88,7 @@
     try { localStorage.setItem("bb_claims", JSON.stringify(mine)); } catch (e) {}
   }
   function claimUi(card, d) {
-    var box = el("div"); card.appendChild(box);
+    var box = el("div"); card.appendChild(box); var opt = optInBox(d);
     var go = el("button", null, "Claim this deal"); box.appendChild(go);
     go.onclick = function () {
       go.remove();
@@ -87,14 +98,14 @@
         var b = el("a", "btn alt", "2. Open @" + (window.__boredIg || "boredboardkern") + " on Instagram"); b.href = d.links.boredIg; b.target = "_blank"; b.rel = "noopener";
         box.appendChild(a); box.appendChild(b);
         var lab = el("label", "chk"); var cb = el("input"); cb.type = "checkbox"; cb.setAttribute("aria-label", "I followed both accounts"); lab.appendChild(cb); lab.appendChild(el("span", null, "I followed both accounts"));
-        box.appendChild(lab);
+        box.appendChild(lab); box.appendChild(opt.node);
         var fin = el("button", null, "Get my code"); fin.disabled = true; box.appendChild(fin);
         cb.onchange = function () { fin.disabled = !cb.checked; };
         var msg = el("p", "msg err"); box.appendChild(msg);
         fin.onclick = function () {
           fin.disabled = true;
           post("/api/claim", { dealId: d.id, unlock: "follow", followed: true, session: sid, ref: myRef }).then(function (r) {
-            if (r.ok) showCode(card, d, r); else { msg.textContent = r.error || (r.errors || []).join(" "); fin.disabled = false; }
+            if (r.ok) { showCode(card, d, r); if (opt.checked()) post("/api/consent", { shopId: d.shop.id, channel: "email", optIn: true }); } else { msg.textContent = r.error || (r.errors || []).join(" "); fin.disabled = false; }
           });
         };
       }
@@ -151,7 +162,7 @@
     }).catch(function () {});
     return box;
   }
-  fetch(API + "/api/shop-deals", { cache: "no-store" }).then(function (r) { return r.json(); })
+  fetch(API + "/api/shop-deals" + (shopQ ? "?shop=" + encodeURIComponent(shopQ) : ""), { cache: "no-store" }).then(function (r) { return r.json(); })
     .then(function (j) { window.__boredIg = j.boredIg; render(j.ok ? j.deals : []); list.appendChild(shareCard()); })
     .catch(function () { list.textContent = ""; list.appendChild(el("p", "err", "Couldn't load deals. Check your connection and refresh.")); });
 })();

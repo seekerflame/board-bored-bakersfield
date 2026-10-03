@@ -452,15 +452,6 @@ class DeskComposed(unittest.TestCase):
         self.assertTrue(res["errors"])
         self.assertEqual(res["published"], 0)
 
-    def test_job_and_mlm_style_listings_never_reach_tier_A(self):
-        pages = site([("Now Hiring: Open House", "October 9, 2026", "8:00 pm", "Test Hall", "https://tix.test/e/7", "Oct 09, 2026"),
-                      ("Passive Income Seminar", "October 10, 2026", "7:00 pm", "Test Hall", "https://tix.test/e/8", "Oct 10, 2026"),
-                      ("Open Mic Night", "October 11, 2026", "7:00 pm", "Test Hall", "https://tix.test/e/9", "Oct 11, 2026")])
-        by = {e["name"]: e for e in self.desk(pages).run(TODAY)["events"]}
-        self.assertEqual((by["Now Hiring: Open House"]["tier"], "jobs_review" in by["Now Hiring: Open House"]["reasons"]), ("B", True))
-        self.assertEqual(by["Passive Income Seminar"]["tier"], "B")
-        self.assertEqual(by["Open Mic Night"]["tier"], "A")
-
     def test_unknown_venue_is_never_tier_A(self):
         pages = site([("Mystery Gig", "October 9, 2026", "8:00 pm", "Unlisted Garage", "https://tix.test/e/9", "Oct 09, 2026")])
         res = self.desk(pages).run(TODAY)

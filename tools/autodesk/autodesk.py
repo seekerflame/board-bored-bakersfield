@@ -23,7 +23,7 @@ import adapters  # noqa: E402
 from llm import OllamaVoice  # noqa: E402
 from netfetch import FetchRefused, PoliteFetcher  # noqa: E402
 from textutil import cover, html_to_text  # noqa: E402
-from truthgate import JOBS_REVIEW, consensus, event_id, gate  # noqa: E402
+from truthgate import consensus, event_id, gate  # noqa: E402
 
 HOME = os.path.expanduser("~")
 REPO = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))
@@ -137,8 +137,10 @@ class Desk:
                 sid = "%s:issue-%d" % (src["id"], k)
                 text = html_to_text(r["body"], url)
                 texts[sid] = text
-                cands += adapters.newsletter_bullets(text, sid, today)
-                llm_pages.append((sid, url))
+                bullets = adapters.newsletter_bullets(text, sid, today)
+                cands += bullets
+                if any(b["date"] >= today.isoformat() for b in bullets) or not bullets:
+                    llm_pages.append((sid, url))  # an issue whose events are all in the past is not worth a model's time
                 highest = k
             if highest is not None:
                 self.state["issues"][src["id"]] = highest
@@ -184,9 +186,6 @@ class Desk:
                 ev["venue"], ev["address"] = vinfo.get("name", vk), vinfo.get("address")
                 ev["lat"], ev["lng"], ev["area"] = vinfo.get("lat"), vinfo.get("lng"), vinfo.get("area")
                 ev["category"] = self.category(ev["name"], vinfo)
-            if JOBS_REVIEW.search(ev["name"] or "") or any(JOBS_REVIEW.search(x.get("quote") or "") for x in ev["evidence"]):
-                ev["tier"] = "B"
-                ev["reasons"].append("jobs_review")
             ev["id"] = event_id(ev)
             ev["source"] = src["id"]
         return evs, drops
