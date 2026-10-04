@@ -22,7 +22,6 @@ var PRECACHE = [
   "first-friday/for-business.html",
   "first-friday/submit-event.html",
   "first-friday/calendar.html",
-  "first-friday/fund.html",
   "first-friday/connect.html",
   "first-friday/share.png",
   "first-friday/qr.png",

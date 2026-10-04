@@ -78,16 +78,6 @@
     </a>
   </div>
 
-  <!-- FIRST FRIDAY — the flagship, one card -->
-  <a class="card" id="featured" href="first-friday/?view=ff">
-    <span class="badge" id="badge">Loading…</span>
-    <h2 id="evName">First Friday Art Walk</h2>
-    <div class="meta" id="evMeta">Downtown Bakersfield</div>
-    <div class="impact" id="impact" style="display:none"></div>
-    <div class="meta" style="margin-top:8px">🎨 The flagship night — its own map, open shops &amp; vendor booths.</div>
-    <div class="go">Open the First Friday map →</div>
-  </a>
-
   <div class="small">
     <a class="card" href="first-friday/calendar.html">
       <div class="ico">📆</div>
@@ -101,10 +91,10 @@
     </a>
   </div>
   <div class="small" style="margin-top:14px">
-    <a class="card" id="vendorCta" href="vendor-signup.html">
-      <div class="ico">🏪</div>
-      <div class="t">Get your shop<br>on the map</div>
-      <div class="s">Storefront or sidewalk spot</div>
+    <a class="card" href="first-friday/deals.html">
+      <div class="ico">🎟️</div>
+      <div class="t">Local<br>deals</div>
+      <div class="s">Free to claim · show your code</div>
     </a>
     <a class="card" id="ideaCta" href="idea.html">
       <div class="ico">💡</div>
@@ -112,13 +102,6 @@
       <div class="s">Tell us · we organize it</div>
     </a>
   </div>
-
-  <a class="card" href="my-clock.html" style="margin-bottom:14px">
-    <span class="badge" style="background:#c9b45c">⏳ New</span>
-    <h2 style="font-size:20px">Bakersfield Timeline</h2>
-    <div class="meta">First Friday, month by month — a real, growing record of what's actually happened downtown.</div>
-    <div class="go">See the timeline →</div>
-  </a>
 
   <a class="card" href="first-friday/for-business.html" style="margin-bottom:14px">
     <span class="badge" style="background:#167f68">🤝 Business</span>
@@ -147,34 +130,8 @@
     var email=(d.board&&d.board.contact)||"boardquestionmark@gmail.com";
     if(d.board&&d.board.tagline)$("tagline").textContent=d.board.tagline;
     if(d.board&&d.board.city)$("h1").textContent="What's popping in "+d.board.city;
-
-    var ev=(d.events||[]).filter(function(e){return e.slug===d.featured})[0]||(d.events||[])[0];
-    if(ev){
-      $("evName").textContent=ev.name;
-      $("evMeta").textContent=(ev.area||"")+" · "+(ev.hours||"");
-      $("featured").href="first-friday/?view=ff";
-
-      var vendorCount=(ev.vendors||[]).length;
-      var spots=ev.spots||[];
-      var openSpots=spots.filter(function(s){return s.status!=="confirmed"||!s.vendor;}).length;
-      var bits=[];
-      if(vendorCount)bits.push(vendorCount+" local "+(vendorCount===1?"business":"businesses")+" on the map");
-      if(spots.length)bits.push(openSpots+" of "+spots.length+" sidewalk spots open");
-      if(bits.length){$("impact").textContent=bits.join(" · ");$("impact").style.display="block";}
-      // date-aware badge: TONIGHT / upcoming date / next one soon
-      var today=new Date(); today.setHours(0,0,0,0);
-      var p=(ev.date||"").split("-");
-      var evd=p.length===3?new Date(+p[0],+p[1]-1,+p[2]):null;
-      var b=$("badge");
-      if(evd&&evd.getTime()===today.getTime()){b.textContent="🔥 Tonight · "+(ev.hours||"");}
-      else if(evd&&evd>today){
-        b.classList.add("future");
-        b.textContent=evd.toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric"});
-      } else {b.classList.add("past");b.textContent="Next one soon — check back";}
-    }
-
     $("mailFoot").href="mailto:"+email; $("mailFoot").textContent=email;
-  }).catch(function(){ $("badge").textContent="—"; });
+  }).catch(function(){});
 
   $("share").addEventListener("click",function(){
     var url=location.href.split("#")[0];
@@ -185,5 +142,7 @@
   });
 })();
 </script>
+<script src="lib/analytics-config.js"></script>
+<script src="lib/analytics.js"></script>
 </body>
 </html>

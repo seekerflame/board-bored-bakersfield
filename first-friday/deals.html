@@ -77,6 +77,7 @@
       .catch(function () { return { ok: false, error: "No connection. Try again in a moment." }; });
   }
   function showCode(card, d, res) {
+    if (window.bbTrack && !res._shown) bbTrack("claim_done", { unlock: (res.instructions ? "follow" : "email") });
     card.textContent = "";
     card.appendChild(el("div", "shop", d.shop.name));
     card.appendChild(el("div", "badge", d.badge));
@@ -91,7 +92,7 @@
     var box = el("div"); card.appendChild(box); var opt = optInBox(d);
     var go = el("button", null, "Claim this deal"); box.appendChild(go);
     go.onclick = function () {
-      go.remove();
+      go.remove(); if (window.bbTrack) bbTrack("claim_started", {});
       var methods = d.unlock || [];
       if (methods.indexOf("follow") >= 0) {
         var a = el("a", "btn alt", "1. Open @" + d.shop.ig + " on Instagram"); a.href = d.links.shopIg; a.target = "_blank"; a.rel = "noopener";
@@ -155,6 +156,7 @@
     var msg = el("p", "small", ""); box.appendChild(msg);
     b.onclick = function () {
       var data = { title: "Board Bored Bakersfield", text: "Free local deals and events in Bakersfield:", url: link };
+      if (window.bbTrack) bbTrack("share_click", {});
       if (navigator.share) navigator.share(data).catch(function () {});
       else if (navigator.clipboard) navigator.clipboard.writeText(link).then(function () { msg.textContent = "Link copied. Paste it to a friend."; }, function () { msg.textContent = link; });
       else msg.textContent = link;
@@ -169,5 +171,7 @@
     .catch(function () { list.textContent = ""; list.appendChild(el("p", "err", "Couldn't load deals. Check your connection and refresh.")); });
 })();
 </script>
+<script src="../lib/analytics-config.js"></script>
+<script src="../lib/analytics.js"></script>
 </body>
 </html>

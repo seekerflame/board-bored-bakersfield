@@ -69,9 +69,11 @@
       r.appendChild(row); c2.appendChild(r);
     });
     out.appendChild(c2);
-    var ff = el("div", "card"); ff.appendChild(el("h2", null, "First Friday"));
-    ff.appendChild(el("p", null, "You have paid " + usd(d.firstFriday.yourFeesPaidCents) + " in fees. Board Bored pledges " + usd(d.firstFriday.pledgedByUsCents) + " to First Friday to match it."));
-    out.appendChild(ff);
+    if (d.firstFriday) { // only present when the API has the public pledge switched on (it is off until counsel signs off)
+      var ff = el("div", "card"); ff.appendChild(el("h2", null, "Community pledge"));
+      ff.appendChild(el("p", null, "You have paid " + usd(d.firstFriday.yourFeesPaidCents) + " in fees. Board Bored pledges " + usd(d.firstFriday.pledgedByUsCents) + " to match it."));
+      out.appendChild(ff);
+    }
     out.appendChild(composer());
   }
   function composer() {

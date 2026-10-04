@@ -253,7 +253,6 @@
 <div class="tabs" id="tabs">
   <button class="tab on" id="tabNow" type="button">🔥 Happening now<small>one-time & specials</small></button>
   <button class="tab" id="tabWeekly" type="button">🔁 Weekly<small>every week, on repeat</small></button>
-  <button class="tab" id="tabFF" type="button">🎨 First Friday<small>the flagship night</small></button>
 </div>
 
 <a class="skiplink" href="#panel">Skip map, go to the list</a>
@@ -265,7 +264,6 @@
 </div>
 <div class="legend" id="legendFF" style="display:none">
   <span class="k"><span class="dot store"></span>Open shop</span>
-  <button class="boothbtn" id="boothToggle" type="button">▤ Show vendor booths</button>
   <span class="k" id="legOpen" style="display:none"><span class="sw open"></span>Open</span>
   <span class="k" id="legPend" style="display:none"><span class="sw pending"></span>Pending</span>
   <span class="k" id="legHeld" style="display:none"><span class="sw held"></span>Taken</span>
@@ -276,7 +274,6 @@
   <section class="container" id="c-now">
     <div class="sechead">📅 What's on around Bakersfield</div>
     <div class="secsub">One-time events and specials, all of Bako. For the weekly regulars, tap 🔁 Weekly above. <a href="calendar.html" style="color:var(--acc2);font-weight:700;text-decoration:none;white-space:nowrap">📆 See the calendar →</a></div>
-    <div class="xlink" id="ffTeaser" style="display:none"></div>
     <div class="weekstrip"><div class="weekstrip-row" id="weekRow"></div></div>
     <button class="seenext" id="seeNext" type="button">→ See what's coming up this week</button>
     <div class="list" style="padding-top:12px">
@@ -305,32 +302,10 @@
     </div>
   </section>
 
-  <!-- ===== Container B: First Friday (the flagship) ===== -->
-  <section class="container" id="c-ff" style="display:none">
-    <div class="sechead" id="ffHead">🎨 First Friday Art Walk</div>
-    <div class="secsub" id="ffSub"></div>
-    <div class="fflinks">
-      <a href="calendar.html">📆 Calendar</a>
-      <a id="ffAddCal" href="#" target="_blank" rel="noopener">📅 Add to your calendar</a>
-      <a href="about.html">ℹ️ Vendor info</a>
-      <a href="submit-event.html">➕ Host an event</a>
-      <a href="for-business.html">🤝 For businesses</a>
-      <a href="fund.html">💛 Where the money goes</a>
-    </div>
-    <div class="list" style="padding-top:12px">
-      <div class="count" id="count">Loading the walk…</div>
-      <div id="vendors"></div>
-      <div class="subhead" id="spotsHead" style="display:none">Sidewalk vendor spots</div>
-      <div class="count" id="spotsCount" style="display:none"></div>
-      <div id="spotCards"></div>
-      <a class="cta" id="vendorCta" href="../vendor-signup.html">🏪 Get a spot on the map</a>
-      <button class="backlink" id="backToNow" type="button">← Back to what's happening now</button>
-    </div>
-  </section>
 </div>
 
 <footer>
-  <a href="fund.html">💛 Where the money goes</a> · <a href="../feedback.html">How was tonight? →</a><br>
+  <a href="../feedback.html">How was tonight? →</a><br>
   © 2026 Board Bored · made in Bakersfield<br>
   Some of these events come from <a href="https://www.thebakersfieldguy.com/" target="_blank" rel="noopener">The Bakersfield Guy</a> — subscribe for their full weekly list.<br>
   <a id="mailFoot" href="#">boardquestionmark@gmail.com</a>
@@ -370,7 +345,6 @@
   var map, markers={};
   var qs=new URLSearchParams(location.search);
   var highlightId=qs.get("highlight");
-  var wantView=(qs.get("view")||"").toLowerCase()==="ff"||location.hash==="#first-friday"?"ff":null;
 
   function todayMid(){var d=new Date();d.setHours(0,0,0,0);return d;}
   function parseISO(s){var p=(s||"").split("-");return p.length===3?new Date(+p[0],+p[1]-1,+p[2]):null;}
@@ -477,14 +451,6 @@
     var evd=parseISO(ev.date);
     var isEventDay=!!(evd&&evd.getTime()===today.getTime());
 
-    // First Friday container heading
-    $("ffHead").textContent="🎨 "+ev.name;
-    $("ffSub").textContent=(evd?evd.toLocaleDateString(undefined,{weekday:"long",month:"long",day:"numeric"}):"")+
-      (ev.hours?" · "+ev.hours:"")+" · "+(ev.area||"")+". "+(ev.blurb||"");
-    if(window.bbCal&&ev.date){$("ffAddCal").href=bbCal.gcal({name:ev.name,schedule:{date:ev.date},
-      start:ev.start||"18:00",end:ev.end||"22:00",venue:ev.area,address:"Eye St & 19th St, Bakersfield, CA 93301",
-      desc:ev.blurb,link:location.origin+location.pathname+"?view=ff"});}
-
     var vendors=ev.vendors||[], spots=ev.spots||[], parking=ev.parking||[], cityEvents=d.city_events||[];
     var vs=vendors.filter(function(v){return typeof v.lat==="number"&&typeof v.lng==="number"});
     var ss=spots.filter(function(s){return typeof s.lat==="number"&&typeof s.lng==="number"});
@@ -501,30 +467,6 @@
     var eventLayer=L.layerGroup(), storefrontLayer=L.layerGroup(), spotLayer=L.layerGroup(),
         parkingLayer=L.layerGroup(), ffDecor=L.layerGroup();
 
-    // First Friday decor: boundary + corridor spine + intersections
-    if(ev.boundary&&ev.boundary.polygon&&ev.boundary.polygon.length>2){
-      L.polygon(ev.boundary.polygon,{color:"#ca421a",weight:2,opacity:.55,dashArray:"7,7",
-        fill:true,fillColor:"#ca421a",fillOpacity:.035,interactive:false}).addTo(ffDecor);
-    }
-    if(corridor&&corridor.path&&corridor.path.length>1){
-      L.polyline(corridor.path,{color:"#3a3430",weight:6,opacity:.38,lineCap:"round"}).addTo(ffDecor);
-      L.polyline(corridor.path,{color:"#c98a2c",weight:3,opacity:.8,dashArray:"1,10",lineCap:"round"}).addTo(ffDecor);
-    }
-    (corridor&&corridor.intersections||[]).forEach(function(x){
-      L.circleMarker([x.lat,x.lng],{radius:4,color:"#c98a2c",weight:2.5,fillColor:"#fffdfa",fillOpacity:1,opacity:.85})
-        .addTo(ffDecor).bindPopup("<b>🚦 "+esc(x.label)+"</b><br>"+(x.note?esc(x.note):"Prime corner — high foot traffic"));
-    });
-
-    vs.forEach(function(v){
-      var icon=L.divIcon({html:'<div class="pinmoji">'+(v.emoji||"📍")+'</div>',className:"",iconSize:[40,40],iconAnchor:[20,20]});
-      markers["v:"+v.id]=L.marker([v.lat,v.lng],{icon:icon,zIndexOffset:1000}).addTo(storefrontLayer)
-        .bindPopup("<b>"+esc(v.emoji||"")+" "+esc(v.name)+"</b><br>"+esc(v.hours||"")+"<br>"+esc(v.address||""));
-    });
-    ss.forEach(function(s){
-      var st=seatState(s);
-      var icon=L.divIcon({html:'<div class="seat '+st+'"></div>',className:"",iconSize:[11,11],iconAnchor:[6,6]});
-      markers["s:"+s.id]=L.marker([s.lat,s.lng],{icon:icon}).addTo(spotLayer).bindPopup(seatPopup(s,st));
-    });
     pk.forEach(function(p){
       var icon=L.divIcon({html:'<div class="parkmoji">🅿️</div>',className:"",iconSize:[18,18],iconAnchor:[9,14]});
       L.marker([p.lat,p.lng],{icon:icon}).addTo(parkingLayer)
@@ -767,126 +709,21 @@
     Array.prototype.forEach.call(winBox.children,function(n){var t=n.textContent;n.classList.toggle("on",(t.indexOf("Tonight")>=0&&curWin==="tonight")||(t.indexOf("weekend")>=0&&curWin==="weekend")||(t==="All"&&curWin==="all"));});
     paint();
 
-    // First Friday teaser in the "now" container
-    if(evd&&evd>=today){
-      var tz=$("ffTeaser"); tz.style.display="block";
-      tz.innerHTML='<a id="ffTeaserLink"><span class="t">🎨 First Friday Art Walk'+
-        '<small>'+evd.toLocaleDateString(undefined,{weekday:"long",month:"long",day:"numeric"})+' · the flagship night, downtown</small></span>'+
-        '<span class="go">See it →</span></a>';
-      $("ffTeaserLink").addEventListener("click",function(){showView("ff");});
-    }
-
-    // ---- First Friday vendor cards ----
-    function openBadge(v){
-      if(!isEventDay||!v.hours_start||!v.hours_end)return"";
-      var now=new Date(), mins=now.getHours()*60+now.getMinutes();
-      var sp=v.hours_start.split(":"),ep=v.hours_end.split(":");
-      var startMins=(+sp[0])*60+(+sp[1]), endMins=(+ep[0])*60+(+ep[1]);
-      if(mins<startMins)return'<span class="openflag" style="color:var(--mut)">Opens '+fmtTime(v.hours_start)+'</span>';
-      if(mins>=endMins)return'<span class="openflag" style="color:var(--mut)">Closed for the night</span>';
-      return'<span class="openflag">🟢 Open now</span>';
-    }
-    $("count").textContent=vendors.length+" stops on the walk";
-    var vbox=$("vendors");
-    vendors.forEach(function(v){
-      var el=document.createElement("div");el.className="v";el.id="card-v-"+v.id;
-      var links="";
-      if(v.instagram){var ig=v.instagram.indexOf("http")===0?v.instagram:"https://instagram.com/"+v.instagram.replace("@","");
-        links+='<a href="'+safeUrl(ig)+'" target="_blank" rel="noopener">Instagram</a>';}
-      if(v.website){var w=v.website.indexOf("http")===0?v.website:"https://"+v.website;
-        links+='<a href="'+safeUrl(w)+'" target="_blank" rel="noopener">Website</a>';}
-      if(v.address&&v.address.indexOf("verify")===-1){
-        links+='<a href="'+safeUrl(dirUrl(v.address))+'" target="_blank" rel="noopener">Directions</a>';}
-      el.innerHTML='<div class="top"><span class="emo">'+esc(v.emoji||"📍")+'</span>'+
-        '<span class="nm">'+esc(v.name)+'</span><span class="cat">'+esc(v.category||"")+'</span></div>'+
-        (v.address?'<div class="addr">'+esc(v.address)+'</div>':"")+
-        (v.hours?'<div class="hrs">'+esc(v.hours)+' '+openBadge(v)+'</div>':"")+
-        (v.note?'<div class="note">'+esc(v.note)+'</div>':"");
-      var linksEl=document.createElement("div");linksEl.className="links";linksEl.innerHTML=links;
-      linksEl.appendChild(shareLink(v.id,v.name,v.category));
-      el.appendChild(linksEl);
-      el.addEventListener("click",function(e){if(e.target.closest("a,button"))return;panTo("v:"+v.id);});
-      vbox.appendChild(el);
-      if(highlightId===v.id)el.classList.add("highlighted");
-    });
-
-    if(spots.length){
-      $("spotsHead").style.display="block";
-      var byState={open:0,pending:0,held:0,closed:0};
-      spots.forEach(function(s){byState[seatState(s)]++;});
-      var parts=[spots.length+" booths"];
-      ["open","pending","held","closed"].forEach(function(k){if(byState[k])parts.push(byState[k]+" "+STATE_LABEL[k].toLowerCase());});
-      $("spotsCount").style.display="block"; $("spotsCount").textContent=parts.join(" · ");
-      var sbox=$("spotCards");var shown=0;
-      spots.forEach(function(s){
-        var st=seatState(s);
-        if(st==="open"&&highlightId!==s.id)return; shown++;
-        var el=document.createElement("div");el.className="v"+(st==="open"?" open":"");el.id="card-s-"+s.id;
-        if(st!=="held"){
-          var blurb=st==="pending"?"Someone's asked for this one — not settled yet."
-                   :st==="closed"?"Not available this month."
-                   :'First come, first served — sidewalk only, streets stay open. <a href="../vendor-signup.html">Claim this spot →</a>';
-          el.innerHTML='<div class="top"><span class="emo"><span class="seat '+st+'" style="display:inline-block"></span></span>'+
-            '<span class="nm">'+esc(s.label)+'</span><span class="openflag">'+STATE_LABEL[st]+'</span></div>'+
-            '<div class="note">'+blurb+'</div>';
-        } else {
-          var v=s.vendor;var links="";
-          if(v.instagram){var ig=v.instagram.indexOf("http")===0?v.instagram:"https://instagram.com/"+v.instagram.replace("@","");
-            links+='<a href="'+safeUrl(ig)+'" target="_blank" rel="noopener">Instagram</a>';}
-          if(v.website){var w=v.website.indexOf("http")===0?v.website:"https://"+v.website;
-            links+='<a href="'+safeUrl(w)+'" target="_blank" rel="noopener">Website</a>';}
-          el.innerHTML='<div class="top"><span class="emo">'+esc(v.emoji||"📍")+'</span>'+
-            '<span class="nm">'+esc(v.name)+'</span><span class="cat">'+esc(v.category||"")+'</span></div>'+
-            '<div class="addr">'+esc(s.label)+'</div>'+(v.note?'<div class="note">'+esc(v.note)+'</div>':"");
-          var linksEl=document.createElement("div");linksEl.className="links";linksEl.innerHTML=links;
-          linksEl.appendChild(shareLink(s.id,v.name,s.label));el.appendChild(linksEl);
-        }
-        el.addEventListener("click",function(e){if(e.target.closest("a,button"))return;panTo("s:"+s.id);});
-        sbox.appendChild(el);
-        if(highlightId===s.id)el.classList.add("highlighted");
-      });
-      if(!shown){
-        var hint=document.createElement("div");hint.className="notice";hint.style.padding="4px 2px 0";
-        hint.innerHTML=byState.open+' open booths — tap ▤ Show vendor booths above, or <a href="../vendor-signup.html">grab one now →</a>';
-        sbox.appendChild(hint);
-      }
-    }
-
     // ---- map fit helpers ----
     var CTR=[35.3757,-119.0205];
     function fitNow(){ map.invalidateSize(); map.setView(CTR,13); }
-    function fitFF(){
-      map.invalidateSize();
-      if(ev.boundary&&ev.boundary.polygon&&ev.boundary.polygon.length>2)map.fitBounds(ev.boundary.polygon,{padding:[16,16]});
-      else if(corridorPts.length)map.fitBounds(corridorPts.map(function(p){return[p.lat,p.lng]}),{padding:[30,30]});
-    }
 
-    // ---- booth toggle (First Friday container) ----
-    var boothsOn=false;
-    function setBooths(on){
-      boothsOn=on;
-      $("boothToggle").classList.toggle("on",on);
-      $("boothToggle").textContent=on?"▤ Hide vendor booths":"▤ Show vendor booths";
-      if(view==="ff"){ if(on&&!map.hasLayer(spotLayer))spotLayer.addTo(map); else if(!on&&map.hasLayer(spotLayer))map.removeLayer(spotLayer); }
-    }
-    $("boothToggle").addEventListener("click",function(){setBooths(!boothsOn);});
 
     // ---- the three-container switcher ----
     var view="now";
     function applyLayers(v){
       [eventLayer,storefrontLayer,spotLayer,parkingLayer,ffDecor].forEach(function(g){if(map.hasLayer(g))map.removeLayer(g);});
       if(v==="now"){ eventLayer.addTo(map); }
-      else if(v==="ff"){ ffDecor.addTo(map); storefrontLayer.addTo(map); parkingLayer.addTo(map); if(boothsOn)spotLayer.addTo(map); }
       // "weekly" shows no map — it's a pure browse-by-day list (see showView)
     }
     function setBadge(v){
       var b=$("badge"); b.className="badge";
-      if(v==="ff"){
-        if(isEventDay){b.textContent="🔥 TONIGHT · "+(ev.hours||"");}
-        else if(evd&&evd>today){b.classList.add("future");
-          b.textContent=evd.toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric"})+" · "+(ev.hours||"");}
-        else{b.classList.add("past");b.textContent="Next one soon";}
-      } else if(v==="weekly"){
+      if(v==="weekly"){
         b.textContent="🔁 "+weeklyEvents.length+" regulars";
       } else {
         b.textContent="🔥 "+weekCt+" this week";
@@ -894,39 +731,30 @@
     }
     function showView(v,opts){
       view=v;
-      $("tabNow").classList.toggle("on",v==="now"); $("tabWeekly").classList.toggle("on",v==="weekly"); $("tabFF").classList.toggle("on",v==="ff");
+      $("tabNow").classList.toggle("on",v==="now"); $("tabWeekly").classList.toggle("on",v==="weekly");
       $("c-now").style.display=v==="now"?"block":"none";
       $("c-weekly").style.display=v==="weekly"?"block":"none";
-      $("c-ff").style.display=v==="ff"?"block":"none";
       $("map").style.display=v==="weekly"?"none":"block";
-      $("legendNow").style.display=v==="now"?"flex":"none"; $("legendFF").style.display=v==="ff"?"flex":"none";
-      document.title=(v==="ff"?ev.name:v==="weekly"?"Weekly regulars":"What's on in Bakersfield")+" — Board Bored";
+      $("legendNow").style.display=v==="now"?"flex":"none";
+      document.title=(v==="weekly"?"Weekly regulars":"What's on in Bakersfield")+" — Board Bored";
       setBadge(v); applyLayers(v);
-      if(!(opts&&opts.noFit)&&v!=="weekly"){ v==="now"?fitNow():fitFF(); }
+      if(!(opts&&opts.noFit)&&v!=="weekly"){ fitNow(); }
     }
     $("tabNow").addEventListener("click",function(){showView("now");});
     $("tabWeekly").addEventListener("click",function(){showView("weekly");});
-    $("tabFF").addEventListener("click",function(){showView("ff");});
-    $("backToNow").addEventListener("click",function(){showView("now");window.scrollTo({top:0,behavior:"smooth"});});
 
     function panTo(key){
       if(!markers[key])return;
       if(key.indexOf("e:")===0&&view!=="now")showView("now",{noFit:true});
-      if((key.indexOf("v:")===0||key.indexOf("s:")===0)&&view!=="ff")showView("ff",{noFit:true});
-      if(key.indexOf("s:")===0&&!boothsOn)setBooths(true);
       map.setView(markers[key].getLatLng(),key.indexOf("e:")===0?16:17);markers[key].openPopup();
       window.scrollTo({top:0,behavior:"smooth"});
     }
 
     // ---- initial view ----
-    var initial = wantView==="ff" ? "ff" : (isEventDay ? "ff" : "now");
-    if(highlightId){
-      if(markers["e:"+highlightId])initial="now";
-      else if(markers["v:"+highlightId]||markers["s:"+highlightId])initial="ff";
-    }
+    var initial = "now";
     showView(initial);
     // re-measure after fonts/layout settle + on resize (avoids stale-size blank tiles)
-    setTimeout(function(){ view==="now"?fitNow():fitFF(); },350);
+    setTimeout(function(){ fitNow(); },350);
     window.addEventListener("resize",function(){clearTimeout(window._bbrz);window._bbrz=setTimeout(function(){map.invalidateSize();},200);});
 
     if(highlightId){
@@ -948,5 +776,7 @@
   });
 })();
 </script>
+<script src="../lib/analytics-config.js"></script>
+<script src="../lib/analytics.js"></script>
 </body>
 </html>

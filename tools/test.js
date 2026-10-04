@@ -222,6 +222,83 @@ t("ticketmaster.parseEvent drops events with no resolvable date", function () {
   assert.strictEqual(ticketmaster.parseEvent(raw), null);
 });
 
+// ---- analytics: inert unless configured; privacy options locked; URLs cleaned ----
+var vm = require("vm");
+var fs = require("fs");
+var path = require("path");
+var analyticsSrc = fs.readFileSync(path.join(__dirname, "..", "lib", "analytics.js"), "utf8");
+function runAnalytics(cfg, hostname, search) {
+  var inserted = [];
+  var tag = { parentNode: { insertBefore: function (n) { inserted.push(n); } } };
+  var ctx = { BB_ANALYTICS: cfg, document: { createElement: function () { return {}; }, getElementsByTagName: function () { return [tag]; } },
+    location: { hostname: hostname, search: search || "", href: "https://" + hostname + "/first-friday/" }, URL: URL, URLSearchParams: URLSearchParams, console: console };
+  ctx.window = ctx;
+  vm.createContext(ctx);
+  vm.runInContext(analyticsSrc, ctx);
+  return { ctx: ctx, inserted: inserted };
+}
+var GOOD = "phc_AbCdEfGhIjKlMnOpQrStUvWxYz0123456789";
+var LIVE = { key: GOOD, host: "https://us.i.posthog.com", hosts: ["seekerflame.github.io"] };
+t("analytics: empty key = completely off (no script, no posthog object)", function () {
+  var r = runAnalytics({ key: "", host: "https://us.i.posthog.com", hosts: ["seekerflame.github.io"] }, "seekerflame.github.io");
+  assert.strictEqual(r.inserted.length, 0);
+  assert.strictEqual(r.ctx.posthog, undefined);
+  assert.strictEqual(typeof r.ctx.bbTrack, "function"); // callers never need to guard
+});
+t("analytics: placeholder / malformed keys are refused", function () {
+  ["phc_xxxxxxxxxxxxxxxxxxxxxxxx", "<ph_project_token>", "replace-me", "phc_short", "phx_AbCdEfGhIjKlMnOpQrStUvWxYz0123456789", "phc_test_AbCdEfGhIjKlMnOpQrStUvWxYz"].forEach(function (k) {
+    assert.strictEqual(runAnalytics({ key: k, hosts: ["seekerflame.github.io"] }, "seekerflame.github.io").inserted.length, 0, k);
+  });
+});
+t("analytics: silent on hosts that are not allow-listed and on ?nt=1", function () {
+  assert.strictEqual(runAnalytics(LIVE, "localhost").inserted.length, 0);
+  assert.strictEqual(runAnalytics(LIVE, "seekerflame.github.io", "?nt=1").inserted.length, 0);
+});
+t("analytics: with a real key on the real host it loads PostHog with the locked-down config", function () {
+  var r = runAnalytics(LIVE, "seekerflame.github.io");
+  assert.strictEqual(r.inserted.length, 1);
+  assert.ok(/^https:\/\/us-assets\.i\.posthog\.com\/static\/array\.js$/.test(r.inserted[0].src), r.inserted[0].src);
+  var call = r.ctx.posthog._i[0], c = call[1];
+  assert.strictEqual(call[0], GOOD);
+  assert.strictEqual(c.cookieless_mode, "always");
+  assert.strictEqual(c.persistence, "memory");
+  assert.strictEqual(c.autocapture, false);
+  assert.strictEqual(c.disable_session_recording, true);
+  assert.strictEqual(c.disable_surveys, true);
+  assert.strictEqual(c.respect_dnt, true);
+  assert.strictEqual(c.person_profiles, "identified_only");
+});
+t("analytics: before_send strips the #fragment (tokens) and non-allow-listed query values from every URL", function () {
+  var r = runAnalytics(LIVE, "seekerflame.github.io");
+  var bs = r.ctx.posthog._i[0][1].before_send;
+  var e = bs({ properties: { $current_url: "https://x.test/first-friday/dashboard.html?ref=abc&token=SECRET&shop=cafe#t=test-venue-co.o.deadbeef", $referrer: "https://x.test/a?email=a@b.com#frag", $set: { email: "a@b.com" } } });
+  assert.strictEqual(e.properties.$current_url, "https://x.test/first-friday/dashboard.html?ref=abc&shop=cafe");
+  assert.strictEqual(e.properties.$referrer, "https://x.test/a");
+  assert.strictEqual(e.properties.$set, undefined);
+  assert.ok(!JSON.stringify(e).includes("SECRET") && !JSON.stringify(e).includes("deadbeef") && !JSON.stringify(e).includes("a@b.com"));
+});
+t("analytics: bbTrack drops unsafe event names and personal-looking values", function () {
+  var r = runAnalytics(LIVE, "seekerflame.github.io");
+  var sent = [];
+  r.ctx.posthog.capture = function (n, p) { sent.push([n, p]); };
+  r.ctx.bbTrack("Bad Name!", { a: 1 });
+  r.ctx.bbTrack("claim_done", { unlock: "follow", email: "a@b.com", code: "ABC#123", n: 3, note: "x=y", ok: true });
+  r.ctx.posthog._i[0][1].loaded(r.ctx.posthog); // PostHog calls this when ready; queued events flush
+  assert.strictEqual(sent.length, 1);
+  assert.strictEqual(sent[0][0], "claim_done");
+  assert.strictEqual(JSON.stringify(sent[0][1]), JSON.stringify({ unlock: "follow", n: 3, ok: true }));
+});
+
+t("analytics: private (token) pages never load it; public pages do", function () {
+  var root = path.join(__dirname, "..");
+  ["first-friday/dashboard.html", "first-friday/redeem.html", "first-friday/account.html", "admin.html", "admin-queue.html"].forEach(function (f) {
+    var p = path.join(root, f);
+    if (fs.existsSync(p)) assert.ok(!/analytics/.test(fs.readFileSync(p, "utf8")), f + " must not load analytics (private pages never load it)");
+  });
+  ["index.html", "first-friday/index.html", "first-friday/deals.html", "first-friday/biz.html"].forEach(function (f) {
+    assert.ok(/lib\/analytics\.js/.test(fs.readFileSync(path.join(root, f), "utf8")), f + " should load analytics");
+  });
+});
 (function run() {
   if (!makeQueue) { console.error("✗ pwa.js did not export BB._makeQueue"); process.exitCode = 1; }
   var chain = Promise.resolve();
