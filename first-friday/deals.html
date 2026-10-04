@@ -114,13 +114,15 @@
         det.appendChild(sm);
         var em = el("input"); em.type = "email"; em.placeholder = "you@example.com"; em.autocomplete = "email"; em.setAttribute("aria-label", "Your email");
         det.appendChild(em);
-        det.appendChild(el("p", "small", "This adds you to the Board Bored email list. Unsubscribe any time."));
+        det.appendChild(el("p", "small", "We email your code to this address. We do not add you to any list."));
         var eb = el("button", "alt", "Get my code"); eb.className = "alt"; det.appendChild(eb);
         var em2 = el("p", "msg err"); det.appendChild(em2);
         eb.onclick = function () {
           eb.disabled = true;
           post("/api/claim", { dealId: d.id, unlock: "email", email: em.value, session: sid, ref: myRef }).then(function (r) {
-            if (r.ok) showCode(card, d, r); else { em2.textContent = r.error || (r.errors || []).join(" "); eb.disabled = false; }
+            if (r.ok && r.emailed) { em2.className = "msg ok"; em2.textContent = r.message; }
+            else if (r.ok) showCode(card, d, r);
+            else { em2.textContent = r.error || (r.errors || []).join(" "); eb.disabled = false; }
           });
         };
         box.appendChild(det);

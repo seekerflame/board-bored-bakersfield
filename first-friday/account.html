@@ -61,6 +61,11 @@
     var d = el("div", "card"); d.appendChild(el("h2", null, "Your deal codes"));
     if (!a.claims.length) d.appendChild(el("p", "small", "None yet."));
     a.claims.forEach(function (x) { d.appendChild(el("p", null, x.code + "  " + x.shop + ": " + x.deal + " (" + x.status + ")")); }); out.appendChild(d);
+    var so = el("div", "card"); so.appendChild(el("h2", null, "Sign out everywhere"));
+    so.appendChild(el("p", "small", "Ends every sign-in on every device, including this one."));
+    var sob = el("button", "alt", "Sign out everywhere"); so.appendChild(sob);
+    sob.onclick = function () { call("/api/account-logout", {}).then(function () { try { localStorage.removeItem("bb_session_token"); } catch (e) {} sess = ""; signIn(); }); };
+    out.appendChild(so);
     var z = el("div", "card"); z.appendChild(el("h2", null, "Delete my account"));
     z.appendChild(el("p", "small", "Removes your email, phone and every consent. Shops stop being able to message you right away."));
     var del = el("button", "alt", "Delete everything"), zm = el("p", "msg"); z.appendChild(del); z.appendChild(zm);
