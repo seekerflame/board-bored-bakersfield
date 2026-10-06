@@ -41,8 +41,15 @@ def http_get(url, opener=urllib.request.urlopen, timeout=15):
         return None, url, ""
 
 
+def payments_paused(pricing):
+    """Nick's switch (pricing.json -> payments.paused): while on, no payment link is checked, offered or chased."""
+    return bool((pricing.get("payments") or {}).get("paused"))
+
+
 def check_money_path(pricing, opener=urllib.request.urlopen):
     rows = []
+    if payments_paused(pricing):
+        return rows
     for c in pricing.get("combos", []):
         url = c.get("square_checkout_url")
         if not url:
@@ -101,6 +108,8 @@ def prospects(board, exclude_names=(), top=5):
 
 
 def offer_for(pricing, tier="Featured", cadence="monthly"):
+    if payments_paused(pricing):
+        return None
     for c in pricing.get("combos", []):
         if c["tier"] == tier and c["cadence"] == cadence:
             return {"tier": tier, "cadence": cadence, "price": c["price"]}
@@ -185,21 +194,30 @@ def build_report(pricing, ledger, board, today, stops=(), ask=None, model=None, 
         assert not verify_draft(text, p), "template draft must always verify"
         sheets.append({"sheet": p, "draft": text, "drafted_by": how})
     live = {(m["tier"], m["cadence"]): m for m in money}
+    paused = payments_paused(pricing)
     nudges = []
     for p in snap["pledges"]:
+        if paused:
+            nudges.append("%s said yes to %s (%s) at $%s %s days ago. ON HOLD: payments are paused, do not ask for money. Keep the relationship warm." %
+                          (p["name"], p["tier"], p["cadence"], p["amount"], p["age_days"]))
+            continue
         m = live.get((p["tier"], p["cadence"]))
         link = m["url"] if m and m["ok"] else "[PAYMENT LINK NOT LIVE YET]"
         nudges.append("Hi %s: you said yes to %s (%s) at $%s %s days ago. Pay here: %s" %
                       (p["name"], p["tier"], p["cadence"], p["amount"], p["age_days"], link))
-    return {"money_path": money, "ledger": snap, "nudges": nudges, "prospects": sheets, "asof": today.isoformat()}
+    return {"money_path": money, "ledger": snap, "nudges": nudges, "prospects": sheets, "asof": today.isoformat(),
+            "payments_paused": paused, "pause": (pricing.get("payments") or {}) if paused else {}}
 
 
 def render(rep):
     m = rep["money_path"]
     good = sum(1 for x in m if x["ok"])
-    lines = ["# Revenue desk %s" % rep["asof"], "",
-             "## Money path: %d of %d payment links work" % (good, len(m))]
-    lines += ["- %s %s $%s -> %s %s" % (x["tier"], x["cadence"], x["price"], x["status"], "OK" if x["ok"] else "DEAD") for x in m]
+    lines = ["# Revenue desk %s" % rep["asof"], ""]
+    if rep.get("payments_paused"):
+        lines += ["## Money path: PAUSED since %s" % (rep["pause"].get("since") or "unknown"), "- %s" % (rep["pause"].get("reason") or "paused by Nick")]
+    else:
+        lines += ["## Money path: %d of %d payment links work" % (good, len(m))]
+        lines += ["- %s %s $%s -> %s %s" % (x["tier"], x["cadence"], x["price"], x["status"], "OK" if x["ok"] else "DEAD") for x in m]
     l = rep["ledger"]
     lines += ["", "## Ledger: collected $%s, pledged $%s, %d transactions" % (l["collected"], l["pledged"], l["transactions"]), ""]
     lines += ["- " + n for n in rep["nudges"]]
@@ -217,8 +235,12 @@ def summary(rep):
     l = rep["ledger"]
     top = ", ".join("%s (%d weekly)" % (p["sheet"]["name"], p["sheet"]["weekly_slots"]) for p in rep["prospects"][:3])
     oldest = max([p["age_days"] or 0 for p in l["pledges"]] or [0])
-    return ("MONEY PATH: %d/%d payment links work%s\nCollected $%s, pledged $%s (oldest pledge %d days)\nTop prospects: %s"
-            % (good, len(m), "" if good == len(m) else " (pay buttons are dead)", l["collected"], l["pledged"], oldest, top))
+    if rep.get("payments_paused"):
+        head = "MONEY PATH: PAUSED since %s (no links checked, none offered)" % (rep["pause"].get("since") or "unknown")
+    else:
+        head = "MONEY PATH: %d/%d payment links work%s" % (good, len(m), "" if good == len(m) else " (pay buttons are dead)")
+    return ("%s\nCollected $%s, pledged $%s (oldest pledge %d days)\nTop prospects: %s"
+            % (head, l["collected"], l["pledged"], oldest, top))
 
 
 def ollama_ask(model, prompt, host="http://localhost:11434"):
@@ -242,6 +264,9 @@ def main(argv=None):
     today = dt.date.fromisoformat(a.today) if a.today else dt.date.today()
     pricing = json.load(open(a.pricing))
     if a.check_money_path:
+        if payments_paused(pricing):
+            print("payments paused: no payment links are checked or offered")
+            return 0
         rows = check_money_path(pricing)
         for r in rows:
             print("%-9s %-8s $%-4s %s %s" % (r["tier"], r["cadence"], r["price"], r["status"], "OK" if r["ok"] else "DEAD"))

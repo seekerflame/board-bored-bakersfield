@@ -160,5 +160,34 @@ class Report(unittest.TestCase):
         self.assertIn("https://sq/good", rep["nudges"][0])
 
 
+class PaymentsPaused(unittest.TestCase):
+    PAUSED = dict(PRICING, payments={"paused": True, "since": "2026-10-06", "reason": "pending a model that scales"})
+
+    def test_no_links_checked_or_offered(self):
+        def never(req, timeout=0):
+            raise AssertionError("network touched while payments are paused")
+        self.assertEqual(rd.check_money_path(self.PAUSED, never), [])
+        self.assertIsNone(rd.offer_for(self.PAUSED))
+
+    def test_report_holds_pledges_and_pitches_free_only(self):
+        ledger = {"summary": {}, "pipeline_pledges": [{"id": "a", "sponsor_name": "P", "tier": "Featured", "cadence": "monthly",
+                                                       "amount": 75, "date": "2026-09-30"}], "transactions": []}
+
+        def never(req, timeout=0):
+            raise AssertionError("network touched while payments are paused")
+        rep = rd.build_report(self.PAUSED, ledger, board(), TODAY, opener=never)
+        self.assertIn("ON HOLD", rep["nudges"][0])
+        self.assertNotIn("Pay here", rep["nudges"][0])
+        self.assertTrue(rep["prospects"])
+        for p in rep["prospects"]:
+            self.assertNotIn("$", p["draft"], "no price in a draft while payments are paused")
+        self.assertIn("MONEY PATH: PAUSED since 2026-10-06", rd.summary(rep))
+        self.assertIn("PAUSED", rd.render(rep))
+
+    def test_unpaused_default_unchanged(self):
+        self.assertFalse(rd.payments_paused(PRICING))
+        self.assertIsNotNone(rd.offer_for(PRICING))
+
+
 if __name__ == "__main__":
     unittest.main()

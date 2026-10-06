@@ -25,6 +25,12 @@ node ../ingest_events.js --dry-run # merge published events into board.json (val
 State, cache and the append-only `audit.jsonl` live in `~/.boardbored/autodesk/`. Config: copy `config.example.json` there.
 
 `revenue_desk.py` is the money side: live payment-link check, collections aging, prospect fact sheets with drafts whose every
-number/name must trace to the fact sheet. It never sends anything.
+number/name must trace to the fact sheet. It never sends anything. While `payments.paused` is true in the pricing file it checks
+no links, offers no price and holds pledge follow-ups (paused 2026-10-06).
 
-Tests (offline, no Ollama): `python3 test_autodesk.py && python3 test_revenue_desk.py`.
+`leads.py` keeps one append-only registry of every business we know (board listings + archive, corridor storefronts, newsletter
+report, pledge ledger), ranked A-D by how warm they already are. `recon` reads each business's own website (robots honored) and
+records only contact facts printed there, each with its source URL. Data lives in `~/.boardbored/leads/` (private, never in this
+repo). `python3 leads.py sync | recon | list | mark | note | set | export`.
+
+Tests (offline, no Ollama): `python3 -m unittest test_autodesk test_revenue_desk test_outreach_desk test_leads`.
