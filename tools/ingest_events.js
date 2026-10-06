@@ -119,6 +119,7 @@ async function main() {
 
   console.log(`[ingest] new=${added.length} duplicates_skipped=${skippedDupes.length} ungeocoded=${geocodeFailures.length}`);
   if (geocodeFailures.length) console.log(`[ingest]   ungeocoded: ${geocodeFailures.join(", ")}`);
+  skippedDupes.forEach((d) => console.log(`[ingest]   dup: ${d.candidate} -> ${d.matchedExisting}`));
 
   if (!added.length) {
     console.log("[ingest] nothing new — board.json unchanged");

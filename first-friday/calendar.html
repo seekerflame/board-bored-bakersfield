@@ -92,7 +92,6 @@
   <div class="toolbar">
     <a href="#" id="calTonight">🌙 Tonight</a>
     <a href="#" id="calWeekend">🎉 This weekend</a>
-    <a class="gcal" id="dlAll" download="board-bored-bakersfield.ics" href="#">📥 Add all (.ics)</a>
     <a href="./">🗺️ Live map</a>
   </div>
 
@@ -223,13 +222,6 @@
       if(nx)nx.addEventListener("click",function(){changeMonth(1);});
     }
     renderGrids();
-
-    // .ics of everything upcoming (recurring folded via RRULE)
-    var upcoming=CE.filter(function(e){
-      if(e.schedule&&e.schedule.ongoing)return true;
-      var ed=bbCal.effDate(e); return ed&&ed>=today;
-    });
-    $("dlAll").href=bbCal.icsHref(upcoming);
 
     // default: open today (or the next day with events); show the month that contains it
     var pick=new Date(today),guard=0;

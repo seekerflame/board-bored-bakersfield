@@ -299,6 +299,17 @@ t("analytics: private (token) pages never load it; public pages do", function ()
     assert.ok(/lib\/analytics\.js/.test(fs.readFileSync(path.join(root, f), "utf8")), f + " should load analytics");
   });
 });
+t("dedupe: a dated occurrence of an existing weekly regular is a duplicate; a different night or venue is not", function () {
+  var weekly = [{ id: "w1", name: "Pub Trivia at Temblor Brewing", venue: "Temblor Brewing Company", schedule: { weekday: 2 } },
+                { id: "w2", name: "Open Mic", venue: "Test Hall", schedule: { weekday: 5, weeks: [1, 3] } }];
+  var mk = function (name, venue, date) { return { id: "x_" + name + date, name: name, venue: venue, schedule: { date: date } }; };
+  assert.ok(dedupe.findDuplicate(mk("Pub Trivia", "Temblor Brewing Company", "2026-10-06"), weekly), "Tuesday trivia is the Tuesday regular");
+  assert.ok(!dedupe.findDuplicate(mk("Pub Trivia", "Temblor Brewing Company", "2026-10-07"), weekly), "Wednesday is not Tuesday");
+  assert.ok(!dedupe.findDuplicate(mk("Pub Trivia", "Another Pub", "2026-10-06"), weekly), "another venue is not the same regular");
+  assert.ok(!dedupe.findDuplicate(mk("Karaoke Night", "Temblor Brewing Company", "2026-10-06"), weekly), "a different event the same night is new");
+  assert.ok(dedupe.findDuplicate(mk("Open Mic", "Test Hall", "2026-10-02"), weekly), "1st Friday of the month is in the regular's weeks");
+  assert.ok(!dedupe.findDuplicate(mk("Open Mic", "Test Hall", "2026-10-09"), weekly), "2nd Friday is not one of its weeks (1st and 3rd)");
+});
 (function run() {
   if (!makeQueue) { console.error("✗ pwa.js did not export BB._makeQueue"); process.exitCode = 1; }
   var chain = Promise.resolve();
