@@ -22,6 +22,7 @@ python3 autodesk.py reject ID..
 python3 autodesk.py measure --source <id> --model <ollama model>   # false-accept rate vs deterministic parse
 node ../ingest_events.js --dry-run # merge published events into board.json (validated)
 ```
+Source kinds: `foxnile` (Fox/Nile calendar cards), `newsletter` (numbered issues), `tribe` (an organization's own The Events Calendar REST feed, e.g. an arts council's WordPress site: first-party, one voice, so its events arrive as tier B for one-tap review), `html_llm`.
 State, cache and the append-only `audit.jsonl` live in `~/.boardbored/autodesk/`. Config: copy `config.example.json` there.
 
 `revenue_desk.py` is the money side: live payment-link check, collections aging, prospect fact sheets with drafts whose every

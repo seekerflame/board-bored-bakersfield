@@ -27,6 +27,11 @@
       "calendar_url": "https://www.bakersfieldlive.com/event-calendar",
       "home_url": "https://www.bakersfieldlive.com/",
       "untrusted": {"struct:jsonld": ["venue"]}
+    },
+    {
+      "id": "example-arts-org",
+      "kind": "tribe",
+      "api_url": "https://example-arts-org.example/wp-json/tribe/events/v1/events"
     }
   ]
 }

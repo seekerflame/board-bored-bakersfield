@@ -144,6 +144,14 @@ class Desk:
                 highest = k
             if highest is not None:
                 self.state["issues"][src["id"]] = highest
+        elif kind == "tribe":
+            end = today + dt.timedelta(days=self.cfg.get("horizon_days", 150))
+            api = fetch("%s?start_date=%s&end_date=%s&per_page=50" % (src["api_url"], today.isoformat(), end.isoformat()))
+            llm_pages = []
+            if api:
+                cs, text = adapters.tribe_events(api["body"], src["id"] + ":api", today)
+                cands += cs
+                texts[src["id"] + ":api"] = text
         elif kind == "html_llm":
             page = fetch(src["url"])
             llm_pages = []

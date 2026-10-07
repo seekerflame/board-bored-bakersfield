@@ -4,6 +4,7 @@ foxnile: bakersfieldlive.com runs the Fox + Nile theaters. Its /event-calendar p
 (title, date, door/show times, venue, tixr link). Its home-page JSON-LD declares name/date/link but the venue/address
 there are WRONG for every Nile show, so that voice is registered as not vouching for venue (see config `untrusted`).
 """
+import datetime as dt
 import html
 import json
 import re
@@ -55,6 +56,44 @@ def foxnile_jsonld(page_html, source_id, today):
                     "cost": None, "link": offers.get("url"), "quote": m.group(0),
                     "voice": "foxnile:jsonld", "family": "struct:jsonld", "source_id": source_id})
     return out, "\n".join(pieces)
+
+
+def _h12(d):
+    h = d.hour % 12 or 12
+    return "%d:%02d%s" % (h, d.minute, "pm" if d.hour >= 12 else "am")
+
+
+def tribe_events(body, source_id, today):
+    """The Events Calendar (WordPress) REST feed that many local organisations publish themselves: first-party and structured.
+    One candidate per event. The source text is a deterministic one-line rendering of each event and the quote is that same
+    line, so the gate judges the feed's own fields (name, date, times, venue, link) exactly as it judges a page."""
+    try:
+        data = json.loads(body)
+    except ValueError:
+        return [], ""
+    lines, out = [], []
+    for e in data.get("events", []) if isinstance(data, dict) else []:
+        name = html.unescape(e.get("title") or "").strip()
+        try:
+            sd = dt.datetime.strptime((e.get("start_date") or "")[:16], "%Y-%m-%d %H:%M")
+            ed = dt.datetime.strptime((e.get("end_date") or "")[:16], "%Y-%m-%d %H:%M")
+        except ValueError:
+            continue
+        v = e.get("venue") if isinstance(e.get("venue"), dict) else {}
+        venue = html.unescape(v.get("venue") or "").strip()
+        street = html.unescape(v.get("address") or "").strip()
+        when = "%s %s %d, %d" % (sd.strftime("%a"), sd.strftime("%b"), sd.day, sd.year)
+        times = None
+        if not e.get("all_day"):
+            times = _h12(sd) + ("-" + _h12(ed) if ed.date() == sd.date() and ed > sd else "")
+        cost = html.unescape(e.get("cost") or "").strip() or None
+        link = e.get("url") or None
+        quote = " | ".join(x for x in (name, when, times, venue + (", " + street if street else "") if venue else None, cost, link) if x)
+        lines.append(quote)
+        out.append({"name": name, "venue": venue or None, "date": sd.date().isoformat(), "start": sd.strftime("%H:%M") if times else None,
+                    "end": ed.strftime("%H:%M") if times and ed.date() == sd.date() and ed > sd else None, "cost": cost, "link": link,
+                    "address": street or None, "quote": quote, "voice": "tribe:api", "family": "struct:tribe", "source_id": source_id})
+    return out, "\n".join(lines)
 
 
 _BULLET = re.compile(r"^\u2022\s*(?P<name>.+?)\s+@\s+(?P<venue>.+?)(?=\s*(?:\[https?://|\(|$))")

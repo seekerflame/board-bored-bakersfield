@@ -505,5 +505,43 @@ class DeskComposed(unittest.TestCase):
         self.assertGreater(n2, n1)
 
 
+FEED = json.dumps({"events": [
+    {"title": "FAKE FEST &#8211; Day One", "start_date": "2026-10-23 17:00:00", "end_date": "2026-10-23 22:00:00", "all_day": False, "cost": "",
+     "url": "https://fake-arts.example/event/fake-fest-day-one/", "venue": {"venue": "Fake Arts Hall &#8211; Main St", "address": "100 Fake Main Street"}},
+    {"title": "Fake Fest &#8211; Day 2", "start_date": "2026-10-24 12:00:00", "end_date": "2026-10-24 17:00:00", "all_day": False, "cost": "$10",
+     "url": "https://fake-arts.example/event/fake-fest-day-2/", "venue": {"venue": "Fake Arts Hall &#8211; Main St", "address": "100 Fake Main Street"}},
+    {"title": "Open Studio", "start_date": "2026-10-25 00:00:00", "end_date": "2026-10-25 23:59:59", "all_day": True, "cost": "",
+     "url": "https://fake-arts.example/event/open-studio/", "venue": []},
+    {"title": "Broken", "start_date": "nonsense", "end_date": "", "venue": {}},
+]})
+
+
+class TribeFeed(unittest.TestCase):
+    def setUp(self):
+        self.cands, self.text = adapters.tribe_events(FEED, "fake:api", TODAY)
+
+    def test_events_pass_the_gate_with_their_own_fields(self):
+        self.assertEqual(len(self.cands), 3, "the malformed entry is skipped, not guessed")
+        for c in self.cands[:2]:
+            clean, fails, stripped = tg.gate(c, {"fake:api": self.text}, TODAY)
+            self.assertEqual(fails, [], c["name"])
+            self.assertEqual(stripped, [], c["name"])
+        a = tg.gate(self.cands[0], {"fake:api": self.text}, TODAY)[0]
+        self.assertEqual((a["date"], a["start"], a["end"]), ("2026-10-23", "17:00", "22:00"))
+        self.assertEqual(a["name"], "FAKE FEST \u2013 Day One")
+        self.assertEqual(a["venue"], "Fake Arts Hall \u2013 Main St")
+        self.assertEqual(a["link"], "https://fake-arts.example/event/fake-fest-day-one/")
+        self.assertEqual(self.cands[1]["cost"], "$10")
+
+    def test_all_day_has_no_invented_times_and_no_venue_means_gate_refuses(self):
+        c = self.cands[2]
+        self.assertEqual((c["start"], c["end"]), (None, None))
+        self.assertTrue("venue_missing" in tg.gate(c, {"fake:api": self.text}, TODAY)[1], "a feed event with no venue never publishes unreviewed")
+
+    def test_garbage_body_yields_nothing(self):
+        self.assertEqual(adapters.tribe_events("<html>not json</html>", "x", TODAY), ([], ""))
+        self.assertEqual(adapters.tribe_events("[]", "x", TODAY), ([], ""))
+
+
 if __name__ == "__main__":
     unittest.main()
