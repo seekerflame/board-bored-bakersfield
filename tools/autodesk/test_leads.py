@@ -185,6 +185,47 @@ class Names(unittest.TestCase):
         self.assertFalse(L.is_public("Temblor Brewing Co."))
 
 
+class Duplicates(unittest.TestCase):
+    def test_filler_words_do_not_make_a_new_business(self):
+        for a, b in [("Jerry's Pizza", "Jerry's Pizza & Pub"), ("Sky Zone", "Sky Zone Bakersfield"), ("Gaslight Melodrama", "Gaslight Melodrama Theatre"),
+                     ("Historic Fox Theater", "Historic Bakersfield Fox Theater"), ("DoubleTree Hotel", "DoubleTree by Hilton Hotel Bakersfield")]:
+            self.assertTrue(L.same_business(a, b), (a, b))
+
+    def test_real_extra_words_keep_leads_apart(self):
+        for a, b in [("Kern Raceway", "Kevin Harvick's Kern Raceway"), ("River Walk", "lululemon River Walk"), ("The Ovation Theatre", "The Underground at The Ovation Theatre"),
+                     ("Dignity Health Arena", "Centennial Plaza at Dignity Health Arena"), ("Hart Park", "Hart Memorial Park")]:
+            self.assertFalse(L.same_business(a, b), (a, b))
+
+    def test_performer_and_noise_suffixes_are_not_part_of_the_venue(self):
+        self.assertEqual(L.clean_name("Jerry's Pizza & Pub with Kev King")[0], "Jerry's Pizza & Pub")
+        self.assertEqual(L.clean_name("Art with Heart")[0], "Art with Heart", "a short name that contains 'with' is the whole name")
+        self.assertEqual(L.clean_name("Legends Event Center SOLD OUT")[0], "Legends Event Center")
+        self.assertEqual(L.clean_name("In Your Wildest Dreams Parking Lot")[0], "In Your Wildest Dreams")
+
+    def test_merge_pass_collapses_existing_duplicates_and_keeps_everything(self):
+        store, d = fresh()
+        try:
+            x = store.ensure("Jerry's Pizza", NOW)
+            y = dict(x, id="jerry-s-pizza-and-pub", name="Jerry's Pizza & Pub", aliases=[], notes=[{"ts": "2026-10-01T00:00:00", "note": "from the long one"}],
+                     pledge={"amount": 75}, candidates=[{"kind": "website", "url": "https://jerryspizza.com", "source": "x"}], contact={})
+            store.leads[y["id"]] = y  # a split pair, the way an older run produced them
+            self.assertEqual(L.merge_duplicates(store, NOW), 1)
+            self.assertEqual(len(store.leads), 1)
+            kept = next(iter(store.leads.values()))
+            self.assertIn("Jerry's Pizza & Pub", [kept["name"]] + kept["aliases"])
+            self.assertEqual(kept["pledge"]["amount"], 75)
+            self.assertTrue(any(n["note"] == "from the long one" for n in kept["notes"]))
+            with open(store.log_path) as f:
+                self.assertIn('"merged"', f.read())
+        finally:
+            shutil.rmtree(d)
+
+    def test_a_business_name_ending_in_a_street_word_is_not_an_address(self):
+        self.assertEqual(L.clean_name("Wholly Different Place")[0], "Wholly Different Place")
+        self.assertEqual(L.clean_name("The Garden Court")[0], "The Garden Court")
+        self.assertIsNone(L.clean_name("Mountain Ridge Dr")[0])
+
+
 class Extraction(unittest.TestCase):
     HTML = ('<a href="mailto:Hello@TestBrewing.example?subject=x">mail</a> <a href="tel:+16615550142">call</a>'
             '<a href="https://www.instagram.com/testbrewing/">ig</a><a href="https://www.instagram.com/p/XYZ/">post</a>'
@@ -193,6 +234,14 @@ class Extraction(unittest.TestCase):
 
     def test_email_filters_noise_and_images(self):
         self.assertEqual(L.extract_emails(self.HTML), ["hello@testbrewing.example"])
+
+    def test_package_versions_and_entities_are_not_emails(self):
+        js = "slick-carousel@1.8.1 intl-segmenter@11.7.10 bootstrap@5.0.1 leaflet@1.9.4 a@b.c"
+        self.assertEqual(L.extract_emails(js), [])
+        self.assertEqual(L.extract_emails('<a href="mailto:info@bmoa.org&quot;>x</a> info@thewellcomedyclub.com\\'), ["info@bmoa.org", "info@thewellcomedyclub.com"])
+
+    def test_only_bakersfield_phones(self):
+        self.assertEqual(L.extract_phones('<a href="tel:+18052961128">HQ</a> and (661) 555-0100'), ["(661) 555-0100"])
 
     def test_phone_from_tel_and_local_pattern(self):
         self.assertEqual(L.extract_phones(self.HTML), ["(661) 555-0142"])
@@ -205,6 +254,30 @@ class Extraction(unittest.TestCase):
     def test_contact_page_is_same_host_only(self):
         self.assertEqual(L.find_contact_page(self.HTML, "https://testbrewing.example/"), "https://testbrewing.example/about/contact-us")
         self.assertIsNone(L.find_contact_page('<a href="https://other.example/contact">Contact</a>', "https://testbrewing.example/"))
+
+
+class Ownership(unittest.TestCase):
+    def test_domain_must_be_built_from_the_name(self):
+        self.assertTrue(L.host_matches("Temblor Brewing Co.", "https://temblorbrewing.com/events/x"))
+        self.assertTrue(L.host_matches("Jerry's Pizza & Pub", "jerryspizza.com"))
+        self.assertTrue(L.host_matches("Bakersfield Museum of Art", "https://www.bmoa.org/visit"), "initials acronym")
+        self.assertTrue(L.host_matches("Arts Council of Kern", "https://kernarts.org/"))
+        self.assertTrue(L.host_matches("The Well Comedy Club", "https://www.thewellcomedyclub.com/shows/1"))
+        self.assertTrue(L.host_matches("BarrelHouse Bakersfield", "https://barrelhousebrewing.com/"))
+
+    def test_pages_that_only_mention_the_business_do_not_count(self):
+        self.assertFalse(L.host_matches("The Marketplace", "https://www.bmoa.org/via-arte"))
+        self.assertFalse(L.host_matches("Historic Bakersfield Fox Theater", "https://www.bakersfieldlive.com/"))
+        self.assertFalse(L.host_matches("DoubleTree by Hilton Hotel Bakersfield", "https://kchcc.org/"))
+        self.assertFalse(L.host_matches("Greenacres Community Center", "https://www.kvpr.org/news"))
+        self.assertFalse(L.host_matches("Dagny's Coffee Co.", "https://kernpoetry.com/first-friday/"))
+        self.assertFalse(L.host_matches("Lake Ming", "https://njbaracing.net/"))
+
+    def test_social_pick_prefers_a_lookalike_and_refuses_ambiguity(self):
+        lead = {"name": "Temblor Brewing Company"}
+        self.assertEqual(L.pick_social(["webagency", "temblorbrewing"], lead, "https://temblorbrewing.com/"), "temblorbrewing")
+        self.assertIsNone(L.pick_social(["webagency", "otherpage"], lead, "https://temblorbrewing.com/"))
+        self.assertEqual(L.pick_social(["onlyone"], lead, "https://temblorbrewing.com/"), "onlyone")
 
 
 class Recon(unittest.TestCase):
@@ -230,11 +303,14 @@ class Recon(unittest.TestCase):
         self.assertIn("testbrewing", c["instagram"]["value"])
         self.assertTrue(c["email"]["verified_at"])
 
-    def test_a_page_that_does_not_name_the_business_is_ignored(self):
-        f = FakeFetcher({self.site: self.page("Some Other Promoter LLC")})
+    def test_a_site_whose_domain_is_not_the_business_is_never_read(self):
+        L.add_candidate(self.brew, "website", "https://somepromoter.example/shows/test-brewing-night", "listing link")
+        self.brew["candidates"] = [c for c in self.brew["candidates"] if "somepromoter" in c["url"]]
+        f = FakeFetcher({"https://somepromoter.example/": self.page(), "https://somepromoter.example/shows/test-brewing-night": self.page()})
         self.assertEqual(L.recon_one(self.store, self.brew, f, NOW), "nothing")
+        self.assertEqual(f.calls, [], "not even fetched")
         self.assertEqual(self.brew["contact"], {})
-        self.assertTrue(any("does not name the business" in t for t in self.brew["recon"]["tried"]))
+        self.assertTrue(any("not built from the business" in t for t in self.brew["recon"]["tried"]))
 
     def test_robots_refusal_and_errors_are_recorded_not_raised(self):
         f = FakeFetcher({self.site: FetchRefused("disallowed by robots.txt")})
@@ -254,12 +330,49 @@ class Recon(unittest.TestCase):
         self.brew["score"], self.brew["tier"], self.brew["why"] = L.score_lead(self.brew)
         self.assertEqual(self.brew["score"], before + 1)
 
+    def test_dead_event_link_falls_back_to_the_front_page(self):
+        f = FakeFetcher({"https://testbrewing.example/": self.page()})  # the deep event link 404s, the root is fine
+        self.assertEqual(L.recon_one(self.store, self.brew, f, NOW), "found")
+        self.assertEqual(f.calls[0], "https://testbrewing.example/", "front page is tried before the deep link")
+        self.assertEqual(self.brew["contact"]["website"]["value"], "https://testbrewing.example/")
+
+    def test_scheme_less_candidate_is_fixed(self):
+        self.assertEqual(L.full_url("jerryspizza.com"), "https://jerryspizza.com")
+        self.assertEqual(L.origin_of("jerryspizza.com/events/x"), "https://jerryspizza.com/")
+        self.assertEqual(L.full_url(""), "")
+
+    def test_retry_empty_only_touches_leads_that_found_nothing(self):
+        self.brew["recon"] = {"at": NOW.isoformat(), "found": ["email"], "tried": []}
+        f = FakeFetcher({})
+        L.run_recon(self.store, f, retry_empty=True, now=NOW)
+        self.assertEqual(f.calls, [])
+
     def test_contact_page_hop_when_home_has_no_contact(self):
         home = "<html><body>Test Brewing Company <a href='/contact'>Contact</a></body></html>"
         f = FakeFetcher({self.site: home, "https://testbrewing.example/contact": "<p>Call (661) 555-0111 or mailto:hi@testbrewing.example</p>"})
         L.recon_one(self.store, self.brew, f, NOW)
         self.assertEqual(self.brew["contact"]["phone"]["value"], "(661) 555-0111")
         self.assertEqual(self.brew["contact"]["phone"]["source"], "https://testbrewing.example/contact")
+
+
+class Reset(unittest.TestCase):
+    def test_reset_keeps_history_and_human_facts(self):
+        store, d = fresh()
+        try:
+            L.sync_all(store, BOARD, LEDGER, None, NOW)
+            b = store.find("Test Brewing Company")
+            L.set_fact(store, b, "email", "wrong@scripps.example", "https://news.example/story", NOW)
+            L.set_fact(store, b, "phone", "(661) 555-0100", "owner told me on the phone", NOW)
+            L.set_fact(store, b, "website", "https://testbrewing.example/", "domain is built from the business's name", NOW, auto=True)
+            b["recon"] = {"at": NOW.isoformat(), "found": ["email"], "tried": []}
+            self.assertEqual(L.reset_recon(store, "stricter ownership", NOW), 1)
+            self.assertNotIn("email", b["contact"])
+            self.assertNotIn("website", b["contact"], "auto facts go even when the source text is not a URL")
+            self.assertEqual(b["contact"]["phone"]["value"], "(661) 555-0100", "a human-typed fact survives")
+            self.assertEqual(b["superseded"][0]["contact"]["email"]["value"], "wrong@scripps.example")
+            self.assertEqual(b["recon"], {})
+        finally:
+            shutil.rmtree(d)
 
 
 class Export(unittest.TestCase):

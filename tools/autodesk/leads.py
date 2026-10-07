@@ -24,12 +24,13 @@ import json
 import os
 import re
 import sys
+from html import unescape
 from urllib.parse import urljoin, urlparse
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from netfetch import FetchRefused, PoliteFetcher  # noqa: E402
 from revenue_desk import PUBLIC_SECTOR, venue_key  # noqa: E402
-from textutil import cover, html_to_text, norm  # noqa: E402
+from textutil import cover, html_to_text, norm, tokens  # noqa: E402
 
 HOME = os.path.expanduser("~")
 REPO = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))
@@ -50,7 +51,7 @@ IG_SKIP = {"p", "reel", "reels", "explore", "accounts", "share", "tv", "stories"
 FB_SKIP = {"sharer", "sharer.php", "dialog", "tr", "plugins", "events", "groups", "share", "login", "watch", "photo", "photo.php",
            "profile.php", "pages", "hashtag", "policies", "help", "marketplace", "permalink.php", "story.php"}
 RECON_FRESH_DAYS = 30
-EXTRA_PUBLIC = ("church", "elementary", "high school", "middle school", "chamber of commerce")
+EXTRA_PUBLIC = ("church", "elementary", "high school", "middle school", "chamber of commerce", "fire department", "police", "fire station")
 
 
 # ---------- small helpers ----------
@@ -74,7 +75,7 @@ def looks_like_address(s):
     if re.match(r"^\d{1,6}\s+\S", s) and re.search(r"\b" + STREET + r"\b\.?(?:[\s,#].*)?$", s, re.I):
         return True
     toks = s.split()
-    return 1 < len(toks) <= 4 and bool(re.search(r"\b" + STREET + r"\.?$", s, re.I)) and not FOODISH.search(s)
+    return 1 < len(toks) <= 4 and bool(re.search(r"\b(?:st|ave|blvd|rd|dr|ln|hwy|pkwy|ct|pl)\.?$", s, re.I)) and not FOODISH.search(s)
 
 
 def clean_name(raw):
@@ -87,6 +88,10 @@ def clean_name(raw):
     m = re.match(r"^(.*?)\s*\((\d[^)]*)\)\s*$", s)
     if m:
         s, addr = m.group(1).strip(), m.group(2).strip()
+    m = re.match(r"^(.*?)\s+with\s+[A-Z][\w' .&-]*$", s)       # "Jerry's Pizza & Pub with Kev King": the performer is not the venue
+    if m and len([t for t in norm(m.group(1)).split() if len(t) >= 3]) >= 2:  # but "Art with Heart" is the whole name
+        s = m.group(1)
+    s = re.sub(r"\s+SOLD OUT$|\s+(?:parking\s+)?lot$", "", s, flags=re.I).strip()
     if not s or PLACEHOLDER.match(s):
         return None, None
     if looks_like_address(s):
@@ -113,6 +118,18 @@ def split_names(name):
         if len(head) >= 4:
             names.append(head)
     return [n for n in dict.fromkeys(names) if n and not ACRONYM.match(n)]
+
+
+MERGE_EXTRA = {"bakersfield", "co", "company", "inc", "llc", "the", "hotel", "theatre", "theater", "center", "centre", "event", "events",
+               "lounge", "pub", "community", "tasting", "room", "by", "hilton", "central", "administration", "studio", "studios", "venue"}
+
+
+def same_business(a, b):
+    """One name is the other plus only filler words (Jerry's Pizza / Jerry's Pizza & Pub, Sky Zone / Sky Zone Bakersfield).
+    Anything that adds a real word (Kevin Harvick's Kern Raceway, The Underground at The Ovation) stays a separate lead."""
+    ta, tb = set(tokens(a)), set(tokens(b))
+    small, big = (ta, tb) if len(ta) <= len(tb) else (tb, ta)
+    return len(small) >= 2 and small <= big and (big - small) <= MERGE_EXTRA
 
 
 def is_public(name):
@@ -166,7 +183,7 @@ class Store:
         for n in names:
             for lead in self.leads.values():
                 for a in [lead["name"]] + lead.get("aliases", []):
-                    if cover(n, a) >= 0.8 and cover(a, n) >= 0.8:
+                    if (cover(n, a) >= 0.8 and cover(a, n) >= 0.8) or same_business(n, a):
                         return lead
         return None
 
@@ -201,7 +218,59 @@ class Store:
         return lead
 
 
+def full_url(url):
+    url = (url or "").strip()
+    return url if re.match(r"^https?://", url, re.I) or not url else "https://" + url.lstrip("/")
+
+
+def origin_of(url):
+    p = urlparse(full_url(url))
+    return "%s://%s/" % (p.scheme, p.netloc) if p.netloc else ""
+
+
+def merge_leads(store, keep, drop, now=None):
+    for n in [drop["name"]] + drop.get("aliases", []):
+        if n != keep["name"] and n not in keep["aliases"]:
+            keep["aliases"].append(n)
+    for c in drop["candidates"]:
+        add_candidate(keep, c["kind"], c["url"], c["source"])
+    for k, v in drop["contact"].items():
+        keep["contact"].setdefault(k, v)
+    keep["notes"] = sorted(keep["notes"] + drop["notes"], key=lambda x: x["ts"])
+    keep.setdefault("superseded", []).extend(drop.get("superseded", []))
+    if keep.get("pledge") is None and drop.get("pledge"):
+        keep["pledge"] = drop["pledge"]
+    if keep["stage"] == "new" and drop["stage"] != "new":
+        keep["stage"] = drop["stage"]
+    keep["corridor"] = keep.get("corridor") or drop.get("corridor")
+    keep["first_seen"] = min(keep["first_seen"], drop["first_seen"])
+    for k in ("address", "lat", "lng", "area"):
+        if keep.get(k) in (None, "") and drop.get(k) not in (None, ""):
+            keep[k] = drop[k]
+    store.leads.pop(drop["id"], None)
+    store.event(keep["id"], "merged", {"dropped": drop}, now)  # the full dropped record stays in the log
+
+
+def merge_duplicates(store, now=None):
+    merged = 0
+    while True:
+        pair = None
+        leads = sorted(store.leads.values(), key=lambda l: (-l.get("score", 0), -len(l["name"]), l["id"]))
+        for i, a in enumerate(leads):
+            for b in leads[i + 1:]:
+                if a["sector"] == b["sector"] and any(same_business(x, y) for x in [a["name"]] + a["aliases"] for y in [b["name"]] + b["aliases"]):
+                    pair = (a, b)
+                    break
+            if pair:
+                break
+        if not pair:
+            return merged
+        merge_leads(store, pair[0], pair[1], now)
+        merged += 1
+
+
 def add_candidate(lead, kind, url, source):
+    url = full_url(url) if kind == "website" else url
     if url and not any(c["kind"] == kind and c["url"] == url for c in lead["candidates"]):
         lead["candidates"].append({"kind": kind, "url": url, "source": source})
 
@@ -322,6 +391,7 @@ def latest_outreach_csv(reports=REPORTS):
 
 def sync_all(store, board, ledger, outreach_csv=None, now=None):
     before = len(store.leads)
+    merge_duplicates(store, now)
     sync_board(store, board, now)
     sync_pledges(store, ledger, now)
     if outreach_csv and os.path.exists(outreach_csv):
@@ -380,33 +450,42 @@ def add_note(store, lead, text, now=None):
     store.event(lead["id"], "note", {"note": text}, now)
 
 
-def set_fact(store, lead, kind, value, source, now=None):
+def set_fact(store, lead, kind, value, source, now=None, auto=False):
     if kind not in CONTACT_KINDS:
         raise ValueError("kind must be one of %s" % ", ".join(CONTACT_KINDS))
     if not source:
         raise ValueError("a source is required: where did you see it?")
     lead["contact"][kind] = {"value": value, "source": source, "verified_at": now_iso(now)}
+    if auto:
+        lead["contact"][kind]["auto"] = True  # read by recon, not typed by a person
     store.event(lead["id"], "fact", {"kind": kind, "value": value, "source": source}, now)
 
 
 # ---------- recon: read the business's own site ----------
+EMAIL = re.compile(r"[A-Za-z0-9][A-Za-z0-9._%+-]*@[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?(?:\.[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?)*\.[A-Za-z]{2,}")
+
+
 def extract_emails(html):
+    """Real addresses only: the last label must be letters (so `bootstrap@5.0.1` and `leaflet@1.9.4` in JS are not emails)."""
+    html = unescape(html)
     out = []
-    for m in re.findall(r"mailto:([^\"'?\s<>]+)", html, re.I) + re.findall(r"\b[\w.+-]+@[\w-]+(?:\.[\w-]+)+\b", html):
-        e = m.strip().lower().rstrip(".,;")
-        if "@" in e and not any(n in e for n in NOISE_MAIL) and not re.search(r"\.(png|jpg|jpeg|gif|svg|webp|css|js)$", e) and e not in out:
+    for m in re.findall(r"mailto:([^\"'?\s<>&;\\]+)", html, re.I) + EMAIL.findall(html):
+        mm = EMAIL.fullmatch(m.strip().rstrip(".,;")) or EMAIL.search(m)
+        e = mm.group(0).lower() if mm else ""
+        if e and not any(n in e for n in NOISE_MAIL) and not re.search(r"\.(png|jpg|jpeg|gif|svg|webp|css|js)$", e) and e not in out:
             out.append(e)
     return out
 
 
 def extract_phones(html):
+    """Bakersfield numbers only (661): a chain's HQ line in another area code is not this business's phone."""
     out = []
     for m in re.findall(r"tel:([+\d()\-.\s%]+)", html, re.I) + re.findall(r"\"telephone\"\s*:\s*\"([^\"]+)\"", html) + \
             re.findall(r"\(?\b661\)?[\s.\-]\d{3}[\s.\-]\d{4}\b", html):
         d = re.sub(r"\D", "", m.replace("%20", ""))
         if len(d) == 11 and d.startswith("1"):
             d = d[1:]
-        if len(d) == 10 and d not in [re.sub(r"\D", "", x) for x in out]:
+        if len(d) == 10 and d.startswith("661") and d not in [re.sub(r"\D", "", x) for x in out]:
             out.append("(%s) %s-%s" % (d[:3], d[3:6], d[6:]))
     return out
 
@@ -433,11 +512,48 @@ def find_contact_page(html, base):
     return None
 
 
-def owns_page(lead, html, url):
-    """The page must actually be this business's: its name has to appear in the page text."""
-    text = html_to_text(html, url)[:8000]
-    names = [n for n in [lead["name"]] + lead.get("aliases", []) if len(norm(n)) >= 4]
-    return any(cover(n, text) >= 0.6 for n in names)
+OWN_STOP = {"the", "and", "inc", "llc", "company", "for", "at"}
+COMMON = {"bakersfield", "kern", "county", "historic", "club", "center", "centre", "theatre", "theater", "museum", "art", "arts", "grill",
+          "cafe", "coffee", "bar", "pub", "pizza", "brewing", "brewery", "park", "hall", "studio", "school", "restaurant", "kitchen",
+          "comedy", "music", "gallery", "market", "venue", "house", "public"}
+
+
+def host_label(url):
+    parts = (urlparse(full_url(url)).netloc.lower().split(":")[0]).split(".")
+    if parts and parts[0] == "www":
+        parts = parts[1:]
+    return re.sub(r"[^a-z0-9]", "", parts[-2] if len(parts) >= 2 else (parts[0] if parts else ""))
+
+
+def host_matches(name, url):
+    """The site's own domain has to be built from the business's name (temblorbrewing.com, bmoa.org for Bakersfield Museum of
+    Art). A page that merely MENTIONS a business (a news story, a promoter, a venue calendar) never counts as its site."""
+    h = host_label(url)
+    if len(h) < 3:
+        return False
+    all_toks = [t for t in norm(name).split() if t not in {"the", "and"}]
+    acr = "".join(t[0] for t in all_toks)
+    if len(acr) >= 3 and (h == acr or (h.startswith(acr) and len(acr) >= 4)):
+        return True
+    toks = [t for t in all_toks if len(t) >= 3 and t not in OWN_STOP]
+    hits = [t for t in toks if t in h]
+    distinct = [t for t in hits if t not in COMMON]
+    return len(hits) >= 2 or (len(hits) == 1 and bool(distinct) and len(toks) <= 3)
+
+
+def owns_site(lead, url):
+    return any(host_matches(n, url) for n in [lead["name"]] + lead.get("aliases", []))
+
+
+def pick_social(handles, lead, url):
+    """Prefer the handle that looks like this business; with no look-alike, accept only an unambiguous single handle."""
+    h = host_label(url)
+    toks = [t for t in norm(lead["name"]).split() if len(t) >= 4 and t not in COMMON]
+    for x in handles:
+        xl = re.sub(r"[^a-z0-9]", "", x.lower())
+        if (h and h in xl) or any(t in xl for t in toks):
+            return x
+    return handles[0] if len(handles) == 1 else None
 
 
 def recon_one(store, lead, fetcher, now=None, force=False):
@@ -448,11 +564,15 @@ def recon_one(store, lead, fetcher, now=None, force=False):
                 return "fresh"
         except ValueError:
             pass
-    sites = [c["url"] for c in lead["candidates"] if c["kind"] == "website"]
+    sites = [full_url(c["url"]) for c in lead["candidates"] if c["kind"] == "website"]
     verified = (lead["contact"].get("website") or {}).get("value")
-    order = ([verified] if verified else []) + [u for u in sites if u != verified]
+    # a listing's link is often a dead event page: try the site's front page first, the deep link after
+    order = list(dict.fromkeys(([verified] if verified else []) + [origin_of(u) for u in sites] + sites))
     tried, got = [], []
-    for url in order[:2]:
+    for url in [u for u in order if u][:3]:
+        if not owns_site(lead, url):
+            tried.append("%s: domain is not built from the business's name, not their site" % url)
+            continue
         try:
             r = fetcher.get(url)
         except FetchRefused as e:
@@ -463,9 +583,6 @@ def recon_one(store, lead, fetcher, now=None, force=False):
             continue
         if r["status"] != 200 or not r["body"]:
             tried.append("%s: HTTP %s" % (url, r["status"]))
-            continue
-        if not owns_page(lead, r["body"], url):
-            tried.append("%s: page does not name the business, ignored" % url)
             continue
         html, page = r["body"], url
         emails, phones, (ig, fb) = extract_emails(html), extract_phones(html), extract_socials(html)
@@ -481,19 +598,20 @@ def recon_one(store, lead, fetcher, now=None, force=False):
                         page = cp
                 except Exception:  # noqa: BLE001
                     pass
-        set_fact(store, lead, "website", url, "the page itself names the business (%s)" % url, now)
+        set_fact(store, lead, "website", url, "domain is built from the business's name (%s)" % url, now, auto=True)
         got.append("website")
         if emails:
-            set_fact(store, lead, "email", emails[0], page, now)
+            set_fact(store, lead, "email", emails[0], page, now, auto=True)
             got.append("email")
         if phones:
-            set_fact(store, lead, "phone", phones[0], page, now)
+            set_fact(store, lead, "phone", phones[0], page, now, auto=True)
             got.append("phone")
-        if ig:
-            set_fact(store, lead, "instagram", "https://www.instagram.com/%s/" % ig[0], url, now)
+        igp, fbp = pick_social(ig, lead, url), pick_social(fb, lead, url)
+        if igp:
+            set_fact(store, lead, "instagram", "https://www.instagram.com/%s/" % igp, url, now, auto=True)
             got.append("instagram")
-        if fb:
-            set_fact(store, lead, "facebook", "https://www.facebook.com/%s" % fb[0], url, now)
+        if fbp:
+            set_fact(store, lead, "facebook", "https://www.facebook.com/%s" % fbp, url, now, auto=True)
             got.append("facebook")
         break
     lead["recon"] = {"at": now_iso(now), "found": got, "tried": tried}
@@ -501,14 +619,33 @@ def recon_one(store, lead, fetcher, now=None, force=False):
     return "found" if got else "nothing"
 
 
-def run_recon(store, fetcher, limit=None, only=None, include_public=False, now=None, force=False):
+def reset_recon(store, reason, now=None):
+    """When the recon rules get stricter, set the old findings aside (kept under `superseded`, never deleted) and start clean.
+    Facts a human typed in with `set` (their source is not a URL) are left alone."""
+    n = 0
+    for lead in store.leads.values():
+        keep, moved = {}, {}
+        for k, f in lead["contact"].items():
+            src = str(f.get("source", ""))
+            (moved if f.get("auto") or src.startswith("http") or src.startswith("the page itself names") else keep)[k] = f
+        if moved or lead.get("recon"):
+            lead.setdefault("superseded", []).append({"at": now_iso(now), "reason": reason, "contact": moved, "recon": lead.get("recon")})
+            lead["contact"], lead["recon"] = keep, {}
+            store.event(lead["id"], "recon_reset", {"reason": reason, "moved": sorted(moved)}, now)
+            n += 1
+    store.save()
+    return n
+
+
+def run_recon(store, fetcher, limit=None, only=None, include_public=False, now=None, force=False, retry_empty=False):
     todo = [store.by_ref(only)] if only else sorted(
         [l for l in store.leads.values() if any(c["kind"] == "website" for c in l["candidates"])
-         and (include_public or l["sector"] == "private") and l["stage"] not in ("declined", "do_not_contact")],
+         and (include_public or l["sector"] == "private") and l["stage"] not in ("declined", "do_not_contact")
+         and (not retry_empty or (l.get("recon") and not l["recon"].get("found")))],
         key=lambda l: -l.get("score", 0))
     stats = collections.Counter()
     for lead in todo[:limit]:
-        stats[recon_one(store, lead, fetcher, now, force)] += 1
+        stats[recon_one(store, lead, fetcher, now, force or retry_empty)] += 1
         lead["score"], lead["tier"], lead["why"] = score_lead(lead)
         store.save()
     store.save()
@@ -589,6 +726,8 @@ def main(argv=None):
     r.add_argument("--limit", type=int)
     r.add_argument("--id")
     r.add_argument("--force", action="store_true")
+    r.add_argument("--retry-empty", action="store_true", help="only leads whose last recon found nothing")
+    r.add_argument("--reset-all", metavar="REASON", help="set aside every recon-derived fact (kept under `superseded`) before running")
     r.add_argument("--include-public", action="store_true")
     m = sub.add_parser("mark")
     m.add_argument("name")
@@ -619,7 +758,9 @@ def main(argv=None):
                 len(store.leads), added, len(priv), "/".join(str(sum(1 for l in priv if l["tier"] == t)) for t in "ABCD")))
         return 0
     if a.cmd == "recon":
-        stats = run_recon(store, PoliteFetcher(CACHE, min_interval=3), a.limit, a.id, a.include_public, force=a.force)
+        if a.reset_all:
+            print("reset:", reset_recon(store, a.reset_all))
+        stats = run_recon(store, PoliteFetcher(CACHE, min_interval=3), a.limit, a.id, a.include_public, force=a.force, retry_empty=a.retry_empty)
         print("recon:", dict(stats))
         return 0
     if a.cmd == "mark":
