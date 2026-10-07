@@ -262,6 +262,7 @@ class Desk:
     def publish(self, events):
         out_path = os.path.expanduser(self.cfg.get("publish_path", os.path.join(REPO, "data", "autodesk_events.json")))
         raw = []
+        approved = set(self.state.get("approved", []))
         horizon = (self.now.date() + dt.timedelta(days=self.cfg.get("horizon_days", 150))).isoformat()
         for e in events:
             if not (e.get("address") or e.get("lat")):
@@ -278,7 +279,9 @@ class Desk:
             raw.append({"name": e["name"], "venue": e["venue"], "address": e.get("address"), "lat": e.get("lat"), "lng": e.get("lng"),
                         "area": e.get("area"), "category": e.get("category", "Community"), "date": e["date"], "start": e.get("start"),
                         "end": e.get("end"), "when": when, "cost": e.get("cost"), "link": e.get("link"),
-                        "source": "autodesk:" + e["source"], "autodesk_id": e["id"], "verified_by": e["families"]})
+                        "source": "autodesk:" + e["source"], "autodesk_id": e["id"],
+                        # a person's sign-off is the second voice the ingest contract asks for, recorded as what it is
+                        "verified_by": list(e["families"]) + (["human:approved"] if e["id"] in approved else [])})
         save_json(out_path, raw)
         self.audit(kind="publish", path=out_path, n=len(raw), ids=[r["autodesk_id"] for r in raw])
         return len(raw)

@@ -1207,5 +1207,47 @@
    "struct:card",
    "struct:jsonld"
   ]
+ },
+ {
+  "name": "LATINATION 13 – Day One",
+  "venue": "Arts Council of Kern",
+  "address": "1020 18th St, Bakersfield, CA 93301",
+  "lat": 35.37535,
+  "lng": -119.013255,
+  "area": "downtown",
+  "category": "Art",
+  "date": "2026-10-23",
+  "start": "17:00",
+  "end": "22:00",
+  "when": "Fri Oct 23 · 5pm",
+  "cost": null,
+  "link": "https://kernarts.org/event/latination-13-day-one/",
+  "source": "autodesk:kernarts",
+  "autodesk_id": "ad_a274bef61e31",
+  "verified_by": [
+   "struct:tribe",
+   "human:approved"
+  ]
+ },
+ {
+  "name": "LATINATION 13 – Day 2",
+  "venue": "Arts Council of Kern",
+  "address": "1020 18th St, Bakersfield, CA 93301",
+  "lat": 35.37535,
+  "lng": -119.013255,
+  "area": "downtown",
+  "category": "Art",
+  "date": "2026-10-24",
+  "start": "12:00",
+  "end": "17:00",
+  "when": "Sat Oct 24 · 12pm",
+  "cost": null,
+  "link": "https://kernarts.org/event/latination-13-day-2/",
+  "source": "autodesk:kernarts",
+  "autodesk_id": "ad_d4442a656faa",
+  "verified_by": [
+   "struct:tribe",
+   "human:approved"
+  ]
  }
 ]

@@ -1,9 +1,11 @@
 """Offline tests: no network, no Ollama. Synthetic fixtures use obviously fake venue names."""
 import datetime as dt
+import glob
 import io
 import json
 import os
 import shutil
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -495,6 +497,25 @@ class DeskComposed(unittest.TestCase):
         kinds = [json.loads(l)["kind"] for l in open(os.path.join(self.tmp, "desk", "audit.jsonl"))]
         self.assertIn("human_approve", kinds)
         self.assertIn("human_reject", kinds)
+
+    def test_human_approved_single_voice_event_survives_the_ingest_contract(self):
+        """Composition, not organs: desk.approve -> published file -> the node ingest's own parse(). A single-voice event a person
+        approved used to be dropped there (verified_by had one entry), so approving it published nothing."""
+        d = self.desk(site(), min_families=3)
+        res = d.run(TODAY)
+        keep = res["events"][0]
+        n, picked = self.desk(site(), min_families=3).approve([keep["id"]])
+        self.assertEqual((n, picked), (1, 1))
+        pub = json.load(open(os.path.join(self.tmp, "out.json")))
+        self.assertIn("human:approved", pub[0]["verified_by"])
+        self.assertGreaterEqual(len(pub[0]["verified_by"]), 2)
+        node = shutil.which("node") or next(iter(sorted(glob.glob(os.path.expanduser("~/.nvm/versions/node/*/bin/node")))[-1:]), None)
+        if not node:
+            self.skipTest("node not available")
+        ingest = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "ingest", "sources", "autodesk.js")
+        code = "const fs=require('fs');const p=require(%s);console.log(p.parse(JSON.parse(fs.readFileSync(%s,'utf8')),'2026-10-02').length)" % (json.dumps(ingest), json.dumps(os.path.join(self.tmp, "out.json")))
+        out = subprocess.run([node, "-e", code], capture_output=True, text=True, timeout=30)
+        self.assertEqual(out.stdout.strip(), "1", out.stderr)
 
     def test_audit_is_append_only_across_runs(self):
         pages = site()
