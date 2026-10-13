@@ -68,6 +68,7 @@
 <button class="printbtn" onclick="window.print()">🖨️ Print</button>
 
 <script src="lib/qrcode.js"></script>
+<script src="lib/board.js"></script>
 <script>
 (function(){
   // THE ONE QR: encodes this site's own root URL — wherever this is hosted,
@@ -82,7 +83,7 @@
   }
   drawQR("qr1",5);drawQR("qr2",9);
 
-  fetch("data/board.json").then(function(r){return r.json()}).then(function(d){
+  bbBoard.load({firstFriday:true}).then(function(d){
     var ev=(d.events||[]).filter(function(e){return e.slug===d.featured})[0]||(d.events||[])[0];
     var email=d.board.contact; // required by validate-board.js
     if(!ev)return;

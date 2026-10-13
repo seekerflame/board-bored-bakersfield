@@ -370,6 +370,13 @@ class BoardLoading(unittest.TestCase):
             store = L.Store(os.path.join(d, "leads"))
             L.sync_all(store, b, {}, None, NOW)
             self.assertEqual(store.find("Gone Hall")["past_events"], 1)
+            self.assertIsNone(store.find("Corner Cafe"), "no First Friday file yet")
+            with open(os.path.join(d, "first-friday.json"), "w") as f:
+                json.dump({"featured": "ff", "events": [{"slug": "ff", "vendors": [{"name": "Corner Cafe", "category": "Cafe", "address": "5 Fake St"}]}]}, f)
+            b2 = L.load_board(os.path.join(d, "board.json"))
+            self.assertEqual(b2["featured"], "ff")
+            L.sync_all(store, b2, {}, None, NOW)
+            self.assertTrue(store.find("Corner Cafe")["corridor"], "downtown storefronts come from first-friday.json")
         finally:
             shutil.rmtree(d)
 

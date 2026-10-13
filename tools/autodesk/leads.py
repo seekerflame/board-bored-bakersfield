@@ -355,11 +355,17 @@ def latest_outreach_csv(reports=REPORTS):
 
 
 def load_board(path):
-    """data/board.json plus the archive of past events that sits beside it (data/archive.json)."""
+    """data/board.json plus the files that sit beside it: archive.json (past events) and first-friday.json (the First Friday
+    event, whose vendors are the downtown storefronts)."""
     board = load_json(path, {})
-    arch = load_json(os.path.join(os.path.dirname(os.path.abspath(path)), "archive.json"), {})
+    here = os.path.dirname(os.path.abspath(path))
+    arch = load_json(os.path.join(here, "archive.json"), {})
     if arch.get("city_events_archive"):
         board["city_events_archive"] = arch["city_events_archive"]
+    ff = load_json(os.path.join(here, "first-friday.json"), {})
+    if ff.get("events"):
+        board["events"] = ff["events"]
+        board["featured"] = ff.get("featured", board.get("featured"))
     return board
 
 

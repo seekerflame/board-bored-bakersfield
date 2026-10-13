@@ -12,6 +12,9 @@
  * it, so the pages that load board.json on every visit do not carry it. If an
  * archive.json sits beside the file being validated, it is validated too.
  *
+ * The First Friday event (spots, vendors, parking, history) lives in first-friday.json ({"featured", "events"}) for the
+ * same reason, and is validated the same way when it sits beside the file being validated.
+ *
  * No dependencies — plain Node. Usage:
  *   node tools/validate-board.js [path/to/board.json]
  * Exit 0 = valid, exit 1 = errors printed to stderr.
@@ -98,6 +101,20 @@ if (fs.existsSync(archivePath)) {
   else {
     if (d.city_events_archive) warn("city_events_archive is in both board.json and archive.json; archive.json is used");
     d.city_events_archive = a.city_events_archive;
+  }
+}
+
+// first-friday.json beside the board (see header)
+var ffPath = path.join(path.dirname(file), "first-friday.json");
+if (fs.existsSync(ffPath)) {
+  var ff;
+  try { ff = JSON.parse(fs.readFileSync(ffPath, "utf8")); }
+  catch (e) { console.error("❌ first-friday.json is not valid JSON: " + e.message); process.exit(1); }
+  if (!ff || !Array.isArray(ff.events)) err("first-friday.json needs an 'events' array");
+  else {
+    if (d.events || d.featured) warn("events/featured are in both board.json and first-friday.json; first-friday.json is used");
+    d.events = ff.events;
+    d.featured = ff.featured;
   }
 }
 

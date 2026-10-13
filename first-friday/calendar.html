@@ -108,6 +108,7 @@
 
 <script src="../lib/safe.js"></script>
 <script src="../lib/cal.js"></script>
+<script src="../lib/board.js"></script>
 <script>
 (function(){
   var $=function(id){return document.getElementById(id)};
@@ -116,7 +117,7 @@
   var MOS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
   var DOWL=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 
-  fetch("../data/board.json").then(function(r){return r.json()}).then(function(d){
+  bbBoard.load({firstFriday:true}).then(function(d){
     var email=d.board.contact; // required by validate-board.js
     $("mailFoot").href="mailto:"+email;$("mailFoot").textContent=email;
     var today=bbCal.todayMid();

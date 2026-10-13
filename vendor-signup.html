@@ -161,6 +161,7 @@
 <script src="lib/safe.js"></script>
 <script src="lib/pwa.js"></script>
 <script src="lib/api.js"></script>
+<script src="lib/board.js"></script>
 <script>
 (function(){
   var $=function(id){return document.getElementById(id)};
@@ -204,7 +205,7 @@
   $("tabArtist").onclick=function(){showTab("artist");};
 
   // ---------- load live event + spot availability ----------
-  fetch("data/board.json",{cache:"no-store"}).then(function(r){return r.json()}).then(function(d){
+  bbBoard.load({firstFriday:true,cache:"no-store"}).then(function(d){
     var ev=(d.events||[]).filter(function(e){return e.slug===d.featured})[0]||(d.events||[])[0];
     if(!ev)return;
     $("tagline").textContent=(ev.name||"")+" · "+(ev.area||"")+(ev.date?" · "+ev.date:"");

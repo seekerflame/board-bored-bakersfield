@@ -310,19 +310,22 @@ t("dedupe: a dated occurrence of an existing weekly regular is a duplicate; a di
   assert.ok(dedupe.findDuplicate(mk("Open Mic", "Test Hall", "2026-10-02"), weekly), "1st Friday of the month is in the regular's weeks");
   assert.ok(!dedupe.findDuplicate(mk("Open Mic", "Test Hall", "2026-10-09"), weekly), "2nd Friday is not one of its weeks (1st and 3rd)");
 });
-// ---------------------------------------------------------------- validate-board.js + archive.json
+// ---------------------------------------------------------------- validate-board.js + archive.json + first-friday.json
 (function () {
   var fs = require("fs"), os = require("os"), path = require("path"), cp = require("child_process");
-  var real = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "data", "board.json"), "utf8"));
-  function run(board, archive) {
+  var realBoard = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "data", "board.json"), "utf8"));
+  var realFF = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "data", "first-friday.json"), "utf8"));
+  var real = Object.assign({}, realBoard, realFF);   // the merged shape the pages see
+  function write(dir, name, v) { if (v !== undefined) fs.writeFileSync(path.join(dir, name), typeof v === "string" ? v : JSON.stringify(v)); }
+  function run(board, archive, firstFriday) {
     var dir = fs.mkdtempSync(path.join(os.tmpdir(), "bbv-"));
-    fs.writeFileSync(path.join(dir, "board.json"), JSON.stringify(board));
-    if (archive !== undefined) fs.writeFileSync(path.join(dir, "archive.json"), typeof archive === "string" ? archive : JSON.stringify(archive));
+    write(dir, "board.json", board); write(dir, "archive.json", archive); write(dir, "first-friday.json", firstFriday);
     var r = cp.spawnSync(process.execPath, [path.join(__dirname, "validate-board.js"), path.join(dir, "board.json")], { encoding: "utf8" });
     fs.rmSync(dir, { recursive: true, force: true });
     return r;
   }
   var base = JSON.parse(JSON.stringify(real)); delete base.city_events_archive;
+  var slim = JSON.parse(JSON.stringify(base)); delete slim.events; delete slim.featured;   // board.json as shipped now
   var good = { id: "x1", name: "Old show", schedule: { date: "2026-01-02" }, lat: 35.37, lng: -119.02 };
   t("validator checks archive.json beside the board and counts it", function () {
     var r = run(base, { city_events_archive: [good] });
@@ -350,7 +353,34 @@ t("dedupe: a dated occurrence of an existing weekly regular is a duplicate; a di
     assert(/both board\.json and archive\.json/.test(r.stderr), r.stderr);
     assert(/2 archived/.test(r.stdout), "archive.json wins: " + r.stdout);
   });
-  t("the shipped board.json no longer carries the archive; archive.json does", function () {
+  t("first-friday.json beside a slim board.json is validated and counted", function () {
+    var r = run(slim, undefined, { featured: realFF.featured, events: realFF.events });
+    assert.strictEqual(r.status, 0, r.stderr);
+    assert(/1 event\(s\), 8 vendors, 86 spots/.test(r.stdout), r.stdout);
+  });
+  t("validator rejects bad data inside first-friday.json (coordinates, missing array, broken JSON, dangling featured)", function () {
+    var ev = JSON.parse(JSON.stringify(realFF.events));
+    ev[0].spots[0].lat = 95;
+    var r = run(slim, undefined, { featured: realFF.featured, events: ev });
+    assert.strictEqual(r.status, 1);
+    assert(/spots\[0\]/.test(r.stderr) && /out of range/.test(r.stderr), r.stderr);
+    assert.strictEqual(run(slim, undefined, { featured: "x" }).status, 1, "no events array");
+    assert.strictEqual(run(slim, undefined, "{broken").status, 1);
+    assert.strictEqual(run(slim, undefined, { featured: "no-such-event", events: realFF.events }).status, 1, "featured must name a real event");
+  });
+  t("a slim board.json with no First Friday data anywhere fails (the pages need an event)", function () {
+    assert.strictEqual(run(slim).status, 1);
+  });
+  t("an old-style board.json that still carries events + featured keeps validating; both places warns", function () {
+    assert.strictEqual(run(base).status, 0);
+    var r = run(base, undefined, { featured: realFF.featured, events: realFF.events });
+    assert.strictEqual(r.status, 0, r.stderr);
+    assert(/both board\.json and first-friday\.json/.test(r.stderr), r.stderr);
+  });
+  t("the shipped board.json carries neither the archive nor the First Friday block; their files do", function () {
+    assert.strictEqual(realBoard.events, undefined);
+    assert.strictEqual(realBoard.featured, undefined);
+    assert(Array.isArray(realFF.events) && realFF.events.length > 0 && realFF.featured);
     assert.strictEqual(real.city_events_archive, undefined);
     var a = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "data", "archive.json"), "utf8"));
     assert(Array.isArray(a.city_events_archive) && a.city_events_archive.length > 0);
@@ -434,6 +464,104 @@ t("dedupe: a dated occurrence of an existing weekly regular is a duplicate; a di
       assert(load !== -1 && load < m.index, n + " uses bbApi." + m[1] + " without loading lib/api.js first");
     });
     assert(used >= 10, "expected the shared helpers to be in use on >= 10 pages, found " + used);
+  });
+})();
+
+// ---------------------------------------------------------------- lib/board.js (shared board loader)
+(function () {
+  var fs = require("fs"), path = require("path");
+  var root = path.join(__dirname, "..");
+  function loadBoardLib(files, calls, scriptSrc) {
+    var key = require.resolve("../lib/board.js");
+    delete require.cache[key];
+    global.window = {};
+    global.document = { currentScript: { src: scriptSrc || "https://x.test/site/lib/board.js" } };
+    global.fetch = function (url, opt) {
+      calls.push({ url: String(url), opt: opt });
+      var name = String(url).split("/data/")[1];
+      if (!(name in files)) return Promise.resolve({ ok: false, status: 404, json: function () { return Promise.resolve({}); } });
+      if (files[name] === "boom") return Promise.reject(new Error("offline"));
+      return Promise.resolve({ ok: true, status: 200, json: function () { return Promise.resolve(JSON.parse(JSON.stringify(files[name]))); } });
+    };
+    require(key);
+    return global.window.bbBoard;
+  }
+  function tbl(name, fn) {   // async test with fake browser globals removed afterwards
+    asyncTests.push([name, function () {
+      return Promise.resolve().then(fn).then(
+        function (v) { cleanup(); return v; }, function (e) { cleanup(); throw e; });
+    }]);
+    function cleanup() { delete global.window; delete global.document; delete global.fetch; }
+  }
+  var FF = { featured: "first-friday", events: [{ slug: "first-friday", name: "FF" }] };
+  var ARCH = { city_events_archive: [{ id: "a1", name: "old" }] };
+  var BOARD = { board: { contact: "a@b.co" }, city_events: [{ id: "c1" }] };
+
+  tbl("bbBoard.load fetches only board.json unless a page asks for more, resolving paths from its own URL", function () {
+    var calls = [], b = loadBoardLib({ "board.json": BOARD, "first-friday.json": FF, "archive.json": ARCH }, calls);
+    return b.load().then(function (d) {
+      assert.deepStrictEqual(calls.map(function (c) { return c.url; }), ["https://x.test/site/data/board.json"]);
+      assert.strictEqual(d.events, undefined);
+      assert.strictEqual(d.city_events.length, 1);
+    });
+  });
+  tbl("bbBoard.load merges the First Friday and archive files in when asked", function () {
+    var calls = [], b = loadBoardLib({ "board.json": BOARD, "first-friday.json": FF, "archive.json": ARCH }, calls);
+    return b.load({ firstFriday: true, archive: true }).then(function (d) {
+      assert.strictEqual(d.featured, "first-friday");
+      assert.strictEqual(d.events[0].name, "FF");
+      assert.strictEqual(d.city_events_archive[0].id, "a1");
+      assert.strictEqual(calls.length, 3);
+    });
+  });
+  tbl("a missing or failing sibling never breaks the page; a failing board.json does", function () {
+    var b = loadBoardLib({ "board.json": BOARD, "first-friday.json": "boom" }, []);
+    return b.load({ firstFriday: true, archive: true }).then(function (d) {
+      assert.strictEqual(d.events, undefined);
+      assert.strictEqual(d.city_events.length, 1);
+      var b2 = loadBoardLib({}, []);
+      return b2.load().then(function () { throw new Error("should have rejected"); }, function (e) { assert(/board\.json 404/.test(e.message)); });
+    });
+  });
+  tbl("an old-style board.json that still carries events keeps working when the sibling is missing", function () {
+    var legacy = Object.assign({}, BOARD, FF);
+    var b = loadBoardLib({ "board.json": legacy }, []);
+    return b.load({ firstFriday: true }).then(function (d) { assert.strictEqual(d.events[0].slug, "first-friday"); assert.strictEqual(d.featured, "first-friday"); });
+  });
+  tbl("the cache option reaches every fetch", function () {
+    var calls = [], b = loadBoardLib({ "board.json": BOARD, "first-friday.json": FF }, calls);
+    return b.load({ firstFriday: true, cache: "no-store" }).then(function () {
+      assert(calls.length === 2 && calls.every(function (c) { return c.opt && c.opt.cache === "no-store"; }));
+    });
+  });
+  tbl("bbBoard.split is the inverse of load: the files a merged board is stored as", function () {
+    var b = loadBoardLib({ "board.json": BOARD, "first-friday.json": FF, "archive.json": ARCH }, []);
+    return b.load({ firstFriday: true, archive: true }).then(function (d) {
+      var parts = b.split(d);
+      assert.deepStrictEqual(parts.board, BOARD, "archive and First Friday keys are not written back into board.json");
+      assert.deepStrictEqual(parts.firstFriday, FF);
+      assert.deepStrictEqual(b.split({ board: {}, city_events: [] }).firstFriday, { featured: undefined, events: [] });
+    });
+  });
+  t("pages that read the First Friday block ask for it; pages that do not never download it", function () {
+    var pages = [];
+    (function walk(dir) {
+      fs.readdirSync(dir, { withFileTypes: true }).forEach(function (e) {
+        if (e.name === "node_modules" || e.name === ".git" || e.name === "tools") return;
+        var p = path.join(dir, e.name);
+        if (e.isDirectory()) walk(p); else if (/\.html$/.test(e.name)) pages.push(p);
+      });
+    })(root);
+    var asks = 0;
+    pages.forEach(function (p) {
+      var s = fs.readFileSync(p, "utf8"), n = path.relative(root, p);
+      var reads = /\b(?:d|bd|DATA)\.(?:events|featured)\b/.test(s);
+      var asksFF = /bbBoard\.load\(\{[^}]*firstFriday:true/.test(s);
+      if (reads) { assert(asksFF, n + " reads the First Friday block without asking bbBoard for it"); asks++; assert(s.indexOf("lib/board.js") !== -1, n + " must load lib/board.js"); }
+      else assert(!asksFF, n + " downloads first-friday.json but never reads it");
+      assert(!/fetch\([^)]*first-friday\.json/.test(s), n + " fetches first-friday.json by hand instead of through bbBoard");
+    });
+    assert(asks >= 5, "expected >= 5 pages to use the First Friday block, found " + asks);
   });
 })();
 

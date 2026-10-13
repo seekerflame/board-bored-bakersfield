@@ -208,6 +208,7 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="anonymous"></script>
 <script src="lib/safe.js"></script>
+<script src="lib/board.js"></script>
 <script>
 (function(){
   var $=function(id){return document.getElementById(id)};
@@ -409,7 +410,7 @@
   }
 
   function loadLive(){
-    return fetch("data/board.json",{cache:"no-store"}).then(function(r){return r.json()});
+    return bbBoard.load({firstFriday:true,cache:"no-store"});  // board.json + first-friday.json, merged for editing
   }
   function boot(){
     var draft=localStorage.getItem(DRAFT_KEY);
@@ -722,8 +723,8 @@
   function jsonOut(){readEvent();return JSON.stringify(DATA,null,2);}
   $("download").onclick=function(){
     var blob=new Blob([jsonOut()],{type:"application/json"});
-    var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="board.json";a.click();
-    toast("Downloaded board.json");};
+    var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="board-full-backup.json";a.click();
+    toast("Downloaded a full backup (board + First Friday in one file)");};
   $("copy").onclick=function(){
     navigator.clipboard.writeText(jsonOut()).then(function(){toast("JSON copied")})
       .catch(function(){toast("Copy blocked — use Download")});};
@@ -731,24 +732,34 @@
 
   // ---------- publish via GitHub API ----------
   function b64(s){return btoa(unescape(encodeURIComponent(s)));}
+  function unb64(s){return decodeURIComponent(escape(atob(s.replace(/\s/g,""))));}
+  // Create-or-update one data file. A file whose content is unchanged is left alone (no empty commit).
+  function putFile(name,obj,headers){
+    var api="https://api.github.com/repos/"+settings.repo+"/contents/data/"+name;
+    return fetch(api+"?ref=main",{headers:headers}).then(function(r){
+      if(r.status===404)return {};
+      if(!r.ok)throw new Error("Can't read "+name+" ("+r.status+") — check repo name + token");
+      return r.json();
+    }).then(function(cur){
+      try{if(cur.content&&JSON.stringify(JSON.parse(unb64(cur.content)))===JSON.stringify(obj))return "unchanged";}catch(e){}
+      var body={message:"Board update from phone admin ("+name+")",content:b64(JSON.stringify(obj,null,2)),branch:"main"};
+      if(cur.sha)body.sha=cur.sha;
+      return fetch(api,{method:"PUT",headers:headers,body:JSON.stringify(body)}).then(function(r){
+        if(!r.ok)throw new Error("Publish failed for "+name+" ("+r.status+")");
+        return "published";
+      });
+    });
+  }
   $("publish").onclick=function(){
     readEvent();saveDraft();
     if(!settings.token||!settings.repo){$("settings").classList.add("open");
       status("Add your GitHub repo + token in ⚙️ settings first (one-time).",false);
       window.scrollTo({top:0,behavior:"smooth"});return;}
-    var api="https://api.github.com/repos/"+settings.repo+"/contents/data/board.json";
     var headers={"Authorization":"Bearer "+settings.token,"Accept":"application/vnd.github+json"};
+    // This page edits only the First Friday block, so only first-friday.json is ever written. board.json (city events) is left
+    // alone: the ingest bot adds events to it, and writing this page's older copy back would erase them.
     $("publish").textContent="Publishing…";
-    fetch(api+"?ref=main",{headers:headers})
-      .then(function(r){if(!r.ok)throw new Error("Can't read repo ("+r.status+") — check repo name + token");return r.json();})
-      .then(function(cur){
-        return fetch(api,{method:"PUT",headers:headers,body:JSON.stringify({
-          message:"Board update from phone admin",
-          content:b64(JSON.stringify(DATA,null,2)),
-          sha:cur.sha, branch:"main"
-        })});
-      })
-      .then(function(r){if(!r.ok)throw new Error("Publish failed ("+r.status+")");return r.json();})
+    putFile("first-friday.json",bbBoard.split(DATA).firstFriday,headers)
       .then(function(){
         localStorage.removeItem(DRAFT_KEY);
         status("✅ Published! Live for everyone in about a minute.",true);
