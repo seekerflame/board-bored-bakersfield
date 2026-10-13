@@ -310,6 +310,53 @@ t("dedupe: a dated occurrence of an existing weekly regular is a duplicate; a di
   assert.ok(dedupe.findDuplicate(mk("Open Mic", "Test Hall", "2026-10-02"), weekly), "1st Friday of the month is in the regular's weeks");
   assert.ok(!dedupe.findDuplicate(mk("Open Mic", "Test Hall", "2026-10-09"), weekly), "2nd Friday is not one of its weeks (1st and 3rd)");
 });
+// ---------------------------------------------------------------- validate-board.js + archive.json
+(function () {
+  var fs = require("fs"), os = require("os"), path = require("path"), cp = require("child_process");
+  var real = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "data", "board.json"), "utf8"));
+  function run(board, archive) {
+    var dir = fs.mkdtempSync(path.join(os.tmpdir(), "bbv-"));
+    fs.writeFileSync(path.join(dir, "board.json"), JSON.stringify(board));
+    if (archive !== undefined) fs.writeFileSync(path.join(dir, "archive.json"), typeof archive === "string" ? archive : JSON.stringify(archive));
+    var r = cp.spawnSync(process.execPath, [path.join(__dirname, "validate-board.js"), path.join(dir, "board.json")], { encoding: "utf8" });
+    fs.rmSync(dir, { recursive: true, force: true });
+    return r;
+  }
+  var base = JSON.parse(JSON.stringify(real)); delete base.city_events_archive;
+  var good = { id: "x1", name: "Old show", schedule: { date: "2026-01-02" }, lat: 35.37, lng: -119.02 };
+  t("validator checks archive.json beside the board and counts it", function () {
+    var r = run(base, { city_events_archive: [good] });
+    assert.strictEqual(r.status, 0, r.stderr);
+    assert(/1 archived/.test(r.stdout), r.stdout);
+  });
+  t("validator rejects an unsafe link inside archive.json", function () {
+    var r = run(base, { city_events_archive: [Object.assign({}, good, { link: "javascript:alert(1)" })] });
+    assert.strictEqual(r.status, 1);
+    assert(/city_events_archive\[0\]\.link/.test(r.stderr), r.stderr);
+  });
+  t("validator rejects an archive.json without the array, and broken JSON", function () {
+    assert.strictEqual(run(base, { nope: [] }).status, 1);
+    assert.strictEqual(run(base, "{broken").status, 1);
+  });
+  t("an old-style board.json that still carries the archive keeps validating", function () {
+    var legacy = Object.assign({}, base, { city_events_archive: [good] });
+    var r = run(legacy);
+    assert.strictEqual(r.status, 0, r.stderr);
+    assert(/1 archived/.test(r.stdout), r.stdout);
+  });
+  t("both places holding the archive warns instead of silently doubling it", function () {
+    var r = run(Object.assign({}, base, { city_events_archive: [good] }), { city_events_archive: [good, Object.assign({}, good, { id: "x2" })] });
+    assert.strictEqual(r.status, 0, r.stderr);
+    assert(/both board\.json and archive\.json/.test(r.stderr), r.stderr);
+    assert(/2 archived/.test(r.stdout), "archive.json wins: " + r.stdout);
+  });
+  t("the shipped board.json no longer carries the archive; archive.json does", function () {
+    assert.strictEqual(real.city_events_archive, undefined);
+    var a = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "data", "archive.json"), "utf8"));
+    assert(Array.isArray(a.city_events_archive) && a.city_events_archive.length > 0);
+  });
+})();
+
 (function run() {
   if (!makeQueue) { console.error("✗ pwa.js did not export BB._makeQueue"); process.exitCode = 1; }
   var chain = Promise.resolve();

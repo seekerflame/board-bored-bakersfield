@@ -354,6 +354,15 @@ def latest_outreach_csv(reports=REPORTS):
     return files[-1] if files else None
 
 
+def load_board(path):
+    """data/board.json plus the archive of past events that sits beside it (data/archive.json)."""
+    board = load_json(path, {})
+    arch = load_json(os.path.join(os.path.dirname(os.path.abspath(path)), "archive.json"), {})
+    if arch.get("city_events_archive"):
+        board["city_events_archive"] = arch["city_events_archive"]
+    return board
+
+
 def sync_all(store, board, ledger, outreach_csv=None, now=None):
     before = len(store.leads)
     merge_duplicates(store, now)
@@ -715,7 +724,7 @@ def main(argv=None):
     a = ap.parse_args(argv)
     store = Store(a.store)
     if a.cmd == "sync":
-        added = sync_all(store, load_json(a.board, {}), load_json(a.ledger, {}), latest_outreach_csv())
+        added = sync_all(store, load_board(a.board), load_json(a.ledger, {}), latest_outreach_csv())
         if added or not a.quiet:
             priv = ranked(store)
             print("leads: %d total (%+d new), %d private; tiers A/B/C/D = %s" % (

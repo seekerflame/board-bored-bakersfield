@@ -10,7 +10,7 @@
  * Paths are relative to this file's scope, so the same code works at the domain
  * root locally and under /board-bored-bakersfield/ on GitHub Pages.
  */
-var VERSION = "bb-v15";
+var VERSION = "bb-v16";
 var SHELL = VERSION + "-shell";
 
 // Resolved relative to the SW scope — correct under any subpath.
@@ -40,6 +40,7 @@ var PRECACHE = [
   "lib/safe.js",
   "my-clock.html",
   "data/board.json",
+  "data/archive.json",
   "icons/icon-192.png",
   "icons/icon-512.png",
 ];
@@ -66,7 +67,7 @@ self.addEventListener("activate", function (e) {
 });
 
 function isBoardJson(url) {
-  return url.pathname.indexOf("data/board.json") !== -1;
+  return /\/data\/(board|archive)\.json$/.test(url.pathname);
 }
 
 self.addEventListener("fetch", function (e) {

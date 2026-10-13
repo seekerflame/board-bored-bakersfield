@@ -96,7 +96,17 @@
     var d=new Date(+p[0],+p[1]-1,+p[2]);
     return d.toLocaleDateString(undefined,{weekday:"short",year:"numeric",month:"short",day:"numeric"});
   }
-  fetch("data/board.json").then(function(r){return r.json()}).then(function(d){
+  // the timeline is the one page that reads the archive of past events (kept in its own file, off every other page's download)
+  function loadBoard(){
+    return Promise.all([
+      fetch("data/board.json").then(function(r){return r.json()}),
+      fetch("data/archive.json").then(function(r){return r.ok?r.json():{}}).catch(function(){return {}})
+    ]).then(function(res){
+      res[0].city_events_archive=res[1].city_events_archive||res[0].city_events_archive||[];
+      return res[0];
+    });
+  }
+  loadBoard().then(function(d){
     var ev=(d.events||[]).filter(function(e){return e.slug===d.featured})[0]||(d.events||[])[0];
     var box=$("timeline"); box.innerHTML="";
     if(!ev){box.innerHTML='<div class="tl-note">No timeline data yet.</div>';return;}

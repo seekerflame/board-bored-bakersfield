@@ -355,6 +355,25 @@ class Recon(unittest.TestCase):
         self.assertEqual(self.brew["contact"]["phone"]["source"], "https://testbrewing.example/contact")
 
 
+class BoardLoading(unittest.TestCase):
+    def test_archive_beside_the_board_is_merged_in(self):
+        import json
+        d = tempfile.mkdtemp()
+        try:
+            with open(os.path.join(d, "board.json"), "w") as f:
+                json.dump({"city_events": [{"name": "Live", "venue": "Live Hall", "schedule": {"weekday": 1}}]}, f)
+            self.assertEqual(L.load_board(os.path.join(d, "board.json")).get("city_events_archive"), None)
+            with open(os.path.join(d, "archive.json"), "w") as f:
+                json.dump({"city_events_archive": [{"name": "Old", "venue": "Gone Hall"}]}, f)
+            b = L.load_board(os.path.join(d, "board.json"))
+            self.assertEqual([e["venue"] for e in b["city_events_archive"]], ["Gone Hall"])
+            store = L.Store(os.path.join(d, "leads"))
+            L.sync_all(store, b, {}, None, NOW)
+            self.assertEqual(store.find("Gone Hall")["past_events"], 1)
+        finally:
+            shutil.rmtree(d)
+
+
 class SharedJson(unittest.TestCase):
     def test_load_default_and_atomic_save(self):
         import textutil as tu

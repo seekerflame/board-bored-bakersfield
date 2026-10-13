@@ -7,6 +7,11 @@
  * a "Couldn't load" message. This script parses the file and asserts the shape
  * the pages rely on, so CI (and `npm test`) fail BEFORE GitHub Pages deploys.
  *
+ * The archive of past one-time events lives next to the board in archive.json
+ * ({"city_events_archive": [...]}). It only grows and only the timeline page reads
+ * it, so the pages that load board.json on every visit do not carry it. If an
+ * archive.json sits beside the file being validated, it is validated too.
+ *
  * No dependencies — plain Node. Usage:
  *   node tools/validate-board.js [path/to/board.json]
  * Exit 0 = valid, exit 1 = errors printed to stderr.
@@ -81,6 +86,19 @@ try {
 } catch (e) {
   console.error("❌ board.json is not valid JSON: " + e.message);
   process.exit(1);
+}
+
+// archive.json beside the board (see header)
+var archivePath = path.join(path.dirname(file), "archive.json");
+if (fs.existsSync(archivePath)) {
+  var a;
+  try { a = JSON.parse(fs.readFileSync(archivePath, "utf8")); }
+  catch (e) { console.error("❌ archive.json is not valid JSON: " + e.message); process.exit(1); }
+  if (!a || !Array.isArray(a.city_events_archive)) err("archive.json needs a 'city_events_archive' array");
+  else {
+    if (d.city_events_archive) warn("city_events_archive is in both board.json and archive.json; archive.json is used");
+    d.city_events_archive = a.city_events_archive;
+  }
 }
 
 // board block
