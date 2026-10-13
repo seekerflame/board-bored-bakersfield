@@ -2,7 +2,7 @@
 """leads: one append-only registry of every Bakersfield business we know, ranked by how warm they already are.
 
 Sources (all read-only): our own board (live + archive listings, corridor storefronts), the newsletter outreach report,
-the pledge ledger and the outreach log. `recon` reads a business's OWN website (robots honored, polite, cached) and records
+the pledge ledger. Stages are tracked here only (outreach_desk's `mark` writes through this registry). `recon` reads a business's OWN website (robots honored, polite, cached) and records
 only contact facts printed on that page, each with its source URL and date. NOTHING is ever sent to anyone.
 Stage changes, notes and recon findings are append-only events; sync never deletes a lead or resets its stage/notes.
 Lead data stays in ~/.boardbored/leads/ (never in the public site repo).
@@ -29,8 +29,7 @@ from urllib.parse import urljoin, urlparse
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from netfetch import FetchRefused, PoliteFetcher  # noqa: E402
-from revenue_desk import PUBLIC_SECTOR, venue_key  # noqa: E402
-from textutil import cover, html_to_text, norm, tokens  # noqa: E402
+from textutil import PUBLIC_SECTOR, cover, html_to_text, load_json, norm, save_json, tokens, venue_key  # noqa: E402
 
 HOME = os.path.expanduser("~")
 REPO = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))
@@ -38,10 +37,8 @@ STORE = os.environ.get("BB_LEADS_DIR") or os.path.join(HOME, ".boardbored", "lea
 BOARD = os.path.join(REPO, "data", "board.json")
 LEDGER = os.path.join(HOME, "bbk-app", "data", "ledger.json")
 REPORTS = os.path.join(HOME, ".boardbored", "reports")
-OUTREACH_LOG = os.path.join(HOME, ".boardbored", "outreach", "log.jsonl")
 CACHE = os.path.join(HOME, ".boardbored", "autodesk", "cache")
 STAGES = ("new", "contacted", "replied", "in_talks", "partner", "declined", "do_not_contact")
-OUTREACH_STAGE = {"contacted": "contacted", "replied": "replied", "joined": "partner", "declined": "declined"}
 CONTACT_KINDS = ("website", "instagram", "facebook", "email", "phone")
 NOT_OWN_SITE = ("tixr.", "eventbrite.", "simpletix.", "axs.", "ticketmaster.", "allevents.", "universe.com", "runsignup.", "givebutter.",
                 "qgiv.", "eventcreate.", "regmovies.", "facebook.com", "instagram.com", "google.", "bing.com", "duckduckgo.com",
@@ -140,23 +137,6 @@ def is_public(name):
 def own_site_candidate(url):
     h = urlparse(url or "").netloc.lower()
     return bool(h) and not any(t in h for t in NOT_OWN_SITE)
-
-
-def load_json(path, default):
-    try:
-        with open(path, encoding="utf-8") as f:
-            return json.load(f)
-    except Exception:
-        return default
-
-
-def save_json(path, obj):
-    os.makedirs(os.path.dirname(path), exist_ok=True)
-    tmp = path + ".tmp"
-    with open(tmp, "w", encoding="utf-8") as f:
-        json.dump(obj, f, indent=1, ensure_ascii=False)
-        f.write("\n")
-    os.replace(tmp, path)
 
 
 class Store:
@@ -369,21 +349,6 @@ def sync_newsletter(store, rows, now=None):
             add_candidate(lead, "facebook", url, "page link printed in the newsletter")
 
 
-def sync_outreach_log(store, now=None):
-    last = {}
-    try:
-        for ln in open(OUTREACH_LOG, encoding="utf-8"):
-            r = json.loads(ln)
-            last[r["key"]] = r
-    except Exception:
-        return
-    for key, r in last.items():
-        lead = store.find(r.get("venue") or key)
-        st = OUTREACH_STAGE.get(r.get("status"))
-        if lead and st and lead["stage"] == "new":
-            set_stage(store, lead, st, "from outreach log: %s" % (r.get("note") or r.get("status")), now)
-
-
 def latest_outreach_csv(reports=REPORTS):
     files = sorted(glob.glob(os.path.join(reports, "outreach_*.csv")))
     return files[-1] if files else None
@@ -397,7 +362,6 @@ def sync_all(store, board, ledger, outreach_csv=None, now=None):
     if outreach_csv and os.path.exists(outreach_csv):
         with open(outreach_csv, newline="", encoding="utf-8") as f:
             sync_newsletter(store, list(csv.DictReader(f)), now)
-    sync_outreach_log(store, now)
     for lead in store.leads.values():
         lead["score"], lead["tier"], lead["why"] = score_lead(lead)
         lead["updated"] = (now or dt.datetime.now()).date().isoformat()

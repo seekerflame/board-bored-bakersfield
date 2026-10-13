@@ -4,10 +4,10 @@
 Reads only public pages (polite fetch, robots honored). For every venue/host featured in recent issues it records how
 often they appear, what they list, their address, and the best contact link the newsletter itself printed. It drafts a
 plain, truthful first message (every name/number verified against the fact sheet) and tracks who has been contacted in
-an append-only log. It NEVER sends anything: a human sends, then runs `mark`.
+the leads registry (append-only events). It NEVER sends anything: a human sends, then runs `mark`.
 
   python3 outreach_desk.py build [--issues 58-63]     # writes ~/.boardbored/reports/outreach_<date>.{md,csv}
-  python3 outreach_desk.py mark "<venue>" contacted|replied|joined|declined [--note ...]
+  python3 outreach_desk.py mark "<venue>" contacted|replied|joined|declined [--note ...]   # writes the stage into the leads registry
 """
 import argparse
 import collections
@@ -21,19 +21,20 @@ from urllib.parse import urlparse
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import adapters  # noqa: E402
+import leads  # noqa: E402
 from netfetch import PoliteFetcher  # noqa: E402
-from revenue_desk import venue_key, verify_draft  # noqa: E402
-from textutil import cover, html_to_text  # noqa: E402
+from revenue_desk import verify_draft  # noqa: E402
+from textutil import cover, html_to_text, venue_key  # noqa: E402
 
 HOME = os.path.expanduser("~")
 BOARD = os.path.join(HOME, "bbk-live", "data", "board.json")
 OUT = os.path.join(HOME, ".boardbored", "reports")
-LOG = os.path.join(HOME, ".boardbored", "outreach", "log.jsonl")
 ISSUE_URL = "https://newsletter.thebakersfieldguy.com/p/the-bakersfield-guy-s-newsletter-issue-%d"
 JOIN_URL = "https://seekerflame.github.io/board-bored-bakersfield/first-friday/submit-event.html?ref=outreach"
 TICKETING = ("eventbrite.", "simpletix.", "tixr.", "ticketon.", "axs.", "ticketmaster.", "regmovies.", "dignityhealtharena.", "qgiv.", "givebutter.", "eventcreate.", "universe.com")
 PUBLIC_WORDS = ("library", "county", "city of", "college", "university", "csub", "school", "district", "park")
-STATUSES = ("contacted", "replied", "joined", "declined")
+STATUS_TO_STAGE = {"contacted": "contacted", "replied": "replied", "joined": "partner", "declined": "declined"}
+STATUSES = tuple(STATUS_TO_STAGE)
 
 
 def link_kind(url):
@@ -102,19 +103,15 @@ def draft(row):
     return text, bad
 
 
-def load_log():
-    state = {}
-    try:
-        for ln in open(LOG):
-            r = json.loads(ln)
-            state[r["key"]] = r
-    except Exception:
-        pass
-    return state
+def status_of(store, venue):
+    """Where this business stands, read from the one stage tracker (the leads registry)."""
+    lead = store.find(*leads.split_names(venue))
+    return "not_contacted" if lead is None or lead["stage"] == "new" else lead["stage"]
 
 
-def build(issues, fetcher, board_path=BOARD, out_dir=OUT, today=None):
+def build(issues, fetcher, board_path=BOARD, out_dir=OUT, today=None, store=None):
     today = today or dt.date.today()
+    store = store if store is not None else leads.Store()
     texts = {}
     for n in issues:
         r = fetcher.get(ISSUE_URL % n)
@@ -123,9 +120,8 @@ def build(issues, fetcher, board_path=BOARD, out_dir=OUT, today=None):
     board = json.load(open(board_path))
     bv = {e.get("venue") for e in board.get("city_events", []) if e.get("venue")}
     rows = aggregate(texts, bv)
-    log = load_log()
     for r in rows:
-        r["status"] = log.get(r["key"], {}).get("status", "not_contacted")
+        r["status"] = status_of(store, r["venue"])
         r["draft"], r["draft_problems"] = draft(r)
         if r["draft_problems"]:
             r["draft"] = ""  # never offer a message whose names/numbers don't all trace to the fact sheet
@@ -151,12 +147,16 @@ def build(issues, fetcher, board_path=BOARD, out_dir=OUT, today=None):
     return rows, base
 
 
-def mark(venue, status, note="", now=None):
-    os.makedirs(os.path.dirname(LOG), exist_ok=True)
-    row = {"ts": (now or dt.datetime.now()).isoformat(timespec="seconds"), "key": venue_key(venue), "venue": venue, "status": status, "note": note}
-    with open(LOG, "a") as f:  # append-only
-        f.write(json.dumps(row) + "\n")
-    return row
+def mark(venue, status, note="", now=None, store=None):
+    """Record that you contacted / heard back from / signed / lost a business. Append-only (leads' events log)."""
+    store = store if store is not None else leads.Store()
+    lead = store.ensure(venue, now)
+    if lead is None:
+        raise ValueError("%r is not a business name (address or placeholder)" % venue)
+    leads.set_stage(store, lead, STATUS_TO_STAGE[status], note, now)
+    store.save()
+    return {"ts": (now or dt.datetime.now()).isoformat(timespec="seconds"), "key": venue_key(venue), "venue": venue, "status": status,
+            "note": note, "stage": lead["stage"]}
 
 
 def main(argv=None):

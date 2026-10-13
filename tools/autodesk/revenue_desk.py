@@ -6,17 +6,18 @@ report. NEVER sends anything to anyone: drafts are for a human to read and send.
 Every number and business name in a draft must trace to the fact sheet or the draft is rejected.
 """
 import argparse
-import collections
 import datetime as dt
 import json
 import os
 import re
 import sys
+import tempfile
 import urllib.error
 import urllib.request
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import netfetch  # noqa: E402,F401  (side effect: IPv4-first resolver)
+import leads  # noqa: E402
 from textutil import cover, norm  # noqa: E402
 
 HOME = os.path.expanduser("~")
@@ -24,8 +25,6 @@ REPO = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), 
 DEFAULT_PRICING = os.path.join(HOME, "bbk-app", "data", "pricing.json")
 DEFAULT_LEDGER = "https://board-bored-civic-ops-240816253301.us-central1.run.app/api/ledger"
 DEFAULT_BOARD = os.path.join(REPO, "data", "board.json")
-PUBLIC_SECTOR = ("library", "county", "city of", "college", "university", "csub", "school", "district", "park")
-SUFFIX = re.compile(r"\b(co|company|inc|llc|ltd|corp)$")
 ALLOWED_WORDS = {"board", "bored", "bakersfield", "kern", "first", "friday", "nick", "square", "hi", "hey",
                  "thanks", "map", "free", "featured", "listed", "anchor", "monthly", "season", "once"}
 
@@ -76,34 +75,28 @@ def ledger_snapshot(ledger, today):
             "transactions": len(ledger.get("transactions", [])), "pledges": pledges}
 
 
-def venue_key(name):
-    return SUFFIX.sub("", norm(name)).strip()
-
-
-def prospects(board, exclude_names=(), top=5):
-    agg = collections.defaultdict(lambda: {"names": collections.Counter(), "weekly": 0, "dated": 0,
-                                           "listings": [], "address": None})
-    for e in board.get("city_events", []):
-        v = e.get("venue")
-        if not v or any(w in v.lower() for w in PUBLIC_SECTOR):
-            continue
-        a = agg[venue_key(v)]
-        a["names"][v] += 1
-        s = e.get("schedule") or {}
-        if "weekday" in s or s.get("ongoing"):
-            a["weekly"] += 1
-        else:
-            a["dated"] += 1
-        a["listings"].append(e.get("name"))
-        a["address"] = a["address"] or e.get("address")
-    out = []
-    for key, a in agg.items():
-        name = a["names"].most_common(1)[0][0]
-        if any(cover(name, x) >= 0.8 or cover(x, name) >= 0.8 for x in exclude_names):
-            continue
-        out.append({"name": name, "address": a["address"], "weekly_slots": a["weekly"],
-                    "dated_events": a["dated"], "listings": list(dict.fromkeys(a["listings"]))[:4]})
-    out.sort(key=lambda p: (-(p["weekly_slots"] * 3 + p["dated_events"]), p["name"]))
+def prospects(board, exclude_names=(), top=5, store=None):
+    """The warmest private businesses on our own map, as pitch fact sheets. Entity merging, public-sector filtering,
+    weekly/dated counting and the ranking all come from the leads registry's single scoring rule (leads.score_lead).
+    Pass the real registry as `store` to also skip anyone already in conversation (stage past `new`, or a pledge on file);
+    the board is synced into it in memory only, nothing is saved."""
+    with tempfile.TemporaryDirectory() as tmp:
+        store = store if store is not None else leads.Store(tmp)
+        leads.sync_board(store, board)
+        for lead in store.leads.values():
+            lead["score"], lead["tier"], lead["why"] = leads.score_lead(lead)
+        out = []
+        for lead in leads.ranked(store):
+            om = lead["on_map"]
+            if om["weekly"] + om["dated"] == 0:
+                continue  # listed on our map today, not just remembered from the archive
+            if lead["stage"] != "new" or lead.get("pledge"):
+                continue  # already talking to them: never pitch them cold
+            name = lead["name"]
+            if any(cover(name, x) >= 0.8 or cover(x, name) >= 0.8 for x in exclude_names):
+                continue
+            out.append({"name": name, "address": lead.get("address"), "weekly_slots": om["weekly"],
+                        "dated_events": om["dated"], "listings": om["listings"][:4]})
     return out[:top]
 
 
@@ -183,12 +176,12 @@ def draft_with_model(sheet, model, ask, retries=2):
     return template_draft(sheet), "template"
 
 
-def build_report(pricing, ledger, board, today, stops=(), ask=None, model=None, opener=urllib.request.urlopen):
+def build_report(pricing, ledger, board, today, stops=(), ask=None, model=None, opener=urllib.request.urlopen, store=None):
     money = check_money_path(pricing, opener)
     snap = ledger_snapshot(ledger, today)
     excl = list(stops) + [p["name"] for p in snap["pledges"] if p["name"]]
     sheets = []
-    for p in prospects(board, excl):
+    for p in prospects(board, excl, store=store):
         p["offer"] = offer_for(pricing)
         text, how = draft_with_model(p, model, ask) if (ask and model) else (template_draft(p), "template")
         assert not verify_draft(text, p), "template draft must always verify"
@@ -281,7 +274,7 @@ def main(argv=None):
             stops = [x.get("name", "") for x in json.loads(bbody).get("stops", [])]
         except Exception:
             pass
-    rep = build_report(pricing, ledger, board, today, stops=stops, ask=ollama_ask if a.llm else None, model=a.llm)
+    rep = build_report(pricing, ledger, board, today, stops=stops, ask=ollama_ask if a.llm else None, model=a.llm, store=leads.Store())
     os.makedirs(a.out, exist_ok=True)
     path = os.path.join(a.out, "revenue_desk_%s.md" % today.isoformat())
     open(path, "w").write(render(rep))

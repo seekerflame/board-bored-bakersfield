@@ -7,6 +7,7 @@ model said so.
 import datetime as dt
 import hashlib
 import json
+import os
 import re
 import unicodedata
 from html.parser import HTMLParser
@@ -51,6 +52,32 @@ def norm(s):
     s = s.lower().replace("&", " and ")
     s = re.sub(r"[^a-z0-9]+", " ", s)
     return re.sub(r"\s+", " ", s).strip()
+
+
+# Shared by revenue_desk, outreach_desk, leads and autodesk (these used to live in revenue_desk and be imported sideways).
+PUBLIC_SECTOR = ("library", "county", "city of", "college", "university", "csub", "school", "district", "park")
+SUFFIX = re.compile(r"\b(co|company|inc|llc|ltd|corp)$")
+
+
+def venue_key(name):
+    return SUFFIX.sub("", norm(name)).strip()
+
+
+def load_json(path, default):
+    try:
+        with open(path, encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return default
+
+
+def save_json(path, obj):
+    """Atomic: a crash mid-write leaves the old file, never half of the new one."""
+    os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
+    with open(path + ".tmp", "w", encoding="utf-8") as f:
+        json.dump(obj, f, indent=1, ensure_ascii=False)
+        f.write("\n")
+    os.replace(path + ".tmp", path)
 
 
 def tokens(s):

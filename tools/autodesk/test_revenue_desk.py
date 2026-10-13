@@ -101,6 +101,43 @@ class Prospects(unittest.TestCase):
         self.assertEqual(ps[0]["name"].startswith("Test Venue"), True)
 
 
+class OneRanking(unittest.TestCase):
+    """revenue_desk keeps no ranking of its own: the order is leads.score_lead's, so the two lists can never disagree."""
+
+    def test_prospect_order_is_the_registry_order(self):
+        import tempfile
+        import leads
+        b = {"city_events": [{"name": "Weekly %d" % i, "venue": "Steady Cafe", "schedule": {"weekday": 2}} for i in range(3)] +
+                            [{"name": "Show %d" % i, "venue": "Theater Row Hall", "schedule": {"date": "2026-11-%02d" % (i + 1)}} for i in range(30)]}
+        ps = rd.prospects(b, exclude_names=[])
+        with tempfile.TemporaryDirectory() as tmp:
+            st = leads.Store(tmp)
+            leads.sync_board(st, b)
+            for l in st.leads.values():
+                l["score"], l["tier"], l["why"] = leads.score_lead(l)
+            self.assertEqual([p["name"] for p in ps], [l["name"] for l in leads.ranked(st)])
+        self.assertEqual(ps[0]["name"], "Steady Cafe", "30 one-off shows no longer outrank three weekly regulars (dated events are capped)")
+
+    def test_people_already_in_conversation_are_never_pitched_cold(self):
+        import tempfile
+        import leads
+        b = {"city_events": [{"name": "A", "venue": "Warm Cafe", "schedule": {"weekday": 1}}, {"name": "B", "venue": "Cold Cafe", "schedule": {"weekday": 2}},
+                             {"name": "C", "venue": "Pledged Place", "schedule": {"weekday": 3}}]}
+        with tempfile.TemporaryDirectory() as tmp:
+            st = leads.Store(tmp)
+            leads.set_stage(st, st.ensure("Warm Cafe"), "replied", "said hi")
+            st.ensure("Pledged Place")["pledge"] = {"amount": 75}
+            names = [p["name"] for p in rd.prospects(b, store=st)]
+            self.assertEqual(names, ["Cold Cafe"])
+            self.assertEqual(len(st.leads), 3, "the board sync is in memory only")
+            self.assertFalse(os.path.exists(st.path), "nothing is saved by a read")
+
+    def test_archive_only_businesses_are_not_prospects(self):
+        b = {"city_events": [{"name": "Live", "venue": "On Map Place", "schedule": {"weekday": 1}}],
+             "city_events_archive": [{"name": "Old", "venue": "Gone Hall", "category": "Music"}]}
+        self.assertEqual([p["name"] for p in rd.prospects(b)], ["On Map Place"])
+
+
 class DraftVerifier(unittest.TestCase):
     SHEET = {"name": "Test Venue Co.", "weekly_slots": 3, "dated_events": 1, "address": "100 Fake St",
              "listings": ["Test Trivia 0", "Test Show"], "offer": {"tier": "Featured", "cadence": "monthly", "price": 75}}

@@ -22,28 +22,13 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import adapters  # noqa: E402
 from llm import OllamaVoice  # noqa: E402
 from netfetch import FetchRefused, PoliteFetcher  # noqa: E402
-from textutil import cover, html_to_text  # noqa: E402
+from textutil import cover, html_to_text, load_json, save_json  # noqa: E402
 from truthgate import consensus, event_id, gate  # noqa: E402
 
 HOME = os.path.expanduser("~")
 REPO = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))
 DEFAULT_CONFIG = os.path.join(HOME, ".boardbored", "autodesk", "config.json")
 DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-
-
-def load_json(path, default):
-    try:
-        with open(path) as f:
-            return json.load(f)
-    except Exception:
-        return default
-
-
-def save_json(path, obj):
-    os.makedirs(os.path.dirname(path), exist_ok=True)
-    with open(path + ".tmp", "w") as f:
-        json.dump(obj, f, indent=1, ensure_ascii=False)
-    os.replace(path + ".tmp", path)
 
 
 class Desk:

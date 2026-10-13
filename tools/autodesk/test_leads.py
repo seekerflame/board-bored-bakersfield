@@ -355,6 +355,25 @@ class Recon(unittest.TestCase):
         self.assertEqual(self.brew["contact"]["phone"]["source"], "https://testbrewing.example/contact")
 
 
+class SharedJson(unittest.TestCase):
+    def test_load_default_and_atomic_save(self):
+        import textutil as tu
+        d = tempfile.mkdtemp()
+        try:
+            p = os.path.join(d, "sub", "x.json")
+            self.assertEqual(tu.load_json(p, {"a": 1}), {"a": 1})
+            tu.save_json(p, {"k": "caf\u00e9"})
+            self.assertEqual(tu.load_json(p, None), {"k": "caf\u00e9"})
+            self.assertFalse(os.path.exists(p + ".tmp"), "no temp file left behind")
+            with open(p, encoding="utf-8") as f:
+                self.assertTrue(f.read().endswith("\n"))
+            with open(p, "w") as f:
+                f.write("{broken")
+            self.assertEqual(tu.load_json(p, "fallback"), "fallback")
+        finally:
+            shutil.rmtree(d)
+
+
 class Reset(unittest.TestCase):
     def test_reset_keeps_history_and_human_facts(self):
         store, d = fresh()
