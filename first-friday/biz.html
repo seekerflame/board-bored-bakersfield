@@ -54,8 +54,7 @@
 <script src="../lib/qrcode.js"></script>
 <script>
 (function () {
-  var API = (window.bbApi && window.bbApi.API_BASE || "").replace(/\/+$/, "");
-  try { var q = new URLSearchParams(location.search).get("api"); if (q && /^(localhost|127\.0\.0\.1)$/.test(location.hostname)) API = q.replace(/\/+$/, ""); } catch (e) {}
+  var API = window.bbApi.apiBase(); // the owned API; ?api=... is honoured on localhost only (lib/api.js)
   var shop = (new URLSearchParams(location.search).get("shop") || "").toLowerCase().replace(/[^a-z0-9-]/g, "");
   var $ = function (id) { return document.getElementById(id); };
   function el(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; }
@@ -76,7 +75,7 @@
     list.forEach(function (d) {
       var c = el("div", "card"); c.appendChild(el("div", "badge", d.badge)); c.appendChild(el("p", null, d.summary));
       if (d.terms) c.appendChild(el("p", "small", d.terms));
-      var a = el("a", "btn noprint", "Claim this deal (free)"); a.href = "deals.html?shop=" + encodeURIComponent(shop) + (API !== (window.bbApi && window.bbApi.API_BASE || "").replace(/\/+$/, "") ? "&api=" + encodeURIComponent(API) : "");
+      var a = el("a", "btn noprint", "Claim this deal (free)"); a.href = "deals.html?shop=" + encodeURIComponent(shop) + (window.bbApi.apiOverridden() ? "&api=" + encodeURIComponent(API) : "");
       c.appendChild(a); box.appendChild(c);
     });
     return fetch("../data/board.json").then(function (r) { return r.json(); }).then(function (b) {

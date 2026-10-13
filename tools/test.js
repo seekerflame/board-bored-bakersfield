@@ -357,6 +357,86 @@ t("dedupe: a dated occurrence of an existing weekly regular is a duplicate; a di
   });
 })();
 
+// ---------------------------------------------------------------- lib/api.js shared page helpers
+(function () {
+  var fs = require("fs"), path = require("path");
+  var root = path.join(__dirname, "..");
+  function loadApi(search, hostname, store) {
+    var key = require.resolve("../lib/api.js");
+    delete require.cache[key];
+    global.window = {};
+    global.location = { search: search, hostname: hostname };
+    global.localStorage = { getItem: function (k) { return k in store ? store[k] : null; }, setItem: function (k, v) { store[k] = String(v); } };
+    require(key);
+    return global.window.bbApi;
+  }
+  function tb(name, fn) {  // like t(), but always removes the fake browser globals afterwards
+    t(name, function () {
+      try { fn(); }
+      finally { delete global.window; delete global.location; delete global.localStorage; }
+    });
+  }
+  tb("attribution sanitises ?ref= and ?src=, remembers them, and defaults to direct", function () {
+    var store = {};
+    var a = loadApi("?ref=Bad%20Code!!&src=IG_story", "x.test", store).attribution();
+    assert.deepStrictEqual(a, { ref: "badcode", src: "ig_story" });
+    assert.strictEqual(store.bb_ref, "badcode");
+    assert.deepStrictEqual(loadApi("", "x.test", store).attribution(), { ref: "badcode", src: "ig_story" }, "remembered on the next page");
+    assert.deepStrictEqual(loadApi("", "x.test", {}).attribution(), { ref: "direct", src: "direct" });
+    assert.strictEqual(loadApi("?ref=" + "a".repeat(80), "x.test", {}).attribution().ref.length, 40);
+  });
+  tb("apiBase honours ?api= on localhost only", function () {
+    var api = loadApi("", "seekerflame.github.io", {});
+    assert(/^https:\/\/[^/]+$/.test(api.apiBase()), "owned API, no trailing slash: " + api.apiBase());
+    assert.strictEqual(loadApi("?api=http://localhost:8787/", "localhost", {}).apiBase(), "http://localhost:8787");
+    assert.strictEqual(loadApi("?api=http://127.0.0.1:9/", "127.0.0.1", {}).apiBase(), "http://127.0.0.1:9");
+    assert.strictEqual(loadApi("?api=https://evil.example", "seekerflame.github.io", {}).apiBase(), api.apiBase(), "never honoured off localhost");
+    assert.strictEqual(loadApi("?api=http://localhost:8787", "localhost", {}).apiOverridden(), true);
+    assert.strictEqual(loadApi("", "localhost", {}).apiOverridden(), false);
+  });
+  tb("shareRef keeps the first valid share code and refuses malformed ones", function () {
+    var store = {};
+    assert.strictEqual(loadApi("?ref=Friend-1", "x.test", store).shareRef(), "friend-1");
+    assert.strictEqual(loadApi("?ref=someone-else", "x.test", store).shareRef(), "friend-1", "first touch wins");
+    assert.strictEqual(loadApi("?ref=ab", "x.test", {}).shareRef(), "", "shorter than 4 is not a share code");
+    assert.strictEqual(loadApi("?ref=" + "a".repeat(25), "x.test", {}).shareRef(), "", "longer than 24 is not a share code");
+    assert.strictEqual(loadApi("", "x.test", {}).shareRef(), "");
+  });
+  tb("the contact email in lib/api.js is the one board.json declares", function () {
+    var board = JSON.parse(fs.readFileSync(path.join(root, "data", "board.json"), "utf8"));
+    assert.strictEqual(loadApi("", "x.test", {}).CONTACT_EMAIL, board.board.contact);
+  });
+  var pages = [];
+  (function walk(dir) {
+    fs.readdirSync(dir, { withFileTypes: true }).forEach(function (e) {
+      if (e.name === "node_modules" || e.name === ".git" || e.name === "tools") return;
+      var p = path.join(dir, e.name);
+      if (e.isDirectory()) walk(p); else if (/\.html$/.test(e.name)) pages.push(p);
+    });
+  })(root);
+  t("no page re-implements what lib/api.js provides (these copies used to drift)", function () {
+    pages.forEach(function (p) {
+      var s = fs.readFileSync(p, "utf8"), n = path.relative(root, p);
+      assert(s.indexOf('localStorage.setItem("bb_ref"') === -1, n + " has its own referral sanitiser");
+      assert(!/var CONTACT_EMAIL ?= ?"/.test(s), n + " hardcodes CONTACT_EMAIL");
+      assert(s.indexOf('get("api")') === -1, n + " has its own ?api= override");
+      assert(s.indexOf('bbApi && window.bbApi.API_BASE') === -1, n + " resolves the API base itself");
+    });
+  });
+  t("every page that uses the shared helpers loads lib/api.js before it uses them", function () {
+    var used = 0;
+    pages.forEach(function (p) {
+      var s = fs.readFileSync(p, "utf8"), n = path.relative(root, p);
+      var m = /bbApi\.(apiBase|attribution|CONTACT_EMAIL)/.exec(s);
+      if (!m) return;
+      used++;
+      var load = s.indexOf("lib/api.js");
+      assert(load !== -1 && load < m.index, n + " uses bbApi." + m[1] + " without loading lib/api.js first");
+    });
+    assert(used >= 10, "expected the shared helpers to be in use on >= 10 pages, found " + used);
+  });
+})();
+
 (function run() {
   if (!makeQueue) { console.error("✗ pwa.js did not export BB._makeQueue"); process.exitCode = 1; }
   var chain = Promise.resolve();

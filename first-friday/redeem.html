@@ -41,8 +41,7 @@
 <script src="../lib/api.js"></script>
 <script>
 (function () {
-  var API = (window.bbApi && window.bbApi.API_BASE || "").replace(/\/+$/, "");
-  try { var q = new URLSearchParams(location.search).get("api"); if (q && /^(localhost|127\.0\.0\.1)$/.test(location.hostname)) API = q.replace(/\/+$/, ""); } catch (e) {}
+  var API = window.bbApi.apiBase(); // the owned API; ?api=... is honoured on localhost only (lib/api.js)
   // The shop link carries its token in the #fragment (never sent to a server or logged), then we keep it locally and clear the bar.
   var tok = "";
   try {

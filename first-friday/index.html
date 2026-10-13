@@ -441,7 +441,7 @@
       return bd;
     });
   }).then(function(d){
-    var email=(d.board&&d.board.contact)||"boardquestionmark@gmail.com";
+    var email=d.board.contact; // required by validate-board.js
     var ev=(d.events||[]).filter(function(e){return e.slug==="first-friday"})[0]
          ||(d.events||[]).filter(function(e){return e.slug===d.featured})[0]
          ||(d.events||[])[0];

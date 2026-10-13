@@ -127,7 +127,7 @@
     clearTimeout(t._);t._=setTimeout(function(){t.classList.remove("on")},2000);}
 
   fetch("data/board.json").then(function(r){return r.json()}).then(function(d){
-    var email=(d.board&&d.board.contact)||"boardquestionmark@gmail.com";
+    var email=d.board.contact; // required by validate-board.js
     if(d.board&&d.board.tagline)$("tagline").textContent=d.board.tagline;
     if(d.board&&d.board.city)$("h1").textContent="What's popping in "+d.board.city;
     $("mailFoot").href="mailto:"+email; $("mailFoot").textContent=email;

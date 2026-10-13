@@ -117,7 +117,7 @@
   var DOWL=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 
   fetch("../data/board.json").then(function(r){return r.json()}).then(function(d){
-    var email=(d.board&&d.board.contact)||"boardquestionmark@gmail.com";
+    var email=d.board.contact; // required by validate-board.js
     $("mailFoot").href="mailto:"+email;$("mailFoot").textContent=email;
     var today=bbCal.todayMid();
 

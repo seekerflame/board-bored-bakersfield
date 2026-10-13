@@ -160,6 +160,7 @@
 
 <script src="lib/safe.js"></script>
 <script src="lib/pwa.js"></script>
+<script src="lib/api.js"></script>
 <script>
 (function(){
   var $=function(id){return document.getElementById(id)};
@@ -174,18 +175,7 @@
   //   ?src=qr          the channel: qr | flyer | ig | text | walkup | web
   // Persisted to localStorage so it survives a tab reload or a detour to
   // Instagram and back — otherwise you lose the attribution at the last step.
-  var REF = (function(){
-    var q = new URLSearchParams(location.search);
-    var clean = function(v){ return (v||"").trim().toLowerCase().replace(/[^a-z0-9_-]/g,"").slice(0,40); };
-    var ref = clean(q.get("ref")), src = clean(q.get("src"));
-    try {
-      if (ref) localStorage.setItem("bb_ref", ref);
-      else ref = localStorage.getItem("bb_ref") || "";
-      if (src) localStorage.setItem("bb_src", src);
-      else src = localStorage.getItem("bb_src") || "";
-    } catch(e){}
-    return { ref: ref || "direct", src: src || "direct" };
-  })();
+  var REF = window.bbApi.attribution(); // one sanitiser for every page (lib/api.js)
 
   // Show the referrer their credit — it makes the ask real for the person who shared.
   (function(){
@@ -198,7 +188,7 @@
     if (w && w.parentNode) w.parentNode.insertBefore(b, w);
   })();
 
-  var CONTACT_EMAIL = "boardquestionmark@gmail.com";
+  var CONTACT_EMAIL = window.bbApi.CONTACT_EMAIL;
 
   // ---------- tabs ----------
   var tabs={store:["tabStore","formStore"],spot:["tabSpot","formSpot"],artist:["tabArtist","formArtist"]};

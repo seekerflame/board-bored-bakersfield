@@ -29,8 +29,7 @@
 <script src="../lib/api.js"></script>
 <script>
 (function () {
-  var API = (window.bbApi && window.bbApi.API_BASE || "").replace(/\/+$/, "");
-  try { var q = new URLSearchParams(location.search).get("api"); if (q && /^(localhost|127\.0\.0\.1)$/.test(location.hostname)) API = q.replace(/\/+$/, ""); } catch (e) {}
+  var API = window.bbApi.apiBase(); // the owned API; ?api=... is honoured on localhost only (lib/api.js)
   var out = document.getElementById("out"), sess = "";
   function el(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; }
   function call(path, body) {

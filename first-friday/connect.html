@@ -92,8 +92,8 @@
 <script>
 (function(){
   var $ = function(id){ return document.getElementById(id); };
-  var API_ENDPOINT = (window.bbApi && bbApi.API_BASE ? bbApi.API_BASE : "") + "/api/contact";
-  var CONTACT_EMAIL = "boardquestionmark@gmail.com";
+  var API_ENDPOINT = (window.bbApi ? bbApi.apiBase() : "") + "/api/contact";
+  var CONTACT_EMAIL = window.bbApi.CONTACT_EMAIL;
 
   // ?event=... labels every lead captured through this link with which event
   // it came from (e.g. a specific mixer) — falls back to a generic label so

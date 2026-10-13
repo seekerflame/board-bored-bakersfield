@@ -72,8 +72,8 @@
 <script>
 (function(){
   var $ = function(id){ return document.getElementById(id); };
-  var API_ENDPOINT = (window.bbApi && bbApi.API_BASE ? bbApi.API_BASE : "") + "/api/feedback";
-  var CONTACT_EMAIL = "boardquestionmark@gmail.com";
+  var API_ENDPOINT = (window.bbApi ? bbApi.apiBase() : "") + "/api/feedback";
+  var CONTACT_EMAIL = window.bbApi.CONTACT_EMAIL;
 
   function mailFallback(text){
     location.href = "mailto:" + CONTACT_EMAIL + "?subject=" + encodeURIComponent("What I want to see in Kern") +

@@ -220,7 +220,7 @@
 <script>
 (function(){
   var $=function(id){return document.getElementById(id)};
-  var CONTACT_EMAIL="boardquestionmark@gmail.com";
+  var CONTACT_EMAIL = window.bbApi.CONTACT_EMAIL;
   $("mailFoot").href="mailto:"+CONTACT_EMAIL;$("mailFoot").textContent=CONTACT_EMAIL;
 
   // when segmented control

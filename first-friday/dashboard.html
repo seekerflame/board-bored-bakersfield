@@ -32,8 +32,7 @@
 <script src="../lib/api.js"></script>
 <script>
 (function () {
-  var API = (window.bbApi && window.bbApi.API_BASE || "").replace(/\/+$/, "");
-  try { var q = new URLSearchParams(location.search).get("api"); if (q && /^(localhost|127\.0\.0\.1)$/.test(location.hostname)) API = q.replace(/\/+$/, ""); } catch (e) {}
+  var API = window.bbApi.apiBase(); // the owned API; ?api=... is honoured on localhost only (lib/api.js)
   var tok = "";
   try { var m = /(?:^#|&)t=([^&]+)/.exec(location.hash); if (m) { tok = decodeURIComponent(m[1]); localStorage.setItem("bb_shop_token", tok); history.replaceState(null, "", location.pathname + location.search); } else tok = localStorage.getItem("bb_shop_token") || ""; } catch (e) {}
   var out = document.getElementById("out");

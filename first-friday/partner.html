@@ -57,8 +57,7 @@
 <script src="../lib/api.js"></script>
 <script>
 (function () {
-  var API = (window.bbApi && window.bbApi.API_BASE || "").replace(/\/+$/, "");
-  try { var q = new URLSearchParams(location.search).get("api"); if (q && /^(localhost|127\.0\.0\.1)$/.test(location.hostname)) API = q.replace(/\/+$/, ""); } catch (e) {}
+  var API = window.bbApi.apiBase(); // the owned API; ?api=... is honoured on localhost only (lib/api.js)
   var $ = function (id) { return document.getElementById(id); }, msg = $("msg"), go = $("go");
   $("f").onsubmit = function (e) {
     e.preventDefault(); msg.className = "msg"; msg.textContent = "";

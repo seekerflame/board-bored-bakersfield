@@ -84,7 +84,7 @@
 
   fetch("data/board.json").then(function(r){return r.json()}).then(function(d){
     var ev=(d.events||[]).filter(function(e){return e.slug===d.featured})[0]||(d.events||[])[0];
-    var email=(d.board&&d.board.contact)||"boardquestionmark@gmail.com";
+    var email=d.board.contact; // required by validate-board.js
     if(!ev)return;
     document.getElementById("evName").textContent=ev.name;
     var p=(ev.date||"").split("-");

@@ -49,13 +49,11 @@
 <script src="../lib/api.js"></script>
 <script>
 (function () {
-  var API = (window.bbApi && window.bbApi.API_BASE || "").replace(/\/+$/, "");
-  // Local testing only: ?api=http://localhost:8787 is honoured on localhost and nowhere else.
-  try { var q = new URLSearchParams(location.search).get("api"); if (q && /^(localhost|127\.0\.0\.1)$/.test(location.hostname)) API = q.replace(/\/+$/, ""); } catch (e) {}
+  var API = window.bbApi.apiBase(); // the owned API; ?api=... is honoured on localhost only (lib/api.js)
   var list = document.getElementById("list");
   var sid = ""; try { sid = localStorage.getItem("bb_session") || ""; if (!sid) { sid = "s" + Math.random().toString(36).slice(2, 12); localStorage.setItem("bb_session", sid); } } catch (e) { sid = "s" + Math.random().toString(36).slice(2, 12); }
   // First-touch share attribution: whoever sent you here gets credit once a shop confirms your code. Never your own link.
-  var myRef = ""; try { var rq = (new URLSearchParams(location.search).get("ref") || "").toLowerCase(); if (/^[a-z0-9_-]{4,24}$/.test(rq) && !localStorage.getItem("bb_ref")) localStorage.setItem("bb_ref", rq); myRef = localStorage.getItem("bb_ref") || ""; } catch (e) {}
+  var myRef = window.bbApi.shareRef(); // first-touch share code, same rules as before (lib/api.js)
   var mine = {}; try { mine = JSON.parse(localStorage.getItem("bb_claims") || "{}"); } catch (e) {}
 
   function el(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; }

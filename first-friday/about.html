@@ -105,7 +105,7 @@
 (function(){
   var $=function(id){return document.getElementById(id)};
   fetch("../data/board.json").then(function(r){return r.json()}).then(function(d){
-    var email=(d.board&&d.board.contact)||"boardquestionmark@gmail.com";
+    var email=d.board.contact; // required by validate-board.js
     var ev=(d.events||[]).filter(function(e){return e.slug==="first-friday"})[0]||(d.events||[])[0];
     if(!ev){$("lede").textContent="No event data yet.";return;}
 
